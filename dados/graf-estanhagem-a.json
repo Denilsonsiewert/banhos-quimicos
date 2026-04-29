@@ -1,6 +1,11 @@
 {
 "title": "",
 "yAxisLabel": "",
-"labels": ["Luiz","0,6875","23","16,5","26,5","19,5525","64,2513409375","35,3782935","0","0","","0","0","","","0","0"],
-"series1": [Luiz,0,729166666666667,24,16,5,26,5,19,5525,64,2513409375,35,3782935,0,0,,0,0,,,0,0],
+"labels": ["","","","","","","","","","","","","","","","","0"],
+"series1": [Responsável,Hora,Tanque,Análise do Sn° 
+
+Volume gasto na titulação (Vt),Análise do H2SO4 
+
+Volume gasto na titulação  (Vt),Concentração do banho Sn° (g/L) ,Concentração do banho H2SO4 (mL/L) ,Concentração do banho SnSO4,Correção com TinSol,,,Correção com H2SO4 ,,,Vide Obs.,Tin Sol,H2SO4 ],
+"series2": [,,,,,,,,Em quilos (kg),Em litros (L),Executada em L,Em quilos (kg),Em litros (L),Executada em L,,0,0]
 }
