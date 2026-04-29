@@ -15,6 +15,8 @@
             --success: #28a745;
             --warning: #ffc107;
             --danger: #dc3545;
+            --table-header-bg: #00a8e8; /* Azul claro para cabeçalho da tabela */
+            --table-border: #ccc;
         }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-primary); height: 100vh; display: flex; flex-direction: column; overflow: hidden; margin: 0; }
         
@@ -43,18 +45,38 @@
         .status-warn { background: #fff3cd; color: #856404; }
         .status-crit { background: #f8d7da; color: #721c24; }
 
-        .chart-area { width: 100%; height: 400px; display: flex; justify-content: center; align-items: center; background: #fafafa; border-radius: 8px; overflow: hidden; }
+        .chart-area { width: 100%; height: 450px; display: flex; justify-content: center; align-items: center; background: #fafafa; border-radius: 8px; overflow: hidden; position: relative; }
         .chart-img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .y-axis-label {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%) rotate(-90deg);
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #555;
+            white-space: nowrap;
+            pointer-events: none;
+        }
 
-        /* DATA TABLE */
+        /* DATA TABLE - ESTILO EXATO DA IMAGEM */
         .data-table-container { margin-top: 10px; }
-        .table-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; color: #555; }
-        .custom-table { width: 100%; border-collapse: collapse; font-size: 1rem; }
-        .custom-table th, .custom-table td { border: 1px solid #ddd; padding: 10px; text-align: center; }
-        .custom-table th { background-color: var(--weg-blue); color: white; font-weight: 600; }
+        .table-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 5px; color: #333; text-align: center; }
+        .custom-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; table-layout: fixed; }
+        .custom-table th, .custom-table td { 
+            border: 1px solid var(--table-border); 
+            padding: 6px 4px; 
+            text-align: center; 
+            word-wrap: break-word;
+        }
+        .custom-table th { 
+            background-color: var(--table-header-bg); 
+            color: white; 
+            font-weight: 700; 
+            font-size: 0.9rem;
+        }
         .custom-table tr:nth-child(even) { background-color: #f9f9f9; }
         .custom-table tr:hover { background-color: #f1f1f1; }
-        .metric-row { display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: 700; margin-top: 10px; }
 
         /* NAV DOTS */
         .nav-dots { display: flex; gap: 12px; margin-top: 20px; }
@@ -139,7 +161,8 @@
                     </div>
                     
                     <div class="chart-area">
-                        <img src="graficos/${item.fileBase}.png" class="chart-img" alt="Gráfico" onerror="this.src='https://via.placeholder.com/800x400?text=Aguardando+Imagem...'">
+                        <div class="y-axis-label" id="y-axis-label">Carregando...</div>
+                        <img src="graficos/${item.fileBase}.png" class="chart-img" alt="Gráfico" onerror="this.src='https://via.placeholder.com/800x450?text=Aguardando+Imagem...'">
                     </div>
 
                     <div class="data-table-container">
@@ -176,19 +199,22 @@
                     const table = document.getElementById('data-table');
                     table.style.display = 'table';
                     
-                    // Preencher Cabeçalhos
+                    // Exibir Rótulo do Eixo Y
+                    document.getElementById('y-axis-label').innerText = data.yAxisLabel || "";
+                    
+                    // Preencher Cabeçalhos (Datas)
                     const headersRow = document.getElementById('table-headers');
-                    headersRow.innerHTML = '<th>Data/Medição</th>' + data.labels.map(l => `<th>${l}</th>`).join('');
+                    headersRow.innerHTML = data.labels.map(l => `<th>${l}</th>`).join('');
                     
-                    // Preencher Linha 1
+                    // Preencher Linha 1 de Valores
                     const row1 = document.getElementById('table-row1');
-                    row1.innerHTML = '<td><strong>Leitura 1</strong></td>' + data.series1.map(v => `<td>${v}</td>`).join('');
+                    row1.innerHTML = data.series1.map(v => `<td>${v}</td>`).join('');
                     
-                    // Preencher Linha 2 (se existir)
+                    // Preencher Linha 2 de Valores (se existir)
                     if (data.series2) {
                         const row2 = document.getElementById('table-row2');
                         row2.style.display = 'table-row';
-                        row2.innerHTML = '<td><strong>Leitura 2</strong></td>' + data.series2.map(v => `<td>${v}</td>`).join('');
+                        row2.innerHTML = data.series2.map(v => `<td>${v}</td>`).join('');
                     } else {
                         document.getElementById('table-row2').style.display = 'none';
                     }
@@ -196,7 +222,19 @@
                 .catch(err => {
                     console.error(err);
                     document.getElementById('table-loading').innerText = "Dados indisponíveis no momento.";
+                    document.getElementById('y-axis-label').innerText = "";
                 });
+        }
+
+        function nextItem() {
+            const tab = tabsConfig[currentTabIdx];
+            currentItemIdx++;
+            if (currentItemIdx >= tab.items.length) {
+                currentItemIdx = 0;
+                currentTabIdx++;
+                if (currentTabIdx >= tabsConfig.length) currentTabIdx = 0;
+            }
+            updateDisplay();
         }
 
         function updateDisplay() {
@@ -215,17 +253,6 @@
                 dot.onclick = () => { currentItemIdx = idx; resetRotation(); updateDisplay(); };
                 dotsContainer.appendChild(dot);
             });
-        }
-
-        function nextItem() {
-            const tab = tabsConfig[currentTabIdx];
-            currentItemIdx++;
-            if (currentItemIdx >= tab.items.length) {
-                currentItemIdx = 0;
-                currentTabIdx++;
-                if (currentTabIdx >= tabsConfig.length) currentTabIdx = 0;
-            }
-            updateDisplay();
         }
 
         function resetRotation() {
