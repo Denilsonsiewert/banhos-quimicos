@@ -1,6 +1,13 @@
 {
 "title": "",
 "yAxisLabel": "",
-"labels": ["Luiz","0,677083333333333","23","24","10,5","15","70,428","62,4015","46,38","263,521033305","0","0","","0","0","","0","","","0","0"],
-"series1": [Luiz,0,71875,24,23,5,10,2,14,7,68,96075,60,6186,45,4524,258,602308282,0,0,,0,0,,7,92025306866685,10,,0,0],
+"labels": ["","","","","","","","","","","","","","","","","","","","","0"],
+"series1": [Responsável,Hora,Tanque,Análise do Niº
+
+Volume gasto na titulação  (Vt)  ,Análise do NiCl2
+
+Volume gasto na titulação de  (Vt),Análise do H3BO3 
+
+Volume gasto na titulação (Vt),Concentração do Niº (g/L) ,Concentração do NiCl2 (mL/L),Concentração do H3BO3 (g/L),Concentração do NiSO4 (mL/L),Correção com NiCl2,,,Correção H3BO3,,,Correção NiSO4,,Vide Obs.,NiSO4,NiCl2],
+"series2": [,,,,,,,,,,Em quilos (kg),Em litros (L),Executada em kg,Em quilos (kg),Em quilos (kg),Executada em kg,Em quilos (kg),Executada kg,,0,0]
 }
