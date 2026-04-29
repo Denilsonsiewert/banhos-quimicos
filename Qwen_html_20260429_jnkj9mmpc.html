@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Químico | WEG Banhos Industriais</title>
+    <!-- Fonte Moderna -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Ícones Profissionais -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --weg-blue: #004B8D; /* Azul WEG */
+            --weg-dark: #1a1a1a;
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --border-color: #e0e0e0;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* HEADER CENTRALIZADO */
+        header {
+            background-color: var(--weg-blue);
+            color: white;
+            padding: 10px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 10;
+            height: 90px;
+        }
+
+        .brand {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .brand-main {
+            font-size: 2.0rem; 
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            line-height: 1.1;
+            text-transform: uppercase;
+        }
+
+        .brand-sub {
+            font-size: 0.9rem;
+            font-weight: 400;
+            opacity: 0.9;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* RELÓGIO LADO A LADO - MESMO TAMANHO */
+        .clock-container {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 1.4rem; /* MESMO TAMANHO PARA TUDO */
+            flex-shrink: 0;
+        }
+
+        .clock-item {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .clock-label {
+            font-weight: 700;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        .clock-value {
+            font-weight: 400; /* Levemente mais fino para contraste */
+            color: #fff;
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .date-value { 
+            color: #e0e0e0;
+        }
+
+        /* MAIN CONTENT */
+        main {
+            flex: 1;
+            padding: 25px 40px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--weg-blue);
+            font-weight: 800;
+            margin-bottom: 15px;
+            border-left: 6px solid var(--weg-blue);
+            padding-left: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-transform: uppercase;
+        }
+
+        /* CARDS GRID */
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 18px;
+            width: 100%;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border-top: 5px solid transparent;
+            transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 200px;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+
+        .card.nanoceramico { border-top-color: #17a2b8; }
+        .card.estanhagem { border-top-color: #fd7e14; }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+            white-space: nowrap;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .status-ok { background: #d4edda; color: #155724; }
+        .status-warn { background: #fff3cd; color: #856404; }
+        .status-crit { background: #f8d7da; color: #721c24; }
+
+        .chart-placeholder {
+            height: 120px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+        
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            gap: 6px;
+            height: 80%;
+            width: 90%;
+            padding-bottom: 5px;
+        }
+        .bar {
+            flex: 1;
+            background: var(--weg-blue);
+            opacity: 0.4;
+            border-radius: 3px 3px 0 0;
+            transition: height 1s ease;
+            min-width: 12px;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+            border-top: 1px solid #eee;
+            padding-top: 12px;
+            font-weight: 500;
+        }
+        .metric-value { 
+            font-weight: 800; 
+            font-size: 1.2rem; 
+            color: var(--text-primary);
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--weg-dark);
+            color: #ccc;
+            padding: 12px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .sync-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .pulse {
+            width: 10px;
+            height: 10px;
+            background-color: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 0 rgba(40, 167, 69, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7); }
+            70% { box-shadow: 0 0 0 12px rgba(40, 167, 69, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+        }
+
+        @media (min-width: 1920px) {
+            .brand-main { font-size: 2.4rem; }
+            .brand-sub { font-size: 1.0rem; }
+            .clock-container { font-size: 1.8rem; }
+            .section-title { font-size: 1.8rem; }
+            .card-title { font-size: 1.4rem; }
+            .metric-value { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <div class="brand-main">WEG INDUSTRIAL</div>
+            <div class="brand-sub">CONTROLE ANALÍTICO DOS BANHOS QUÍMICOS</div>
+        </div>
+        
+        <div class="clock-container">
+            <div class="clock-item">
+                <span class="clock-label">DATA:</span>
+                <span class="clock-value date-value" id="clock-date">--/--/----</span>
+            </div>
+            
+            <div class="clock-item">
+                <span class="clock-label">HORA:</span>
+                <span class="clock-value" id="clock-time">--:--:--</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="section-title">
+            <i class="fa-solid fa-layer-group"></i> Nanocerâmico
+        </div>
+        <div class="process-grid">
+            <div class="card nanoceramico">
+                <div class="card-header">
+                    <span class="card-title">1º Desengraxante</span>
+                    <span class="status-badge status-ok">Em Conformidade</span>
+                </div>
+                <div class="chart-placeholder">
+                    <div class="bar-chart">
+                        <div class="bar" style="height: 40%"></div>
+                        <div class="bar" style="height: 60%"></div>
+                        <div class="bar" style="height: 50%"></div>
+                        <div class="bar" style="height: 70%"></div>
+                        <div class="bar" style="height: 45%"></div>
+                    </div>
+                </div>
+                <div class="metric-row">
+                    <span>pH</span>
+                    <span class="metric-value">9.2</span>
+                </div>
+            </div>
+
+            <div class="card nanoceramico">
+                <div class="card-header">
+                    <span class="card-title">2º Desengraxante</span>
+                    <span class="status-badge status-ok">Estável</span>
+                </div>
+                <div class="chart-placeholder">
+                    <div class="bar-chart">
+                        <div class="bar" style="height: 55%"></div>
+                        <div class="bar" style="height: 58%"></div>
+                        <div class="bar" style="height: 52%"></div>
+                        <div class="bar" style="height: 60%"></div>
+                        <div class="bar" style="height: 54%"></div>
+                    </div>
+                </div>
+                <div class="metric-row">
+                    <span>pH</span>
+                    <span class="metric-value">9.1</span>
+                </div>
+            </div>
+
+            <div class="card nanoceramico">
+                <div class="card-header">
+                    <span class="card-title">Decapante 1</span>
+                    <span class="status-badge status-warn">Atenção</span>
+                </div>
+                <div class="chart-placeholder">
+                    <div class="bar-chart">
+                        <div class="bar" style="height: 30%; background:var(--warning)"></div>
+                        <div class="bar" style="height: 25%; background:var(--warning)"></div>
+                        <div class="bar" style="height: 20%; background:var(--warning)"></div>
+                        <div class="bar" style="height: 15%; background:var(--warning)"></div>
+                    </div>
+                </div>
+                <div class="metric-row">
+                    <span>Conc. Ácido</span>
+                    <span class="metric-value" style="color:var(--warning)">Baixa</span>
+                </div>
+            </div>
+
+            <div class="card nanoceramico">
+                <div class="card-header">
+                    <span class="card-title">Decapante 2</span>
+                    <span class="status-badge status-ok">OK</span>
+                </div>
+                <div class="chart-placeholder">
+                    <div class="bar-chart">
+                        <div class="bar" style="height: 65%"></div>
+                        <div class="bar" style="height: 68%"></div>
+                        <div class="bar" style="height: 62%"></div>
+                        <div class="bar" style="height: 70%"></div>
+                    </div>
+                </div>
+                <div class="metric-row">
+                    <span>Tempo Imersão</span>
+                    <span class="metric-value">120s</span>
+                </div>
+            </div>
+
+            <div class="card nanoceramico">
+                <div class="card-header">
+                    <span class="card-title">Nanocerâmico — Conc.</span>
+                    <span class="status-badge status-crit">Crítico</span>
+                </div>
+                <div class="chart-placeholder">
+                     <div class="bar-chart">
+                        <div class="bar" style="height: 15%; background:var(--danger)"></div>
+                        <div class="bar" style="height: 12%; background:var(--danger)"></div>
+                        <div class="bar" style="height: 10%; background:var(--danger)"></div>
+                        <div class="bar" style="height: 8%; background:var(--danger)"></div>
+                    </div>
+                </div>
+                <div class="metric-row">
+                    <span>Concentração</span>
+                    <span class="metric-value" style="color:var(--danger)">1.2 g/L</span>
+                </div>
+            </div>
+
+            <div class="card nanoceramico">
+                <div class="card-header">
+                    <span class="card-title">Nanocerâmico — Abs.</span>
+                    <span class="status-badge status-ok">OK</span>
+                </div>
+                <div class="chart-placeholder">
+                    <div class="bar-chart">
+                        <div class="bar" style="height: 50%"></div>
+                        <div class="bar" style="height: 52%"></div>
+                        <div class="bar" style="height: 48%"></div>
+                        <div class="bar" style="height: 55%"></div>
+                    </div>
+                </div>
+                <div class="metric-row">
+                    <span>Absorção</span>
+                    <span class="metric-value">Normal</span>
+                </div>
+            </div>
+
+            <div class="card nanoceramico">
+                <div class="card-header">
+                    <span class="card-title">Nanocerâmico — pH</span>
+                    <span class="status-badge status-ok">OK</span>
+                </div>
+                <div class="chart-placeholder">
+                    <div class="bar-chart">
+                        <div class="bar" style="height: 45%"></div>
+                        <div class="bar" style="height: 46%"></div>
+                        <div class="bar" style="height: 44%"></div>
+                        <div class="bar" style="height: 47%"></div>
+                    </div>
+                </div>
+                <div class="metric-row">
+                    <span>pH</span>
+                    <span class="metric-value">4.5</span>
+                </div>
+            </div>
+
+            <div class="card nanoceramico">
+                <div class="card-header">
+                    <span class="card-title">Neutralizador</span>
+                    <span class="status-badge status-ok">OK</span>
+                </div>
+                <div class="chart-placeholder">
+                    <div class="bar-chart">
+                        <div class="bar" style="height: 50%"></div>
+                        <div class="bar" style="height: 50%"></div>
+                        <div class="bar" style="height: 50%"></div>
+                        <div class="bar" style="height: 50%"></div>
+                    </div>
+                </div>
+                <div class="metric-row">
+                    <span>pH Final</span>
+                    <span class="metric-value">7.0</span>
+                </div>
+            </div>
+
+            <div class="card nanoceramico">
+                <div class="card-header">
+                    <span class="card-title">Selante</span>
+                    <span class="status-badge status-ok">OK</span>
+                </div>
+                <div class="chart-placeholder">
+                    <div style="color:#ccc"><i class="fa-solid fa-chart-line fa-2x"></i></div>
+                </div>
+                <div class="metric-row">
+                    <span>Vencimento</span>
+                    <span class="metric-value" style="color:var(--success)">12 dias</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title" style="margin-top: 10px;">
+            <i class="fa-solid fa-microchip"></i> Estanhagem
+        </div>
+        <div class="process-grid">
+            <div class="card estanhagem">
+                <div class="card-header">
+                    <span class="card-title">Desengraxante</span>
+                    <span class="status-badge status-ok">OK</span>
+                </div>
+                <div class="chart-placeholder">
+                    <div class="bar-chart">
+                        <div class="bar" style="height: 60%; background:#fd7e14"></div>
+                        <div class="bar" style="height: 62%; background:#fd7e14"></div>
+                        <div class="bar" style="height: 58%; background:#fd7e14"></div>
+                        <div class="bar" style="height: 65%; background:#fd7e14"></div>
+                    </div>
+                </div>
+                <div class="metric-row">
+                    <span>pH</span>
+                    <span class="metric-value">10.5</span>
+                </div>
+            </div>
+
+            <div class="card estanhagem">
+                <div class="card-header">
+                    <span class="card-title">Ativação — Tanque 5</span>
+                    <span class="status-badge status-warn">Verificar</span>
+                </div>
+                <div class="chart-placeholder">
+                    <div style="color:var(--warning); font-weight:bold; font-size:1.1rem;">TEMP. ALTA</div>
+                </div>
+                <div class="metric-row">
+                    <span>Temperatura</span>
+                    <span class="metric-value" style="color:var(--warning)">Alta</span>
+                </div>
+            </div>
+
+            <div class="card estanhagem">
+                <div class="card-header">
+                    <span class="card-title">Ativação — Tanque 6</span>
+                    <span class="status-badge status-ok">OK</span>
+                </div>
+                <div class="chart-placeholder">
+                    <div class="bar-chart">
+                        <div class="bar" style="height: 50%; background:#17a2b8"></div>
+                        <div class="bar" style="height: 55%; background:#17a2b8"></div>
+                        <div class="bar" style="height: 52%; background:#17a2b8"></div>
+                    </div>
+                </div>
+                <div class="metric-row">
+                    <span>Condutividade</span>
+                    <span class="metric-value">45 mS/cm</span>
+                </div>
+            </div>
+
+            <div class="card estanhagem">
+                <div class="card-header">
+                    <span class="card-title">Níquel WATT</span>
+                    <span class="status-badge status-ok">Estável</span>
+                </div>
+                <div class="chart-placeholder">
+                    <div class="bar-chart">
+                        <div class="bar" style="height: 80%; background:#fd7e14"></div>
+                        <div class="bar" style="height: 82%; background:#fd7e14"></div>
+                        <div class="bar" style="height: 78%; background:#fd7e14"></div>
+                        <div class="bar" style="height: 81%; background:#fd7e14"></div>
+                    </div>
+                </div>
+                <div class="metric-row">
+                    <span>Níquel Total</span>
+                    <span class="metric-value">280 g/L</span>
+                </div>
+            </div>
+
+            <div class="card estanhagem">
+                <div class="card-header">
+                    <span class="card-title">Estanhagem A</span>
+                    <span class="status-badge status-crit">VENCIDO</span>
+                </div>
+                <div class="chart-placeholder">
+                    <div style="color:var(--danger); font-weight:bold; font-size:1.1rem;">ANÁLISE VENCIDA</div>
+                </div>
+                <div class="metric-row">
+                    <span>Última Análise</span>
+                    <span class="metric-value" style="color:var(--danger)">Ontem</span>
+                </div>
+            </div>
+
+            <div class="card estanhagem">
+                <div class="card-header">
+                    <span class="card-title">Estanhagem B</span>
+                    <span class="status-badge status-ok">OK</span>
+                </div>
+                <div class="chart-placeholder">
+                    <div class="bar-chart">
+                        <div class="bar" style="height: 40%; background:#fd7e14"></div>
+                        <div class="bar" style="height: 42%; background:#fd7e14"></div>
+                        <div class="bar" style="height: 38%; background:#fd7e14"></div>
+                    </div>
+                </div>
+                <div class="metric-row">
+                    <span>Estanho</span>
+                    <span class="metric-value">12 g/L</span>
+                </div>
+            </div>
+
+            <div class="card estanhagem">
+                <div class="card-header">
+                    <span class="card-title">Selante</span>
+                    <span class="status-badge status-ok">OK</span>
+                </div>
+                <div class="chart-placeholder">
+                    <div class="bar-chart">
+                        <div class="bar" style="height: 55%; background:#17a2b8"></div>
+                        <div class="bar" style="height: 58%; background:#17a2b8"></div>
+                        <div class="bar" style="height: 52%; background:#17a2b8"></div>
+                    </div>
+                </div>
+                <div class="metric-row">
+                    <span>pH</span>
+                    <span class="metric-value">5.5</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="sync-status">
+            <div class="pulse"></div>
+            <span>Dados SCADA em tempo real | WEG Qualidade</span>
+        </div>
+        <div>
+            Última sincronização: <span id="last-sync">Agora</span>
+        </div>
+    </footer>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('pt-BR');
+            const dateString = now.toLocaleDateString('pt-BR');
+            
+            document.getElementById('clock-date').textContent = dateString;
+            document.getElementById('clock-time').textContent = timeString;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        let syncCount = 0;
+        setInterval(() => {
+            syncCount++;
+            document.getElementById('last-sync').textContent = `Há ${syncCount} min`;
+        }, 60000);
+    </script>
+</body>
+</html>
