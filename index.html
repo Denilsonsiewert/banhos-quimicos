@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="60">
+  <meta http-equiv="refresh" content="300">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Controle de Banhos Químicos - JGS | WEG</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -26,9 +26,8 @@
       --warning-light: #FEF3C7;
       --danger: #DC2626;
       --danger-light: #FEE2E2;
-      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-      --shadow: 0 4px 6px rgba(0,0,0,0.08);
-      --shadow-lg: 0 10px 25px rgba(0,69,143,0.12);
+      --shadow: 0 4px 12px rgba(0,69,143,0.08);
+      --shadow-lg: 0 12px 32px rgba(0,69,143,0.15);
       --radius: 12px;
       --radius-sm: 8px;
     }
@@ -41,6 +40,7 @@
       font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
       min-height: 100vh;
       line-height: 1.5;
+      overflow-x: hidden;
     }
 
     /* Header */
@@ -154,11 +154,25 @@
       margin-top: 4px;
     }
 
-    /* Grid de Cards */
-    .grid {
+    /* 🎯 CAROUSEL: 2 cards por vez */
+    .carousel-wrapper {
+      position: relative;
+      overflow: hidden;
+      padding: 0 8px;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+      width: 100%;
+    }
+
+    .carousel-slide {
+      min-width: 100%;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
       gap: 20px;
+      padding: 0 4px;
     }
 
     /* Card */
@@ -168,9 +182,10 @@
       border-radius: var(--radius);
       overflow: hidden;
       transition: all 0.25s ease;
-      box-shadow: var(--shadow-sm);
+      box-shadow: var(--shadow);
       display: flex;
       flex-direction: column;
+      height: 100%;
     }
 
     .card:hover {
@@ -190,6 +205,7 @@
       align-items: center;
       gap: 8px;
       border-bottom: 1px solid var(--weg-gray-200);
+      flex-shrink: 0;
     }
 
     .card-header::before {
@@ -211,21 +227,21 @@
       margin-left: auto;
     }
 
-    .card-header.esta .status-dot { background: var(--success); }
     .card-header.warn .status-dot { background: var(--warning); }
     .card-header.crit .status-dot { background: var(--danger); }
 
-    .card-image-wrap {
-      flex: 1;
-      min-height: 200px;
+    /* Área do gráfico - 55% do card */
+    .card-graph {
+      flex: 0 0 55%;
+      min-height: 0;
+      padding: 12px;
       background: white;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 12px;
     }
 
-    .card img {
+    .card-graph img {
       max-width: 100%;
       max-height: 100%;
       width: auto;
@@ -233,23 +249,136 @@
       object-fit: contain;
       display: block;
       border-radius: var(--radius-sm);
-      transition: opacity 0.3s ease;
     }
 
-    .card .erro {
-      padding: 32px 24px;
+    .card-graph .erro {
+      padding: 24px 16px;
       text-align: center;
       color: var(--weg-gray-500);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 500;
       display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
     }
 
-    .card .erro i {
-      font-size: 2rem;
+    .card-graph .erro i {
+      font-size: 1.8rem;
       color: var(--warning);
-      margin-bottom: 12px;
-      display: block;
+    }
+
+    /* 📊 Tabela de análises - 45% do card */
+    .card-table {
+      flex: 0 0 45%;
+      min-height: 0;
+      border-top: 2px solid var(--weg-gray-200);
+      background: var(--weg-gray-50);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .table-header {
+      padding: 8px 12px;
+      background: var(--weg-blue);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .table-scroll {
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      padding: 4px;
+    }
+
+    .table-scroll::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .table-scroll::-webkit-scrollbar-track { background: var(--weg-gray-200); border-radius: 3px; }
+    .table-scroll::-webkit-scrollbar-thumb { background: var(--weg-blue); border-radius: 3px; }
+
+    .analise-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.75rem;
+      table-layout: fixed;
+    }
+
+    .analise-table th,
+    .analise-table td {
+      border: 1px solid var(--weg-gray-200);
+      padding: 4px 3px;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 500;
+    }
+
+    .analise-table th {
+      background: var(--weg-blue-light);
+      color: var(--weg-blue-dark);
+      font-weight: 700;
+      font-size: 0.7rem;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .analise-table .label-row th {
+      background: var(--weg-gray-100);
+      color: var(--weg-gray-700);
+      font-weight: 600;
+    }
+
+    .analise-table .value-row td {
+      background: white;
+      color: var(--weg-gray-900);
+      font-weight: 600;
+    }
+
+    .analise-table .ref-row td {
+      background: var(--success-light);
+      color: var(--success);
+      font-weight: 700;
+    }
+
+    /* Navegação do carousel */
+    .carousel-nav {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px 0 32px;
+    }
+
+    .nav-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--weg-gray-300);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .nav-dot:hover {
+      background: var(--weg-blue);
+      transform: scale(1.15);
+    }
+
+    .nav-dot.active {
+      background: var(--weg-blue);
+      border-color: var(--weg-orange);
+      transform: scale(1.25);
+      box-shadow: 0 0 0 3px var(--weg-blue-light);
     }
 
     /* Footer */
@@ -259,7 +388,7 @@
       font-size: 0.85rem;
       color: var(--weg-gray-500);
       border-top: 1px solid var(--weg-gray-200);
-      margin-top: 24px;
+      margin-top: 8px;
       background: white;
       font-weight: 500;
     }
@@ -269,7 +398,7 @@
       font-weight: 600;
     }
 
-    /* Barra de progresso de atualização */
+    /* Barra de progresso */
     .refresh-bar {
       position: fixed;
       top: 0;
@@ -286,7 +415,7 @@
       100% { width: 100%; }
     }
 
-    /* Indicador de status online */
+    /* Online indicator */
     .online-indicator {
       display: inline-flex;
       align-items: center;
@@ -311,47 +440,34 @@
       50% { opacity: 0.6; transform: scale(0.9); }
     }
 
-    /* Responsive */
-    @media (max-width: 1200px) {
-      .grid { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
-      header { padding: 14px 24px; }
-      .secao { padding: 20px 24px 12px; }
+    /* Animações */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    @media (max-width: 768px) {
-      .grid { grid-template-columns: 1fr; }
-      header { flex-direction: column; gap: 12px; text-align: center; }
+    .card { animation: fadeIn 0.4s ease-out forwards; }
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.1s; }
+
+    /* Responsive */
+    @media (max-width: 1400px) {
+      .carousel-slide { grid-template-columns: 1fr; }
+      .card-graph { flex: 0 0 50%; }
+      .card-table { flex: 0 0 50%; }
+    }
+
+    @media (max-width: 900px) {
+      header { padding: 14px 20px; flex-direction: column; gap: 12px; text-align: center; }
       .clock-block { text-align: center; }
+      .secao { padding: 16px 20px 8px; }
       .secao-subtitulo { margin-left: 0; }
     }
 
     /* Utilitários */
     .text-blue { color: var(--weg-blue); }
     .text-success { color: var(--success); }
-    .text-warning { color: var(--warning); }
-    .text-danger { color: var(--danger); }
-    
-    .bg-blue-light { background: var(--weg-blue-light); }
-    .bg-success-light { background: var(--success-light); }
-    .bg-warning-light { background: var(--warning-light); }
-    .bg-danger-light { background: var(--danger-light); }
-
-    /* Animação de entrada */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .card { animation: fadeInUp 0.4s ease-out forwards; }
-    .card:nth-child(1) { animation-delay: 0.05s; }
-    .card:nth-child(2) { animation-delay: 0.1s; }
-    .card:nth-child(3) { animation-delay: 0.15s; }
-    .card:nth-child(4) { animation-delay: 0.2s; }
-    .card:nth-child(5) { animation-delay: 0.25s; }
-    .card:nth-child(6) { animation-delay: 0.3s; }
-    .card:nth-child(7) { animation-delay: 0.35s; }
-    .card:nth-child(8) { animation-delay: 0.4s; }
-    .card:nth-child(9) { animation-delay: 0.45s; }
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
@@ -370,250 +486,265 @@
   </div>
 </header>
 
-<!-- ===================== NANOCERÂMICO ===================== -->
-<div class="secao">
-  <div class="secao-header">
-    <div class="secao-icon">N</div>
-    <div>
-      <div class="secao-titulo">Nanocerâmico</div>
-      <div class="secao-subtitulo">Processo de conversão química • Controle de concentração</div>
-    </div>
-  </div>
-  
-  <div class="grid" id="grid-nano">
-    <div class="card">
-      <div class="card-header nano">1º Desengraxante <span class="status-dot"></span></div>
-      <div class="card-image-wrap">
-        <img src="graficos/graf-des1.png" 
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
-             alt="Gráfico 1º Desengraxante">
-      </div>
-      <div class="erro" style="display:none">
-        <i>⚠</i>
-        Aguardando dados...
+<main>
+  <!-- ===================== NANOCERÂMICO ===================== -->
+  <div class="secao">
+    <div class="secao-header">
+      <div class="secao-icon">N</div>
+      <div>
+        <div class="secao-titulo">Nanocerâmico</div>
+        <div class="secao-subtitulo">Processo de conversão química • Controle de concentração (ml/L)</div>
       </div>
     </div>
-
-    <div class="card">
-      <div class="card-header nano">2º Desengraxante <span class="status-dot"></span></div>
-      <div class="card-image-wrap">
-        <img src="graficos/graf-des2.png" 
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
-             alt="Gráfico 2º Desengraxante">
-      </div>
-      <div class="erro" style="display:none">
-        <i>⚠</i>
-        Aguardando dados...
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header nano">Decapante 1 <span class="status-dot"></span></div>
-      <div class="card-image-wrap">
-        <img src="graficos/graf-dec1.png" 
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
-             alt="Gráfico Decapante 1">
-      </div>
-      <div class="erro" style="display:none">
-        <i>⚠</i>
-        Aguardando dados...
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header nano">Decapante 2 <span class="status-dot"></span></div>
-      <div class="card-image-wrap">
-        <img src="graficos/graf-dec2.png" 
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
-             alt="Gráfico Decapante 2">
-      </div>
-      <div class="erro" style="display:none">
-        <i>⚠</i>
-        Aguardando dados...
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header nano">Nanocerâmico — Concentração <span class="status-dot"></span></div>
-      <div class="card-image-wrap">
-        <img src="graficos/graf-nano.png" 
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
-             alt="Gráfico Nanocerâmico Concentração">
-      </div>
-      <div class="erro" style="display:none">
-        <i>⚠</i>
-        Aguardando dados...
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header nano">Nanocerâmico — Absorção <span class="status-dot"></span></div>
-      <div class="card-image-wrap">
-        <img src="graficos/graf-abso-nano.png" 
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
-             alt="Gráfico Nanocerâmico Absorção">
-      </div>
-      <div class="erro" style="display:none">
-        <i>⚠</i>
-        Aguardando dados...
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header nano">Nanocerâmico — pH <span class="status-dot"></span></div>
-      <div class="card-image-wrap">
-        <img src="graficos/graf-ph-nano.png" 
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
-             alt="Gráfico Nanocerâmico pH">
-      </div>
-      <div class="erro" style="display:none">
-        <i>⚠</i>
-        Aguardando dados...
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header nano">Neutralizador <span class="status-dot"></span></div>
-      <div class="card-image-wrap">
-        <img src="graficos/graf-neu.png" 
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
-             alt="Gráfico Neutralizador">
-      </div>
-      <div class="erro" style="display:none">
-        <i>⚠</i>
-        Aguardando dados...
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header nano">Selante Final <span class="status-dot"></span></div>
-      <div class="card-image-wrap">
-        <img src="graficos/graf-sel.png" 
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
-             alt="Gráfico Selante">
-      </div>
-      <div class="erro" style="display:none">
-        <i>⚠</i>
-        Aguardando dados...
+    
+    <div class="carousel-wrapper">
+      <div class="carousel-track" id="track-nano">
+        <!-- Slides gerados via JS -->
       </div>
     </div>
   </div>
-</div>
 
-<!-- ===================== ESTANHAGEM ===================== -->
-<div class="secao">
-  <div class="secao-header">
-    <div class="secao-icon" style="background:var(--success)">E</div>
-    <div>
-      <div class="secao-titulo">Estanhagem Eletrolítica</div>
-      <div class="secao-subtitulo">Processo de deposição • Controle de parâmetros do banho</div>
-    </div>
-  </div>
-  
-  <div class="grid" id="grid-esta">
-    <div class="card">
-      <div class="card-header esta">Desengraxante Químico <span class="status-dot"></span></div>
-      <div class="card-image-wrap">
-        <img src="graficos/graf-des.png" 
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
-             alt="Gráfico Desengraxante">
-      </div>
-      <div class="erro" style="display:none">
-        <i>⚠</i>
-        Aguardando dados...
+  <!-- ===================== ESTANHAGEM ===================== -->
+  <div class="secao">
+    <div class="secao-header">
+      <div class="secao-icon" style="background:var(--success)">E</div>
+      <div>
+        <div class="secao-titulo">Estanhagem Eletrolítica</div>
+        <div class="secao-subtitulo">Processo de deposição • Controle de parâmetros do banho (ml/L)</div>
       </div>
     </div>
-
-    <div class="card">
-      <div class="card-header esta">Ativação — Tanque 5 <span class="status-dot"></span></div>
-      <div class="card-image-wrap">
-        <img src="graficos/graf-ativacao-tanque-5.png" 
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
-             alt="Gráfico Ativação Tanque 5">
-      </div>
-      <div class="erro" style="display:none">
-        <i>⚠</i>
-        Aguardando dados...
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header esta">Ativação — Tanque 6 <span class="status-dot"></span></div>
-      <div class="card-image-wrap">
-        <img src="graficos/graf-ativacao-tanque-6.png" 
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
-             alt="Gráfico Ativação Tanque 6">
-      </div>
-      <div class="erro" style="display:none">
-        <i>⚠</i>
-        Aguardando dados...
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header esta">Níquel WATT <span class="status-dot"></span></div>
-      <div class="card-image-wrap">
-        <img src="graficos/graf-niquel-watt.png" 
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
-             alt="Gráfico Níquel WATT">
-      </div>
-      <div class="erro" style="display:none">
-        <i>⚠</i>
-        Aguardando dados...
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header esta">Estanhagem A <span class="status-dot"></span></div>
-      <div class="card-image-wrap">
-        <img src="graficos/graf-estanhagem-a.png" 
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
-             alt="Gráfico Estanhagem A">
-      </div>
-      <div class="erro" style="display:none">
-        <i>⚠</i>
-        Aguardando dados...
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header esta">Estanhagem B <span class="status-dot"></span></div>
-      <div class="card-image-wrap">
-        <img src="graficos/graf-estanhagem-b.png" 
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
-             alt="Gráfico Estanhagem B">
-      </div>
-      <div class="erro" style="display:none">
-        <i>⚠</i>
-        Aguardando dados...
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header esta">Selante Protetivo <span class="status-dot"></span></div>
-      <div class="card-image-wrap">
-        <img src="graficos/graf-selante.png" 
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
-             alt="Gráfico Selante Protetivo">
-      </div>
-      <div class="erro" style="display:none">
-        <i>⚠</i>
-        Aguardando dados...
+    
+    <div class="carousel-wrapper">
+      <div class="carousel-track" id="track-esta">
+        <!-- Slides gerados via JS -->
       </div>
     </div>
   </div>
-</div>
+
+  <!-- Navegação unificada -->
+  <div class="carousel-nav" id="carousel-nav">
+    <!-- Dots gerados via JS -->
+  </div>
+</main>
 
 <footer>
   <i class="text-success">●</i> Sistema operacional &nbsp;|&nbsp; 
-  Atualização automática: 60s &nbsp;|&nbsp; 
+  Auto-refresh: 60s &nbsp;|&nbsp; 
   JGS - Controle de Processos &nbsp;|&nbsp; 
   Última carga: <span id="ultima">--:--:--</span>
 </footer>
 
 <script>
   // ============================================
-  // RELÓGIO EM TEMPO REAL
+  // CONFIGURAÇÃO DOS DADOS
+  // ============================================
+  const processos = {
+    nano: {
+      prefix: 'graficos/graf-',
+      items: [
+        { id: 'des1', nome: '1º Desengraxante', file: 'des1', status: 'ok' },
+        { id: 'des2', nome: '2º Desengraxante', file: 'des2', status: 'ok' },
+        { id: 'dec1', nome: 'Decapante 1', file: 'dec1', status: 'warn' },
+        { id: 'dec2', nome: 'Decapante 2', file: 'dec2', status: 'ok' },
+        { id: 'nano', nome: 'Nanocerâmico — Concentração', file: 'nano', status: 'crit' },
+        { id: 'abso', nome: 'Nanocerâmico — Absorção', file: 'abso-nano', status: 'ok' },
+        { id: 'ph', nome: 'Nanocerâmico — pH', file: 'ph-nano', status: 'ok' },
+        { id: 'neu', nome: 'Neutralizador', file: 'neu', status: 'ok' },
+        { id: 'sel', nome: 'Selante Final', file: 'sel', status: 'ok' }
+      ]
+    },
+    esta: {
+      prefix: 'graficos/graf-',
+      items: [
+        { id: 'des', nome: 'Desengraxante Químico', file: 'des', status: 'ok' },
+        { id: 'ativ5', nome: 'Ativação — Tanque 5', file: 'ativacao-tanque-5', status: 'warn' },
+        { id: 'ativ6', nome: 'Ativação — Tanque 6', file: 'ativacao-tanque-6', status: 'ok' },
+        { id: 'niquel', nome: 'Níquel WATT', file: 'niquel-watt', status: 'ok' },
+        { id: 'estaA', nome: 'Estanhagem A', file: 'estanhagem-a', status: 'crit' },
+        { id: 'estaB', nome: 'Estanhagem B', file: 'estanhagem-b', status: 'ok' },
+        { id: 'selante', nome: 'Selante Protetivo', file: 'selante', status: 'ok' }
+      ]
+    }
+  };
+
+  // ============================================
+  // DADOS DE EXEMPLO PARA TABELA (substituir por fetch JSON real)
+  // ============================================
+  function gerarDadosAnalise(seed) {
+    // Gera dados mock para demonstração - em produção, buscar de dados/XXX.json
+    const labels = [];
+    const values = [];
+    const refs = [];
+    
+    for (let i = 1; i <= 24; i++) {
+      labels.push(`${String(i).padStart(2,'0')}h`);
+      // Valores simulados com variação controlada
+      const base = 15 + (seed * 3) % 20;
+      const variation = (Math.sin(i * 0.5 + seed) * 3).toFixed(1);
+      values.push((base + parseFloat(variation)).toFixed(1));
+      // Referência fixa para comparação
+      refs.push((base + 2).toFixed(1));
+    }
+    
+    return { labels, values, refs };
+  }
+
+  // ============================================
+  // GERAR TABELA HTML DAS 24 ANÁLISES
+  // ============================================
+  function gerarTabelaHTML(dados) {
+    const { labels, values, refs } = dados;
+    const COLS = 12; // 12 colunas por linha = 2 linhas para 24 análises
+    
+    let html = `<table class="analise-table">`;
+    
+    // Linha de labels (horários) - dividida em 2 linhas visuais
+    html += `<tr class="label-row">`;
+    for (let i = 0; i < COLS; i++) html += `<th>${labels[i] || ''}</th>`;
+    html += `</tr>`;
+    
+    // Linha de valores reais
+    html += `<tr class="value-row">`;
+    for (let i = 0; i < COLS; i++) html += `<td>${values[i] ?? '---'}</td>`;
+    html += `</tr>`;
+    
+    // Segunda parte dos labels
+    html += `<tr class="label-row">`;
+    for (let i = COLS; i < 24; i++) html += `<th>${labels[i] || ''}</th>`;
+    html += `</tr>`;
+    
+    // Segunda parte dos valores
+    html += `<tr class="value-row">`;
+    for (let i = COLS; i < 24; i++) html += `<td>${values[i] ?? '---'}</td>`;
+    html += `</tr>`;
+    
+    // Linha de referência (opcional)
+    html += `<tr class="ref-row"><th colspan="${COLS}">📈 Referência</th></tr>`;
+    html += `<tr class="ref-row">`;
+    for (let i = 0; i < COLS; i++) html += `<td>${refs[i] ?? '---'}</td>`;
+    html += `</tr>`;
+    html += `<tr class="ref-row">`;
+    for (let i = COLS; i < 24; i++) html += `<td>${refs[i] ?? '---'}</td>`;
+    html += `</tr>`;
+    
+    html += `</table>`;
+    return html;
+  }
+
+  // ============================================
+  // CRIAR CARD COM GRÁFICO + TABELA
+  // ============================================
+  function criarCard(item, processo) {
+    const dados = gerarDadosAnalise(item.id.length);
+    const statusClass = item.status === 'ok' ? '' : item.status === 'warn' ? 'warn' : 'crit';
+    const classeHeader = processo === 'nano' ? 'nano' : 'esta';
+    
+    return `
+      <div class="card">
+        <div class="card-header ${classeHeader} ${statusClass}">
+          ${item.nome}
+          <span class="status-dot"></span>
+        </div>
+        
+        <div class="card-graph">
+          <img src="${processos[processo].prefix}${item.file}.png?t=${Date.now()}" 
+               alt="${item.nome}"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="erro">
+            <i>⚠</i>
+            <div>Aguardando gráfico...</div>
+            <div style="font-size:0.75rem;color:var(--weg-gray-500)">Atualização em 60s</div>
+          </div>
+        </div>
+        
+        <div class="card-table">
+          <div class="table-header">📊 Últimas 24 Análises (ml/L)</div>
+          <div class="table-scroll">
+            ${gerarTabelaHTML(dados)}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // ============================================
+  // MONTAR CAROUSEL: 2 cards por slide
+  // ============================================
+  function montarCarousel(processo, trackId) {
+    const track = document.getElementById(trackId);
+    if (!track) return;
+    
+    const items = processos[processo].items;
+    const slides = [];
+    
+    // Agrupa items em pares (2 por slide)
+    for (let i = 0; i < items.length; i += 2) {
+      const slide = document.createElement('div');
+      slide.className = 'carousel-slide';
+      
+      // Adiciona 1 ou 2 cards no slide
+      slide.innerHTML = criarCard(items[i], processo);
+      if (items[i+1]) {
+        slide.innerHTML += criarCard(items[i+1], processo);
+      }
+      
+      track.appendChild(slide);
+      slides.push(slide);
+    }
+    
+    return slides.length;
+  }
+
+  // ============================================
+  // CONTROLE DO CAROUSEL
+  // ============================================
+  let currentSlide = 0;
+  let totalSlides = 0;
+  let autoRotateTimer;
+
+  function goToSlide(index) {
+    if (index < 0 || index >= totalSlides) return;
+    
+    currentSlide = index;
+    
+    // Move ambas as tracks simultaneamente
+    document.querySelectorAll('.carousel-track').forEach(track => {
+      track.style.transform = `translateX(-${index * 100}%)`;
+    });
+    
+    // Atualiza dots
+    document.querySelectorAll('.nav-dot').forEach((dot, i) => {
+      dot.classList.toggle('active', i === index);
+    });
+  }
+
+  function nextSlide() {
+    goToSlide((currentSlide + 1) % totalSlides);
+  }
+
+  function criarDots(count) {
+    const nav = document.getElementById('carousel-nav');
+    if (!nav) return;
+    
+    nav.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      const dot = document.createElement('div');
+      dot.className = `nav-dot ${i === 0 ? 'active' : ''}`;
+      dot.onclick = () => {
+        goToSlide(i);
+        resetAutoRotate();
+      };
+      nav.appendChild(dot);
+    }
+  }
+
+  function resetAutoRotate() {
+    if (autoRotateTimer) clearInterval(autoRotateTimer);
+    autoRotateTimer = setInterval(nextSlide, 20000); // 20s entre slides
+  }
+
+  // ============================================
+  // RELÓGIO E CONTADOR
   // ============================================
   function atualizarRelogio() {
     const agora = new Date();
@@ -621,136 +752,72 @@
     const m = String(agora.getMinutes()).padStart(2,'0');
     const s = String(agora.getSeconds()).padStart(2,'0');
     
-    document.getElementById('relogio').textContent = h+':'+m+':'+s;
-    document.getElementById('ultima').textContent = h+':'+m+':'+s;
+    document.getElementById('relogio').textContent = `${h}:${m}:${s}`;
+    document.getElementById('ultima').textContent = `${h}:${m}:${s}`;
   }
   setInterval(atualizarRelogio, 1000);
   atualizarRelogio();
 
-  // ============================================
-  // CONTADOR REGRESSIVO DE ATUALIZAÇÃO
-  // ============================================
   let seg = 60;
-  setInterval(function() {
-    seg--;
-    if (seg < 0) seg = 60;
+  setInterval(() => {
+    seg = (seg - 1 + 60) % 60;
     document.getElementById('seg').textContent = seg;
-    
-    // Efeito visual no contador quando está perto de atualizar
-    const contadorEl = document.getElementById('seg');
-    if (seg <= 5) {
-      contadorEl.style.color = 'var(--weg-orange)';
-      contadorEl.style.fontWeight = '700';
-    } else {
-      contadorEl.style.color = 'var(--weg-blue)';
-      contadorEl.style.fontWeight = '700';
-    }
+    const el = document.getElementById('seg');
+    el.style.color = seg <= 5 ? 'var(--weg-orange)' : 'var(--weg-blue)';
+    el.style.fontWeight = '700';
   }, 1000);
 
   // ============================================
-  // RECARREGAMENTO INTELIGENTE DE IMAGENS
-  // Evita "piscar" da página inteira
+  // RECARREGAR IMAGENS (sem refresh da página)
   // ============================================
   function recarregarImagens() {
-    const imgs = document.querySelectorAll('.card-image-wrap img');
-    imgs.forEach(function(img) {
-      const srcBase = img.src.split('?')[0];
-      // Adiciona timestamp para forçar recarga do cache
-      img.src = srcBase + '?t=' + Date.now();
-      
-      // Reset do estado de erro caso a imagem volte a funcionar
-      img.onerror = function() {
-        this.style.display = 'none';
-        if (this.nextElementSibling?.classList.contains('erro')) {
-          this.nextElementSibling.style.display = 'flex';
-        }
-      };
-      img.onload = function() {
-        this.style.display = 'block';
-        if (this.nextElementSibling?.classList.contains('erro')) {
-          this.nextElementSibling.style.display = 'none';
-        }
-      };
+    document.querySelectorAll('.card-graph img').forEach(img => {
+      const src = img.src.split('?')[0];
+      img.src = `${src}?t=${Date.now()}`;
     });
-    
-    // Atualiza indicador de última carga
     atualizarRelogio();
   }
-  
-  // Primeira recarga após 5 segundos (para dar tempo do DOM carregar)
   setTimeout(recarregarImagens, 5000);
-  // Recarga periódica a cada 60 segundos
   setInterval(recarregarImagens, 60000);
 
   // ============================================
-  // PREVENÇÃO DE SLEEP/SCREENSAVER (para TV)
+  // INICIALIZAÇÃO
   // ============================================
-  function keepAwake() {
-    // Tenta usar a Wake Lock API se disponível
+  window.addEventListener('load', () => {
+    // Monta os carousels
+    const slidesNano = montarCarousel('nano', 'track-nano');
+    const slidesEsta = montarCarousel('esta', 'track-esta');
+    
+    // Usa o maior número de slides entre as duas seções
+    totalSlides = Math.max(slidesNano, slidesEsta);
+    
+    // Cria navegação
+    criarDots(totalSlides);
+    
+    // Inicia rotação automática
+    resetAutoRotate();
+    
+    // Previne sleep em TVs compatíveis
     if ('wakeLock' in navigator) {
-      let wakeLock = null;
-      
-      const requestWakeLock = async () => {
+      let lock = null;
+      const request = async () => {
         try {
-          wakeLock = await navigator.wakeLock.request('screen');
-          wakeLock.addEventListener('release', () => {
-            // Tenta reacquirir se for liberado
-            if (document.visibilityState === 'visible') {
-              requestWakeLock();
-            }
-          });
-        } catch (err) {
-          console.log('Wake Lock não suportado:', err);
-        }
+          lock = await navigator.wakeLock.request('screen');
+        } catch(e) { console.log('WakeLock:', e.message); }
       };
-      
+      request();
       document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'visible' && wakeLock === null) {
-          requestWakeLock();
-        }
+        if (document.visibilityState === 'visible' && !lock) request();
       });
-      
-      requestWakeLock();
     }
-  }
-  
-  // Inicia prevenção de sleep após carregamento
-  window.addEventListener('load', keepAwake);
-
-  // ============================================
-  // TRATAMENTO DE ERRO GLOBAL PARA IMAGENS
-  // ============================================
-  document.addEventListener('error', function(e) {
-    if (e.target.tagName === 'IMG') {
-      e.target.style.display = 'none';
-      const erroEl = e.target.nextElementSibling;
-      if (erroEl && erroEl.classList.contains('erro')) {
-        erroEl.style.display = 'flex';
-        erroEl.style.flexDirection = 'column';
-        erroEl.style.alignItems = 'center';
-        erroEl.style.justifyContent = 'center';
-      }
-    }
-  }, true);
-
-  // ============================================
-  // EFEITO HOVER NOS CARDS (feedback visual)
-  // ============================================
-  document.querySelectorAll('.card').forEach(card => {
-    card.addEventListener('mouseenter', function() {
-      this.style.zIndex = '10';
-    });
-    card.addEventListener('mouseleave', function() {
-      this.style.zIndex = '1';
-    });
+    
+    console.log('✅ Dashboard JGS iniciado • Tema White WEG • 2 cards por vez');
   });
 
-  // ============================================
-  // LOG DE CARREGAMENTO (para debug)
-  // ============================================
-  console.log('✅ Dashboard JGS carregado - Tema White WEG');
-  console.log('🔄 Atualização automática: 60 segundos');
-  console.log('📊 Cards:', document.querySelectorAll('.card').length);
+  // Previne teclas de refresh acidental em TV
+  document.addEventListener('keydown', e => {
+    if (['F5','F11','F12'].includes(e.key)) e.preventDefault();
+  });
 </script>
 
 </body>
