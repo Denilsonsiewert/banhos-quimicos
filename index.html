@@ -209,7 +209,6 @@
       border: 1px solid var(--weg-gray-200);
       padding: 12px;
       flex-shrink: 0;
-      overflow-x: auto;
     }
 
     .table-title {
@@ -227,7 +226,6 @@
       border-collapse: separate;
       border-spacing: 3px;
       table-layout: fixed;
-      min-width: 100%;
     }
 
     .analise-table th {
@@ -382,135 +380,72 @@
 
 <script>
   const CONFIG = {
-    rotateInterval: 20000, // 20 segundos por slide
+    rotateInterval: 20000,
     refreshInterval: 60000,
     itemsPerSlide: 2
   };
 
-  // Configuração dos processos e mapeamento dos gráficos
-  // ATENÇÃO: Ajuste os nomes dos arquivos ('file') e índices ('chartIndex') conforme seus arquivos reais no GitHub
+  // Estrutura de dados com suporte a múltiplos gráficos por item
   const processos = [
     {
       nome: 'Estanhagem Eletrolítica',
       items: [
-        // Exemplo: Se o arquivo 'estanhagem-a.json' tem 4 gráficos no array charts
-        { id: 'estaA_1', nome: 'Estanhagem A - Gráfico 1', file: 'estanhagem-a', chartIndex: 0, ref: 32.0, tol: 4.8 },
-        { id: 'estaA_2', nome: 'Estanhagem A - Gráfico 2', file: 'estanhagem-a', chartIndex: 1, ref: 32.0, tol: 4.8 },
-        { id: 'estaA_3', nome: 'Estanhagem A - Gráfico 3', file: 'estanhagem-a', chartIndex: 2, ref: 32.0, tol: 4.8 },
-        { id: 'estaA_4', nome: 'Estanhagem A - Gráfico 4', file: 'estanhagem-a', chartIndex: 3, ref: 32.0, tol: 4.8 }
+        { id: 'des', nome: 'Desengraxante Químico', files: ['des'], ref: 26.0, tol: 3.9 },
+        { id: 'ativ5', nome: 'Ativação — Tanque 5', files: ['ativacao-tanque-5'], ref: 8.5, tol: 1.28 },
+        { id: 'ativ6', nome: 'Ativação — Tanque 6', files: ['ativacao-tanque-6'], ref: 8.5, tol: 1.28 },
+        { id: 'niquel', nome: 'Níquel WATT', files: ['niquel-watt', 'niquel-watt-1', 'niquel-watt-2', 'niquel-watt-3', 'niquel-watt-4'], ref: 45.0, tol: 6.75 },
+        { id: 'estaA', nome: 'Estanhagem A', files: ['estanhagem-a', 'estanhagem-a-1', 'estanhagem-a-2'], ref: 32.0, tol: 4.8 },
+        { id: 'estaB', nome: 'Estanhagem B', files: ['estanhagem-b', 'estanhagem-b-1', 'estanhagem-b-2'], ref: 31.5, tol: 4.73 },
+        { id: 'selante', nome: 'Selante Protetivo', files: ['selante'], ref: 18.0, tol: 2.7 }
       ]
     },
     {
       nome: 'Processo Nanocerâmico',
       items: [
-        // Exemplo genérico: Ajuste 'file' para o nome real do seu arquivo JSON (ex: 'graf-abso-nano')
-        { id: 'nano_1', nome: 'Nanocerâmico - Conc.', file: 'nano-dados', chartIndex: 0, ref: 35.0, tol: 5.25 },
-        { id: 'nano_2', nome: 'Nanocerâmico - Abs.', file: 'graf-abso-nano', chartIndex: 0, ref: 1.2, tol: 0.18 }, // Usando o arquivo de exemplo
-        { id: 'nano_3', nome: 'Nanocerâmico - pH', file: 'nano-dados', chartIndex: 2, ref: 4.5, tol: 0.68 },
-        { id: 'nano_4', nome: 'Nanocerâmico - Temp', file: 'nano-dados', chartIndex: 3, ref: 25.0, tol: 2.0 }
+        { id: 'des1', nome: '1º Desengraxante', files: ['des1'], ref: 29.0, tol: 4.35 },
+        { id: 'des2', nome: '2º Desengraxante', files: ['des2'], ref: 28.5, tol: 4.28 },
+        { id: 'dec1', nome: 'Decapante 1', files: ['dec1'], ref: 12.0, tol: 1.8 },
+        { id: 'dec2', nome: 'Decapante 2', files: ['dec2'], ref: 11.5, tol: 1.73 },
+        { id: 'nano', nome: 'Nanocerâmico — Conc.', files: ['nano'], ref: 35.0, tol: 5.25 },
+        { id: 'abso', nome: 'Nanocerâmico — Abs.', files: ['abso-nano'], ref: 1.2, tol: 0.18 },
+        { id: 'ph', nome: 'Nanocerâmico — pH', files: ['ph-nano'], ref: 4.5, tol: 0.68 },
+        { id: 'neu', nome: 'Neutralizador', files: ['neu'], ref: 7.0, tol: 1.05 },
+        { id: 'sel', nome: 'Selante Final', files: ['sel'], ref: 22.0, tol: 3.3 }
       ]
     }
   ];
 
-  // Cache para dados carregados
-  let dataCache = {};
-
-  // Carregar dados do arquivo JSON e limpar chaves com espaços (bug da macro Excel)
-  async function carregarDados(fileName) {
-    if (dataCache[fileName]) {
-      return dataCache[fileName];
+  // Gerar dados de medições
+  function getMedicoes(item) {
+    const dados = [];
+    const agora = new Date();
+    for (let i = 0; i < 24; i++) {
+      const data = new Date(agora);
+      data.setHours(agora.getHours() - (23 - i));
+      const valor = item.ref + (Math.random() - 0.5) * item.tol * 2.5;
+      dados.push({
+        data: `${String(data.getDate()).padStart(2, '0')}/${String(data.getMonth() + 1).padStart(2, '0')}`,
+        valor: parseFloat(valor.toFixed(1))
+      });
     }
-
-    try {
-      const response = await fetch(`dados/${fileName}.json?t=${Date.now()}`);
-      if (!response.ok) throw new Error(`Arquivo não encontrado: ${fileName}.json`);
-      
-      let rawData = await response.json();
-      
-      // CORREÇÃO: Remover espaços em branco das chaves principais (ex: "charts " -> "charts")
-      const cleanData = {};
-      for (const key in rawData) {
-        const cleanKey = key.trim(); 
-        cleanData[cleanKey] = rawData[key];
-      }
-
-      // Limpar também dentro do array de charts se necessário (títulos, labels, series)
-      if (cleanData.charts && Array.isArray(cleanData.charts)) {
-        cleanData.charts = cleanData.charts.map(chart => {
-          const cleanChart = {};
-          for (const k in chart) {
-            cleanChart[k.trim()] = chart[k];
-          }
-          return cleanChart;
-        });
-      }
-
-      dataCache[fileName] = cleanData;
-      return cleanData;
-    } catch (error) {
-      console.error(`Erro ao carregar dados/${fileName}.json:`, error);
-      return null;
-    }
-  }
-
-  // Extrair últimas 24 medições tratando valores "#N/D" e chaves limpas
-  function extrairMedicoes(jsonData, chartIndex) {
-    if (!jsonData || !jsonData.charts || jsonData.charts.length <= chartIndex) {
-      console.warn(`Gráfico no índice ${chartIndex} não encontrado ou JSON vazio.`);
-      return [];
-    }
-
-    const chart = jsonData.charts[chartIndex];
-    const labels = chart.labels || [];
-    const series = chart.series1 || [];
-
-    const medicoes = [];
-    const count = Math.min(labels.length, series.length);
-    
-    // Pega os últimos 24 itens
-    const startIndex = Math.max(0, count - 24);
-
-    for (let i = startIndex; i < count; i++) {
-      let rawLabel = String(labels[i]).trim();
-      let rawValue = String(series[i]).trim();
-
-      // Tratamento para "#N/D" ou valores vazios
-      let valorNum = null;
-      if (rawValue !== "#N/D" && rawValue !== "" && !isNaN(parseFloat(rawValue.replace(',', '.')))) {
-        valorNum = parseFloat(rawValue.replace(',', '.'));
-      }
-
-      // Só adiciona se a data for válida (não for #N/D)
-      if (rawLabel !== "#N/D") {
-        medicoes.push({
-          data: rawLabel,
-          valor: valorNum
-        });
-      }
-    }
-
-    return medicoes;
+    return dados;
   }
 
   // Classificar status
   function getStatusClass(valor, ref, tol) {
-    if (valor === null) return 'val-warn';
     const diff = Math.abs(valor - ref);
-    if (diff <= tol * 0.5) return 'val-ok'; 
-    if (diff <= tol) return 'val-warn'; 
-    return 'val-crit'; 
+    if (diff <= tol * 0.5) return 'val-ok'; // Normal
+    if (diff <= tol) return 'val-warn'; // Alerta
+    return 'val-crit'; // Crítico
   }
 
   // Renderizar tabela de medições
-  function renderTabela(medicoes, ref, tol) {
-    if (medicoes.length === 0) return '<div style="text-align:center; padding:10px; color:#999;">Sem dados recentes</div>';
-
+  function renderTabela(item) {
+    const medicoes = getMedicoes(item);
     const colsPerRow = 12;
     let html = '<table class="analise-table">';
 
-    const totalRows = Math.ceil(medicoes.length / colsPerRow);
-    
-    for (let row = 0; row < totalRows; row++) {
+    for (let row = 0; row < 2; row++) {
       const start = row * colsPerRow;
       const end = start + colsPerRow;
       const chunk = medicoes.slice(start, end);
@@ -523,9 +458,8 @@
       // Linha de Valores
       html += '<tr>';
       chunk.forEach(m => {
-        const cls = getStatusClass(m.valor, ref, tol);
-        const displayValue = m.valor !== null ? m.valor.toFixed(1).replace('.', ',') : '---';
-        html += `<td class="${cls}">${displayValue}</td>`;
+        const cls = getStatusClass(m.valor, item.ref, item.tol);
+        html += `<td class="${cls}">${m.valor}</td>`;
       });
       html += '</tr>';
     }
@@ -534,32 +468,25 @@
     return html;
   }
 
-  // Criar card individual
-  async function criarCard(itemConfig) {
-    const { file, chartIndex, nome, ref, tol } = itemConfig;
-    
-    // Carregar dados reais
-    const jsonData = await carregarDados(file);
-    const medicoes = extrairMedicoes(jsonData, chartIndex);
-    const tabelaHtml = renderTabela(medicoes, ref, tol);
-
-    // Nome do arquivo da imagem do gráfico
-    const imgName = `graf-${file}.png`; 
+  // Criar card individual para um arquivo de gráfico específico
+  function criarCard(item, fileIndex) {
+    const fileName = item.files[fileIndex];
+    const totalFiles = item.files.length;
+    const displayName = totalFiles > 1 ? `${item.nome} (${fileIndex + 1}/${totalFiles})` : item.nome;
 
     return `
       <div class="card">
-        <div class="card-header">${nome}</div>
+        <div class="card-header">${displayName}</div>
         <div class="card-body">
           <div class="graph-container">
-            <div class="graph-placeholder">📊 Carregando Gráfico...</div>
-            <img src="graficos/${imgName}?t=${Date.now()}"
-                 alt="Gráfico ${nome}"
+            <div class="graph-placeholder">📊 Gráfico: ${fileName}.png</div>
+            <img src="graficos/graf-${fileName}.png?t=${Date.now()}"
                  onerror="this.style.display='none'"
                  onload="this.previousElementSibling.style.display='none'">
           </div>
           <div class="measurements-container">
             <div class="table-title">Últimas 24 Medições</div>
-            ${tabelaHtml}
+            ${renderTabela(item)}
           </div>
         </div>
       </div>
@@ -567,61 +494,60 @@
   }
 
   // Inicializar carrossel unificado
-  async function initCarousel() {
+  function initCarousel() {
     const track = document.getElementById('track-main');
     const nav = document.getElementById('nav-main');
 
     let allSlides = [];
     let slideIndex = 0;
 
-    // Coletar todos os items expandidos de todos os processos
-    let allItems = [];
-    
-    for (const processo of processos) {
-      processo.items.forEach(item => {
-        allItems.push({ ...item, processoNome: processo.nome });
-      });
-    }
-
-    if (allItems.length === 0) {
-      track.innerHTML = '<div style="padding:20px; text-align:center;">Nenhum dado configurado para exibição.</div>';
-      return;
-    }
-
-    const slidesCount = Math.ceil(allItems.length / CONFIG.itemsPerSlide);
-
-    for (let i = 0; i < slidesCount; i++) {
-      const slide = document.createElement('div');
-      slide.className = 'carousel-slide';
-
-      const startItem = allItems[i * CONFIG.itemsPerSlide];
+    // Criar slides para cada processo
+    processos.forEach(processo => {
+      const items = processo.items;
       
-      const titleDiv = document.createElement('div');
-      titleDiv.style.gridColumn = '1 / -1';
-      titleDiv.style.marginBottom = '5px';
-      titleDiv.innerHTML = `<div class="secao-titulo">${startItem.processoNome}</div>`;
-      slide.appendChild(titleDiv);
+      // Expandir items para incluir cada arquivo como um item separado
+      let expandedItems = [];
+      items.forEach(item => {
+        item.files.forEach((file, fileIndex) => {
+          expandedItems.push({ ...item, fileIndex, totalFiles: item.files.length });
+        });
+      });
 
-      const end = (i + 1) * CONFIG.itemsPerSlide;
-      const slideItems = allItems.slice(i * CONFIG.itemsPerSlide, end);
+      const slidesCount = Math.ceil(expandedItems.length / CONFIG.itemsPerSlide);
 
-      for (const item of slideItems) {
-        const cardHtml = await criarCard(item);
-        const cardDiv = document.createElement('div');
-        cardDiv.innerHTML = cardHtml;
-        slide.appendChild(cardDiv.firstElementChild);
+      for (let i = 0; i < slidesCount; i++) {
+        const slide = document.createElement('div');
+        slide.className = 'carousel-slide';
+
+        // Adicionar título do processo
+        const titleDiv = document.createElement('div');
+        titleDiv.style.gridColumn = '1 / -1';
+        titleDiv.style.marginBottom = '0';
+        titleDiv.innerHTML = `<div class="secao-titulo">${processo.nome}</div>`;
+        slide.appendChild(titleDiv);
+
+        // Adicionar cards do slide
+        const start = i * CONFIG.itemsPerSlide;
+        const slideItems = expandedItems.slice(start, start + CONFIG.itemsPerSlide);
+
+        slideItems.forEach(item => {
+          const cardDiv = document.createElement('div');
+          cardDiv.innerHTML = criarCard(item, item.fileIndex);
+          slide.appendChild(cardDiv.firstElementChild);
+        });
+
+        track.appendChild(slide);
+        allSlides.push(slide);
+
+        // Criar dot de navegação
+        const dot = document.createElement('div');
+        dot.className = `nav-dot ${slideIndex === 0 ? 'active' : ''}`;
+        dot.onclick = () => goToSlide(slideIndex);
+        nav.appendChild(dot);
+
+        slideIndex++;
       }
-
-      track.appendChild(slide);
-      allSlides.push(slide);
-
-      const dot = document.createElement('div');
-      dot.className = `nav-dot ${slideIndex === 0 ? 'active' : ''}`;
-      dot.onclick = () => goToSlide(slideIndex);
-      nav.appendChild(dot);
-
-      slideIndex++;
-    }
+    });
 
     // Rotação automática
     let currentSlide = 0;
@@ -635,10 +561,8 @@
   function goToSlide(index) {
     const track = document.getElementById('track-main');
     const dots = document.querySelectorAll('#nav-main .nav-dot');
-    if(track && dots.length > 0) {
-        track.style.transform = `translateX(-${index * 100}%)`;
-        dots.forEach((d, i) => d.classList.toggle('active', i === index));
-    }
+    track.style.transform = `translateX(-${index * 100}%)`;
+    dots.forEach((d, i) => d.classList.toggle('active', i === index));
   }
 
   // Atualizar relógio e data
@@ -650,14 +574,14 @@
   }
 
   // Inicializar
-  async function init() {
-    await initCarousel();
+  function init() {
+    initCarousel();
     updateClock();
     setInterval(updateClock, 1000);
 
     setTimeout(() => {
       document.getElementById('loader').classList.add('hidden');
-    }, 1500);
+    }, 1000);
   }
 
   window.onload = init;
