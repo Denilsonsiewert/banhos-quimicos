@@ -26,11 +26,7 @@
             --danger: #dc3545;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         html, body {
             height: 100vh;
@@ -53,11 +49,11 @@
             100% { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); }
         }
 
-        /* Header - Sempre visível e grande */
+        /* Header */
         header {
             background: rgba(26, 42, 58, 0.95);
             backdrop-filter: blur(20px);
-            padding: 24px 40px;
+            padding: 20px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -66,23 +62,25 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            height: 90px;
         }
 
         .logo {
             font-weight: 800;
-            font-size: 2.4rem;
+            font-size: 2rem;
             letter-spacing: -0.03em;
             background: linear-gradient(135deg, var(--weg-orange), var(--weg-orange-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 4px 12px rgba(230, 126, 34, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .logo i { font-size: 2.8rem; margin-right: 12px; }
+        .logo i { font-size: 2.2rem; }
 
         .title-block h1 {
-            font-size: 2rem;
+            font-size: 1.6rem;
             font-weight: 700;
             letter-spacing: -0.02em;
             text-shadow: 0 2px 8px rgba(0,0,0,0.5);
@@ -91,34 +89,35 @@
         .info-pill {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(20px);
-            padding: 16px 28px;
-            border-radius: 40px;
+            padding: 12px 24px;
+            border-radius: 30px;
             font-family: 'SF Mono', Monaco, monospace;
             font-weight: 600;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             border: 2px solid rgba(255, 255, 255, 0.2);
-            min-width: 280px;
+            min-width: 240px;
             text-align: center;
+            line-height: 1.3;
         }
 
-        /* Main - Fullscreen */
+        /* Main */
         main {
             flex: 1;
-            padding: 40px;
+            padding: 24px 40px;
             display: flex;
             flex-direction: column;
+            gap: 20px;
             overflow: hidden;
         }
 
         .section-badge {
             background: linear-gradient(135deg, var(--weg-blue), var(--weg-blue-light));
             color: var(--weg-white);
-            padding: 20px 32px;
-            font-weight: 800;
-            font-size: 1.6rem;
+            padding: 14px 28px;
+            font-weight: 700;
+            font-size: 1.3rem;
             width: fit-content;
-            border-radius: 20px;
-            margin-bottom: 32px;
+            border-radius: 16px;
             box-shadow: var(--weg-shadow);
             letter-spacing: 1px;
             text-transform: uppercase;
@@ -126,275 +125,342 @@
         }
 
         @keyframes badgeFloat {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
         }
 
         .dashboard-scroll {
             flex: 1;
             overflow: hidden;
+            min-height: 0;
         }
 
-        /* Card Fullscreen TV */
+        /* Card */
         .card {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(30px);
-            border-radius: 32px;
+            border-radius: 24px;
             box-shadow: var(--weg-shadow);
             height: 100%;
             border: 2px solid rgba(255, 255, 255, 0.2);
             overflow: hidden;
-            animation: cardEntry 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex;
+            flex-direction: column;
+            animation: cardEntry 0.8s ease-out;
         }
 
         @keyframes cardEntry {
-            0% { opacity: 0; transform: scale(0.95) translateY(50px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 40px 48px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(248, 249, 250, 0.8));
-            border-bottom: 4px solid var(--weg-blue);
+            padding: 24px 36px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,249,250,0.9));
+            border-bottom: 3px solid var(--weg-blue);
+            flex-shrink: 0;
         }
 
         .card-title {
-            font-size: 2.8rem;
+            font-size: 2rem;
             font-weight: 800;
             color: var(--weg-blue);
             letter-spacing: -0.02em;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            max-width: 70%;
+            max-width: 65%;
+            line-height: 1.2;
         }
 
         .status {
             font-weight: 700;
-            font-size: 1.4rem;
-            padding: 16px 32px;
-            border-radius: 40px;
+            font-size: 1.1rem;
+            padding: 12px 24px;
+            border-radius: 30px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-            animation: statusPulse 2s infinite;
-        }
-
-        @keyframes statusPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            gap: 10px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
         }
 
         .status-ok { background: linear-gradient(135deg, #d4edda, #c3e6cb); color: var(--success); }
         .status-warn { background: linear-gradient(135deg, #fff3cd, #ffeaa7); color: #856404; }
         .status-crit { background: linear-gradient(135deg, #f8d7da, #f5c6cb); color: var(--danger); }
 
-        /* Charts Grid TV - Auto-adaptativo */
-        .charts-grid {
-            display: grid;
-            height: calc(100% - 160px);
-            grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
-            grid-template-rows: 1fr;
-            gap: 0;
-            padding: 0;
+        /* 🎯 LAYOUT PROPORCIONAL: 60% gráfico / 40% tabela */
+        .content-split {
+            display: flex;
+            flex-direction: column;
+            height: calc(100% - 120px);
+            overflow: hidden;
         }
 
-        /* Auto-adaptador: 1 gráfico = full width, 2+ = 50/50 */
-        .charts-grid:has(.chart-card:nth-child(1):only-child) {
+        .charts-area {
+            flex: 0 0 58%; /* 58% para gráficos */
+            min-height: 0;
+            padding: 16px 24px 8px;
+            overflow: hidden;
+        }
+
+        .table-area {
+            flex: 0 0 42%; /* 42% para tabela */
+            min-height: 0;
+            padding: 8px 24px 20px;
+            overflow: hidden;
+            border-top: 2px solid var(--weg-gray-light);
+            background: rgba(248, 249, 250, 0.6);
+        }
+
+        /* Grid de gráficos - adaptável */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(48%, 1fr));
+            gap: 12px;
+            height: 100%;
+        }
+
+        .charts-grid:has(.chart-card:only-child) {
             grid-template-columns: 1fr;
         }
 
         .chart-card {
-            background: transparent;
-            border-radius: 0;
-            border: none;
-            box-shadow: none;
+            background: white;
+            border-radius: 16px;
+            border: 1px solid var(--weg-gray-light);
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            position: relative;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
         }
 
         .chart-title {
-            background: rgba(0, 63, 111, 0.9);
-            color: var(--weg-white);
-            padding: 24px 32px;
-            font-weight: 700;
-            font-size: 1.4rem;
+            background: linear-gradient(135deg, var(--weg-blue), var(--weg-blue-light));
+            color: white;
+            padding: 10px 16px;
+            font-weight: 600;
+            font-size: 0.95rem;
             text-align: center;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
-            border-bottom: none;
+            flex-shrink: 0;
         }
 
         .chart-container {
             flex: 1;
-            position: relative;
-            background: rgba(255, 255, 255, 0.95);
+            min-height: 0;
+            padding: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            background: var(--weg-gray);
         }
 
         .chart-img {
-            width: 100%;
-            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
             object-fit: contain;
-            background: linear-gradient(135deg, #f8f9fa, #ffffff);
-            opacity: 0;
-            animation: fadeIn 1.5s ease-in-out forwards;
+            display: block;
+            transition: opacity 0.3s ease;
         }
 
-        .chart-img[src] { opacity: 1; }
+        .chart-img.loading { opacity: 0; }
+        .chart-img.loaded { opacity: 1; }
 
-        @keyframes fadeIn {
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        /* Table Fullscreen */
+        /* Tabela otimizada para TV */
         .table-wrap {
             height: 100%;
-            overflow: hidden;
-            padding: 0;
+            overflow: auto;
+            border-radius: 12px;
+            background: white;
+            border: 1px solid var(--weg-gray-light);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
+
+        .table-wrap::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .table-wrap::-webkit-scrollbar-track { background: var(--weg-gray-light); border-radius: 4px; }
+        .table-wrap::-webkit-scrollbar-thumb { background: var(--weg-blue); border-radius: 4px; }
 
         .custom-table {
             width: 100%;
-            height: 100%;
             border-collapse: collapse;
-            font-size: 1.1rem;
-            border-radius: 0;
+            font-size: 0.9rem;
+            table-layout: fixed;
         }
 
         .custom-table th,
         .custom-table td {
-            padding: 16px 12px;
+            padding: 8px 4px;
             text-align: center;
-            border-right: 1px solid rgba(0, 63, 111, 0.15);
-            border-bottom: 1px solid rgba(0, 63, 111, 0.15);
-            vertical-align: middle;
+            border-right: 1px solid var(--weg-gray-light);
+            border-bottom: 1px solid var(--weg-gray-light);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .custom-table th {
             background: linear-gradient(135deg, var(--weg-blue), var(--weg-blue-light));
-            color: var(--weg-white);
+            color: white;
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.3px;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+
+        .table-main-title {
+            font-size: 0.95rem !important;
+            padding: 10px !important;
+            background: var(--weg-dark) !important;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 0.5px;
             position: sticky;
             top: 0;
             z-index: 10;
         }
 
-        /* Navigation - Auto, sem interação */
+        .custom-table tr:nth-child(even) td { background: var(--weg-gray); }
+        .custom-table td { font-weight: 500; color: var(--weg-dark); }
+        
+        .ref-row td {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9) !important;
+            color: var(--success) !important;
+            font-weight: 700 !important;
+        }
+
+        /* Navigation */
         .nav-dots {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            padding: 24px;
+            gap: 16px;
+            padding: 16px 24px;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(20px);
-            border-radius: 50px;
+            border-radius: 40px;
             width: fit-content;
-            margin: 32px auto 0;
+            margin: 0 auto;
             box-shadow: var(--weg-shadow);
+            flex-shrink: 0;
         }
 
         .dot {
-            width: 20px;
-            height: 20px;
-            background: rgba(255, 255, 255, 0.3);
+            width: 16px;
+            height: 16px;
+            background: rgba(255, 255, 255, 0.4);
             border-radius: 50%;
-            transition: all 0.5s ease;
-            cursor: default; /* Remove pointer */
+            transition: all 0.4s ease;
+            cursor: default;
         }
 
         .dot.active {
             background: var(--weg-orange);
-            transform: scale(1.6);
+            transform: scale(1.5);
             box-shadow: var(--weg-glow);
-            animation: dotPulse 1.5s infinite;
-        }
-
-        @keyframes dotPulse {
-            0%, 100% { box-shadow: var(--weg-glow); }
-            50% { box-shadow: 0 0 40px rgba(230, 126, 34, 0.8); }
         }
 
         /* Footer */
         footer {
             background: rgba(26, 42, 58, 0.95);
             backdrop-filter: blur(20px);
-            padding: 24px 40px;
+            padding: 16px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: 600;
             border-top: 2px solid rgba(255, 255, 255, 0.1);
+            flex-shrink: 0;
+            height: 56px;
         }
 
         .pulse {
             display: inline-block;
-            width: 16px;
-            height: 16px;
+            width: 12px;
+            height: 12px;
             background: var(--success);
             border-radius: 50%;
             animation: pulse 2s infinite;
-            margin-right: 12px;
-            box-shadow: 0 0 20px rgba(40, 167, 69, 0.8);
+            margin-right: 10px;
         }
 
         @keyframes pulse {
-            0% { opacity: 0.4; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.3); }
-            100% { opacity: 0.4; transform: scale(1); }
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.4); }
         }
 
-        /* Loader TV */
+        /* Loader */
         .loader {
             height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 24px;
-            font-size: 1.6rem;
+            gap: 16px;
+            font-size: 1.1rem;
             color: var(--weg-blue);
-            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(248,249,250,0.8));
+            background: var(--weg-gray);
+            border-radius: 12px;
         }
 
         .loader i {
-            font-size: 4rem;
+            font-size: 2.5rem;
             color: var(--weg-orange);
-            animation: spin 2s linear infinite;
+            animation: spin 1.5s linear infinite;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Loader para tabela */
+        .table-loader {
+            padding: 20px;
+            text-align: center;
+            color: var(--weg-gray-dark);
+            font-weight: 500;
         }
 
-        /* TV Fullscreen Overrides */
-        @media screen and (min-width: 1920px) {
-            .card-title { font-size: 3.2rem; }
-            .section-badge { font-size: 1.8rem; }
+        /* Responsive para TVs menores */
+        @media screen and (max-height: 900px) {
+            .content-split { height: calc(100% - 100px); }
+            .charts-area { flex: 0 0 55%; }
+            .table-area { flex: 0 0 45%; }
+            .card-title { font-size: 1.7rem; }
+            .custom-table { font-size: 0.8rem; }
+            .custom-table th, .custom-table td { padding: 6px 3px; }
         }
 
-        /* Kiosk Mode - Remove todos os cursores */
+        @media screen and (max-width: 1600px) {
+            .charts-grid { grid-template-columns: 1fr; }
+            header { padding: 16px 28px; height: 80px; }
+            main { padding: 20px 28px; }
+            .card-title { font-size: 1.6rem; max-width: 60%; }
+        }
+
+        /* Kiosk Mode */
         * { cursor: none !important; }
-        button, [onclick] { pointer-events: none !important; }
+        [onclick], button { pointer-events: none !important; }
+
+        /* Utilitários de animação */
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .slide-up { animation: slideUp 0.5s ease-out forwards; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
     <header>
         <div class="logo">
             <i class="fas fa-flask"></i>
-            WEG<span>BANHOS</span>
+            WEG<span style="font-weight:400">BANHOS</span>
         </div>
         <div class="title-block">
             <h1>Monitoramento Analítico</h1>
@@ -407,18 +473,17 @@
 
     <main>
         <div class="section-badge" id="current-section">Iniciando...</div>
-        <div class="dashboard-scroll" id="dashboard-content"></div>
+        
+        <div class="dashboard-scroll" id="dashboard-content">
+            <!-- Conteúdo dinâmico -->
+        </div>
+        
         <div class="nav-dots" id="nav-dots"></div>
     </main>
 
     <footer>
-        <div>
-            <span class="pulse"></span> 
-            SISTEMA ONLINE
-        </div>
-        <div>
-            Última sincronia: <span id="last-sync">--:--:--</span>
-        </div>
+        <div><span class="pulse"></span>SISTEMA ONLINE</div>
+        <div>Última sincronia: <span id="last-sync">--:--:--</span></div>
     </footer>
 
     <script>
@@ -461,109 +526,77 @@
         }
 
         function generateTableHTML(labels, series1, series2) {
-            if (!labels || !labels.length) return '';
+            if (!labels?.length) return '<div class="table-loader"><i class="fas fa-info-circle"></i> Sem dados disponíveis</div>';
             
-            const row1Labels = labels.slice(0, COLS_PER_ROW);
-            const row1Values = series1.slice(0, COLS_PER_ROW);
-            const row2Labels = labels.slice(COLS_PER_ROW, COLS_PER_ROW * 2);
-            const row2Values = series1.slice(COLS_PER_ROW, COLS_PER_ROW * 2);
+            const r1L = labels.slice(0, COLS_PER_ROW), r1V = series1.slice(0, COLS_PER_ROW);
+            const r2L = labels.slice(COLS_PER_ROW, COLS_PER_ROW*2), r2V = series1.slice(COLS_PER_ROW, COLS_PER_ROW*2);
 
-            let html = `
-                <div class="table-wrap">
-                    <table class="custom-table">
-                        <thead>
-                            <tr><th colspan="${COLS_PER_ROW}">📊 REGISTRO ÚLTIMAS 24 ANÁLISES</th></tr>
-                            <tr>${row1Labels.map(l => `<th>${l}</th>`).join('')}</tr>
-                        </thead>
-                        <tbody>
-                            <tr>${row1Values.map(v => `<td>${v ?? '---'}</td>`).join('')}</tr>
-                            <tr>${row2Labels.map(l => `<th>${l}</th>`).join('')}</tr>
-                            <tr>${row2Values.map(v => `<td>${v ?? '---'}</td>`).join('')}</tr>
-            `;
+            let html = `<div class="table-wrap"><table class="custom-table"><thead>
+                <tr><th class="table-main-title" colspan="${COLS_PER_ROW}">📊 Últimas 24 Análises (ml/L)</th></tr>
+                <tr>${r1L.map(l=>`<th>${l}</th>`).join('')}</tr></thead><tbody>
+                <tr class="fade-in">${r1V.map(v=>`<td>${v??'---'}</td>`).join('')}</tr>
+                <tr>${r2L.map(l=>`<th>${l}</th>`).join('')}</tr>
+                <tr class="fade-in" style="animation-delay:0.1s">${r2V.map(v=>`<td>${v??'---'}</td>`).join('')}</tr>`;
 
-            if (series2) {
-                const row2Series1 = series2.slice(0, COLS_PER_ROW);
-                const row2Series2 = series2.slice(COLS_PER_ROW, COLS_PER_ROW * 2);
-                html += `
-                            <tr style="background: linear-gradient(90deg, #e3f2fd, #bbdefb);">
-                                <th colspan="${COLS_PER_ROW}" style="font-size: 1.2rem;">
-                                    <i class="fas fa-chart-line"></i> VALORES DE REFERÊNCIA
-                                </th>
-                            </tr>
-                            <tr style="background: #e8f5e8;">
-                                ${row2Series1.map(v => `<td><strong style="color: var(--success); font-size: 1.1rem;">${v ?? '---'}</strong></td>`).join('')}
-                            </tr>
-                            <tr style="background: #e8f5e8;">
-                                ${row2Series2.map(v => `<td><strong style="color: var(--success); font-size: 1.1rem;">${v ?? '---'}</strong></td>`).join('')}
-                            </tr>
-                `;
+            if (series2?.length) {
+                const s1 = series2.slice(0, COLS_PER_ROW), s2 = series2.slice(COLS_PER_ROW, COLS_PER_ROW*2);
+                html += `<tr class="ref-row"><th colspan="${COLS_PER_ROW}">📈 Valores de Referência</th></tr>
+                    <tr class="ref-row fade-in" style="animation-delay:0.2s">${s1.map(v=>`<td>${v??'---'}</td>`).join('')}</tr>
+                    <tr class="ref-row fade-in" style="animation-delay:0.3s">${s2.map(v=>`<td>${v??'---'}</td>`).join('')}</tr>`;
             }
-
-            html += '</tbody></table></div>';
-            return html;
+            return html + '</tbody></table></div>';
         }
 
         function loadCardData(fileBase) {
             const wrap = document.getElementById('charts-area');
             if (!wrap) return;
 
-            wrap.innerHTML = `
-                <div class="charts-grid">
-                    <div class="chart-card">
-                        <div class="loader">
-                            <i class="fas fa-spinner"></i>
-                            <div>Carregando análises em tempo real...</div>
-                            <div style="font-size: 1.2rem; opacity: 0.7;">WEG - Qualidade Industrial</div>
-                        </div>
-                    </div>
-                </div>
-            `;
+            wrap.innerHTML = `<div class="charts-grid"><div class="chart-card"><div class="loader"><i class="fas fa-spinner"></i><div>Carregando...</div></div></div></div>`;
 
             fetch(`dados/${fileBase}.json?t=${Date.now()}`)
-                .then(response => {
-                    if (!response.ok) throw new Error();
-                    return response.json();
-                })
+                .then(r => r.ok ? r.json() : Promise.reject())
                 .then(data => {
                     if (!wrap) return;
-                    
                     wrap.innerHTML = '';
-                    const charts = (data.charts && Array.isArray(data.charts) && data.charts.length > 0) 
-                        ? data.charts 
-                        : [{ title: null, labels: data.labels, series1: data.series1, series2: data.series2 }];
                     
-                    charts.forEach((chart, idx) => {
-                        const div = document.createElement('div');
-                        div.className = 'chart-card';
-                        const titleHtml = chart.title ? `<div class="chart-title">${chart.title}</div>` : '';
-                        const imgSrc = `graficos/${fileBase}-${idx + 1}.png?t=${Date.now()}`;
-                        const tableHtml = generateTableHTML(chart.labels, chart.series1, chart.series2);
+                    const charts = data.charts?.length ? data.charts : [{title:null, labels:data.labels, series1:data.series1, series2:data.series2}];
+                    const grid = document.createElement('div');
+                    grid.className = 'charts-grid';
+
+                    charts.forEach((c, i) => {
+                        const card = document.createElement('div');
+                        card.className = 'chart-card';
+                        const title = c.title ? `<div class="chart-title">${c.title}</div>` : '';
+                        const imgSrc = `graficos/${fileBase}-${i+1}.png?t=${Date.now()}`;
                         
-                        div.innerHTML = `
-                            ${titleHtml}
-                            <div class="chart-container">
-                                <img src="${imgSrc}" class="chart-img" alt="Gráfico analítico" 
-                                     onerror="this.parentElement.innerHTML='<div class=\"loader\"><i class=\"fas fa-exclamation-triangle\" style=\"color: var(--warning);\"></i><div>Dados temporariamente indisponíveis</div></div>'">
-                            </div>
-                            ${tableHtml}
-                        `;
-                        wrap.appendChild(div);
+                        card.innerHTML = `${title}<div class="chart-container">
+                            <img src="${imgSrc}" class="chart-img loading" alt="Gráfico" 
+                                onload="this.classList.remove('loading');this.classList.add('loaded')"
+                                onerror="this.closest('.chart-container').innerHTML='<div class=\\'loader\\'><i class=\\'fas fa-exclamation-triangle\\' style=\\'color:var(--warning)\\'></i><div>Gráfico indisponível</div></div>'">
+                        </div>`;
+                        grid.appendChild(card);
                     });
+                    wrap.appendChild(grid);
+
+                    // Carrega tabela após gráficos
+                    setTimeout(() => {
+                        const tableArea = document.getElementById('table-area');
+                        if (tableArea && charts[0]) {
+                            tableArea.innerHTML = generateTableHTML(charts[0].labels, charts[0].series1, charts[0].series2);
+                        }
+                    }, 300);
                 })
                 .catch(() => {
                     if (wrap) {
-                        wrap.innerHTML = `
-                            <div class="charts-grid">
-                                <div class="chart-card">
-                                    <div class="loader" style="background: linear-gradient(135deg, #fff3cd, #ffeaa7); color: #856404;">
-                                        <i class="fas fa-exclamation-triangle" style="font-size: 5rem; color: var(--warning);"></i>
-                                        <div style="font-size: 2rem;">Dados temporariamente indisponíveis</div>
-                                        <div style="font-size: 1.2rem; opacity: 0.8;">Sincronização automática em 60s</div>
-                                    </div>
-                                </div>
+                        wrap.innerHTML = `<div class="charts-grid"><div class="chart-card">
+                            <div class="loader" style="background:#fff3cd;color:#856404">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <div>Dados indisponíveis</div>
                             </div>
-                        `;
+                        </div></div>`;
                     }
+                    const tableArea = document.getElementById('table-area');
+                    if (tableArea) tableArea.innerHTML = '<div class="table-loader">⚠ Aguardando sincronização...</div>';
                 });
         }
 
@@ -572,112 +605,84 @@
             if (!dash) return;
 
             dash.innerHTML = `
-                <div class="card">
+                <div class="card slide-up">
                     <div class="card-header">
                         <div class="card-title">${item.title}</div>
                         <div class="status status-${getStatusClass(item.status)}">
-                            <i class="fas fa-circle"></i>
-                            ${item.status.toUpperCase()}
+                            <i class="fas fa-circle"></i>${item.status.toUpperCase()}
                         </div>
                     </div>
-                    <div id="charts-area" style="height: calc(100% - 200px);"></div>
-                </div>
-            `;
+                    <div class="content-split">
+                        <div class="charts-area">
+                            <div id="charts-area" style="height:100%"></div>
+                        </div>
+                        <div class="table-area">
+                            <div id="table-area" class="fade-in">
+                                <div class="table-loader"><i class="fas fa-spinner fa-spin"></i> Carregando análises...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
             loadCardData(item.fileBase);
         }
 
         function updateDisplay() {
-            const tab = tabsConfig[currentTabIdx];
-            const item = tab.items[currentItemIdx];
-            
+            const tab = tabsConfig[currentTabIdx], item = tab.items[currentItemIdx];
             document.getElementById('current-section').textContent = tab.section;
             renderCard(item);
-
+            
             const dots = document.getElementById('nav-dots');
             if (dots) {
                 dots.innerHTML = '';
-                tab.items.forEach((it, idx) => {
-                    const dot = document.createElement('div');
-                    dot.className = `dot ${idx === currentItemIdx ? 'active' : ''}`;
-                    dots.appendChild(dot);
+                tab.items.forEach((_, idx) => {
+                    const d = document.createElement('div');
+                    d.className = `dot ${idx===currentItemIdx?'active':''}`;
+                    dots.appendChild(d);
                 });
             }
         }
 
         function nextItem() {
             const tab = tabsConfig[currentTabIdx];
-            if (currentItemIdx + 1 < tab.items.length) {
-                currentItemIdx++;
-            } else {
-                currentItemIdx = 0;
-                currentTabIdx = (currentTabIdx + 1) % tabsConfig.length;
-            }
+            currentItemIdx = (currentItemIdx + 1) % tab.items.length;
+            if (currentItemIdx === 0) currentTabIdx = (currentTabIdx + 1) % tabsConfig.length;
             updateDisplay();
         }
 
         function resetRotation() {
             if (rotationTimer) clearInterval(rotationTimer);
-            rotationTimer = setInterval(nextItem, 20000); // 20s para TV
+            rotationTimer = setInterval(nextItem, 20000);
         }
 
         function initClock() {
-            function tick() {
-                const now = new Date();
-                document.getElementById('clock-date').textContent = now.toLocaleDateString('pt-BR', {
-                    weekday: 'long',
-                    day: '2-digit',
-                    month: 'long',
-                    year: 'numeric'
-                });
-                document.getElementById('clock-time').textContent = now.toLocaleTimeString('pt-BR', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false
-                });
-            }
-            tick();
-            setInterval(tick, 1000);
+            const upd = () => {
+                const n = new Date();
+                document.getElementById('clock-date').textContent = n.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'});
+                document.getElementById('clock-time').textContent = n.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+            };
+            upd(); setInterval(upd, 1000);
         }
 
-        function startPeriodicSync() {
+        function startSync() {
             setInterval(() => {
-                document.getElementById('last-sync').textContent = new Date().toLocaleTimeString('pt-BR', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit'
-                });
-                
+                document.getElementById('last-sync').textContent = new Date().toLocaleTimeString('pt-BR');
                 const tab = tabsConfig[currentTabIdx];
-                if (tab && tab.items[currentItemIdx]) {
-                    loadCardData(tab.items[currentItemIdx].fileBase);
-                }
+                if (tab?.items[currentItemIdx]) loadCardData(tab.items[currentItemIdx].fileBase);
             }, 60000);
         }
 
-        // Inicialização automática
         window.onload = () => {
-            document.body.style.opacity = '0';
             setTimeout(() => {
-                initClock();
-                updateDisplay();
-                resetRotation();
-                startPeriodicSync();
-                document.body.style.opacity = '1';
-                document.body.style.transition = 'opacity 1s ease-in';
-            }, 500);
+                initClock(); updateDisplay(); resetRotation(); startSync();
+            }, 300);
         };
 
-        // Previne sleep/refresh
         document.addEventListener('visibilitychange', () => {
-            if (!document.hidden) {
-                updateDisplay();
-                resetRotation();
-            }
+            if (!document.hidden) { updateDisplay(); resetRotation(); }
         });
 
-        // Keyboard navigation para debug (F5, ESC, etc)
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'F5' || e.key === 'F12') e.preventDefault();
+        document.addEventListener('keydown', e => {
+            if (['F5','F12','F11'].includes(e.key)) e.preventDefault();
         });
     </script>
 </body>
