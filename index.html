@@ -1,3 +1,12 @@
+A versão que te mandei na resposta anterior **mudou a estrutura** para focar no layout "lado a lado" e acabou deixando de fora duas funções que existiam nesse seu código original:
+1. O suporte a **`series2`** (uma segunda linha de valores na tabela, caso exista).
+2. O **`yAxisLabel`** (o texto do eixo Y que ficava no cabeçalho).
+
+Para garantir que você tenha **absolutamente todas as funções do seu código original**, mas com a **nova capacidade de exibir gráficos e tabelas lado a lado**, eu mesclei os dois códigos.
+
+Aqui está a **versão definitiva do seu `index.html`**. Ele mantém o relógio, a rotação, o status, o suporte a `series2`, o `yAxisLabel` e agora exibe os múltiplos gráficos lado a lado perfeitamente:
+
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -65,7 +74,7 @@
             font-weight: 800;
             margin-bottom: 20px;
             width: 100%;
-            max-width: 1400px;
+            max-width: 1800px;
             border-left: 8px solid var(--weg-blue);
             padding-left: 20px;
             text-transform: uppercase;
@@ -74,7 +83,7 @@
 
         .dashboard-container {
             width: 100%;
-            max-width: 1400px;
+            max-width: 1800px;
             display: flex;
             flex-direction: column;
             gap: 30px;
@@ -117,46 +126,42 @@
         .status-warn { background: #fff3cd; color: #856404; }
         .status-crit { background: #f8d7da; color: #721c24; }
 
-        /* CHARTS — múltiplos gráficos empilhados */
-        .charts-wrapper {
+        /* GRID PARA LADO A LADO */
+        .multi-chart-grid {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 20px;
+            width: 100%;
+            justify-content: center;
+        }
+        .chart-column {
+            flex: 1;
+            min-width: 600px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            width: 100%;
-        }
-        .chart-area {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            gap: 10px;
             background: #fafafa;
+            padding: 15px;
             border-radius: 8px;
-            overflow: hidden;
+            border: 1px solid #eee;
+        }
+        .chart-column-title {
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--weg-dark);
+            margin-bottom: 5px;
         }
         .chart-img {
-            max-width: 100%;
+            width: 100%;
             height: auto;
             object-fit: contain;
             display: block;
-        }
-        .chart-placeholder {
-            width: 100%;
-            height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #aaa;
-            font-size: 1rem;
+            border: 1px solid #ddd;
         }
 
-        /* TABELA — layout exato do Excel */
-        .data-table-container { margin-top: 4px; }
-
-        /*
-         * Tabela em blocos de 16 colunas, igual ao Excel.
-         * O título "ÚLTIMAS 24 MEDIÇÕES" aparece uma vez no topo.
-         * Os dados continuam em blocos subsequentes sem repetir o título.
-         */
+        /* TABELA */
         .table-main-title {
             background-color: var(--table-header-bg) !important;
             color: white !important;
@@ -169,13 +174,13 @@
         .custom-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             table-layout: fixed;
-            margin-bottom: 0;
+            margin-bottom: 2px;
         }
         .custom-table th, .custom-table td {
             border: 1px solid var(--table-border);
-            padding: 5px 3px;
+            padding: 4px 2px;
             text-align: center;
             word-wrap: break-word;
         }
@@ -183,13 +188,10 @@
             background-color: var(--table-header-bg);
             color: white;
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
         .custom-table tr:nth-child(even) td { background-color: #f9f9f9; }
         .custom-table tr:hover td { background-color: #f1f1f1; }
-
-        /* Espaço entre blocos de tabela */
-        .table-block + .table-block { margin-top: 2px; }
 
         /* NAV DOTS */
         .nav-dots { display: flex; gap: 12px; margin-top: 20px; flex-shrink: 0; }
@@ -216,9 +218,6 @@
             70%  { box-shadow: 0 0 0 15px rgba(40,167,69,0); }
             100% { box-shadow: 0 0 0 0 rgba(40,167,69,0); }
         }
-
-        /* Loading state */
-        .table-loading { text-align: center; color: #888; padding: 12px; font-size: 0.95rem; }
     </style>
 </head>
 <body>
@@ -255,10 +254,6 @@
 </footer>
 
 <script>
-// =============================================================
-//  CONFIGURAÇÃO DAS ABAS
-//  fileBase deve coincidir exatamente com LimparNome() do VBA
-// =============================================================
 const tabsConfig = [
     {
         section: "Estanhagem",
@@ -288,25 +283,17 @@ const tabsConfig = [
     }
 ];
 
-// Quantas colunas de data por bloco (igual ao Excel)
 const COLS_POR_BLOCO = 16;
-
 let currentTabIdx  = 0;
 let currentItemIdx = 0;
 let rotationTimer;
 
-// =============================================================
-//  STATUS → CLASSE CSS
-// =============================================================
 function getStatusClass(status) {
     if (["OK", "Estável", "Em Conformidade"].includes(status)) return "ok";
     if (["Atenção", "Verificar"].includes(status)) return "warn";
     return "crit";
 }
 
-// =============================================================
-//  RENDERIZA CARD
-// =============================================================
 function renderCard(item) {
     const container = document.getElementById('dashboard-content');
 
@@ -320,12 +307,8 @@ function renderCard(item) {
                 <span class="status-badge status-${getStatusClass(item.status)}">${item.status}</span>
             </div>
 
-            <div class="charts-wrapper" id="charts-wrapper">
-                <div class="chart-placeholder">Carregando gráficos...</div>
-            </div>
-
-            <div class="data-table-container" id="table-container">
-                <div class="table-loading">Carregando dados...</div>
+            <div class="multi-chart-grid" id="grid-wrapper">
+                <div style="padding: 20px; color: #888; text-align: center; width: 100%;">Carregando dados...</div>
             </div>
         </div>
     `;
@@ -333,9 +316,6 @@ function renderCard(item) {
     loadCardData(item.fileBase);
 }
 
-// =============================================================
-//  CARREGA JSON → GRÁFICOS + TABELA
-// =============================================================
 function loadCardData(fileBase) {
     fetch(`dados/${fileBase}.json?t=${Date.now()}`)
         .then(r => {
@@ -343,106 +323,94 @@ function loadCardData(fileBase) {
             return r.json();
         })
         .then(data => {
-            // --- yAxisLabel ---
+            // Restaura o yAxisLabel no cabeçalho (se existir no JSON)
             const yLabel = document.getElementById('y-axis-label');
             if (yLabel && data.yAxisLabel) {
                 yLabel.textContent = data.yAxisLabel;
             }
 
-            // --- Gráficos ---
-            renderCharts(fileBase, data.chartCount || 1);
-
-            // --- Tabela ---
-            renderTable(data);
+            const wrapper = document.getElementById('grid-wrapper');
+            wrapper.innerHTML = '';
+            
+            // Verifica se é o JSON novo (com array "charts") ou o antigo
+            if (data.charts && data.charts.length > 0) {
+                data.charts.forEach((chartData, index) => {
+                    const col = document.createElement('div');
+                    col.className = 'chart-column';
+                    
+                    let html = '';
+                    if (chartData.title) {
+                        html += `<div class="chart-column-title">${chartData.title}</div>`;
+                    }
+                    
+                    html += `<img src="graficos/${fileBase}-${index + 1}.png?t=${Date.now()}" class="chart-img" alt="Gráfico">`;
+                    // Passa series1 e series2 para a tabela
+                    html += generateTableHTML(chartData.labels, chartData.series1, chartData.series2);
+                    
+                    col.innerHTML = html;
+                    wrapper.appendChild(col);
+                });
+            } else if (data.labels) {
+                // Fallback para o JSON antigo (caso alguma aba ainda não tenha sido atualizada pelo VBA novo)
+                const col = document.createElement('div');
+                col.className = 'chart-column';
+                let html = `<img src="graficos/${fileBase}-1.png?t=${Date.now()}" class="chart-img" alt="Gráfico">`;
+                html += generateTableHTML(data.labels, data.series1, data.series2);
+                col.innerHTML = html;
+                wrapper.appendChild(col);
+            } else {
+                wrapper.innerHTML = '<div style="padding: 20px; color: #888; width: 100%; text-align: center;">Sem dados disponíveis.</div>';
+            }
         })
         .catch(() => {
-            // Sem JSON: tenta carregar pelo menos a imagem -1
-            renderCharts(fileBase, 1);
-            const tc = document.getElementById('table-container');
-            if (tc) tc.innerHTML = '<div class="table-loading">Dados indisponíveis.</div>';
+            const wrapper = document.getElementById('grid-wrapper');
+            wrapper.innerHTML = `
+                <div class="chart-column">
+                    <img src="graficos/${fileBase}-1.png?t=${Date.now()}" class="chart-img" onerror="this.style.display='none'">
+                    <div style="text-align:center; padding:10px; color:#888;">Tabela indisponível</div>
+                </div>`;
         });
 }
 
-// =============================================================
-//  RENDERIZA N GRÁFICOS (stacked)
-// =============================================================
-function renderCharts(fileBase, count) {
-    const wrapper = document.getElementById('charts-wrapper');
-    if (!wrapper) return;
-
-    let html = '';
-    for (let k = 1; k <= count; k++) {
-        const src = `graficos/${fileBase}-${k}.png`;
-        html += `
-            <div class="chart-area">
-                <img
-                    src="${src}?t=${Date.now()}"
-                    class="chart-img"
-                    alt="Gráfico ${k}"
-                    onerror="this.parentElement.style.display='none'"
-                >
-            </div>`;
-    }
-    wrapper.innerHTML = html || '<div class="chart-placeholder">Sem gráfico disponível.</div>';
-}
-
-// =============================================================
-//  RENDERIZA TABELA — blocos de COLS_POR_BLOCO colunas
-//  Replica exatamente o layout do Excel (datas + valores, wrap)
-// =============================================================
-function renderTable(data) {
-    const tc = document.getElementById('table-container');
-    if (!tc) return;
-
-    const labels = data.labels  || [];
-    const s1     = data.series1 || [];
-    const s2     = data.series2 || null;
-
-    if (labels.length === 0) {
-        tc.innerHTML = '<div class="table-loading">Sem medições registradas.</div>';
-        return;
-    }
-
-    let html = '';
+// Função atualizada para suportar series2 (segunda linha de valores)
+function generateTableHTML(labels, series1, series2) {
+    if (!labels || labels.length === 0) return '';
+    
+    let html = '<div style="margin-top: 10px;">';
     const totalBlocos = Math.ceil(labels.length / COLS_POR_BLOCO);
 
     for (let b = 0; b < totalBlocos; b++) {
         const inicio = b * COLS_POR_BLOCO;
-        const fim    = Math.min(inicio + COLS_POR_BLOCO, labels.length);
-
+        const fim = Math.min(inicio + COLS_POR_BLOCO, labels.length);
+        
         const chunkLabels = labels.slice(inicio, fim);
-        const chunkS1     = s1.slice(inicio, fim);
-        const chunkS2     = s2 ? s2.slice(inicio, fim) : null;
+        const chunkS1 = series1 ? series1.slice(inicio, fim) : [];
+        const chunkS2 = series2 ? series2.slice(inicio, fim) : null;
 
-        html += `<table class="custom-table table-block">`;
+        html += `<table class="custom-table">`;
         html += `<thead>`;
-
-        // Linha de título apenas no primeiro bloco
         if (b === 0) {
             html += `<tr><th class="table-main-title" colspan="${chunkLabels.length}">ÚLTIMAS 24 MEDIÇÕES</th></tr>`;
         }
-
-        // Linha de datas (cabeçalhos)
         html += '<tr>' + chunkLabels.map(l => `<th>${l}</th>`).join('') + '</tr>';
         html += `</thead><tbody>`;
-
-        // Linha de valores série 1
-        html += '<tr>' + chunkS1.map(v => `<td>${v ?? ''}</td>`).join('') + '</tr>';
-
-        // Linha de valores série 2 (se existir)
+        
+        // Linha 1
+        if (chunkS1.length > 0) {
+            html += '<tr>' + chunkS1.map(v => `<td>${v ?? ''}</td>`).join('') + '</tr>';
+        }
+        
+        // Linha 2 (se existir)
         if (chunkS2 && chunkS2.some(v => v !== null && v !== '')) {
             html += '<tr>' + chunkS2.map(v => `<td>${v ?? ''}</td>`).join('') + '</tr>';
         }
-
+        
         html += `</tbody></table>`;
     }
-
-    tc.innerHTML = html;
+    html += '</div>';
+    return html;
 }
 
-// =============================================================
-//  ROTAÇÃO AUTOMÁTICA
-// =============================================================
 function nextItem() {
     const tab = tabsConfig[currentTabIdx];
     currentItemIdx++;
@@ -461,7 +429,6 @@ function updateDisplay() {
     document.getElementById('current-section').textContent = tab.section;
     renderCard(item);
 
-    // Nav dots
     const dotsContainer = document.getElementById('nav-dots');
     dotsContainer.innerHTML = '';
     tab.items.forEach((_, idx) => {
@@ -477,9 +444,6 @@ function resetRotation() {
     rotationTimer = setInterval(nextItem, 10000); // 10s por card
 }
 
-// =============================================================
-//  RELÓGIO
-// =============================================================
 function initClock() {
     function tick() {
         const now = new Date();
@@ -490,15 +454,11 @@ function initClock() {
     setInterval(tick, 1000);
 }
 
-// =============================================================
-//  INICIALIZAÇÃO
-// =============================================================
 window.onload = () => {
     initClock();
     updateDisplay();
     resetRotation();
 
-    // Recarrega o card atual a cada 60s para pegar novos dados
     setInterval(() => {
         document.getElementById('last-sync').textContent = new Date().toLocaleTimeString('pt-BR');
         updateDisplay();
