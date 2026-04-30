@@ -1,462 +1,358 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analytics Químico | WEG Banhos Industriais</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --weg-blue: #004B8D;
-            --weg-dark: #1a1a1a;
-            --bg-color: #f4f6f9;
-            --card-bg: #ffffff;
-            --text-primary: #333333;
-            --success: #28a745;
-            --warning: #ffc107;
-            --danger: #dc3545;
-            --table-header-bg: #00a8e8;
-            --table-border: #ccc;
+            --weg-blue: #005bac;
+            --weg-blue-dark: #003d73;
+            --weg-light: #00a8e8;
+            --weg-bg: linear-gradient(135deg, #eef3f8 0%, #d9e7f5 100%);
+            --card-bg: rgba(255,255,255,0.96);
+            --card-border: rgba(255,255,255,0.5);
+            --text-primary: #1c2b36;
+            --text-secondary: #5a6b7b;
+            --success: #22c55e;
+            --warning: #facc15;
+            --danger: #ef4444;
+            --shadow: 0 20px 50px rgba(0,0,0,0.12);
+            --radius: 24px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
+            background: var(--weg-bg);
             color: var(--text-primary);
             height: 100vh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            margin: 0;
         }
 
-        /* HEADER */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at top right, rgba(0,91,172,0.12), transparent 35%),
+                radial-gradient(circle at bottom left, rgba(0,168,232,0.10), transparent 30%);
+            pointer-events: none;
+        }
+
         header {
-            background-color: var(--weg-blue);
+            height: 120px;
+            background: linear-gradient(90deg, var(--weg-blue-dark), var(--weg-blue));
             color: white;
-            padding: 10px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 100px;
+            padding: 20px 50px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+            z-index: 10;
             flex-shrink: 0;
         }
-        .brand { display: flex; flex-direction: column; align-items: center; flex: 1; }
-        .brand-main { font-size: 2.5rem; font-weight: 800; text-transform: uppercase; }
-        .brand-sub { font-size: 1.2rem; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px; }
-        .clock-container { display: flex; gap: 30px; font-size: 1.8rem; font-weight: 700; }
-        .clock-item { display: flex; align-items: baseline; gap: 10px; }
-        .clock-label { font-size: 1.2rem; opacity: 0.9; text-transform: uppercase; }
-        .date-value { color: #e0e0e0; font-weight: 400; }
 
-        /* MAIN */
-        main {
-            flex: 1;
-            padding: 20px;
+        .brand {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            overflow-y: auto;
-            min-height: 0;
+            gap: 8px;
         }
-        .section-title {
-            font-size: 2.5rem;
-            color: var(--weg-blue);
-            font-weight: 800;
-            margin-bottom: 20px;
-            width: 100%;
-            max-width: 1800px;
-            border-left: 8px solid var(--weg-blue);
-            padding-left: 20px;
+
+        .brand-main {
+            font-size: clamp(2.8rem, 4vw, 4.5rem);
+            font-weight: 900;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            flex-shrink: 0;
+        }
+
+        .brand-sub {
+            font-size: clamp(1rem, 1.5vw, 1.6rem);
+            font-weight: 600;
+            opacity: 0.92;
+            letter-spacing: 2px;
+        }
+
+        .clock-container {
+            display: flex;
+            gap: 40px;
+            font-weight: 700;
+        }
+
+        .clock-item {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            min-width: 180px;
+        }
+
+        .clock-label {
+            font-size: 1rem;
+            opacity: 0.85;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .clock-value {
+            font-size: 2rem;
+        }
+
+        main {
+            flex: 1;
+            padding: 28px 36px 20px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 4vw, 4rem);
+            font-weight: 900;
+            color: var(--weg-blue-dark);
+            padding: 18px 30px;
+            margin-bottom: 24px;
+            background: rgba(255,255,255,0.72);
+            border-left: 10px solid var(--weg-blue);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            backdrop-filter: blur(8px);
         }
 
         .dashboard-container {
-            width: 100%;
-            max-width: 1800px;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 8px;
         }
 
-        /* CARD */
         .card {
             background: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            padding: 25px;
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 26px;
+            min-height: calc(100vh - 330px);
+            animation: fadeIn 0.4s ease;
         }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 15px;
-        }
-        .card-header-left { display: flex; flex-direction: column; gap: 4px; }
-        .card-title { font-size: 2rem; font-weight: 700; color: var(--weg-blue); }
-        .card-yaxis {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #555;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .status-badge {
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 1rem;
-            text-transform: uppercase;
-        }
-        .status-ok   { background: #d4edda; color: #155724; }
-        .status-warn { background: #fff3cd; color: #856404; }
-        .status-crit { background: #f8d7da; color: #721c24; }
-
-        /* GRID PARA LADO A LADO (MULTI-GRÁFICOS) */
-        .multi-chart-grid {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
+            border-bottom: 3px solid rgba(0,91,172,0.12);
+            padding-bottom: 18px;
             gap: 20px;
-            width: 100%;
-            justify-content: center;
         }
+
+        .card-title {
+            font-size: clamp(2rem, 3vw, 3.5rem);
+            font-weight: 800;
+            color: var(--weg-blue-dark);
+        }
+
+        .card-yaxis {
+            margin-top: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-badge {
+            padding: 14px 26px;
+            border-radius: 14px;
+            font-size: 1.2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            box-shadow: inset 0 -3px rgba(0,0,0,0.08);
+            white-space: nowrap;
+        }
+
+        .status-ok { background: rgba(34,197,94,0.18); color: #15803d; }
+        .status-warn { background: rgba(250,204,21,0.22); color: #a16207; }
+        .status-crit { background: rgba(239,68,68,0.18); color: #b91c1c; }
+
+        .multi-chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(700px, 1fr));
+            gap: 28px;
+            width: 100%;
+            align-items: start;
+        }
+
         .chart-column {
-            flex: 1;
-            min-width: 600px; /* Garante que não fique muito estreito */
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            background: #fafafa;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #eee;
-        }
-        /* Se houver apenas 1 gráfico, ele ocupa 100% da largura disponível sem dividir */
-        .chart-column.single {
-            width: 100%;
-            min-width: unset;
-        }
-        
-        .chart-column-title {
-            text-align: center;
-            font-weight: 700;
-            font-size: 1.4rem;
-            color: var(--weg-dark);
-            margin-bottom: 5px;
-        }
-        .chart-img {
-            width: 100%;
-            height: auto;
-            object-fit: contain;
-            display: block;
-            border: 1px solid #ddd;
-            background: #fff;
+            gap: 16px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(244,248,252,0.98));
+            border-radius: 22px;
+            padding: 22px;
+            border: 1px solid rgba(0,91,172,0.08);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+            min-height: 100%;
         }
 
-        /* TABELA - FONTES GRANDES PARA TV */
-        .table-main-title {
-            background-color: var(--table-header-bg) !important;
-            color: white !important;
-            font-size: 1.3rem !important;
-            font-weight: 800 !important;
-            text-align: center !important;
-            padding: 10px 4px !important;
-            letter-spacing: 0.5px;
+        .chart-column.single {
+            grid-column: 1 / -1;
         }
+
+        .chart-column-title {
+            text-align: center;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--weg-blue-dark);
+            padding-bottom: 8px;
+            border-bottom: 2px solid rgba(0,91,172,0.08);
+        }
+
+        .chart-img {
+            width: 100%;
+            max-height: 520px;
+            object-fit: contain;
+            border-radius: 16px;
+            background: white;
+            border: 1px solid rgba(0,0,0,0.08);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.03);
+        }
+
         .custom-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 1.2rem;
-            font-weight: 600;
             table-layout: fixed;
-            margin-bottom: 4px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+            margin-top: 10px;
         }
-        .custom-table th, .custom-table td {
-            border: 1px solid var(--table-border);
-            padding: 8px 4px;
+
+        .custom-table th,
+        .custom-table td {
+            padding: 12px 6px;
             text-align: center;
-            word-wrap: break-word;
+            font-size: clamp(1rem, 1.1vw, 1.3rem);
+            border: 1px solid rgba(0,0,0,0.06);
         }
+
         .custom-table th {
-            background-color: var(--table-header-bg);
+            background: linear-gradient(90deg, var(--weg-blue), var(--weg-light));
             color: white;
             font-weight: 800;
-            font-size: 1.1rem;
         }
-        .custom-table tr:nth-child(even) td { background-color: #f9f9f9; }
-        .custom-table tr:hover td { background-color: #f1f1f1; }
 
-        /* NAV DOTS */
-        .nav-dots { display: flex; gap: 12px; margin-top: 20px; flex-shrink: 0; }
-        .dot { width: 16px; height: 16px; background: #ccc; border-radius: 50%; cursor: pointer; transition: 0.3s; }
-        .dot.active { background: var(--weg-blue); transform: scale(1.2); }
+        .table-main-title {
+            font-size: 1.3rem !important;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .custom-table td {
+            font-weight: 700;
+            background: rgba(255,255,255,0.95);
+        }
+
+        .custom-table tr:nth-child(even) td {
+            background: rgba(240,247,255,0.9);
+        }
+
+        .nav-dots {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            padding-top: 22px;
+        }
+
+        .dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: rgba(0,91,172,0.25);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: var(--weg-blue);
+            transform: scale(1.35);
+            box-shadow: 0 0 18px rgba(0,91,172,0.45);
+        }
 
         footer {
-            background: var(--weg-dark);
-            color: #ccc;
-            padding: 15px 40px;
+            height: 70px;
+            background: linear-gradient(90deg, #111827, #1f2937);
+            color: #e5e7eb;
             display: flex;
             justify-content: space-between;
-            font-size: 1.1rem;
+            align-items: center;
+            padding: 0 40px;
+            font-size: 1.15rem;
             flex-shrink: 0;
         }
+
         .pulse {
-            width: 12px; height: 12px;
-            background: var(--success);
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
+            background: var(--success);
             animation: pulse 2s infinite;
         }
+
         @keyframes pulse {
-            0%   { box-shadow: 0 0 0 0 rgba(40,167,69,0.7); }
-            70%  { box-shadow: 0 0 0 15px rgba(40,167,69,0); }
-            100% { box-shadow: 0 0 0 0 rgba(40,167,69,0); }
+            0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.6); }
+            70% { box-shadow: 0 0 0 16px rgba(34,197,94,0); }
+            100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+        }
+
+        @media (max-width: 1600px) {
+            .multi-chart-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            header {
+                flex-direction: column;
+                height: auto;
+                padding: 20px;
+                gap: 20px;
+            }
+
+            .clock-container {
+                justify-content: center;
+                width: 100%;
+            }
+
+            .card {
+                min-height: auto;
+            }
         }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="brand">
-        <div class="brand-main">WEG INDUSTRIAL</div>
-        <div class="brand-sub">CONTROLE ANALÍTICO DOS BANHOS QUÍMICOS</div>
-    </div>
-    <div class="clock-container">
-        <div class="clock-item">
-            <span class="clock-label">DATA:</span>
-            <span class="clock-value date-value" id="clock-date">--/--/----</span>
-        </div>
-        <div class="clock-item">
-            <span class="clock-label">HORA:</span>
-            <span class="clock-value" id="clock-time">--:--:--</span>
-        </div>
-    </div>
-</header>
+<!-- MANTENHA TODO O HTML ORIGINAL (HEADER / MAIN / FOOTER / SCRIPT) -->
+<!-- Apenas substitua o bloco <style> antigo por este novo para manter 100% das funcionalidades -->
 
-<main>
-    <div class="section-title" id="current-section">Carregando...</div>
-    <div class="dashboard-container" id="dashboard-content"></div>
-    <div class="nav-dots" id="nav-dots"></div>
-</main>
-
-<footer>
-    <div style="display:flex;align-items:center;gap:10px;">
-        <div class="pulse"></div>
-        <span>Dados em tempo real | WEG Qualidade</span>
-    </div>
-    <div>Atualização: <span id="last-sync">Agora</span></div>
-</footer>
-
-<script>
-const tabsConfig = [
-    {
-        section: "Estanhagem",
-        items: [
-            { title: "Desengraxante",          fileBase: "graf-des",                  status: "OK" },
-            { title: "Ativação — Tanque 5",    fileBase: "graf-ativacao-tanque-5",    status: "Verificar" },
-            { title: "Ativação — Tanque 6",    fileBase: "graf-ativacao-tanque-6",    status: "OK" },
-            { title: "Níquel WATT",            fileBase: "graf-niquel-watt",          status: "Estável" },
-            { title: "Estanhagem A",           fileBase: "graf-estanhagem-a",         status: "Vencido" },
-            { title: "Selante",                fileBase: "graf-selante",              status: "OK" },
-            { title: "Estanhagem B",           fileBase: "graf-estanhagem-b",         status: "OK" }
-        ]
-    },
-    {
-        section: "Nanocerâmico",
-        items: [
-            { title: "1º Desengraxante",       fileBase: "graf-des1",                 status: "OK" },
-            { title: "2º Desengraxante",       fileBase: "graf-des2",                 status: "OK" },
-            { title: "Decapante 1",            fileBase: "graf-dec1",                 status: "Atenção" },
-            { title: "Decapante 2",            fileBase: "graf-dec2",                 status: "OK" },
-            { title: "Nanocerâmico — Conc.",   fileBase: "graf-nano",                 status: "Crítico" },
-            { title: "Nanocerâmico — Abs.",    fileBase: "graf-abso-nano",            status: "OK" },
-            { title: "Nanocerâmico — pH",      fileBase: "graf-ph-nano",              status: "OK" },
-            { title: "Neutralizador",          fileBase: "graf-neu",                  status: "OK" },
-            { title: "Selante",                fileBase: "graf-sel",                  status: "OK" }
-        ]
-    }
-];
-
-const COLS_POR_BLOCO = 16; // Quebra a tabela em blocos de 16 colunas se tiver muitas datas
-let currentTabIdx  = 0;
-let currentItemIdx = 0;
-let rotationTimer;
-
-function getStatusClass(status) {
-    if (["OK", "Estável", "Em Conformidade"].includes(status)) return "ok";
-    if (["Atenção", "Verificar"].includes(status)) return "warn";
-    return "crit";
-}
-
-function renderCard(item) {
-    const container = document.getElementById('dashboard-content');
-    container.innerHTML = `
-        <div class="card">
-            <div class="card-header">
-                <div class="card-header-left">
-                    <span class="card-title">${item.title}</span>
-                    <span class="card-yaxis" id="y-axis-label"></span>
-                </div>
-                <span class="status-badge status-${getStatusClass(item.status)}">${item.status}</span>
-            </div>
-            <div class="multi-chart-grid" id="grid-wrapper">
-                <div style="padding: 20px; color: #888; text-align: center; width: 100%;">Carregando dados...</div>
-            </div>
-        </div>
-    `;
-    loadCardData(item.fileBase);
-}
-
-function loadCardData(fileBase) {
-    fetch(`dados/${fileBase}.json?t=${Date.now()}`)
-        .then(r => {
-            if (!r.ok) throw new Error('JSON não encontrado');
-            return r.json();
-        })
-        .then(data => {
-            const yLabel = document.getElementById('y-axis-label');
-            if (yLabel && data.yAxisLabel) {
-                yLabel.textContent = data.yAxisLabel;
-            }
-
-            const wrapper = document.getElementById('grid-wrapper');
-            wrapper.innerHTML = '';
-            
-            // LÓGICA PRINCIPAL: Verifica se é um array de gráficos (multi) ou objeto único
-            if (data.charts && Array.isArray(data.charts) && data.charts.length > 0) {
-                // MÚLTIPLOS GRÁFICOS
-                data.charts.forEach((chartData, index) => {
-                    const col = document.createElement('div');
-                    col.className = 'chart-column';
-                    
-                    let html = '';
-                    if (chartData.title) {
-                        html += `<div class="chart-column-title">${chartData.title}</div>`;
-                    }
-                    // Nome do arquivo: base-1.png, base-2.png, etc.
-                    html += `<img src="graficos/${fileBase}-${index + 1}.png?t=${Date.now()}" class="chart-img" alt="Gráfico ${index+1}">`;
-                    html += generateTableHTML(chartData.labels, chartData.series1, chartData.series2);
-                    
-                    col.innerHTML = html;
-                    wrapper.appendChild(col);
-                });
-            } else if (data.labels) {
-                // ÚNICO GRÁFICO (Formato legado ou simples)
-                const col = document.createElement('div');
-                col.className = 'chart-column single'; // Classe single para ocupar largura total
-                let html = `<img src="graficos/${fileBase}-1.png?t=${Date.now()}" class="chart-img" alt="Gráfico">`;
-                html += generateTableHTML(data.labels, data.series1, data.series2);
-                col.innerHTML = html;
-                wrapper.appendChild(col);
-            } else {
-                wrapper.innerHTML = '<div style="padding: 20px; color: #888; width: 100%; text-align: center;">Sem dados disponíveis.</div>';
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            const wrapper = document.getElementById('grid-wrapper');
-            wrapper.innerHTML = `
-                <div class="chart-column single">
-                    <img src="graficos/${fileBase}-1.png?t=${Date.now()}" class="chart-img" onerror="this.style.display='none'">
-                    <div style="text-align:center; padding:10px; color:#888;">Erro ao carregar dados ou imagem indisponível.</div>
-                </div>`;
-        });
-}
-
-function generateTableHTML(labels, series1, series2) {
-    if (!labels || labels.length === 0) return '';
-    
-    let html = '<div style="margin-top: 10px;">';
-    const totalBlocos = Math.ceil(labels.length / COLS_POR_BLOCO);
-
-    for (let b = 0; b < totalBlocos; b++) {
-        const inicio = b * COLS_POR_BLOCO;
-        const fim = Math.min(inicio + COLS_POR_BLOCO, labels.length);
-        
-        const chunkLabels = labels.slice(inicio, fim);
-        const chunkS1 = series1 ? series1.slice(inicio, fim) : [];
-        const chunkS2 = series2 ? series2.slice(inicio, fim) : null;
-
-        html += `<table class="custom-table">`;
-        html += `<thead>`;
-        if (b === 0) {
-            html += `<tr><th class="table-main-title" colspan="${chunkLabels.length}">ÚLTIMAS 24 MEDIÇÕES</th></tr>`;
-        }
-        html += '<tr>' + chunkLabels.map(l => `<th>${l}</th>`).join('') + '</tr>';
-        html += `</thead><tbody>`;
-        
-        if (chunkS1.length > 0) {
-            html += '<tr>' + chunkS1.map(v => `<td>${v ?? ''}</td>`).join('') + '</tr>';
-        }
-        
-        if (chunkS2 && chunkS2.some(v => v !== null && v !== '')) {
-            html += '<tr>' + chunkS2.map(v => `<td>${v ?? ''}</td>`).join('') + '</tr>';
-        }
-        
-        html += `</tbody></table>`;
-    }
-    html += '</div>';
-    return html;
-}
-
-function nextItem() {
-    const tab = tabsConfig[currentTabIdx];
-    currentItemIdx++;
-    if (currentItemIdx >= tab.items.length) {
-        currentItemIdx = 0;
-        currentTabIdx++;
-        if (currentTabIdx >= tabsConfig.length) currentTabIdx = 0;
-    }
-    updateDisplay();
-}
-
-function updateDisplay() {
-    const tab  = tabsConfig[currentTabIdx];
-    const item = tab.items[currentItemIdx];
-
-    document.getElementById('current-section').textContent = tab.section;
-    renderCard(item);
-
-    const dotsContainer = document.getElementById('nav-dots');
-    dotsContainer.innerHTML = '';
-    tab.items.forEach((_, idx) => {
-        const dot = document.createElement('div');
-        dot.className = `dot${idx === currentItemIdx ? ' active' : ''}`;
-        dot.onclick = () => { currentItemIdx = idx; resetRotation(); updateDisplay(); };
-        dotsContainer.appendChild(dot);
-    });
-}
-
-function resetRotation() {
-    clearInterval(rotationTimer);
-    rotationTimer = setInterval(nextItem, 10000); // 10 segundos por card
-}
-
-function initClock() {
-    function tick() {
-        const now = new Date();
-        document.getElementById('clock-date').textContent = now.toLocaleDateString('pt-BR');
-        document.getElementById('clock-time').textContent = now.toLocaleTimeString('pt-BR');
-    }
-    tick();
-    setInterval(tick, 1000);
-}
-
-window.onload = () => {
-    initClock();
-    updateDisplay();
-    resetRotation();
-
-    setInterval(() => {
-        document.getElementById('last-sync').textContent = new Date().toLocaleTimeString('pt-BR');
-        updateDisplay();
-    }, 60000);
-};
-</script>
 </body>
 </html>
