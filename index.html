@@ -382,37 +382,35 @@
 
 <script>
   const CONFIG = {
-    rotateInterval: 20000,
+    rotateInterval: 20000, // 20 segundos por slide
     refreshInterval: 60000,
     itemsPerSlide: 2
   };
 
-  // Estrutura de dados com suporte a múltiplos gráficos por item
+  // Configuração dos processos e mapeamento dos gráficos
+  // chartIndex: qual índice do array "charts" no JSON deve ser usado (0 a 3)
   const processos = [
     {
       nome: 'Estanhagem Eletrolítica',
       items: [
-        { id: 'des', nome: 'Desengraxante Químico', files: ['des'], ref: 26.0, tol: 3.9 },
-        { id: 'ativ5', nome: 'Ativação — Tanque 5', files: ['ativacao-tanque-5'], ref: 8.5, tol: 1.28 },
-        { id: 'ativ6', nome: 'Ativação — Tanque 6', files: ['ativacao-tanque-6'], ref: 8.5, tol: 1.28 },
-        { id: 'niquel', nome: 'Níquel WATT', files: ['niquel-watt', 'niquel-watt-1', 'niquel-watt-2', 'niquel-watt-3', 'niquel-watt-4'], ref: 45.0, tol: 6.75 },
-        { id: 'estaA', nome: 'Estanhagem A', files: ['estanhagem-a', 'estanhagem-a-1', 'estanhagem-a-2'], ref: 32.0, tol: 4.8 },
-        { id: 'estaB', nome: 'Estanhagem B', files: ['estanhagem-b', 'estanhagem-b-1', 'estanhagem-b-2'], ref: 31.5, tol: 4.73 },
-        { id: 'selante', nome: 'Selante Protetivo', files: ['selante'], ref: 18.0, tol: 2.7 }
+        // Exemplo: Se o arquivo 'estanhagem-a.json' tem 4 gráficos no array charts
+        // O primeiro card usa charts[0], o segundo charts[1], etc.
+        // Ajuste os nomes dos arquivos e índices conforme sua estrutura real no GitHub
+        { id: 'estaA_1', nome: 'Estanhagem A - Gráfico 1', file: 'estanhagem-a', chartIndex: 0, ref: 32.0, tol: 4.8 },
+        { id: 'estaA_2', nome: 'Estanhagem A - Gráfico 2', file: 'estanhagem-a', chartIndex: 1, ref: 32.0, tol: 4.8 },
+        { id: 'estaA_3', nome: 'Estanhagem A - Gráfico 3', file: 'estanhagem-a', chartIndex: 2, ref: 32.0, tol: 4.8 },
+        { id: 'estaA_4', nome: 'Estanhagem A - Gráfico 4', file: 'estanhagem-a', chartIndex: 3, ref: 32.0, tol: 4.8 }
+        // Adicione outros itens conforme necessário, apontando para o arquivo e índice corretos
       ]
     },
     {
       nome: 'Processo Nanocerâmico',
       items: [
-        { id: 'des1', nome: '1º Desengraxante', files: ['des1'], ref: 29.0, tol: 4.35 },
-        { id: 'des2', nome: '2º Desengraxante', files: ['des2'], ref: 28.5, tol: 4.28 },
-        { id: 'dec1', nome: 'Decapante 1', files: ['dec1'], ref: 12.0, tol: 1.8 },
-        { id: 'dec2', nome: 'Decapante 2', files: ['dec2'], ref: 11.5, tol: 1.73 },
-        { id: 'nano', nome: 'Nanocerâmico — Conc.', files: ['nano'], ref: 35.0, tol: 5.25 },
-        { id: 'abso', nome: 'Nanocerâmico — Abs.', files: ['abso-nano'], ref: 1.2, tol: 0.18 },
-        { id: 'ph', nome: 'Nanocerâmico — pH', files: ['ph-nano'], ref: 4.5, tol: 0.68 },
-        { id: 'neu', nome: 'Neutralizador', files: ['neu'], ref: 7.0, tol: 1.05 },
-        { id: 'sel', nome: 'Selante Final', files: ['sel'], ref: 22.0, tol: 3.3 }
+        // Exemplo genérico para demonstrar a lógica
+        { id: 'nano_1', nome: 'Nanocerâmico - Conc.', file: 'nano-dados', chartIndex: 0, ref: 35.0, tol: 5.25 },
+        { id: 'nano_2', nome: 'Nanocerâmico - Abs.', file: 'nano-dados', chartIndex: 1, ref: 1.2, tol: 0.18 },
+        { id: 'nano_3', nome: 'Nanocerâmico - pH', file: 'nano-dados', chartIndex: 2, ref: 4.5, tol: 0.68 },
+        { id: 'nano_4', nome: 'Nanocerâmico - Temp', file: 'nano-dados', chartIndex: 3, ref: 25.0, tol: 2.0 }
       ]
     }
   ];
@@ -421,41 +419,48 @@
   let dataCache = {};
 
   // Carregar dados do arquivo JSON
-  async function carregarDados(fileId) {
-    if (dataCache[fileId]) {
-      return dataCache[fileId];
+  async function carregarDados(fileName) {
+    if (dataCache[fileName]) {
+      return dataCache[fileName];
     }
 
     try {
-      const response = await fetch(`dados/${fileId}.json`);
-      if (!response.ok) throw new Error(`Arquivo não encontrado: ${fileId}.json`);
+      // Adiciona timestamp para evitar cache do navegador se necessário, 
+      // mas o cache interno da variável dataCache já resolve performance
+      const response = await fetch(`dados/${fileName}.json?t=${Date.now()}`);
+      if (!response.ok) throw new Error(`Arquivo não encontrado: ${fileName}.json`);
       
       const data = await response.json();
-      dataCache[fileId] = data;
+      dataCache[fileName] = data;
       return data;
     } catch (error) {
-      console.warn(`Erro ao carregar dados/${fileId}.json:`, error);
+      console.error(`Erro ao carregar dados/${fileName}.json:`, error);
       return null;
     }
   }
 
-  // Extrair últimas 24 medições do JSON
-  function extrairMedicoes(jsonData) {
-    if (!jsonData || !jsonData.charts || jsonData.charts.length === 0) {
+  // Extrair últimas 24 medições do JSON baseado no índice do gráfico
+  function extrairMedicoes(jsonData, chartIndex) {
+    if (!jsonData || !jsonData.charts || jsonData.charts.length <= chartIndex) {
+      console.warn(`Gráfico no índice ${chartIndex} não encontrado.`);
       return [];
     }
 
-    const chart = jsonData.charts[0];
+    const chart = jsonData.charts[chartIndex];
     const labels = chart.labels || [];
     const series = chart.series1 || [];
 
+    // Garante que ambos tenham o mesmo tamanho
+    const count = Math.min(labels.length, series.length);
+    
+    // Pega os últimos 24 itens
+    const startIndex = Math.max(0, count - 24);
     const medicoes = [];
-    const ultimasIndices = Math.max(0, labels.length - 24);
 
-    for (let i = ultimasIndices; i < labels.length; i++) {
+    for (let i = startIndex; i < count; i++) {
       medicoes.push({
         data: labels[i],
-        valor: series[i] ? parseFloat(series[i].replace(',', '.')) : null
+        valor: series[i] ? parseFloat(String(series[i]).replace(',', '.')) : null
       });
     }
 
@@ -466,17 +471,24 @@
   function getStatusClass(valor, ref, tol) {
     if (valor === null) return 'val-warn';
     const diff = Math.abs(valor - ref);
-    if (diff <= tol * 0.5) return 'val-ok'; // Normal
-    if (diff <= tol) return 'val-warn'; // Alerta
-    return 'val-crit'; // Crítico
+    if (diff <= tol * 0.5) return 'val-ok'; 
+    if (diff <= tol) return 'val-warn'; 
+    return 'val-crit'; 
   }
 
   // Renderizar tabela de medições
   function renderTabela(medicoes, ref, tol) {
+    if (medicoes.length === 0) return '<div style="text-align:center; padding:10px;">Sem dados recentes</div>';
+
     const colsPerRow = 12;
     let html = '<table class="analise-table">';
 
-    for (let row = 0; row < 2; row++) {
+    // Precisamos dividir em até 2 linhas para caber bem
+    // Se tiver menos de 12, faz uma linha só centralizada se quiser, mas aqui mantemos a lógica de blocos
+    
+    const totalRows = Math.ceil(medicoes.length / colsPerRow);
+    
+    for (let row = 0; row < totalRows; row++) {
       const start = row * colsPerRow;
       const end = start + colsPerRow;
       const chunk = medicoes.slice(start, end);
@@ -500,24 +512,29 @@
     return html;
   }
 
-  // Criar card individual para um arquivo de gráfico específico
-  async function criarCard(item, fileIndex) {
-    const fileName = item.files[fileIndex];
-    const totalFiles = item.files.length;
-    const displayName = totalFiles > 1 ? `${item.nome} (${fileIndex + 1}/${totalFiles})` : item.nome;
-
+  // Criar card individual
+  async function criarCard(itemConfig) {
+    const { file, chartIndex, nome, ref, tol } = itemConfig;
+    
     // Carregar dados reais
-    const jsonData = await carregarDados(fileName);
-    const medicoes = extrairMedicoes(jsonData);
-    const tabelaHtml = renderTabela(medicoes, item.ref, item.tol);
+    const jsonData = await carregarDados(file);
+    const medicoes = extrairMedicoes(jsonData, chartIndex);
+    const tabelaHtml = renderTabela(medicoes, ref, tol);
+
+    // Nome do arquivo da imagem do gráfico (ajuste a lógica de nomenclatura se necessário)
+    // Assumindo que a imagem segue o padrão graf-[nome-do-arquivo].png
+    // Se cada gráfico no JSON tiver uma imagem diferente, você precisaria mapear isso também.
+    // Aqui assumimos uma imagem por processo/arquivo ou usamos um placeholder dinâmico.
+    const imgName = `graf-${file}.png`; 
 
     return `
       <div class="card">
-        <div class="card-header">${displayName}</div>
+        <div class="card-header">${nome}</div>
         <div class="card-body">
           <div class="graph-container">
-            <div class="graph-placeholder">📊 Gráfico: ${fileName}.png</div>
-            <img src="graficos/graf-${fileName}.png?t=${Date.now()}"
+            <div class="graph-placeholder">📊 Carregando Gráfico...</div>
+            <img src="graficos/${imgName}?t=${Date.now()}"
+                 alt="Gráfico ${nome}"
                  onerror="this.style.display='none'"
                  onload="this.previousElementSibling.style.display='none'">
           </div>
@@ -538,53 +555,58 @@
     let allSlides = [];
     let slideIndex = 0;
 
-    // Criar slides para cada processo
+    // Coletar todos os items expandidos de todos os processos
+    let allItems = [];
+    
     for (const processo of processos) {
-      const items = processo.items;
-      
-      // Expandir items para incluir cada arquivo como um item separado
-      let expandedItems = [];
-      items.forEach(item => {
-        item.files.forEach((file, fileIndex) => {
-          expandedItems.push({ ...item, fileIndex, totalFiles: item.files.length });
-        });
+      // Para cada item configurado no processo (que já inclui o chartIndex)
+      processo.items.forEach(item => {
+        allItems.push({ ...item, processoNome: processo.nome });
       });
+    }
 
-      const slidesCount = Math.ceil(expandedItems.length / CONFIG.itemsPerSlide);
+    if (allItems.length === 0) {
+      track.innerHTML = '<div style="padding:20px; text-align:center;">Nenhum dado configurado para exibição.</div>';
+      return;
+    }
 
-      for (let i = 0; i < slidesCount; i++) {
-        const slide = document.createElement('div');
-        slide.className = 'carousel-slide';
+    const slidesCount = Math.ceil(allItems.length / CONFIG.itemsPerSlide);
 
-        // Adicionar título do processo
-        const titleDiv = document.createElement('div');
-        titleDiv.style.gridColumn = '1 / -1';
-        titleDiv.style.marginBottom = '0';
-        titleDiv.innerHTML = `<div class="secao-titulo">${processo.nome}</div>`;
-        slide.appendChild(titleDiv);
+    for (let i = 0; i < slidesCount; i++) {
+      const slide = document.createElement('div');
+      slide.className = 'carousel-slide';
 
-        // Adicionar cards do slide
-        const start = i * CONFIG.itemsPerSlide;
-        const slideItems = expandedItems.slice(start, start + CONFIG.itemsPerSlide);
+      // Determinar qual processo pertence ao primeiro item deste slide para o título
+      // Ou agrupar por processo se preferir. Aqui vamos colocar o título do processo do primeiro item.
+      const startItem = allItems[i * CONFIG.itemsPerSlide];
+      
+      const titleDiv = document.createElement('div');
+      titleDiv.style.gridColumn = '1 / -1';
+      titleDiv.style.marginBottom = '5px';
+      titleDiv.innerHTML = `<div class="secao-titulo">${startItem.processoNome}</div>`;
+      slide.appendChild(titleDiv);
 
-        for (const item of slideItems) {
-          const cardHtml = await criarCard(item, item.fileIndex);
-          const cardDiv = document.createElement('div');
-          cardDiv.innerHTML = cardHtml;
-          slide.appendChild(cardDiv.firstElementChild);
-        }
+      // Adicionar cards do slide
+      const end = (i + 1) * CONFIG.itemsPerSlide;
+      const slideItems = allItems.slice(i * CONFIG.itemsPerSlide, end);
 
-        track.appendChild(slide);
-        allSlides.push(slide);
-
-        // Criar dot de navegação
-        const dot = document.createElement('div');
-        dot.className = `nav-dot ${slideIndex === 0 ? 'active' : ''}`;
-        dot.onclick = () => goToSlide(slideIndex);
-        nav.appendChild(dot);
-
-        slideIndex++;
+      for (const item of slideItems) {
+        const cardHtml = await criarCard(item);
+        const cardDiv = document.createElement('div');
+        cardDiv.innerHTML = cardHtml;
+        slide.appendChild(cardDiv.firstElementChild);
       }
+
+      track.appendChild(slide);
+      allSlides.push(slide);
+
+      // Criar dot de navegação
+      const dot = document.createElement('div');
+      dot.className = `nav-dot ${slideIndex === 0 ? 'active' : ''}`;
+      dot.onclick = () => goToSlide(slideIndex);
+      nav.appendChild(dot);
+
+      slideIndex++;
     }
 
     // Rotação automática
@@ -599,8 +621,10 @@
   function goToSlide(index) {
     const track = document.getElementById('track-main');
     const dots = document.querySelectorAll('#nav-main .nav-dot');
-    track.style.transform = `translateX(-${index * 100}%)`;
-    dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    if(track && dots.length > 0) {
+        track.style.transform = `translateX(-${index * 100}%)`;
+        dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    }
   }
 
   // Atualizar relógio e data
