@@ -1,816 +1,757 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>WEG Banhos Industriais | TV Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            /* Paleta WEG TV */
-            --weg-blue: #003f6f;
-            --weg-blue-light: #0066cc;
-            --weg-orange: #e67e22;
-            --weg-orange-light: #ff8c42;
-            --weg-dark: #1a2a3a;
-            --weg-dark-light: #2c3e50;
-            --weg-gray: #f8f9fa;
-            --weg-gray-light: #e9ecef;
-            --weg-gray-dark: #6c757d;
-            --weg-white: #ffffff;
-            --weg-shadow: 0 12px 40px rgba(0, 63, 111, 0.15);
-            --weg-glow: 0 0 30px rgba(230, 126, 34, 0.4);
-            --success: #28a745;
-            --warning: #ffc107;
-            --danger: #dc3545;
-        }
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="60">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Controle de Banhos Químicos - JGS | WEG</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Paleta WEG - Tema Claro */
+      --weg-blue: #00458F;
+      --weg-blue-dark: #003366;
+      --weg-blue-light: #E6F0FA;
+      --weg-orange: #E67E22;
+      --weg-gray-50: #F9FAFB;
+      --weg-gray-100: #F3F4F6;
+      --weg-gray-200: #E5E7EB;
+      --weg-gray-300: #D1D5DB;
+      --weg-gray-500: #6B7280;
+      --weg-gray-700: #374151;
+      --weg-gray-900: #111827;
+      --success: #059669;
+      --success-light: #D1FAE5;
+      --warning: #D97706;
+      --warning-light: #FEF3C7;
+      --danger: #DC2626;
+      --danger-light: #FEE2E2;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow: 0 4px 6px rgba(0,0,0,0.08);
+      --shadow-lg: 0 10px 25px rgba(0,69,143,0.12);
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        html, body {
-            height: 100vh;
-            overflow: hidden;
-            font-feature-settings: "pnum" 1, "tnum" 1;
-        }
+    body {
+      background: var(--weg-gray-50);
+      color: var(--weg-gray-900);
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-            color: var(--weg-white);
-            display: flex;
-            flex-direction: column;
-            animation: ambient 20s ease-in-out infinite alternate;
-        }
+    /* Header */
+    header {
+      background: white;
+      border-bottom: 4px solid var(--weg-blue);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
 
-        @keyframes ambient {
-            0% { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); }
-            50% { background: linear-gradient(135deg, #1a2a3a 0%, #2c3e50 50%, #34495e 100%); }
-            100% { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); }
-        }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
 
-        /* Header - Sempre visível e grande */
-        header {
-            background: rgba(26, 42, 58, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 24px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: var(--weg-shadow);
-            border-bottom: 4px solid var(--weg-orange);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+    .logo-badge {
+      background: linear-gradient(135deg, var(--weg-blue), var(--weg-blue-dark));
+      color: white;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.5px;
+    }
 
-        .logo {
-            font-weight: 800;
-            font-size: 2.4rem;
-            letter-spacing: -0.03em;
-            background: linear-gradient(135deg, var(--weg-orange), var(--weg-orange-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 4px 12px rgba(230, 126, 34, 0.5);
-        }
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--weg-gray-900);
+      letter-spacing: 0.3px;
+    }
 
-        .logo i { font-size: 2.8rem; margin-right: 12px; }
+    header h1 span {
+      color: var(--weg-blue);
+      font-weight: 700;
+    }
 
-        .title-block h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
-        }
+    .clock-block {
+      text-align: right;
+    }
 
-        .info-pill {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            padding: 16px 28px;
-            border-radius: 40px;
-            font-family: 'SF Mono', Monaco, monospace;
-            font-weight: 600;
-            font-size: 1.3rem;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            min-width: 280px;
-            text-align: center;
-        }
+    #relogio {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--weg-blue-dark);
+      font-variant-numeric: tabular-nums;
+      font-family: 'Inter', monospace;
+      letter-spacing: -0.5px;
+    }
 
-        /* Main - Fullscreen */
-        main {
-            flex: 1;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
+    #contador {
+      font-size: 0.8rem;
+      color: var(--weg-gray-500);
+      margin-top: 2px;
+      font-weight: 500;
+    }
 
-        .section-badge {
-            background: linear-gradient(135deg, var(--weg-blue), var(--weg-blue-light));
-            color: var(--weg-white);
-            padding: 20px 32px;
-            font-weight: 800;
-            font-size: 1.6rem;
-            width: fit-content;
-            border-radius: 20px;
-            margin-bottom: 32px;
-            box-shadow: var(--weg-shadow);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            animation: badgeFloat 6s ease-in-out infinite;
-        }
+    #contador span {
+      color: var(--weg-blue);
+      font-weight: 700;
+    }
 
-        @keyframes badgeFloat {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
-        }
+    /* Seções */
+    .secao {
+      padding: 24px 32px 16px;
+    }
 
-        .dashboard-scroll {
-            flex: 1;
-            overflow: hidden;
-        }
+    .secao-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--weg-gray-200);
+    }
 
-        /* Card Fullscreen TV */
-        .card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(30px);
-            border-radius: 32px;
-            box-shadow: var(--weg-shadow);
-            height: 100%;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            overflow: hidden;
-            animation: cardEntry 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            display: flex;
-            flex-direction: column;
-        }
+    .secao-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--weg-blue);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
 
-        @keyframes cardEntry {
-            0% { opacity: 0; transform: scale(0.95) translateY(50px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
+    .secao-titulo {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--weg-blue-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
 
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 40px 48px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(248, 249, 250, 0.8));
-            border-bottom: 4px solid var(--weg-blue);
-            flex-shrink: 0;
-        }
+    .secao-subtitulo {
+      font-size: 0.85rem;
+      color: var(--weg-gray-500);
+      font-weight: 500;
+      margin-left: 44px;
+      margin-top: 4px;
+    }
 
-        .card-title {
-            font-size: 2.8rem;
-            font-weight: 800;
-            color: var(--weg-blue);
-            letter-spacing: -0.02em;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            max-width: 70%;
-        }
+    /* Grid de Cards */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 20px;
+    }
 
-        .card-subtitle {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: var(--weg-orange);
-            margin-top: 8px;
-        }
+    /* Card */
+    .card {
+      background: white;
+      border: 1px solid var(--weg-gray-200);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: all 0.25s ease;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+    }
 
-        .status {
-            font-weight: 700;
-            font-size: 1.4rem;
-            padding: 16px 32px;
-            border-radius: 40px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-            animation: statusPulse 2s infinite;
-        }
+    .card:hover {
+      border-color: var(--weg-blue);
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
 
-        @keyframes statusPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
+    .card-header {
+      background: var(--weg-gray-100);
+      padding: 12px 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--weg-gray-700);
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--weg-gray-200);
+    }
 
-        .status-ok { background: linear-gradient(135deg, #d4edda, #c3e6cb); color: var(--success); }
-        .status-warn { background: linear-gradient(135deg, #fff3cd, #ffeaa7); color: #856404; }
-        .status-crit { background: linear-gradient(135deg, #f8d7da, #f5c6cb); color: var(--danger); }
+    .card-header::before {
+      content: '';
+      width: 4px;
+      height: 16px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
 
-        /* Charts Grid TV - Proporção fixa 50/50 vertical */
-        .charts-grid {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            gap: 0;
-            overflow: hidden;
-        }
+    .card-header.nano::before { background: var(--weg-blue); }
+    .card-header.esta::before { background: var(--success); }
 
-        /* Gráficos ocupam 50% da altura */
-        .charts-section {
-            flex: 0 0 50%;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
-            gap: 0;
-            overflow: hidden;
-        }
+    .card-header .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      margin-left: auto;
+    }
 
-        /* Se houver apenas 1 gráfico */
-        .charts-section:has(.chart-card:only-child) {
-            grid-template-columns: 1fr;
-        }
+    .card-header.esta .status-dot { background: var(--success); }
+    .card-header.warn .status-dot { background: var(--warning); }
+    .card-header.crit .status-dot { background: var(--danger); }
 
-        /* Tabela ocupa os outros 50% */
-        .table-section {
-            flex: 0 0 50%;
-            overflow: auto;
-        }
+    .card-image-wrap {
+      flex: 1;
+      min-height: 200px;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+    }
 
-        .chart-card {
-            background: transparent;
-            border-radius: 0;
-            border: none;
-            box-shadow: none;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
+    .card img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      border-radius: var(--radius-sm);
+      transition: opacity 0.3s ease;
+    }
 
-        .chart-title {
-            background: rgba(0, 63, 111, 0.9);
-            color: var(--weg-white);
-            padding: 16px 24px;
-            font-weight: 700;
-            font-size: 1.2rem;
-            text-align: center;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border-bottom: none;
-            flex-shrink: 0;
-        }
+    .card .erro {
+      padding: 32px 24px;
+      text-align: center;
+      color: var(--weg-gray-500);
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: none;
+    }
 
-        .chart-container {
-            flex: 1;
-            position: relative;
-            background: rgba(255, 255, 255, 0.95);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            padding: 20px;
-        }
+    .card .erro i {
+      font-size: 2rem;
+      color: var(--warning);
+      margin-bottom: 12px;
+      display: block;
+    }
 
-        .chart-img {
-            max-width: 100%;
-            max-height: 100%;
-            width: auto;
-            height: auto;
-            object-fit: contain;
-            opacity: 0;
-            animation: fadeIn 1.5s ease-in-out forwards;
-        }
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px 32px;
+      font-size: 0.85rem;
+      color: var(--weg-gray-500);
+      border-top: 1px solid var(--weg-gray-200);
+      margin-top: 24px;
+      background: white;
+      font-weight: 500;
+    }
 
-        .chart-img[src] { opacity: 1; }
+    footer span {
+      color: var(--weg-blue);
+      font-weight: 600;
+    }
 
-        @keyframes fadeIn {
-            to { opacity: 1; transform: scale(1); }
-        }
+    /* Barra de progresso de atualização */
+    .refresh-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--weg-blue), var(--weg-orange));
+      animation: refreshProgress 60s linear infinite;
+      z-index: 1000;
+      opacity: 0.8;
+    }
 
-        /* Table Fullscreen */
-        .table-wrap {
-            height: 100%;
-            overflow: auto;
-            padding: 0;
-        }
+    @keyframes refreshProgress {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
 
-        .custom-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.95rem;
-            border-radius: 0;
-        }
+    /* Indicador de status online */
+    .online-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      color: var(--success);
+      font-weight: 600;
+      margin-left: 12px;
+    }
 
-        .custom-table th,
-        .custom-table td {
-            padding: 12px 8px;
-            text-align: center;
-            border-right: 1px solid rgba(0, 63, 111, 0.15);
-            border-bottom: 1px solid rgba(0, 63, 111, 0.15);
-            vertical-align: middle;
-        }
+    .online-indicator::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
 
-        .custom-table th {
-            background: linear-gradient(135deg, var(--weg-blue), var(--weg-blue-light));
-            color: var(--weg-white);
-            font-weight: 700;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.9); }
+    }
 
-        .custom-table thead tr:first-child th {
-            font-size: 1.1rem;
-            padding: 16px;
-        }
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .grid { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+      header { padding: 14px 24px; }
+      .secao { padding: 20px 24px 12px; }
+    }
 
-        /* Navigation - Auto, sem interação */
-        .nav-dots {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            padding: 24px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border-radius: 50px;
-            width: fit-content;
-            margin: 32px auto 0;
-            box-shadow: var(--weg-shadow);
-        }
+    @media (max-width: 768px) {
+      .grid { grid-template-columns: 1fr; }
+      header { flex-direction: column; gap: 12px; text-align: center; }
+      .clock-block { text-align: center; }
+      .secao-subtitulo { margin-left: 0; }
+    }
 
-        .dot {
-            width: 20px;
-            height: 20px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transition: all 0.5s ease;
-            cursor: default;
-        }
+    /* Utilitários */
+    .text-blue { color: var(--weg-blue); }
+    .text-success { color: var(--success); }
+    .text-warning { color: var(--warning); }
+    .text-danger { color: var(--danger); }
+    
+    .bg-blue-light { background: var(--weg-blue-light); }
+    .bg-success-light { background: var(--success-light); }
+    .bg-warning-light { background: var(--warning-light); }
+    .bg-danger-light { background: var(--danger-light); }
 
-        .dot.active {
-            background: var(--weg-orange);
-            transform: scale(1.6);
-            box-shadow: var(--weg-glow);
-            animation: dotPulse 1.5s infinite;
-        }
+    /* Animação de entrada */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        @keyframes dotPulse {
-            0%, 100% { box-shadow: var(--weg-glow); }
-            50% { box-shadow: 0 0 40px rgba(230, 126, 34, 0.8); }
-        }
-
-        /* Footer */
-        footer {
-            background: rgba(26, 42, 58, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 24px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 1.2rem;
-            font-weight: 600;
-            border-top: 2px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .pulse {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            background: var(--success);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-            margin-right: 12px;
-            box-shadow: 0 0 20px rgba(40, 167, 69, 0.8);
-        }
-
-        @keyframes pulse {
-            0% { opacity: 0.4; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.3); }
-            100% { opacity: 0.4; transform: scale(1); }
-        }
-
-        /* Loader TV */
-        .loader {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 24px;
-            font-size: 1.6rem;
-            color: var(--weg-blue);
-            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(248,249,250,0.8));
-        }
-
-        .loader i {
-            font-size: 4rem;
-            color: var(--weg-orange);
-            animation: spin 2s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* TV Fullscreen Overrides */
-        @media screen and (min-width: 1920px) {
-            .card-title { font-size: 3.2rem; }
-            .section-badge { font-size: 1.8rem; }
-            .custom-table { font-size: 1rem; }
-            .custom-table th { font-size: 0.9rem; }
-        }
-
-        /* Kiosk Mode - Remove todos os cursores */
-        * { cursor: none !important; }
-        button, [onclick] { pointer-events: none !important; }
-    </style>
+    .card { animation: fadeInUp 0.4s ease-out forwards; }
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.1s; }
+    .card:nth-child(3) { animation-delay: 0.15s; }
+    .card:nth-child(4) { animation-delay: 0.2s; }
+    .card:nth-child(5) { animation-delay: 0.25s; }
+    .card:nth-child(6) { animation-delay: 0.3s; }
+    .card:nth-child(7) { animation-delay: 0.35s; }
+    .card:nth-child(8) { animation-delay: 0.4s; }
+    .card:nth-child(9) { animation-delay: 0.45s; }
+  </style>
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <i class="fas fa-flask"></i>
-            WEG<span>BANHOS</span>
-        </div>
-        <div class="title-block">
-            <h1>Monitoramento Analítico</h1>
-        </div>
-        <div class="info-pill">
-            <span id="clock-date"></span><br>
-            <span id="clock-time"></span>
-        </div>
-    </header>
 
-    <main>
-        <div class="section-badge" id="current-section">Iniciando...</div>
-        <div class="dashboard-scroll" id="dashboard-content"></div>
-        <div class="nav-dots" id="nav-dots"></div>
-    </main>
+<div class="refresh-bar" title="Próxima atualização em 60s"></div>
 
-    <footer>
-        <div>
-            <span class="pulse"></span>
-            SISTEMA ONLINE
-        </div>
-        <div>
-            Última sincronia: <span id="last-sync">--:--:--</span>
-        </div>
-    </footer>
+<header>
+  <div class="header-brand">
+    <div class="logo-badge">WEG</div>
+    <h1>Controle de Banhos Químicos &nbsp;<span>JGS</span></h1>
+    <div class="online-indicator">Online</div>
+  </div>
+  <div class="clock-block">
+    <div id="relogio">--:--:--</div>
+    <div id="contador">Atualiza em <span id="seg">60</span>s</div>
+  </div>
+</header>
 
-    <script>
-        const tabsConfig = [
-            {
-                section: "ESTANHAGEM ELETROLÍTICA",
-                items: [
-                    { title: "Desengraxante Químico", fileBase: "graf-des", status: "OK" },
-                    { title: "Ativação - Tanque 5", fileBase: "graf-ativacao-tanque-5", status: "Verificar" },
-                    { title: "Ativação - Tanque 6", fileBase: "graf-ativacao-tanque-6", status: "OK" },
-                    { title: "Níquel WATT", fileBase: "graf-niquel-watt", status: "Estável" },
-                    { title: "Estanhagem A", fileBase: "graf-estanhagem-a", status: "Vencido" },
-                    { title: "Selante Protetivo", fileBase: "graf-selante", status: "OK" },
-                    { title: "Estanhagem B", fileBase: "graf-estanhagem-b", status: "OK" }
-                ]
-            },
-            {
-                section: "NANOCERÂMICO",
-                items: [
-                    { title: "1º Desengraxante", fileBase: "graf-des1", status: "OK" },
-                    { title: "2º Desengraxante", fileBase: "graf-des2", status: "OK" },
-                    { title: "Decapante 1", fileBase: "graf-dec1", status: "Atenção" },
-                    { title: "Decapante 2", fileBase: "graf-dec2", status: "OK" },
-                    { title: "Nanocerâmico - Concentração", fileBase: "graf-nano", status: "Crítico" },
-                    { title: "Nanocerâmico - Absorbância", fileBase: "graf-abso-nano", status: "OK" },
-                    { title: "Nanocerâmico - pH", fileBase: "graf-ph-nano", status: "OK" },
-                    { title: "Neutralizador", fileBase: "graf-neu", status: "OK" },
-                    { title: "Selante Final", fileBase: "graf-sel", status: "OK" }
-                ]
+<!-- ===================== NANOCERÂMICO ===================== -->
+<div class="secao">
+  <div class="secao-header">
+    <div class="secao-icon">N</div>
+    <div>
+      <div class="secao-titulo">Nanocerâmico</div>
+      <div class="secao-subtitulo">Processo de conversão química • Controle de concentração</div>
+    </div>
+  </div>
+  
+  <div class="grid" id="grid-nano">
+    <div class="card">
+      <div class="card-header nano">1º Desengraxante <span class="status-dot"></span></div>
+      <div class="card-image-wrap">
+        <img src="graficos/graf-des1.png" 
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
+             alt="Gráfico 1º Desengraxante">
+      </div>
+      <div class="erro" style="display:none">
+        <i>⚠</i>
+        Aguardando dados...
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header nano">2º Desengraxante <span class="status-dot"></span></div>
+      <div class="card-image-wrap">
+        <img src="graficos/graf-des2.png" 
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
+             alt="Gráfico 2º Desengraxante">
+      </div>
+      <div class="erro" style="display:none">
+        <i>⚠</i>
+        Aguardando dados...
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header nano">Decapante 1 <span class="status-dot"></span></div>
+      <div class="card-image-wrap">
+        <img src="graficos/graf-dec1.png" 
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
+             alt="Gráfico Decapante 1">
+      </div>
+      <div class="erro" style="display:none">
+        <i>⚠</i>
+        Aguardando dados...
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header nano">Decapante 2 <span class="status-dot"></span></div>
+      <div class="card-image-wrap">
+        <img src="graficos/graf-dec2.png" 
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
+             alt="Gráfico Decapante 2">
+      </div>
+      <div class="erro" style="display:none">
+        <i>⚠</i>
+        Aguardando dados...
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header nano">Nanocerâmico — Concentração <span class="status-dot"></span></div>
+      <div class="card-image-wrap">
+        <img src="graficos/graf-nano.png" 
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
+             alt="Gráfico Nanocerâmico Concentração">
+      </div>
+      <div class="erro" style="display:none">
+        <i>⚠</i>
+        Aguardando dados...
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header nano">Nanocerâmico — Absorção <span class="status-dot"></span></div>
+      <div class="card-image-wrap">
+        <img src="graficos/graf-abso-nano.png" 
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
+             alt="Gráfico Nanocerâmico Absorção">
+      </div>
+      <div class="erro" style="display:none">
+        <i>⚠</i>
+        Aguardando dados...
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header nano">Nanocerâmico — pH <span class="status-dot"></span></div>
+      <div class="card-image-wrap">
+        <img src="graficos/graf-ph-nano.png" 
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
+             alt="Gráfico Nanocerâmico pH">
+      </div>
+      <div class="erro" style="display:none">
+        <i>⚠</i>
+        Aguardando dados...
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header nano">Neutralizador <span class="status-dot"></span></div>
+      <div class="card-image-wrap">
+        <img src="graficos/graf-neu.png" 
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
+             alt="Gráfico Neutralizador">
+      </div>
+      <div class="erro" style="display:none">
+        <i>⚠</i>
+        Aguardando dados...
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header nano">Selante Final <span class="status-dot"></span></div>
+      <div class="card-image-wrap">
+        <img src="graficos/graf-sel.png" 
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
+             alt="Gráfico Selante">
+      </div>
+      <div class="erro" style="display:none">
+        <i>⚠</i>
+        Aguardando dados...
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== ESTANHAGEM ===================== -->
+<div class="secao">
+  <div class="secao-header">
+    <div class="secao-icon" style="background:var(--success)">E</div>
+    <div>
+      <div class="secao-titulo">Estanhagem Eletrolítica</div>
+      <div class="secao-subtitulo">Processo de deposição • Controle de parâmetros do banho</div>
+    </div>
+  </div>
+  
+  <div class="grid" id="grid-esta">
+    <div class="card">
+      <div class="card-header esta">Desengraxante Químico <span class="status-dot"></span></div>
+      <div class="card-image-wrap">
+        <img src="graficos/graf-des.png" 
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
+             alt="Gráfico Desengraxante">
+      </div>
+      <div class="erro" style="display:none">
+        <i>⚠</i>
+        Aguardando dados...
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header esta">Ativação — Tanque 5 <span class="status-dot"></span></div>
+      <div class="card-image-wrap">
+        <img src="graficos/graf-ativacao-tanque-5.png" 
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
+             alt="Gráfico Ativação Tanque 5">
+      </div>
+      <div class="erro" style="display:none">
+        <i>⚠</i>
+        Aguardando dados...
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header esta">Ativação — Tanque 6 <span class="status-dot"></span></div>
+      <div class="card-image-wrap">
+        <img src="graficos/graf-ativacao-tanque-6.png" 
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
+             alt="Gráfico Ativação Tanque 6">
+      </div>
+      <div class="erro" style="display:none">
+        <i>⚠</i>
+        Aguardando dados...
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header esta">Níquel WATT <span class="status-dot"></span></div>
+      <div class="card-image-wrap">
+        <img src="graficos/graf-niquel-watt.png" 
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
+             alt="Gráfico Níquel WATT">
+      </div>
+      <div class="erro" style="display:none">
+        <i>⚠</i>
+        Aguardando dados...
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header esta">Estanhagem A <span class="status-dot"></span></div>
+      <div class="card-image-wrap">
+        <img src="graficos/graf-estanhagem-a.png" 
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
+             alt="Gráfico Estanhagem A">
+      </div>
+      <div class="erro" style="display:none">
+        <i>⚠</i>
+        Aguardando dados...
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header esta">Estanhagem B <span class="status-dot"></span></div>
+      <div class="card-image-wrap">
+        <img src="graficos/graf-estanhagem-b.png" 
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
+             alt="Gráfico Estanhagem B">
+      </div>
+      <div class="erro" style="display:none">
+        <i>⚠</i>
+        Aguardando dados...
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header esta">Selante Protetivo <span class="status-dot"></span></div>
+      <div class="card-image-wrap">
+        <img src="graficos/graf-selante.png" 
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" 
+             alt="Gráfico Selante Protetivo">
+      </div>
+      <div class="erro" style="display:none">
+        <i>⚠</i>
+        Aguardando dados...
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <i class="text-success">●</i> Sistema operacional &nbsp;|&nbsp; 
+  Atualização automática: 60s &nbsp;|&nbsp; 
+  JGS - Controle de Processos &nbsp;|&nbsp; 
+  Última carga: <span id="ultima">--:--:--</span>
+</footer>
+
+<script>
+  // ============================================
+  // RELÓGIO EM TEMPO REAL
+  // ============================================
+  function atualizarRelogio() {
+    const agora = new Date();
+    const h = String(agora.getHours()).padStart(2,'0');
+    const m = String(agora.getMinutes()).padStart(2,'0');
+    const s = String(agora.getSeconds()).padStart(2,'0');
+    
+    document.getElementById('relogio').textContent = h+':'+m+':'+s;
+    document.getElementById('ultima').textContent = h+':'+m+':'+s;
+  }
+  setInterval(atualizarRelogio, 1000);
+  atualizarRelogio();
+
+  // ============================================
+  // CONTADOR REGRESSIVO DE ATUALIZAÇÃO
+  // ============================================
+  let seg = 60;
+  setInterval(function() {
+    seg--;
+    if (seg < 0) seg = 60;
+    document.getElementById('seg').textContent = seg;
+    
+    // Efeito visual no contador quando está perto de atualizar
+    const contadorEl = document.getElementById('seg');
+    if (seg <= 5) {
+      contadorEl.style.color = 'var(--weg-orange)';
+      contadorEl.style.fontWeight = '700';
+    } else {
+      contadorEl.style.color = 'var(--weg-blue)';
+      contadorEl.style.fontWeight = '700';
+    }
+  }, 1000);
+
+  // ============================================
+  // RECARREGAMENTO INTELIGENTE DE IMAGENS
+  // Evita "piscar" da página inteira
+  // ============================================
+  function recarregarImagens() {
+    const imgs = document.querySelectorAll('.card-image-wrap img');
+    imgs.forEach(function(img) {
+      const srcBase = img.src.split('?')[0];
+      // Adiciona timestamp para forçar recarga do cache
+      img.src = srcBase + '?t=' + Date.now();
+      
+      // Reset do estado de erro caso a imagem volte a funcionar
+      img.onerror = function() {
+        this.style.display = 'none';
+        if (this.nextElementSibling?.classList.contains('erro')) {
+          this.nextElementSibling.style.display = 'flex';
+        }
+      };
+      img.onload = function() {
+        this.style.display = 'block';
+        if (this.nextElementSibling?.classList.contains('erro')) {
+          this.nextElementSibling.style.display = 'none';
+        }
+      };
+    });
+    
+    // Atualiza indicador de última carga
+    atualizarRelogio();
+  }
+  
+  // Primeira recarga após 5 segundos (para dar tempo do DOM carregar)
+  setTimeout(recarregarImagens, 5000);
+  // Recarga periódica a cada 60 segundos
+  setInterval(recarregarImagens, 60000);
+
+  // ============================================
+  // PREVENÇÃO DE SLEEP/SCREENSAVER (para TV)
+  // ============================================
+  function keepAwake() {
+    // Tenta usar a Wake Lock API se disponível
+    if ('wakeLock' in navigator) {
+      let wakeLock = null;
+      
+      const requestWakeLock = async () => {
+        try {
+          wakeLock = await navigator.wakeLock.request('screen');
+          wakeLock.addEventListener('release', () => {
+            // Tenta reacquirir se for liberado
+            if (document.visibilityState === 'visible') {
+              requestWakeLock();
             }
-        ];
-
-        const COLS_PER_ROW = 12;
-        const MAX_CHARTS_PER_CARD = 2;
-        let currentTabIdx = 0, currentItemIdx = 0, currentPageIdx = 0, rotationTimer;
-        let expandedItems = []; // Armazena os itens expandidos
-
-        function getStatusClass(status) {
-            if (["OK", "Estável", "Em Conformidade"].includes(status)) return "ok";
-            if (["Atenção", "Verificar", "Vencido"].includes(status)) return "warn";
-            return "crit";
+          });
+        } catch (err) {
+          console.log('Wake Lock não suportado:', err);
         }
-
-        function generateTableHTML(labels, series1, series2) {
-            if (!labels || !labels.length) return '';
-
-            const row1Labels = labels.slice(0, COLS_PER_ROW);
-            const row1Values = series1.slice(0, COLS_PER_ROW);
-            const row2Labels = labels.slice(COLS_PER_ROW, COLS_PER_ROW * 2);
-            const row2Values = series1.slice(COLS_PER_ROW, COLS_PER_ROW * 2);
-
-            let html = `
-                <div class="table-wrap">
-                    <table class="custom-table">
-                        <thead>
-                            <tr><th colspan="${COLS_PER_ROW}">📊 REGISTRO ÚLTIMAS 24 ANÁLISES</th></tr>
-                            <tr>${row1Labels.map(l => `<th>${l}</th>`).join('')}</tr>
-                        </thead>
-                        <tbody>
-                            <tr>${row1Values.map(v => `<td>${v ?? '---'}</td>`).join('')}</tr>
-                            <tr>${row2Labels.map(l => `<th>${l}</th>`).join('')}</tr>
-                            <tr>${row2Values.map(v => `<td>${v ?? '---'}</td>`).join('')}</tr>
-            `;
-
-            if (series2) {
-                const row2Series1 = series2.slice(0, COLS_PER_ROW);
-                const row2Series2 = series2.slice(COLS_PER_ROW, COLS_PER_ROW * 2);
-                html += `
-                            <tr style="background: linear-gradient(90deg, #e3f2fd, #bbdefb);">
-                                <th colspan="${COLS_PER_ROW}" style="font-size: 1.1rem;">
-                                    <i class="fas fa-chart-line"></i> VALORES DE REFERÊNCIA
-                                </th>
-                            </tr>
-                            <tr style="background: #e8f5e8;">
-                                ${row2Series1.map(v => `<td><strong style="color: var(--success); font-size: 1rem;">${v ?? '---'}</strong></td>`).join('')}
-                            </tr>
-                            <tr style="background: #e8f5e8;">
-                                ${row2Series2.map(v => `<td><strong style="color: var(--success); font-size: 1rem;">${v ?? '---'}</strong></td>`).join('')}
-                            </tr>
-                `;
-            }
-
-            html += '</tbody></table></div>';
-            return html;
+      };
+      
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible' && wakeLock === null) {
+          requestWakeLock();
         }
+      });
+      
+      requestWakeLock();
+    }
+  }
+  
+  // Inicia prevenção de sleep após carregamento
+  window.addEventListener('load', keepAwake);
 
-        function expandItemsFromJSON(item, data) {
-            const charts = (data.charts && Array.isArray(data.charts) && data.charts.length > 0)
-                ? data.charts
-                : [{ title: null, labels: data.labels, series1: data.series1, series2: data.series2 }];
+  // ============================================
+  // TRATAMENTO DE ERRO GLOBAL PARA IMAGENS
+  // ============================================
+  document.addEventListener('error', function(e) {
+    if (e.target.tagName === 'IMG') {
+      e.target.style.display = 'none';
+      const erroEl = e.target.nextElementSibling;
+      if (erroEl && erroEl.classList.contains('erro')) {
+        erroEl.style.display = 'flex';
+        erroEl.style.flexDirection = 'column';
+        erroEl.style.alignItems = 'center';
+        erroEl.style.justifyContent = 'center';
+      }
+    }
+  }, true);
 
-            if (charts.length <= MAX_CHARTS_PER_CARD) {
-                return [{
-                    ...item,
-                    charts: charts,
-                    pageIndex: 0,
-                    totalPages: 1
-                }];
-            }
+  // ============================================
+  // EFEITO HOVER NOS CARDS (feedback visual)
+  // ============================================
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mouseenter', function() {
+      this.style.zIndex = '10';
+    });
+    card.addEventListener('mouseleave', function() {
+      this.style.zIndex = '1';
+    });
+  });
 
-            // Divide em páginas de até MAX_CHARTS_PER_CARD gráficos
-            const pages = [];
-            for (let i = 0; i < charts.length; i += MAX_CHARTS_PER_CARD) {
-                const pageCharts = charts.slice(i, i + MAX_CHARTS_PER_CARD);
-                pages.push({
-                    ...item,
-                    charts: pageCharts,
-                    pageIndex: pages.length,
-                    totalPages: Math.ceil(charts.length / MAX_CHARTS_PER_CARD)
-                });
-            }
-            return pages;
-        }
+  // ============================================
+  // LOG DE CARREGAMENTO (para debug)
+  // ============================================
+  console.log('✅ Dashboard JGS carregado - Tema White WEG');
+  console.log('🔄 Atualização automática: 60 segundos');
+  console.log('📊 Cards:', document.querySelectorAll('.card').length);
+</script>
 
-        function loadCardData(item, pageIndex = 0) {
-            const wrap = document.getElementById('charts-area');
-            if (!wrap) return;
-
-            wrap.innerHTML = `
-                <div class="charts-grid">
-                    <div class="charts-section">
-                        <div class="chart-card">
-                            <div class="loader">
-                                <i class="fas fa-spinner"></i>
-                                <div>Carregando análises em tempo real...</div>
-                                <div style="font-size: 1.2rem; opacity: 0.7;">WEG - Qualidade Industrial</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            fetch(`dados/${item.fileBase}.json?t=${Date.now()}`)
-                .then(response => {
-                    if (!response.ok) throw new Error();
-                    return response.json();
-                })
-                .then(data => {
-                    if (!wrap) return;
-
-                    // Expande os itens se necessário
-                    const expandedPages = expandItemsFromJSON(item, data);
-                    
-                    // Armazena para navegação
-                    const itemKey = `${currentTabIdx}-${currentItemIdx}`;
-                    expandedItems[itemKey] = expandedPages;
-
-                    // Pega a página atual
-                    const currentPage = expandedPages[pageIndex] || expandedPages[0];
-                    const charts = currentPage.charts;
-
-                    const tableHtml = generateTableHTML(
-                        charts[0].labels,
-                        charts[0].series1,
-                        charts[0].series2
-                    );
-
-                    let chartsHtml = '';
-                    charts.forEach((chart, idx) => {
-                        const actualIdx = (pageIndex * MAX_CHARTS_PER_CARD) + idx;
-                        const titleHtml = chart.title ? `<div class="chart-title">${chart.title}</div>` : '';
-                        const imgSrc = `graficos/${item.fileBase}-${actualIdx + 1}.png?t=${Date.now()}`;
-
-                        chartsHtml += `
-                            <div class="chart-card">
-                                ${titleHtml}
-                                <div class="chart-container">
-                                    <img src="${imgSrc}" class="chart-img" alt="Gráfico analítico"
-                                         onerror="this.parentElement.innerHTML='<div class=\"loader\"><i class=\"fas fa-exclamation-triangle\" style=\"color: var(--warning);\"></i><div>Dados temporariamente indisponíveis</div></div>'">
-                                </div>
-                            </div>
-                        `;
-                    });
-
-                    wrap.innerHTML = `
-                        <div class="charts-grid">
-                            <div class="charts-section">
-                                ${chartsHtml}
-                            </div>
-                            <div class="table-section">
-                                ${tableHtml}
-                            </div>
-                        </div>
-                    `;
-
-                    // Atualiza o header se houver múltiplas páginas
-                    if (currentPage.totalPages > 1) {
-                        const titleBlock = document.querySelector('.card-title');
-                        if (titleBlock) {
-                            const subtitle = `<div class="card-subtitle">Página ${currentPage.pageIndex + 1} de ${currentPage.totalPages}</div>`;
-                            if (!titleBlock.querySelector('.card-subtitle')) {
-                                titleBlock.innerHTML += subtitle;
-                            }
-                        }
-                    }
-                })
-                .catch(() => {
-                    if (wrap) {
-                        wrap.innerHTML = `
-                            <div class="charts-grid">
-                                <div class="charts-section">
-                                    <div class="chart-card">
-                                        <div class="loader" style="background: linear-gradient(135deg, #fff3cd, #ffeaa7); color: #856404;">
-                                            <i class="fas fa-exclamation-triangle" style="font-size: 5rem; color: var(--warning);"></i>
-                                            <div style="font-size: 2rem;">Dados temporariamente indisponíveis</div>
-                                            <div style="font-size: 1.2rem; opacity: 0.8;">Sincronização automática em 60s</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                    }
-                });
-        }
-
-        function renderCard(item, pageIndex = 0) {
-            const dash = document.getElementById('dashboard-content');
-            if (!dash) return;
-
-            dash.innerHTML = `
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">${item.title}</div>
-                        <div class="status status-${getStatusClass(item.status)}">
-                            <i class="fas fa-circle"></i>
-                            ${item.status.toUpperCase()}
-                        </div>
-                    </div>
-                    <div id="charts-area" style="flex: 1; overflow: hidden;"></div>
-                </div>
-            `;
-            loadCardData(item, pageIndex);
-        }
-
-        function updateDisplay() {
-            const tab = tabsConfig[currentTabIdx];
-            const item = tab.items[currentItemIdx];
-
-            document.getElementById('current-section').textContent = tab.section;
-            renderCard(item, currentPageIdx);
-
-            const dots = document.getElementById('nav-dots');
-            if (dots) {
-                dots.innerHTML = '';
-                
-                // Calcula total de páginas para todos os itens
-                let totalDots = 0;
-                let currentDot = 0;
-                
-                for (let i = 0; i < tab.items.length; i++) {
-                    const itemKey = `${currentTabIdx}-${i}`;
-                    const pages = expandedItems[itemKey] || [{ totalPages: 1 }];
-                    const numPages = pages[0].totalPages || 1;
-                    
-                    if (i < currentItemIdx) {
-                        currentDot += numPages;
-                    } else if (i === currentItemIdx) {
-                        currentDot += currentPageIdx;
-                    }
-                    
-                    totalDots += numPages;
-                }
-
-                // Cria dots para cada página
-                for (let i = 0; i < totalDots; i++) {
-                    const dot = document.createElement('div');
-                    dot.className = `dot ${i === currentDot ? 'active' : ''}`;
-                    dots.appendChild(dot);
-                }
-            }
-        }
-
-        function nextItem() {
-            const tab = tabsConfig[currentTabIdx];
-            const itemKey = `${currentTabIdx}-${currentItemIdx}`;
-            const pages = expandedItems[itemKey];
-            const totalPages = pages ? pages[0].totalPages : 1;
-
-            // Se há mais páginas no item atual
-            if (currentPageIdx + 1 < totalPages) {
-                currentPageIdx++;
-            } else {
-                // Vai para o próximo item
-                currentPageIdx = 0;
-                if (currentItemIdx + 1 < tab.items.length) {
-                    currentItemIdx++;
-                } else {
-                    // Vai para a próxima tab
-                    currentItemIdx = 0;
-                    currentTabIdx = (currentTabIdx + 1) % tabsConfig.length;
-                }
-            }
-            updateDisplay();
-        }
-
-        function resetRotation() {
-            if (rotationTimer) clearInterval(rotationTimer);
-            rotationTimer = setInterval(nextItem, 20000); // 20s para TV
-        }
-
-        function initClock() {
-            function tick() {
-                const now = new Date();
-                document.getElementById('clock-date').textContent = now.toLocaleDateString('pt-BR', {
-                    weekday: 'long',
-                    day: '2-digit',
-                    month: 'long',
-                    year: 'numeric'
-                });
-                document.getElementById('clock-time').textContent = now.toLocaleTimeString('pt-BR', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false
-                });
-            }
-            tick();
-            setInterval(tick, 1000);
-        }
-
-        function startPeriodicSync() {
-            setInterval(() => {
-                document.getElementById('last-sync').textContent = new Date().toLocaleTimeString('pt-BR', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit'
-                });
-
-                const tab = tabsConfig[currentTabIdx];
-                if (tab && tab.items[currentItemIdx]) {
-                    loadCardData(tab.items[currentItemIdx], currentPageIdx);
-                }
-            }, 60000);
-        }
-
-        // Inicialização automática
-        window.onload = () => {
-            document.body.style.opacity = '0';
-            setTimeout(() => {
-                initClock();
-                updateDisplay();
-                resetRotation();
-                startPeriodicSync();
-                document.body.style.opacity = '1';
-                document.body.style.transition = 'opacity 1s ease-in';
-            }, 500);
-        };
-
-        // Previne sleep/refresh
-        document.addEventListener('visibilitychange', () => {
-            if (!document.hidden) {
-                updateDisplay();
-                resetRotation();
-            }
-        });
-
-        // Keyboard navigation para debug (F5, ESC, etc)
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'F5' || e.key === 'F12') e.preventDefault();
-        });
-    </script>
 </body>
 </html>
