@@ -1,65 +1,735 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>WEG Banhos Industriais | Classic</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
-:root{--weg-blue:#003f6f;--weg-orange:#e67e22;--weg-dark:#1a2a3a;--weg-gray:#eceef2;--bg-page:#eef2f5;--card-white:#fff;--border:#b0c4de;--text-main:#1e2a36;--ok:#2e7d32;--warn:#f57c00;--crit:#c62828;}
-body{font-family:'Inter',sans-serif;background:var(--bg-page);color:var(--text-main);height:100vh;display:flex;flex-direction:column;overflow:hidden;}
-header{background:var(--weg-dark);color:white;padding:12px 32px;display:flex;justify-content:space-between;align-items:center;border-bottom:4px solid var(--weg-orange);}
-.logo{font-weight:800;font-size:1.6rem;letter-spacing:-0.5px;}.logo span{color:var(--weg-orange);}
-.title-block h1{font-size:1.5rem;font-weight:600;}
-.info-pill{background:#2c3e44;padding:6px 18px;border-radius:30px;font-family:monospace;font-weight:500;}
-main{flex:1;padding:20px 28px;display:flex;flex-direction:column;overflow:hidden;}
-.section-badge{background:var(--weg-blue);color:white;padding:8px 20px;font-weight:700;width:fit-content;border-radius:4px;margin-bottom:16px;}
-.dashboard-scroll{flex:1;overflow-y:auto;padding-right:8px;}
-.card{background:var(--card-white);border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.05);margin-bottom:20px;border:1px solid var(--border);overflow:hidden;}
-.card-header{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;background:#fafcfd;border-bottom:2px solid var(--weg-blue);}
-.card-title{font-size:1.6rem;font-weight:700;color:var(--weg-blue);}
-.status{font-weight:700;padding:6px 18px;border-radius:30px;font-size:0.75rem;}
-.status-ok{background:#e8f5e9;color:var(--ok);border-left:4px solid var(--ok);}
-.status-warn{background:#fff3e0;color:var(--warn);border-left:4px solid var(--warn);}
-.status-crit{background:#ffebee;color:var(--crit);border-left:4px solid var(--crit);}
-.charts-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;padding:20px;}
-.chart-card{background:white;border-radius:10px;border:1px solid #ddd;overflow:hidden;}
-.chart-title{background:var(--weg-gray);padding:10px;font-weight:600;text-align:center;border-bottom:1px solid #ccc;}
-.chart-img{width:100%;height:260px;object-fit:contain;background:#fff;}
-.table-wrap{overflow-x:auto;padding:0 20px 20px 20px;}
-.custom-table{width:100%;border-collapse:collapse;font-size:0.75rem;}
-.custom-table th,.custom-table td{border:1px solid #bbb;padding:8px 5px;text-align:center;}
-.custom-table th{background:var(--weg-blue);color:white;font-weight:600;}
-.nav-dots{display:flex;justify-content:center;gap:12px;padding:12px;background:white;border-radius:40px;width:fit-content;margin:10px auto 0 auto;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
-.dot{width:12px;height:12px;background:#bbb;border-radius:50%;cursor:pointer;}
-.dot.active{background:var(--weg-orange);transform:scale(1.3);}
-footer{background:var(--weg-dark);color:#cddde9;padding:10px 32px;display:flex;justify-content:space-between;font-size:0.8rem;}
-.pulse{display:inline-block;width:8px;height:8px;background:#2ecc71;border-radius:50%;animation:pulse 1.8s infinite;margin-right:8px;}
-@keyframes pulse{0%{opacity:0.4;}100%{opacity:1;}}
-.loader{background:#e2e8f0;height:260px;animation:pulsebg 1.2s infinite;}
-@keyframes pulsebg{0%{opacity:0.6;}100%{opacity:1;}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>WEG Banhos Industriais | Dashboard Analítico</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Paleta oficial WEG */
+            --weg-blue: #003f6f;
+            --weg-blue-light: #0066cc;
+            --weg-orange: #e67e22;
+            --weg-orange-light: #ff8c42;
+            --weg-dark: #1a2a3a;
+            --weg-dark-light: #2c3e50;
+            --weg-gray: #f8f9fa;
+            --weg-gray-light: #e9ecef;
+            --weg-gray-dark: #6c757d;
+            --weg-white: #ffffff;
+            --weg-shadow: 0 8px 32px rgba(0, 63, 111, 0.12);
+            --weg-glow: 0 0 20px rgba(230, 126, 34, 0.3);
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--weg-dark);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--weg-dark) 0%, var(--weg-blue) 100%);
+            color: var(--weg-white);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--weg-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.1;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.8rem;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--weg-orange), var(--weg-orange-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo i { font-size: 2.2rem; }
+
+        .title-block h1 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            opacity: 0.95;
+        }
+
+        .info-pill {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-weight: 500;
+            font-size: 0.85rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 24px 32px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .section-badge {
+            background: linear-gradient(135deg, var(--weg-blue), var(--weg-blue-light));
+            color: var(--weg-white);
+            padding: 12px 24px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            width: fit-content;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: var(--weg-shadow);
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-badge::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shine 2s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .dashboard-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 8px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--weg-blue) transparent;
+        }
+
+        .dashboard-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .dashboard-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .dashboard-scroll::-webkit-scrollbar-thumb {
+            background: var(--weg-blue);
+            border-radius: 3px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--weg-white);
+            border-radius: 20px;
+            box-shadow: var(--weg-shadow);
+            margin-bottom: 24px;
+            border: 1px solid rgba(0, 63, 111, 0.08);
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 63, 111, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 28px;
+            background: linear-gradient(135deg, #ffffff 0%, var(--weg-gray) 100%);
+            border-bottom: 3px solid transparent;
+            background-clip: padding-box;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--weg-blue), var(--weg-blue-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .status {
+            font-weight: 600;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-left: 4px solid transparent;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .status-ok {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            color: var(--success);
+            border-left-color: var(--success);
+        }
+
+        .status-warn {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            color: #856404;
+            border-left-color: var(--warning);
+        }
+
+        .status-crit {
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+            color: var(--danger);
+            border-left-color: var(--danger);
+        }
+
+        /* Charts Grid */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+            gap: 24px;
+            padding: 24px;
+        }
+
+        .chart-card {
+            background: var(--weg-white);
+            border-radius: 16px;
+            border: 1px solid rgba(0, 63, 111, 0.08);
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .chart-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 32px rgba(0,0,0,0.12);
+        }
+
+        .chart-title {
+            background: linear-gradient(135deg, var(--weg-gray), #f1f3f4);
+            padding: 16px 20px;
+            font-weight: 600;
+            text-align: center;
+            font-size: 0.95rem;
+            color: var(--weg-dark);
+            border-bottom: 1px solid rgba(0, 63, 111, 0.08);
+            letter-spacing: 0.5px;
+        }
+
+        .chart-img {
+            width: 100%;
+            height: 280px;
+            object-fit: contain;
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+        }
+
+        /* Table */
+        .table-wrap {
+            overflow-x: auto;
+            padding: 0 24px 24px;
+        }
+
+        .custom-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 0.85rem;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .custom-table th,
+        .custom-table td {
+            padding: 12px 8px;
+            text-align: center;
+            border-right: 1px solid rgba(0, 63, 111, 0.1);
+            border-bottom: 1px solid rgba(0, 63, 111, 0.1);
+        }
+
+        .custom-table th {
+            background: linear-gradient(135deg, var(--weg-blue), var(--weg-blue-light));
+            color: var(--weg-white);
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .custom-table th:last-child,
+        .custom-table td:last-child {
+            border-right: none;
+        }
+
+        .custom-table tr:last-child th,
+        .custom-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .custom-table tr:hover {
+            background: rgba(230, 126, 34, 0.05);
+        }
+
+        /* Navigation */
+        .nav-dots {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 50px;
+            width: fit-content;
+            margin: 20px auto 0;
+            box-shadow: var(--weg-shadow);
+            border: 1px solid rgba(0, 63, 111, 0.1);
+        }
+
+        .dot {
+            width: 14px;
+            height: 14px;
+            background: rgba(0, 63, 111, 0.2);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .dot::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 4px;
+            height: 4px;
+            background: var(--weg-blue);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .dot.active {
+            background: var(--weg-orange);
+            transform: scale(1.4);
+            box-shadow: var(--weg-glow);
+        }
+
+        .dot.active::after {
+            opacity: 1;
+        }
+
+        .dot:hover {
+            transform: scale(1.2);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--weg-dark), var(--weg-dark-light));
+            color: #b8c8d8;
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .pulse {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+            margin-right: 8px;
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.4; transform: scale(1); }
+        }
+
+        /* Loader */
+        .loader {
+            background: linear-gradient(90deg, #e3f2fd, #bbdefb, #e3f2fd);
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulsebg 1.5s infinite;
+            font-size: 1.1rem;
+            color: var(--weg-blue);
+            gap: 12px;
+        }
+
+        .loader i {
+            font-size: 1.5rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes pulsebg {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+                padding: 16px;
+                gap: 16px;
+            }
+            
+            header, main, footer {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            
+            .logo { font-size: 1.5rem; }
+            .card-header { padding: 20px; }
+        }
+
+        /* Print styles */
+        @media print {
+            body { background: white; }
+            .card { box-shadow: none; break-inside: avoid; }
+        }
+    </style>
 </head>
 <body>
-<header><div class="logo">WEG<span>BANHOS</span></div><div class="title-block"><h1>CONTROLE ANALÍTICO · BANHOS QUÍMICOS</h1></div><div class="info-pill"><span id="clock-date"></span> <span id="clock-time"></span></div></header>
-<main><div class="section-badge" id="current-section">Carregando...</div><div class="dashboard-scroll" id="dashboard-content"></div><div class="nav-dots" id="nav-dots"></div></main>
-<footer><div><span class="pulse"></span> ONLINE</div><div>Última sincronia: <span id="last-sync">--:--:--</span></div></footer>
-<script>
-const tabsConfig = [{section:"ESTANHAGEM ELETROLÍTICA",items:[{title:"Desengraxante Químico",fileBase:"graf-des",status:"OK"},{title:"Ativação - Tanque 5",fileBase:"graf-ativacao-tanque-5",status:"Verificar"},{title:"Ativação - Tanque 6",fileBase:"graf-ativacao-tanque-6",status:"OK"},{title:"Níquel WATT",fileBase:"graf-niquel-watt",status:"Estável"},{title:"Estanhagem A",fileBase:"graf-estanhagem-a",status:"Vencido"},{title:"Selante Protetivo",fileBase:"graf-selante",status:"OK"},{title:"Estanhagem B",fileBase:"graf-estanhagem-b",status:"OK"}]},{section:"NANOCERÂMICO",items:[{title:"1º Desengraxante",fileBase:"graf-des1",status:"OK"},{title:"2º Desengraxante",fileBase:"graf-des2",status:"OK"},{title:"Decapante 1",fileBase:"graf-dec1",status:"Atenção"},{title:"Decapante 2",fileBase:"graf-dec2",status:"OK"},{title:"Nanocerâmico - Concentração",fileBase:"graf-nano",status:"Crítico"},{title:"Nanocerâmico - Absorbância",fileBase:"graf-abso-nano",status:"OK"},{title:"Nanocerâmico - pH",fileBase:"graf-ph-nano",status:"OK"},{title:"Neutralizador",fileBase:"graf-neu",status:"OK"},{title:"Selante Final",fileBase:"graf-sel",status:"OK"}]}];
-const COLS_PER_ROW=12;let currentTabIdx=0,currentItemIdx=0,rotationTimer;
-function getStatusClass(s){if(["OK","Estável","Em Conformidade"].includes(s))return "ok";if(["Atenção","Verificar","Vencido"].includes(s))return "warn";return "crit";}
-function generateTableHTML(labels,s1,s2){if(!labels||!labels.length)return '';let r1l=labels.slice(0,COLS_PER_ROW),r1v=s1.slice(0,COLS_PER_ROW),r2l=labels.slice(COLS_PER_ROW,COLS_PER_ROW*2),r2v=s1.slice(COLS_PER_ROW,COLS_PER_ROW*2);let h=`<div class="table-wrap"><table class="custom-table"><thead><tr><th colspan="${COLS_PER_ROW}">REGISTRO ÚLTIMAS 24 ANÁLISES</th></tr><tr>${r1l.map(l=>`<th>${l}</th>`).join('')}</tr></thead><tbody><tr>${r1v.map(v=>`<td>${v??'---'}</td>`).join('')}</tr><tr>${r2l.map(l=>`<th>${l}</th>`).join('')}</tr><tr>${r2v.map(v=>`<td>${v??'---'}</td>`).join('')}</tr>`;if(s2){let r2s1=s2.slice(0,COLS_PER_ROW),r2s2=s2.slice(COLS_PER_ROW,COLS_PER_ROW*2);h+=`<tr style="background:#eef5ff;">${r2s1.map(v=>`<td><b>${v??'---'}</b></td>`).join('')}</tr><tr style="background:#eef5ff;">${r2s2.map(v=>`<td><b>${v??'---'}</b></td>`).join('')}</tr>`;}h+=`</tbody></table></div>`;return h;}
-function loadCardData(fileBase){let wrap=document.getElementById('charts-area');if(!wrap)return;wrap.innerHTML=`<div class="charts-grid"><div class="chart-card"><div class="loader" style="height:260px;"></div></div></div>`;
-fetch(`dados/${fileBase}.json?t=${Date.now()}`).then(r=>{if(!r.ok)throw new Error();return r.json();}).then(data=>{if(!wrap)return;wrap.innerHTML='';let charts=(data.charts&&Array.isArray(data.charts)&&data.charts.length>0)?data.charts:[{title:null,labels:data.labels,series1:data.series1,series2:data.series2}];let grid=document.createElement('div');grid.className='charts-grid';
-charts.forEach((c,idx)=>{let div=document.createElement('div');div.className='chart-card';let titleHtml=c.title?`<div class="chart-title">${c.title}</div>`:'';let imgSrc=`graficos/${fileBase}-${idx+1}.png?t=${Date.now()}`;let tableHtml=generateTableHTML(c.labels,c.series1,c.series2);div.innerHTML=`${titleHtml}<img src="${imgSrc}" class="chart-img" alt="gráfico" onerror="this.style.display='none'">${tableHtml}`;grid.appendChild(div);});wrap.appendChild(grid);}).catch(()=>{if(wrap)wrap.innerHTML='<div style="padding:40px;text-align:center;">Dados temporariamente indisponíveis</div>';});}
-function renderCard(item){let dash=document.getElementById('dashboard-content');if(!dash)return;dash.innerHTML=`<div class="card"><div class="card-header"><div class="card-title">${item.title}</div><div class="status status-${getStatusClass(item.status)}">${item.status}</div></div><div id="charts-area"><div class="charts-grid"><div class="chart-card"><div class="loader"></div></div></div></div></div>`;loadCardData(item.fileBase);}
-function updateDisplay(){let tab=tabsConfig[currentTabIdx];let item=tab.items[currentItemIdx];document.getElementById('current-section').innerHTML=tab.section;renderCard(item);let dots=document.getElementById('nav-dots');if(dots){dots.innerHTML='';tab.items.forEach((it,idx)=>{let d=document.createElement('div');d.className=`dot ${idx===currentItemIdx?'active':''}`;d.onclick=()=>{currentItemIdx=idx;resetRotation();updateDisplay();};dots.appendChild(d);});}}
-function nextItem(){let tab=tabsConfig[currentTabIdx];if(currentItemIdx+1<tab.items.length)currentItemIdx++;else{currentItemIdx=0;currentTabIdx=(currentTabIdx+1)%tabsConfig.length;}updateDisplay();}
-function resetRotation(){if(rotationTimer)clearInterval(rotationTimer);rotationTimer=setInterval(nextItem,15000);}
-function initClock(){function tick(){let d=new Date();document.getElementById('clock-date').innerHTML=d.toLocaleDateString('pt-BR');document.getElementById('clock-time').innerHTML=d.toLocaleTimeString('pt-BR');}tick();setInterval(tick,1000);}
-function startPeriodicSync(){setInterval(()=>{document.getElementById('last-sync').innerHTML=new Date().toLocaleTimeString('pt-BR');let tab=tabsConfig[currentTabIdx];if(tab&&tab.items[currentItemIdx])loadCardData(tab.items[currentItemIdx].fileBase);},60000);}
-window.onload=()=>{initClock();updateDisplay();resetRotation();startPeriodicSync();};
-</script>
+    <header>
+        <div class="logo">
+            <i class="fas fa-industry"></i>
+            WEG<span>BANHOS</span>
+        </div>
+        <div class="title-block">
+            <h1>Controle Analítico · Banhos Químicos</h1>
+        </div>
+        <div class="info-pill">
+            <span id="clock-date"></span> 
+            <span id="clock-time"></span>
+        </div>
+    </header>
+
+    <main>
+        <div class="section-badge" id="current-section">Carregando...</div>
+        <div class="dashboard-scroll" id="dashboard-content"></div>
+        <div class="nav-dots" id="nav-dots"></div>
+    </main>
+
+    <footer>
+        <div>
+            <span class="pulse"></span> 
+            CONECTADO
+        </div>
+        <div>
+            Última sincronia: <span id="last-sync">--:--:--</span>
+        </div>
+    </footer>
+
+    <script>
+        const tabsConfig = [
+            {
+                section: "ESTANHAGEM ELETROLÍTICA",
+                items: [
+                    { title: "Desengraxante Químico", fileBase: "graf-des", status: "OK" },
+                    { title: "Ativação - Tanque 5", fileBase: "graf-ativacao-tanque-5", status: "Verificar" },
+                    { title: "Ativação - Tanque 6", fileBase: "graf-ativacao-tanque-6", status: "OK" },
+                    { title: "Níquel WATT", fileBase: "graf-niquel-watt", status: "Estável" },
+                    { title: "Estanhagem A", fileBase: "graf-estanhagem-a", status: "Vencido" },
+                    { title: "Selante Protetivo", fileBase: "graf-selante", status: "OK" },
+                    { title: "Estanhagem B", fileBase: "graf-estanhagem-b", status: "OK" }
+                ]
+            },
+            {
+                section: "NANOCERÂMICO",
+                items: [
+                    { title: "1º Desengraxante", fileBase: "graf-des1", status: "OK" },
+                    { title: "2º Desengraxante", fileBase: "graf-des2", status: "OK" },
+                    { title: "Decapante 1", fileBase: "graf-dec1", status: "Atenção" },
+                    { title: "Decapante 2", fileBase: "graf-dec2", status: "OK" },
+                    { title: "Nanocerâmico - Concentração", fileBase: "graf-nano", status: "Crítico" },
+                    { title: "Nanocerâmico - Absorbância", fileBase: "graf-abso-nano", status: "OK" },
+                    { title: "Nanocerâmico - pH", fileBase: "graf-ph-nano", status: "OK" },
+                    { title: "Neutralizador", fileBase: "graf-neu", status: "OK" },
+                    { title: "Selante Final", fileBase: "graf-sel", status: "OK" }
+                ]
+            }
+        ];
+
+        const COLS_PER_ROW = 12;
+        let currentTabIdx = 0, currentItemIdx = 0, rotationTimer;
+
+        function getStatusClass(status) {
+            if (["OK", "Estável", "Em Conformidade"].includes(status)) return "ok";
+            if (["Atenção", "Verificar", "Vencido"].includes(status)) return "warn";
+            return "crit";
+        }
+
+        function generateTableHTML(labels, series1, series2) {
+            if (!labels || !labels.length) return '';
+            
+            const row1Labels = labels.slice(0, COLS_PER_ROW);
+            const row1Values = series1.slice(0, COLS_PER_ROW);
+            const row2Labels = labels.slice(COLS_PER_ROW, COLS_PER_ROW * 2);
+            const row2Values = series1.slice(COLS_PER_ROW, COLS_PER_ROW * 2);
+
+            let html = `
+                <div class="table-wrap">
+                    <table class="custom-table">
+                        <thead>
+                            <tr><th colspan="${COLS_PER_ROW}">REGISTRO ÚLTIMAS 24 ANÁLISES</th></tr>
+                            <tr>${row1Labels.map(l => `<th>${l}</th>`).join('')}</tr>
+                        </thead>
+                        <tbody>
+                            <tr>${row1Values.map(v => `<td>${v ?? '---'}</td>`).join('')}</tr>
+                            <tr>${row2Labels.map(l => `<th>${l}</th>`).join('')}</tr>
+                            <tr>${row2Values.map(v => `<td>${v ?? '---'}</td>`).join('')}</tr>
+            `;
+
+            if (series2) {
+                const row2Series1 = series2.slice(0, COLS_PER_ROW);
+                const row2Series2 = series2.slice(COLS_PER_ROW, COLS_PER_ROW * 2);
+                html += `
+                            <tr style="background: linear-gradient(90deg, #e3f2fd, #bbdefb);">
+                                <td colspan="${COLS_PER_ROW}" style="text-align: left; font-weight: 600; padding: 12px; border: none;">
+                                    <i class="fas fa-chart-line" style="color: var(--weg-blue); margin-right: 8px;"></i>
+                                    Valores de Referência
+                                </td>
+                            </tr>
+                            <tr style="background: #e8f5e8;">
+                                ${row2Series1.map(v => `<td><strong style="color: var(--success);">${v ?? '---'}</strong></td>`).join('')}
+                            </tr>
+                            <tr style="background: #e8f5e8;">
+                                ${row2Series2.map(v => `<td><strong style="color: var(--success);">${v ?? '---'}</strong></td>`).join('')}
+                            </tr>
+                `;
+            }
+
+            html += '</tbody></table></div>';
+            return html;
+        }
+
+        function loadCardData(fileBase) {
+            const wrap = document.getElementById('charts-area');
+            if (!wrap) return;
+
+            wrap.innerHTML = `
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <div class="loader">
+                            <i class="fas fa-spinner"></i>
+                            Carregando análises...
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            fetch(`dados/${fileBase}.json?t=${Date.now()}`)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    if (!wrap) return;
+                    
+                    wrap.innerHTML = '';
+                    const charts = (data.charts && Array.isArray(data.charts) && data.charts.length > 0) 
+                        ? data.charts 
+                        : [{ title: null, labels: data.labels, series1: data.series1, series2: data.series2 }];
+                    
+                    const grid = document.createElement('div');
+                    grid.className = 'charts-grid';
+
+                    charts.forEach((chart, idx) => {
+                        const div = document.createElement('div');
+                        div.className = 'chart-card';
+                        const titleHtml = chart.title ? `<div class="chart-title">${chart.title}</div>` : '';
+                        const imgSrc = `graficos/${fileBase}-${idx + 1}.png?t=${Date.now()}`;
+                        const tableHtml = generateTableHTML(chart.labels, chart.series1, chart.series2);
+                        
+                        div.innerHTML = `
+                            ${titleHtml}
+                            <img src="${imgSrc}" class="chart-img" alt="Gráfico analítico" 
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                                 onload="this.style.opacity='1'">
+                            ${tableHtml}
+                        `;
+                        grid.appendChild(div);
+                    });
+                    
+                    wrap.appendChild(grid);
+                })
+                .catch(() => {
+                    if (wrap) {
+                        wrap.innerHTML = `
+                            <div style="padding: 60px 40px; text-align: center; color: var(--weg-gray-dark);">
+                                <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: var(--warning); margin-bottom: 16px;"></i>
+                                <div style="font-size: 1.1rem; margin-bottom: 8px;">Dados temporariamente indisponíveis</div>
+                                <div style="font-size: 0.9rem; opacity: 0.7;">Nova tentativa em 60 segundos</div>
+                            </div>
+                        `;
+                    }
+                });
+        }
+
+        function renderCard(item) {
+            const dash = document.getElementById('dashboard-content');
+            if (!dash) return;
+
+            dash.innerHTML = `
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">${item.title}</div>
+                        <div class="status status-${getStatusClass(item.status)}">
+                            <i class="fas fa-circle"></i>
+                            ${item.status}
+                        </div>
+                    </div>
+                    <div id="charts-area"></div>
+                </div>
+            `;
+            loadCardData(item.fileBase);
+        }
+
+        function updateDisplay() {
+            const tab = tabsConfig[currentTabIdx];
+            const item = tab.items[currentItemIdx];
+            
+            document.getElementById('current-section').innerHTML = tab.section;
+            renderCard(item);
+
+            const dots = document.getElementById('nav-dots');
+            if (dots) {
+                dots.innerHTML = '';
+                tab.items.forEach((it, idx) => {
+                    const dot = document.createElement('div');
+                    dot.className = `dot ${idx === currentItemIdx ? 'active' : ''}`;
+                    dot.onclick = () => {
+                        currentItemIdx = idx;
+                        resetRotation();
+                        updateDisplay();
+                    };
+                    dots.appendChild(dot);
+                });
+            }
+        }
+
+        function nextItem() {
+            const tab = tabsConfig[currentTabIdx];
+            if (currentItemIdx + 1 < tab.items.length) {
+                currentItemIdx++;
+            } else {
+                currentItemIdx = 0;
+                currentTabIdx = (currentTabIdx + 1) % tabsConfig.length;
+            }
+            updateDisplay();
+        }
+
+        function resetRotation() {
+            if (rotationTimer) clearInterval(rotationTimer);
+            rotationTimer = setInterval(nextItem, 15000);
+        }
+
+        function initClock() {
+            function tick() {
+                const now = new Date();
+                document.getElementById('clock-date').innerHTML = now.toLocaleDateString('pt-BR', {
+                    weekday: 'short',
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric'
+                });
+                document.getElementById('clock-time').innerHTML = now.toLocaleTimeString('pt-BR', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+            }
+            tick();
+            setInterval(tick, 1000);
+        }
+
+        function startPeriodicSync() {
+            setInterval(() => {
+                document.getElementById('last-sync').innerHTML = new Date().toLocaleTimeString('pt-BR', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+                
+                const tab = tabsConfig[currentTabIdx];
+                if (tab && tab.items[currentItemIdx]) {
+                    loadCardData(tab.items[currentItemIdx].fileBase);
+                }
+            }, 60000);
+        }
+
+        // Initialize
+        window.onload = () => {
+            initClock();
+            updateDisplay();
+            resetRotation();
+            startPeriodicSync();
+        };
+
+        // PWA Support
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(() => {});
+        }
+    </script>
 </body>
 </html>
