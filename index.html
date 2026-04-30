@@ -413,33 +413,44 @@
     itemsPerSlide: 2
   };
 
-  // Mapeamento de arquivos para itens dos processos
-  const fileToItemMap = {
-    // Estanhagem Eletrolítica
-    'des': { processo: 0, itemIndex: 0, nome: 'Desengraxante Químico', ref: 26.0, tol: 3.9 },
-    'ativacao-tanque-5': { processo: 0, itemIndex: 1, nome: 'Ativação — Tanque 5', ref: 8.5, tol: 1.28 },
-    'ativacao-tanque-6': { processo: 0, itemIndex: 2, nome: 'Ativação — Tanque 6', ref: 8.5, tol: 1.28 },
-    'niquel-watt': { processo: 0, itemIndex: 3, nome: 'Níquel WATT', ref: 45.0, tol: 6.75 },
-    'estanhagem-a': { processo: 0, itemIndex: 4, nome: 'Estanhagem A', ref: 32.0, tol: 4.8 },
-    'estanhagem-b': { processo: 0, itemIndex: 5, nome: 'Estanhagem B', ref: 31.5, tol: 4.73 },
-    'selante': { processo: 0, itemIndex: 6, nome: 'Selante Protetivo', ref: 18.0, tol: 2.7 },
-    
-    // Processo Nanocerâmico
-    'des1': { processo: 1, itemIndex: 0, nome: '1º Desengraxante', ref: 29.0, tol: 4.35 },
-    'des2': { processo: 1, itemIndex: 1, nome: '2º Desengraxante', ref: 28.5, tol: 4.28 },
-    'dec1': { processo: 1, itemIndex: 2, nome: 'Decapante 1', ref: 12.0, tol: 1.8 },
-    'dec2': { processo: 1, itemIndex: 3, nome: 'Decapante 2', ref: 11.5, tol: 1.73 },
-    'nano': { processo: 1, itemIndex: 4, nome: 'Nanocerâmico — Conc.', ref: 35.0, tol: 5.25 },
-    'abso-nano': { processo: 1, itemIndex: 5, nome: 'Nanocerâmico — Abs.', ref: 1.2, tol: 0.18 },
-    'ph-nano': { processo: 1, itemIndex: 6, nome: 'Nanocerâmico — pH', ref: 4.5, tol: 0.68 },
-    'neu': { processo: 1, itemIndex: 7, nome: 'Neutralizador', ref: 7.0, tol: 1.05 },
-    'sel': { processo: 1, itemIndex: 8, nome: 'Selante Final', ref: 22.0, tol: 3.3 }
+  // Configuração dos processos e seus gráficos
+  // Cada processo pode ter múltiplos arquivos de gráfico
+  const processosConfig = {
+    'estanhagem-eletrolitica': {
+      nome: 'Estanhagem Eletrolítica',
+      graficos: [
+        { file: 'des', nome: 'Desengraxante Químico', ref: 26.0, tol: 3.9 },
+        { file: 'ativacao-tanque-5', nome: 'Ativação — Tanque 5', ref: 8.5, tol: 1.28 },
+        { file: 'ativacao-tanque-6', nome: 'Ativação — Tanque 6', ref: 8.5, tol: 1.28 },
+        { file: 'niquel-watt', nome: 'Níquel WATT', ref: 45.0, tol: 6.75 },
+        { file: 'niquel-watt-1', nome: 'Níquel WATT (2)', ref: 45.0, tol: 6.75 },
+        { file: 'niquel-watt-2', nome: 'Níquel WATT (3)', ref: 45.0, tol: 6.75 },
+        { file: 'niquel-watt-3', nome: 'Níquel WATT (4)', ref: 45.0, tol: 6.75 },
+        { file: 'niquel-watt-4', nome: 'Níquel WATT (5)', ref: 45.0, tol: 6.75 },
+        { file: 'estanhagem-a', nome: 'Estanhagem A', ref: 32.0, tol: 4.8 },
+        { file: 'estanhagem-a-1', nome: 'Estanhagem A (2)', ref: 32.0, tol: 4.8 },
+        { file: 'estanhagem-a-2', nome: 'Estanhagem A (3)', ref: 32.0, tol: 4.8 },
+        { file: 'estanhagem-b', nome: 'Estanhagem B', ref: 31.5, tol: 4.73 },
+        { file: 'estanhagem-b-1', nome: 'Estanhagem B (2)', ref: 31.5, tol: 4.73 },
+        { file: 'estanhagem-b-2', nome: 'Estanhagem B (3)', ref: 31.5, tol: 4.73 },
+        { file: 'selante', nome: 'Selante Protetivo', ref: 18.0, tol: 2.7 }
+      ]
+    },
+    'nanoceramico': {
+      nome: 'Processo Nanocerâmico',
+      graficos: [
+        { file: 'des1', nome: '1º Desengraxante', ref: 29.0, tol: 4.35 },
+        { file: 'des2', nome: '2º Desengraxante', ref: 28.5, tol: 4.28 },
+        { file: 'dec1', nome: 'Decapante 1', ref: 12.0, tol: 1.8 },
+        { file: 'dec2', nome: 'Decapante 2', ref: 11.5, tol: 1.73 },
+        { file: 'nano', nome: 'Nanocerâmico — Conc.', ref: 35.0, tol: 5.25 },
+        { file: 'abso-nano', nome: 'Nanocerâmico — Abs.', ref: 1.2, tol: 0.18 },
+        { file: 'ph-nano', nome: 'Nanocerâmico — pH', ref: 4.5, tol: 0.68 },
+        { file: 'neu', nome: 'Neutralizador', ref: 7.0, tol: 1.05 },
+        { file: 'sel', nome: 'Selante Final', ref: 22.0, tol: 3.3 }
+      ]
+    }
   };
-
-  const processosNomes = [
-    'Estanhagem Eletrolítica',
-    'Processo Nanocerâmico'
-  ];
 
   // Cache dos dados carregados
   let dadosCache = {};
@@ -448,46 +459,39 @@
   function formatarData(dataStr) {
     if (!dataStr || dataStr === '#N/D' || dataStr.trim() === '') return '--/--';
     
-    // Tenta parsear a data
     let dataObj = null;
     
-    // Formato DD/MM/YYYY ou DD/MM/YY
     if (dataStr.includes('/')) {
       const partes = dataStr.split('/');
       if (partes.length === 3) {
         const dia = parseInt(partes[0]);
-        const mes = parseInt(partes[1]) - 1; // Meses em JS começam em 0
+        const mes = parseInt(partes[1]) - 1;
         let ano = parseInt(partes[2]);
         
-        // Se ano tem 2 dígitos, assume 20XX
         if (ano < 100) ano += 2000;
         
         dataObj = new Date(ano, mes, dia);
       }
     }
     
-    // Se não conseguiu parsear, tenta como data ISO
     if (!dataObj || isNaN(dataObj.getTime())) {
       dataObj = new Date(dataStr);
     }
     
-    // Se ainda não é válida, retorna a string original
     if (isNaN(dataObj.getTime())) {
       return dataStr;
     }
     
-    // Formata para DD/MM (sem ano)
     const dia = dataObj.getDate().toString().padStart(2, '0');
     const mes = (dataObj.getMonth() + 1).toString().padStart(2, '0');
     return `${dia}/${mes}`;
   }
 
-  // Carregar dados JSON da pasta dados
+  // Carregar dados JSON
   async function carregarDadosJSON(fileName) {
     try {
       const response = await fetch(`dados/graf-${fileName}.json?t=${Date.now()}`);
       if (!response.ok) {
-        console.warn(`Arquivo não encontrado: dados/graf-${fileName}.json`);
         return null;
       }
       const data = await response.json();
@@ -527,7 +531,7 @@
       }
       
       medicoes.push({
-        data: label,
+        label,
         dataFormatada: formatarData(label),
         valor: valor,
         hasData: hasData
@@ -546,15 +550,15 @@
     return 'val-crit';
   }
 
-  // Renderizar tabela de medições com dados reais
-  async function renderTabela(item, fileName) {
+  // Renderizar tabela de medições
+  async function renderTabela(graficoConfig) {
     let medicoes;
     
-    if (dadosCache[fileName]) {
-      medicoes = dadosCache[fileName];
+    if (dadosCache[graficoConfig.file]) {
+      medicoes = dadosCache[graficoConfig.file];
     } else {
-      medicoes = await getMedicoesReal(fileName);
-      dadosCache[fileName] = medicoes;
+      medicoes = await getMedicoesReal(graficoConfig.file);
+      dadosCache[graficoConfig.file] = medicoes;
     }
     
     const colsPerRow = 12;
@@ -573,7 +577,7 @@
 
       html += '<tr>';
       chunk.forEach(m => {
-        const cls = getStatusClass(m.valor, item.ref, item.tol, m.hasData);
+        const cls = getStatusClass(m.valor, graficoConfig.ref, graficoConfig.tol, m.hasData);
         const displayValue = m.hasData ? m.valor.toFixed(2) : '---';
         html += `<td class="${cls}">${displayValue}</td>`;
       });
@@ -585,9 +589,10 @@
   }
 
   // Criar card individual
-  async function criarCard(itemInfo, fileName, processoNome) {
-    const displayName = itemInfo.nome;
-    const tabelaHtml = await renderTabela(itemInfo, fileName);
+  async function criarCard(graficoConfig, processoNome) {
+    const displayName = graficoConfig.nome;
+    const fileName = graficoConfig.file;
+    const tabelaHtml = await renderTabela(graficoConfig);
 
     return `
       <div class="card">
@@ -616,13 +621,13 @@
     let allSlides = [];
     let slideIndex = 0;
 
-    for (let processoIndex = 0; processoIndex < processosNomes.length; processoIndex++) {
-      const processoNome = processosNomes[processoIndex];
-      const arquivosProcesso = Object.entries(fileToItemMap)
-        .filter(([file, info]) => info.processo === processoIndex)
-        .map(([file, info]) => ({ file, info }));
+    // Processar cada processo
+    for (const processoKey in processosConfig) {
+      const processo = processosConfig[processoKey];
+      const processoNome = processo.nome;
+      const graficos = processo.graficos;
 
-      const slidesCount = Math.ceil(arquivosProcesso.length / CONFIG.itemsPerSlide);
+      const slidesCount = Math.ceil(graficos.length / CONFIG.itemsPerSlide);
 
       for (let i = 0; i < slidesCount; i++) {
         const slide = document.createElement('div');
@@ -636,10 +641,10 @@
         slide.appendChild(titleDiv);
 
         const start = i * CONFIG.itemsPerSlide;
-        const slideItems = arquivosProcesso.slice(start, start + CONFIG.itemsPerSlide);
+        const slideGraficos = graficos.slice(start, start + CONFIG.itemsPerSlide);
 
-        for (const { file, info } of slideItems) {
-          const cardHtml = await criarCard(info, file, processoNome);
+        for (const graficoConfig of slideGraficos) {
+          const cardHtml = await criarCard(graficoConfig, processoNome);
           const cardDiv = document.createElement('div');
           cardDiv.innerHTML = cardHtml;
           slide.appendChild(cardDiv.firstElementChild);
@@ -675,13 +680,18 @@
     for (const card of cards) {
       const fileName = card.querySelector('.graph-placeholder')?.textContent.match(/Gráfico: (.*)/)?.[1]?.trim();
       if (fileName) {
-        const fileKey = Object.keys(fileToItemMap).find(key => {
-          const placeholder = card.querySelector('.graph-placeholder');
-          return placeholder && placeholder.textContent.includes(key);
-        });
+        // Encontrar a configuração do gráfico
+        let graficoConfig = null;
+        for (const processoKey in processosConfig) {
+          const found = processosConfig[processoKey].graficos.find(g => g.file === fileName);
+          if (found) {
+            graficoConfig = found;
+            break;
+          }
+        }
         
-        if (fileKey && fileToItemMap[fileKey]) {
-          const tabelaHtml = await renderTabela(fileToItemMap[fileKey], fileKey);
+        if (graficoConfig) {
+          const tabelaHtml = await renderTabela(graficoConfig);
           const container = card.querySelector('.measurements-container');
           if (container) {
             container.innerHTML = `
