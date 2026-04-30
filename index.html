@@ -351,8 +351,242 @@
 </head>
 <body>
 
-<!-- MANTENHA TODO O HTML ORIGINAL (HEADER / MAIN / FOOTER / SCRIPT) -->
-<!-- Apenas substitua o bloco <style> antigo por este novo para manter 100% das funcionalidades -->
+<header>
+    <div class="brand">
+        <div class="brand-main">WEG INDUSTRIAL</div>
+        <div class="brand-sub">CONTROLE ANALÍTICO DOS BANHOS QUÍMICOS</div>
+    </div>
+    <div class="clock-container">
+        <div class="clock-item">
+            <span class="clock-label">DATA:</span>
+            <span class="clock-value date-value" id="clock-date">--/--/----</span>
+        </div>
+        <div class="clock-item">
+            <span class="clock-label">HORA:</span>
+            <span class="clock-value" id="clock-time">--:--:--</span>
+        </div>
+    </div>
+</header>
 
+<main>
+    <div class="section-title" id="current-section">Carregando...</div>
+    <div class="dashboard-container" id="dashboard-content"></div>
+    <div class="nav-dots" id="nav-dots"></div>
+</main>
+
+<footer>
+    <div style="display:flex;align-items:center;gap:10px;">
+        <div class="pulse"></div>
+        <span>Dados em tempo real | WEG Qualidade</span>
+    </div>
+    <div>Atualização: <span id="last-sync">Agora</span></div>
+</footer>
+
+<script>
+const tabsConfig = [
+    {
+        section: "Estanhagem",
+        items: [
+            { title: "Desengraxante",          fileBase: "graf-des",                  status: "OK" },
+            { title: "Ativação — Tanque 5",    fileBase: "graf-ativacao-tanque-5",    status: "Verificar" },
+            { title: "Ativação — Tanque 6",    fileBase: "graf-ativacao-tanque-6",    status: "OK" },
+            { title: "Níquel WATT",            fileBase: "graf-niquel-watt",          status: "Estável" },
+            { title: "Estanhagem A",           fileBase: "graf-estanhagem-a",         status: "Vencido" },
+            { title: "Selante",                fileBase: "graf-selante",              status: "OK" },
+            { title: "Estanhagem B",           fileBase: "graf-estanhagem-b",         status: "OK" }
+        ]
+    },
+    {
+        section: "Nanocerâmico",
+        items: [
+            { title: "1º Desengraxante",       fileBase: "graf-des1",                 status: "OK" },
+            { title: "2º Desengraxante",       fileBase: "graf-des2",                 status: "OK" },
+            { title: "Decapante 1",            fileBase: "graf-dec1",                 status: "Atenção" },
+            { title: "Decapante 2",            fileBase: "graf-dec2",                 status: "OK" },
+            { title: "Nanocerâmico — Conc.",   fileBase: "graf-nano",                 status: "Crítico" },
+            { title: "Nanocerâmico — Abs.",    fileBase: "graf-abso-nano",            status: "OK" },
+            { title: "Nanocerâmico — pH",      fileBase: "graf-ph-nano",              status: "OK" },
+            { title: "Neutralizador",          fileBase: "graf-neu",                  status: "OK" },
+            { title: "Selante",                fileBase: "graf-sel",                  status: "OK" }
+        ]
+    }
+];
+
+const COLS_POR_BLOCO = 16; // Quebra a tabela em blocos de 16 colunas se tiver muitas datas
+let currentTabIdx  = 0;
+let currentItemIdx = 0;
+let rotationTimer;
+
+function getStatusClass(status) {
+    if (["OK", "Estável", "Em Conformidade"].includes(status)) return "ok";
+    if (["Atenção", "Verificar"].includes(status)) return "warn";
+    return "crit";
+}
+
+function renderCard(item) {
+    const container = document.getElementById('dashboard-content');
+    container.innerHTML = `
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-title">${item.title}</span>
+                    <span class="card-yaxis" id="y-axis-label"></span>
+                </div>
+                <span class="status-badge status-${getStatusClass(item.status)}">${item.status}</span>
+            </div>
+            <div class="multi-chart-grid" id="grid-wrapper">
+                <div style="padding: 20px; color: #888; text-align: center; width: 100%;">Carregando dados...</div>
+            </div>
+        </div>
+    `;
+    loadCardData(item.fileBase);
+}
+
+function loadCardData(fileBase) {
+    fetch(`dados/${fileBase}.json?t=${Date.now()}`)
+        .then(r => {
+            if (!r.ok) throw new Error('JSON não encontrado');
+            return r.json();
+        })
+        .then(data => {
+            const yLabel = document.getElementById('y-axis-label');
+            if (yLabel && data.yAxisLabel) {
+                yLabel.textContent = data.yAxisLabel;
+            }
+
+            const wrapper = document.getElementById('grid-wrapper');
+            wrapper.innerHTML = '';
+            
+            // LÓGICA PRINCIPAL: Verifica se é um array de gráficos (multi) ou objeto único
+            if (data.charts && Array.isArray(data.charts) && data.charts.length > 0) {
+                // MÚLTIPLOS GRÁFICOS
+                data.charts.forEach((chartData, index) => {
+                    const col = document.createElement('div');
+                    col.className = 'chart-column';
+                    
+                    let html = '';
+                    if (chartData.title) {
+                        html += `<div class="chart-column-title">${chartData.title}</div>`;
+                    }
+                    // Nome do arquivo: base-1.png, base-2.png, etc.
+                    html += `<img src="graficos/${fileBase}-${index + 1}.png?t=${Date.now()}" class="chart-img" alt="Gráfico ${index+1}">`;
+                    html += generateTableHTML(chartData.labels, chartData.series1, chartData.series2);
+                    
+                    col.innerHTML = html;
+                    wrapper.appendChild(col);
+                });
+            } else if (data.labels) {
+                // ÚNICO GRÁFICO (Formato legado ou simples)
+                const col = document.createElement('div');
+                col.className = 'chart-column single'; // Classe single para ocupar largura total
+                let html = `<img src="graficos/${fileBase}-1.png?t=${Date.now()}" class="chart-img" alt="Gráfico">`;
+                html += generateTableHTML(data.labels, data.series1, data.series2);
+                col.innerHTML = html;
+                wrapper.appendChild(col);
+            } else {
+                wrapper.innerHTML = '<div style="padding: 20px; color: #888; width: 100%; text-align: center;">Sem dados disponíveis.</div>';
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            const wrapper = document.getElementById('grid-wrapper');
+            wrapper.innerHTML = `
+                <div class="chart-column single">
+                    <img src="graficos/${fileBase}-1.png?t=${Date.now()}" class="chart-img" onerror="this.style.display='none'">
+                    <div style="text-align:center; padding:10px; color:#888;">Erro ao carregar dados ou imagem indisponível.</div>
+                </div>`;
+        });
+}
+
+function generateTableHTML(labels, series1, series2) {
+    if (!labels || labels.length === 0) return '';
+    
+    let html = '<div style="margin-top: 10px;">';
+    const totalBlocos = Math.ceil(labels.length / COLS_POR_BLOCO);
+
+    for (let b = 0; b < totalBlocos; b++) {
+        const inicio = b * COLS_POR_BLOCO;
+        const fim = Math.min(inicio + COLS_POR_BLOCO, labels.length);
+        
+        const chunkLabels = labels.slice(inicio, fim);
+        const chunkS1 = series1 ? series1.slice(inicio, fim) : [];
+        const chunkS2 = series2 ? series2.slice(inicio, fim) : null;
+
+        html += `<table class="custom-table">`;
+        html += `<thead>`;
+        if (b === 0) {
+            html += `<tr><th class="table-main-title" colspan="${chunkLabels.length}">ÚLTIMAS 24 MEDIÇÕES</th></tr>`;
+        }
+        html += '<tr>' + chunkLabels.map(l => `<th>${l}</th>`).join('') + '</tr>';
+        html += `</thead><tbody>`;
+        
+        if (chunkS1.length > 0) {
+            html += '<tr>' + chunkS1.map(v => `<td>${v ?? ''}</td>`).join('') + '</tr>';
+        }
+        
+        if (chunkS2 && chunkS2.some(v => v !== null && v !== '')) {
+            html += '<tr>' + chunkS2.map(v => `<td>${v ?? ''}</td>`).join('') + '</tr>';
+        }
+        
+        html += `</tbody></table>`;
+    }
+    html += '</div>';
+    return html;
+}
+
+function nextItem() {
+    const tab = tabsConfig[currentTabIdx];
+    currentItemIdx++;
+    if (currentItemIdx >= tab.items.length) {
+        currentItemIdx = 0;
+        currentTabIdx++;
+        if (currentTabIdx >= tabsConfig.length) currentTabIdx = 0;
+    }
+    updateDisplay();
+}
+
+function updateDisplay() {
+    const tab  = tabsConfig[currentTabIdx];
+    const item = tab.items[currentItemIdx];
+
+    document.getElementById('current-section').textContent = tab.section;
+    renderCard(item);
+
+    const dotsContainer = document.getElementById('nav-dots');
+    dotsContainer.innerHTML = '';
+    tab.items.forEach((_, idx) => {
+        const dot = document.createElement('div');
+        dot.className = `dot${idx === currentItemIdx ? ' active' : ''}`;
+        dot.onclick = () => { currentItemIdx = idx; resetRotation(); updateDisplay(); };
+        dotsContainer.appendChild(dot);
+    });
+}
+
+function resetRotation() {
+    clearInterval(rotationTimer);
+    rotationTimer = setInterval(nextItem, 10000); // 10 segundos por card
+}
+
+function initClock() {
+    function tick() {
+        const now = new Date();
+        document.getElementById('clock-date').textContent = now.toLocaleDateString('pt-BR');
+        document.getElementById('clock-time').textContent = now.toLocaleTimeString('pt-BR');
+    }
+    tick();
+    setInterval(tick, 1000);
+}
+
+window.onload = () => {
+    initClock();
+    updateDisplay();
+    resetRotation();
+
+    setInterval(() => {
+        document.getElementById('last-sync').textContent = new Date().toLocaleTimeString('pt-BR');
+        updateDisplay();
+    }, 60000);
+};
+</script>
 </body>
 </html>
