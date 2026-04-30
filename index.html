@@ -385,31 +385,32 @@
     itemsPerSlide: 2
   };
 
+  // Estrutura de dados com suporte a múltiplos gráficos por item
   const processos = [
     {
       nome: 'Estanhagem Eletrolítica',
       items: [
-        { id: 'des', nome: 'Desengraxante Químico', file: 'des', ref: 26.0, tol: 3.9 },
-        { id: 'ativ5', nome: 'Ativação — Tanque 5', file: 'ativacao-tanque-5', ref: 8.5, tol: 1.28 },
-        { id: 'ativ6', nome: 'Ativação — Tanque 6', file: 'ativacao-tanque-6', ref: 8.5, tol: 1.28 },
-        { id: 'niquel', nome: 'Níquel WATT', file: 'niquel-watt', ref: 45.0, tol: 6.75 },
-        { id: 'estaA', nome: 'Estanhagem A', file: 'estanhagem-a', ref: 32.0, tol: 4.8 },
-        { id: 'estaB', nome: 'Estanhagem B', file: 'estanhagem-b', ref: 31.5, tol: 4.73 },
-        { id: 'selante', nome: 'Selante Protetivo', file: 'selante', ref: 18.0, tol: 2.7 }
+        { id: 'des', nome: 'Desengraxante Químico', files: ['des'], ref: 26.0, tol: 3.9 },
+        { id: 'ativ5', nome: 'Ativação — Tanque 5', files: ['ativacao-tanque-5'], ref: 8.5, tol: 1.28 },
+        { id: 'ativ6', nome: 'Ativação — Tanque 6', files: ['ativacao-tanque-6'], ref: 8.5, tol: 1.28 },
+        { id: 'niquel', nome: 'Níquel WATT', files: ['niquel-watt', 'niquel-watt-1', 'niquel-watt-2', 'niquel-watt-3', 'niquel-watt-4'], ref: 45.0, tol: 6.75 },
+        { id: 'estaA', nome: 'Estanhagem A', files: ['estanhagem-a', 'estanhagem-a-1', 'estanhagem-a-2'], ref: 32.0, tol: 4.8 },
+        { id: 'estaB', nome: 'Estanhagem B', files: ['estanhagem-b', 'estanhagem-b-1', 'estanhagem-b-2'], ref: 31.5, tol: 4.73 },
+        { id: 'selante', nome: 'Selante Protetivo', files: ['selante'], ref: 18.0, tol: 2.7 }
       ]
     },
     {
       nome: 'Processo Nanocerâmico',
       items: [
-        { id: 'des1', nome: '1º Desengraxante', file: 'des1', ref: 29.0, tol: 4.35 },
-        { id: 'des2', nome: '2º Desengraxante', file: 'des2', ref: 28.5, tol: 4.28 },
-        { id: 'dec1', nome: 'Decapante 1', file: 'dec1', ref: 12.0, tol: 1.8 },
-        { id: 'dec2', nome: 'Decapante 2', file: 'dec2', ref: 11.5, tol: 1.73 },
-        { id: 'nano', nome: 'Nanocerâmico — Conc.', file: 'nano', ref: 35.0, tol: 5.25 },
-        { id: 'abso', nome: 'Nanocerâmico — Abs.', file: 'abso-nano', ref: 1.2, tol: 0.18 },
-        { id: 'ph', nome: 'Nanocerâmico — pH', file: 'ph-nano', ref: 4.5, tol: 0.68 },
-        { id: 'neu', nome: 'Neutralizador', file: 'neu', ref: 7.0, tol: 1.05 },
-        { id: 'sel', nome: 'Selante Final', file: 'sel', ref: 22.0, tol: 3.3 }
+        { id: 'des1', nome: '1º Desengraxante', files: ['des1'], ref: 29.0, tol: 4.35 },
+        { id: 'des2', nome: '2º Desengraxante', files: ['des2'], ref: 28.5, tol: 4.28 },
+        { id: 'dec1', nome: 'Decapante 1', files: ['dec1'], ref: 12.0, tol: 1.8 },
+        { id: 'dec2', nome: 'Decapante 2', files: ['dec2'], ref: 11.5, tol: 1.73 },
+        { id: 'nano', nome: 'Nanocerâmico — Conc.', files: ['nano'], ref: 35.0, tol: 5.25 },
+        { id: 'abso', nome: 'Nanocerâmico — Abs.', files: ['abso-nano'], ref: 1.2, tol: 0.18 },
+        { id: 'ph', nome: 'Nanocerâmico — pH', files: ['ph-nano'], ref: 4.5, tol: 0.68 },
+        { id: 'neu', nome: 'Neutralizador', files: ['neu'], ref: 7.0, tol: 1.05 },
+        { id: 'sel', nome: 'Selante Final', files: ['sel'], ref: 22.0, tol: 3.3 }
       ]
     }
   ];
@@ -441,10 +442,10 @@
   // Renderizar tabela de medições
   function renderTabela(item) {
     const medicoes = getMedicoes(item);
-    const colsPerRow = 8;
+    const colsPerRow = 12;
     let html = '<table class="analise-table">';
 
-    for (let row = 0; row < 3; row++) {
+    for (let row = 0; row < 2; row++) {
       const start = row * colsPerRow;
       const end = start + colsPerRow;
       const chunk = medicoes.slice(start, end);
@@ -467,15 +468,19 @@
     return html;
   }
 
-  // Criar card individual
-  function criarCard(item) {
+  // Criar card individual para um arquivo de gráfico específico
+  function criarCard(item, fileIndex) {
+    const fileName = item.files[fileIndex];
+    const totalFiles = item.files.length;
+    const displayName = totalFiles > 1 ? `${item.nome} (${fileIndex + 1}/${totalFiles})` : item.nome;
+
     return `
       <div class="card">
-        <div class="card-header">${item.nome}</div>
+        <div class="card-header">${displayName}</div>
         <div class="card-body">
           <div class="graph-container">
-            <div class="graph-placeholder">📊 Gráfico: ${item.file}.png</div>
-            <img src="graficos/graf-${item.file}.png?t=${Date.now()}"
+            <div class="graph-placeholder">📊 Gráfico: ${fileName}.png</div>
+            <img src="graficos/graf-${fileName}.png?t=${Date.now()}"
                  onerror="this.style.display='none'"
                  onload="this.previousElementSibling.style.display='none'">
           </div>
@@ -499,7 +504,16 @@
     // Criar slides para cada processo
     processos.forEach(processo => {
       const items = processo.items;
-      const slidesCount = Math.ceil(items.length / CONFIG.itemsPerSlide);
+      
+      // Expandir items para incluir cada arquivo como um item separado
+      let expandedItems = [];
+      items.forEach(item => {
+        item.files.forEach((file, fileIndex) => {
+          expandedItems.push({ ...item, fileIndex, totalFiles: item.files.length });
+        });
+      });
+
+      const slidesCount = Math.ceil(expandedItems.length / CONFIG.itemsPerSlide);
 
       for (let i = 0; i < slidesCount; i++) {
         const slide = document.createElement('div');
@@ -514,11 +528,11 @@
 
         // Adicionar cards do slide
         const start = i * CONFIG.itemsPerSlide;
-        const slideItems = items.slice(start, start + CONFIG.itemsPerSlide);
+        const slideItems = expandedItems.slice(start, start + CONFIG.itemsPerSlide);
 
         slideItems.forEach(item => {
           const cardDiv = document.createElement('div');
-          cardDiv.innerHTML = criarCard(item);
+          cardDiv.innerHTML = criarCard(item, item.fileIndex);
           slide.appendChild(cardDiv.firstElementChild);
         });
 
