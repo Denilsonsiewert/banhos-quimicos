@@ -140,7 +140,7 @@
         .chart-column-title {
             text-align: center;
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             color: var(--weg-dark);
             margin-bottom: 5px;
         }
@@ -152,34 +152,35 @@
             border: 1px solid #ddd;
         }
 
-        /* TABELA */
+        /* TABELA - FONTES GRANDES PARA TV */
         .table-main-title {
             background-color: var(--table-header-bg) !important;
             color: white !important;
-            font-size: 1.05rem !important;
-            font-weight: 700 !important;
+            font-size: 1.3rem !important; /* Aumentado */
+            font-weight: 800 !important;
             text-align: center !important;
-            padding: 8px 4px !important;
+            padding: 10px 4px !important;
             letter-spacing: 0.5px;
         }
         .custom-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.85rem;
+            font-size: 1.2rem; /* Aumentado para TV */
+            font-weight: 600;
             table-layout: fixed;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
         }
         .custom-table th, .custom-table td {
             border: 1px solid var(--table-border);
-            padding: 4px 2px;
+            padding: 8px 4px; /* Mais espaçamento */
             text-align: center;
             word-wrap: break-word;
         }
         .custom-table th {
             background-color: var(--table-header-bg);
             color: white;
-            font-weight: 700;
-            font-size: 0.8rem;
+            font-weight: 800;
+            font-size: 1.1rem; /* Aumentado */
         }
         .custom-table tr:nth-child(even) td { background-color: #f9f9f9; }
         .custom-table tr:hover td { background-color: #f1f1f1; }
@@ -314,7 +315,6 @@ function loadCardData(fileBase) {
             return r.json();
         })
         .then(data => {
-            // Restaura o yAxisLabel no cabeçalho (se existir no JSON)
             const yLabel = document.getElementById('y-axis-label');
             if (yLabel && data.yAxisLabel) {
                 yLabel.textContent = data.yAxisLabel;
@@ -323,7 +323,6 @@ function loadCardData(fileBase) {
             const wrapper = document.getElementById('grid-wrapper');
             wrapper.innerHTML = '';
             
-            // Verifica se é o JSON novo (com array "charts") ou o antigo
             if (data.charts && data.charts.length > 0) {
                 data.charts.forEach((chartData, index) => {
                     const col = document.createElement('div');
@@ -335,14 +334,12 @@ function loadCardData(fileBase) {
                     }
                     
                     html += `<img src="graficos/${fileBase}-${index + 1}.png?t=${Date.now()}" class="chart-img" alt="Gráfico">`;
-                    // Passa series1 e series2 para a tabela
                     html += generateTableHTML(chartData.labels, chartData.series1, chartData.series2);
                     
                     col.innerHTML = html;
                     wrapper.appendChild(col);
                 });
             } else if (data.labels) {
-                // Fallback para o JSON antigo (caso alguma aba ainda não tenha sido atualizada pelo VBA novo)
                 const col = document.createElement('div');
                 col.className = 'chart-column';
                 let html = `<img src="graficos/${fileBase}-1.png?t=${Date.now()}" class="chart-img" alt="Gráfico">`;
@@ -363,7 +360,6 @@ function loadCardData(fileBase) {
         });
 }
 
-// Função atualizada para suportar series2 (segunda linha de valores)
 function generateTableHTML(labels, series1, series2) {
     if (!labels || labels.length === 0) return '';
     
@@ -386,12 +382,10 @@ function generateTableHTML(labels, series1, series2) {
         html += '<tr>' + chunkLabels.map(l => `<th>${l}</th>`).join('') + '</tr>';
         html += `</thead><tbody>`;
         
-        // Linha 1
         if (chunkS1.length > 0) {
             html += '<tr>' + chunkS1.map(v => `<td>${v ?? ''}</td>`).join('') + '</tr>';
         }
         
-        // Linha 2 (se existir)
         if (chunkS2 && chunkS2.some(v => v !== null && v !== '')) {
             html += '<tr>' + chunkS2.map(v => `<td>${v ?? ''}</td>`).join('') + '</tr>';
         }
@@ -432,7 +426,7 @@ function updateDisplay() {
 
 function resetRotation() {
     clearInterval(rotationTimer);
-    rotationTimer = setInterval(nextItem, 10000); // 10s por card
+    rotationTimer = setInterval(nextItem, 10000);
 }
 
 function initClock() {
