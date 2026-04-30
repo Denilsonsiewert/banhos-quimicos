@@ -21,7 +21,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color );
+            background-color: var(--bg-color);
             color: var(--text-primary);
             height: 100vh;
             display: flex;
@@ -117,7 +117,7 @@
         .status-warn { background: #fff3cd; color: #856404; }
         .status-crit { background: #f8d7da; color: #721c24; }
 
-        /* GRID PARA LADO A LADO */
+        /* GRID PARA LADO A LADO (MULTI-GRÁFICOS) */
         .multi-chart-grid {
             display: flex;
             flex-direction: row;
@@ -128,7 +128,7 @@
         }
         .chart-column {
             flex: 1;
-            min-width: 600px;
+            min-width: 600px; /* Garante que não fique muito estreito */
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -137,6 +137,12 @@
             border-radius: 8px;
             border: 1px solid #eee;
         }
+        /* Se houver apenas 1 gráfico, ele ocupa 100% da largura disponível sem dividir */
+        .chart-column.single {
+            width: 100%;
+            min-width: unset;
+        }
+        
         .chart-column-title {
             text-align: center;
             font-weight: 700;
@@ -150,13 +156,14 @@
             object-fit: contain;
             display: block;
             border: 1px solid #ddd;
+            background: #fff;
         }
 
         /* TABELA - FONTES GRANDES PARA TV */
         .table-main-title {
             background-color: var(--table-header-bg) !important;
             color: white !important;
-            font-size: 1.3rem !important; /* Aumentado */
+            font-size: 1.3rem !important;
             font-weight: 800 !important;
             text-align: center !important;
             padding: 10px 4px !important;
@@ -165,14 +172,14 @@
         .custom-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 1.2rem; /* Aumentado para TV */
+            font-size: 1.2rem;
             font-weight: 600;
             table-layout: fixed;
             margin-bottom: 4px;
         }
         .custom-table th, .custom-table td {
             border: 1px solid var(--table-border);
-            padding: 8px 4px; /* Mais espaçamento */
+            padding: 8px 4px;
             text-align: center;
             word-wrap: break-word;
         }
@@ -180,7 +187,7 @@
             background-color: var(--table-header-bg);
             color: white;
             font-weight: 800;
-            font-size: 1.1rem; /* Aumentado */
+            font-size: 1.1rem;
         }
         .custom-table tr:nth-child(even) td { background-color: #f9f9f9; }
         .custom-table tr:hover td { background-color: #f1f1f1; }
@@ -275,7 +282,7 @@ const tabsConfig = [
     }
 ];
 
-const COLS_POR_BLOCO = 16;
+const COLS_POR_BLOCO = 16; // Quebra a tabela em blocos de 16 colunas se tiver muitas datas
 let currentTabIdx  = 0;
 let currentItemIdx = 0;
 let rotationTimer;
@@ -288,7 +295,6 @@ function getStatusClass(status) {
 
 function renderCard(item) {
     const container = document.getElementById('dashboard-content');
-
     container.innerHTML = `
         <div class="card">
             <div class="card-header">
@@ -298,13 +304,11 @@ function renderCard(item) {
                 </div>
                 <span class="status-badge status-${getStatusClass(item.status)}">${item.status}</span>
             </div>
-
             <div class="multi-chart-grid" id="grid-wrapper">
                 <div style="padding: 20px; color: #888; text-align: center; width: 100%;">Carregando dados...</div>
             </div>
         </div>
     `;
-
     loadCardData(item.fileBase);
 }
 
@@ -323,7 +327,9 @@ function loadCardData(fileBase) {
             const wrapper = document.getElementById('grid-wrapper');
             wrapper.innerHTML = '';
             
-            if (data.charts && data.charts.length > 0) {
+            // LÓGICA PRINCIPAL: Verifica se é um array de gráficos (multi) ou objeto único
+            if (data.charts && Array.isArray(data.charts) && data.charts.length > 0) {
+                // MÚLTIPLOS GRÁFICOS
                 data.charts.forEach((chartData, index) => {
                     const col = document.createElement('div');
                     col.className = 'chart-column';
@@ -332,16 +338,17 @@ function loadCardData(fileBase) {
                     if (chartData.title) {
                         html += `<div class="chart-column-title">${chartData.title}</div>`;
                     }
-                    
-                    html += `<img src="graficos/${fileBase}-${index + 1}.png?t=${Date.now()}" class="chart-img" alt="Gráfico">`;
+                    // Nome do arquivo: base-1.png, base-2.png, etc.
+                    html += `<img src="graficos/${fileBase}-${index + 1}.png?t=${Date.now()}" class="chart-img" alt="Gráfico ${index+1}">`;
                     html += generateTableHTML(chartData.labels, chartData.series1, chartData.series2);
                     
                     col.innerHTML = html;
                     wrapper.appendChild(col);
                 });
             } else if (data.labels) {
+                // ÚNICO GRÁFICO (Formato legado ou simples)
                 const col = document.createElement('div');
-                col.className = 'chart-column';
+                col.className = 'chart-column single'; // Classe single para ocupar largura total
                 let html = `<img src="graficos/${fileBase}-1.png?t=${Date.now()}" class="chart-img" alt="Gráfico">`;
                 html += generateTableHTML(data.labels, data.series1, data.series2);
                 col.innerHTML = html;
@@ -350,12 +357,13 @@ function loadCardData(fileBase) {
                 wrapper.innerHTML = '<div style="padding: 20px; color: #888; width: 100%; text-align: center;">Sem dados disponíveis.</div>';
             }
         })
-        .catch(() => {
+        .catch(err => {
+            console.error(err);
             const wrapper = document.getElementById('grid-wrapper');
             wrapper.innerHTML = `
-                <div class="chart-column">
+                <div class="chart-column single">
                     <img src="graficos/${fileBase}-1.png?t=${Date.now()}" class="chart-img" onerror="this.style.display='none'">
-                    <div style="text-align:center; padding:10px; color:#888;">Tabela indisponível</div>
+                    <div style="text-align:center; padding:10px; color:#888;">Erro ao carregar dados ou imagem indisponível.</div>
                 </div>`;
         });
 }
@@ -426,7 +434,7 @@ function updateDisplay() {
 
 function resetRotation() {
     clearInterval(rotationTimer);
-    rotationTimer = setInterval(nextItem, 10000);
+    rotationTimer = setInterval(nextItem, 10000); // 10 segundos por card
 }
 
 function initClock() {
