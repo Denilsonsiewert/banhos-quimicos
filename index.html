@@ -393,10 +393,6 @@ let currentTabIdx = 0;
 let currentItemIdx = 0;
 let rotationTimer;
 
-function getStatusClass(status) {
-    if (["OK", "Estável", "Em Conformidade"].includes(status)) return "ok";
-    if (["Atenção", "Verificar", "Vencido"].includes(status)) return "warn";
-    return "crit";
 }
 
 function generateTableHTML(labels, series1, series2) {
