@@ -3,55 +3,56 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Analytics Químico | WEG Banhos Industriais</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>Controle Analítico | WEG Banhos Industriais</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 :root {
   --weg-blue: #00458F;
-  --weg-blue-light: #0055B5;
-  --weg-cyan: #00A8E8;
-  --bg-primary: #F5F7FA;
+  --weg-blue-dark: #003366;
+  --weg-gray: #4A5568;
+  --weg-light-gray: #718096;
+  --bg-primary: #F7F9FC;
   --bg-secondary: #FFFFFF;
-  --bg-card: #FFFFFF;
-  --text-primary: #1A1A1A;
+  --border-color: #CBD5E0;
+  --text-primary: #2D3748;
   --text-secondary: #4A5568;
-  --text-muted: #718096;
-  --border-color: #E2E8F0;
-  --shadow: rgba(0, 69, 143, 0.08);
   --success: #38A169;
   --warning: #D69E2E;
   --danger: #E53E3E;
+  --shadow: rgba(0, 0, 0, 0.08);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: var(--bg-primary);
   color: var(--text-primary);
   min-height: 100vh;
   overflow: hidden;
+  line-height: 1.5;
 }
 
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 40px;
+  padding: 16px 48px;
   background: var(--bg-secondary);
-  box-shadow: 0 2px 8px var(--shadow);
-  height: 80px;
-  border-bottom: 3px solid var(--weg-blue);
-  position: relative;
-  z-index: 10;
+  box-shadow: 0 1px 3px var(--shadow);
+  height: 88px;
+  border-bottom: 4px solid var(--weg-blue);
 }
 
 .logo-weg { 
-  height: 50px;
-  transition: transform 0.2s ease;
+  height: 52px;
+  opacity: 0.95;
 }
-.logo-weg:hover { transform: scale(1.02); }
 
 .title-block {
   text-align: center;
@@ -59,8 +60,8 @@ header {
 }
 
 .title {
-  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
-  font-weight: 800;
+  font-size: 2rem;
+  font-weight: 700;
   color: var(--weg-blue);
   letter-spacing: -0.5px;
   text-transform: uppercase;
@@ -68,163 +69,140 @@ header {
 
 .info-pill {
   display: flex;
-  gap: 20px;
+  gap: 24px;
   background: var(--bg-primary);
-  padding: 10px 24px;
-  border-radius: 6px;
+  padding: 12px 28px;
+  border-radius: 4px;
   font-size: 0.95rem;
-  font-weight: 700;
-  box-shadow: 0 2px 6px var(--shadow);
-  border: 1px solid var(--border-color);
+  font-weight: 600;
+  color: var(--weg-blue-dark);
   font-family: 'Inter', monospace;
-  color: var(--weg-blue);
+  border: 1px solid var(--border-color);
 }
 
 main {
-  padding: 20px 30px 15px 30px;
-  height: calc(100vh - 120px);
+  padding: 24px 40px;
+  height: calc(100vh - 136px);
   display: flex;
   flex-direction: column;
-  position: relative;
-  z-index: 2;
 }
 
 .section-title {
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin-bottom: 16px;
-  padding: 10px 20px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  padding: 12px 24px;
   background: var(--weg-blue);
   color: white;
-  border-radius: 4px;
-  box-shadow: 0 2px 6px var(--shadow);
+  border-radius: 2px;
   letter-spacing: 0.3px;
 }
 
 #dashboard-content {
   flex: 1;
   overflow-y: auto;
-  overflow-x: hidden;
-  padding-right: 6px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--weg-blue) var(--border-color);
+  padding-right: 8px;
 }
 
 #dashboard-content::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 #dashboard-content::-webkit-scrollbar-track {
-  background: var(--border-color);
-  border-radius: 3px;
+  background: var(--bg-primary);
 }
 #dashboard-content::-webkit-scrollbar-thumb {
   background: var(--weg-blue);
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 .card {
-  background: var(--bg-card);
-  padding: 20px;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px var(--shadow);
+  background: var(--bg-secondary);
+  padding: 28px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px var(--shadow);
   border: 1px solid var(--border-color);
-  transition: all 0.2s ease;
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 12px;
+  align-items: flex-start;
+  margin-bottom: 28px;
+  padding-bottom: 16px;
   border-bottom: 2px solid var(--border-color);
-  flex-wrap: wrap;
-  gap: 12px;
 }
 
 .card-title {
   font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--weg-blue);
+  font-weight: 600;
+  color: var(--weg-blue-dark);
   letter-spacing: -0.3px;
 }
 
-.card-yaxis {
+.card-subtitle {
   font-size: 0.9rem;
-  color: var(--text-muted);
-  font-weight: 600;
-  margin-top: 4px;
-  background: var(--bg-primary);
-  display: inline-block;
-  padding: 3px 12px;
-  border-radius: 4px;
+  color: var(--weg-light-gray);
+  font-weight: 500;
+  margin-top: 6px;
 }
 
 .status-badge {
-  padding: 8px 20px;
-  border-radius: 4px;
-  font-weight: 700;
+  padding: 8px 24px;
+  border-radius: 3px;
+  font-weight: 600;
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  box-shadow: 0 2px 4px var(--shadow);
 }
 
-.status-ok { background: #C6F6D5; color: #276749; border: 2px solid var(--success); }
-.status-warn { background: #FEF3C7; color: #B7791F; border: 2px solid var(--warning); }
-.status-crit { background: #FED7D7; color: #C53030; border: 2px solid var(--danger); }
-
-.multi-chart-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
-  gap: 20px;
+.status-ok { 
+  background: #F0FFF4; 
+  color: #276749; 
+  border: 2px solid var(--success); 
+}
+.status-warn { 
+  background: #FFFBEB; 
+  color: #B7791F; 
+  border: 2px solid var(--warning); 
+}
+.status-crit { 
+  background: #FFF5F5; 
+  color: #C53030; 
+  border: 2px solid var(--danger); 
 }
 
-.chart-column {
+.chart-wrapper {
   background: var(--bg-secondary);
-  border-radius: 6px;
-  padding: 16px;
-  box-shadow: 0 2px 8px var(--shadow);
   border: 1px solid var(--border-color);
-  transition: transform 0.2s;
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 24px;
 }
 
-.chart-column:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--shadow);
-}
-
-.chart-column.single {
-  grid-column: 1 / -1;
-}
-
-.chart-column-title {
+.chart-title {
   text-align: center;
   font-size: 1.1rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--weg-blue);
-  margin-bottom: 12px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--border-color);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .chart-img {
   width: 100%;
-  max-height: 380px;
-  min-height: 280px;
+  height: 400px;
   object-fit: contain;
-  border-radius: 4px;
   background: var(--bg-primary);
   border: 1px solid var(--border-color);
 }
 
-/* Tabela em 2 linhas com 12 campos cada */
+/* Tabela profissional - 2 linhas de 12 colunas */
 .table-container {
   width: 100%;
-  margin-top: 16px;
   background: var(--bg-secondary);
-  border-radius: 6px;
   border: 1px solid var(--border-color);
+  border-radius: 4px;
   overflow: hidden;
 }
 
@@ -232,35 +210,33 @@ main {
   width: 100%;
   border-collapse: collapse;
   font-family: 'Inter', sans-serif;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
 }
 
 .custom-table th,
 .custom-table td {
   border: 1px solid var(--border-color);
-  padding: 8px 6px;
+  padding: 10px 8px;
   text-align: center;
-  font-weight: 600;
-  background-color: var(--bg-secondary);
+  font-weight: 500;
   color: var(--text-primary);
-  min-width: 70px;
 }
 
 .custom-table th {
   background: var(--weg-blue);
   color: white;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.3px;
   font-size: 0.8rem;
+  letter-spacing: 0.3px;
 }
 
 .table-main-title {
   font-size: 1rem !important;
-  padding: 12px !important;
-  background: var(--weg-blue) !important;
+  padding: 14px !important;
+  background: var(--weg-blue-dark) !important;
   text-align: center;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.5px;
 }
 
@@ -268,50 +244,47 @@ main {
   background: var(--bg-primary);
 }
 
-.custom-table tr:hover td {
-  background: #EBF8FF;
-}
-
 .nav-dots {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
-  padding: 10px;
+  gap: 12px;
+  margin-top: 24px;
+  padding: 12px 24px;
   background: var(--bg-secondary);
-  border-radius: 6px;
-  box-shadow: 0 2px 6px var(--shadow);
+  border-radius: 4px;
+  box-shadow: 0 1px 3px var(--shadow);
   width: fit-content;
   align-self: center;
   border: 1px solid var(--border-color);
 }
 
 .dot {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: var(--text-muted);
+  background: var(--weg-light-gray);
   cursor: pointer;
   transition: all 0.2s;
+  border: 2px solid transparent;
 }
 
 .dot.active {
   background: var(--weg-blue);
-  transform: scale(1.3);
+  transform: scale(1.1);
+  border-color: var(--weg-blue-dark);
 }
 
 footer {
-  height: 48px;
+  height: 52px;
   background: var(--bg-secondary);
   color: var(--text-secondary);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 30px;
-  font-size: 0.85rem;
+  padding: 0 40px;
+  font-size: 0.875rem;
   border-top: 1px solid var(--border-color);
   font-weight: 500;
-  box-shadow: 0 -2px 6px var(--shadow);
 }
 
 .pulse {
@@ -320,33 +293,37 @@ footer {
   border-radius: 50%;
   background: var(--success);
   animation: pulse 2s infinite;
+  display: inline-block;
+  margin-right: 8px;
 }
 
 @keyframes pulse {
   0% { box-shadow: 0 0 0 0 rgba(56, 161, 105, 0.7); }
-  70% { box-shadow: 0 0 0 8px rgba(56, 161, 105, 0); }
+  70% { box-shadow: 0 0 0 6px rgba(56, 161, 105, 0); }
   100% { box-shadow: 0 0 0 0 rgba(56, 161, 105, 0); }
 }
 
 .loader-shimmer {
-  background: linear-gradient(110deg, #E2E8F0 8%, #CBD5E0 18%, #E2E8F0 33%);
-  border-radius: 6px;
+  background: linear-gradient(90deg, #E2E8F0 25%, #CBD5E0 50%, #E2E8F0 75%);
   background-size: 200% 100%;
-  animation: shimmer 1.2s linear infinite;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+  height: 400px;
 }
 
 @keyframes shimmer {
-  to { background-position-x: -200%; }
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
-@media (max-width: 1000px) {
-  .card-title { font-size: 1.2rem; }
-  .custom-table th, .custom-table td { font-size: 0.75rem; padding: 6px 4px; min-width: 60px; }
-  .chart-img { min-height: 200px; max-height: 300px; }
-  .info-pill { gap: 12px; font-size: 0.85rem; padding: 8px 16px; }
-  .section-title { font-size: 1.1rem; padding: 8px 16px; }
-  header { height: 70px; padding: 10px 24px; }
-  .logo-weg { height: 45px; }
+@media (max-width: 1200px) {
+  .custom-table th, .custom-table td { 
+    font-size: 0.8rem; 
+    padding: 8px 6px; 
+  }
+  .chart-img { 
+    height: 350px; 
+  }
 }
 </style>
 </head>
@@ -370,45 +347,41 @@ footer {
 </main>
 
 <footer>
-  <div style="display:flex;align-items:center;gap:10px;">
-    <div class="pulse"></div>
-    <span>🔬 Dados em tempo real | WEG Qualidade Premium</span>
-  </div>
-  <div>🔄 Última sincronia: <span id="last-sync">Agora</span></div>
+  <div><span class="pulse"></span>Dados em tempo real - WEG Qualidade</div>
+  <div>Última atualização: <span id="last-sync">Agora</span></div>
 </footer>
 
 <script>
-// CONFIGURAÇÃO DE TELAS
 const tabsConfig = [
     {
-        section: "⚡ ESTANHAGEM • LINHA ALTA PERFORMANCE",
+        section: "ESTANHAGEM - LINHA ALTA PERFORMANCE",
         items: [
-            { title: "🧼 Desengraxante Químico", fileBase: "graf-des", status: "OK" },
-            { title: "⚡ Ativação — Tanque 5", fileBase: "graf-ativacao-tanque-5", status: "Verificar" },
-            { title: "⚙️ Ativação — Tanque 6", fileBase: "graf-ativacao-tanque-6", status: "OK" },
-            { title: "🔩 Níquel WATT", fileBase: "graf-niquel-watt", status: "Estável" },
-            { title: "🎯 Estanhagem A", fileBase: "graf-estanhagem-a", status: "Vencido" },
-            { title: "🛡️ Selante Protetivo", fileBase: "graf-selante", status: "OK" },
-            { title: "🏭 Estanhagem B", fileBase: "graf-estanhagem-b", status: "OK" }
+            { title: "Desengraxante Químico", fileBase: "graf-des", status: "OK" },
+            { title: "Ativação - Tanque 5", fileBase: "graf-ativacao-tanque-5", status: "Verificar" },
+            { title: "Ativação - Tanque 6", fileBase: "graf-ativacao-tanque-6", status: "OK" },
+            { title: "Níquel WATT", fileBase: "graf-niquel-watt", status: "Estável" },
+            { title: "Estanhagem A", fileBase: "graf-estanhagem-a", status: "Vencido" },
+            { title: "Selante Protetivo", fileBase: "graf-selante", status: "OK" },
+            { title: "Estanhagem B", fileBase: "graf-estanhagem-b", status: "OK" }
         ]
     },
     {
-        section: "🧪 NANOCERÂMICO • REVOLUÇÃO ANTICORROSÃO",
+        section: "NANOCERÂMICO - REVOLUÇÃO ANTICORROSÃO",
         items: [
-            { title: "💧 1º Desengraxante", fileBase: "graf-des1", status: "OK" },
-            { title: "💧 2º Desengraxante", fileBase: "graf-des2", status: "OK" },
-            { title: "⚠️ Decapante 1", fileBase: "graf-dec1", status: "Atenção" },
-            { title: "✅ Decapante 2", fileBase: "graf-dec2", status: "OK" },
-            { title: "🧴 Nanocerâmico — Concentração", fileBase: "graf-nano", status: "Crítico" },
-            { title: "📊 Nanocerâmico — Absorbância", fileBase: "graf-abso-nano", status: "OK" },
-            { title: "⚗️ Nanocerâmico — pH", fileBase: "graf-ph-nano", status: "OK" },
-            { title: "🧪 Neutralizador", fileBase: "graf-neu", status: "OK" },
-            { title: "🛡️ Selante Final", fileBase: "graf-sel", status: "OK" }
+            { title: "1º Desengraxante", fileBase: "graf-des1", status: "OK" },
+            { title: "2º Desengraxante", fileBase: "graf-des2", status: "OK" },
+            { title: "Decapante 1", fileBase: "graf-dec1", status: "Atenção" },
+            { title: "Decapante 2", fileBase: "graf-dec2", status: "OK" },
+            { title: "Nanocerâmico - Concentração", fileBase: "graf-nano", status: "Crítico" },
+            { title: "Nanocerâmico - Absorbância", fileBase: "graf-abso-nano", status: "OK" },
+            { title: "Nanocerâmico - pH", fileBase: "graf-ph-nano", status: "OK" },
+            { title: "Neutralizador", fileBase: "graf-neu", status: "OK" },
+            { title: "Selante Final", fileBase: "graf-sel", status: "OK" }
         ]
     }
 ];
 
-const COLS_POR_LINHA = 12;
+const COLS_PER_ROW = 12;
 let currentTabIdx = 0;
 let currentItemIdx = 0;
 let rotationTimer;
@@ -419,46 +392,37 @@ function getStatusClass(status) {
     return "crit";
 }
 
-// Geração da tabela em 2 linhas com 12 campos cada
+// Gera tabela com 2 linhas: primeira com datas/valores, segunda com datas/valores
 function generateTableHTML(labels, series1, series2) {
     if (!labels || labels.length === 0) return '';
     
-    const primeiraLinha = labels.slice(0, COLS_POR_LINHA);
-    const segundaLinha = labels.slice(COLS_POR_LINHA, COLS_POR_LINHA * 2);
-    const serie1Linha1 = series1.slice(0, COLS_POR_LINHA);
-    const serie1Linha2 = series1.slice(COLS_POR_LINHA, COLS_POR_LINHA * 2);
-    const serie2Linha1 = series2 ? series2.slice(0, COLS_POR_LINHA) : null;
-    const serie2Linha2 = series2 ? series2.slice(COLS_POR_LINHA, COLS_POR_LINHA * 2) : null;
+    // Divide em 2 linhas de 12 colunas
+    const row1Labels = labels.slice(0, COLS_PER_ROW);
+    const row1Values = series1.slice(0, COLS_PER_ROW);
+    const row2Labels = labels.slice(COLS_PER_ROW, COLS_PER_ROW * 2);
+    const row2Values = series1.slice(COLS_PER_ROW, COLS_PER_ROW * 2);
     
     let html = `<div class="table-container"><table class="custom-table">`;
-    html += `<thead><tr><th class="table-main-title" colspan="${COLS_POR_LINHA}">📋 REGISTRO DAS ÚLTIMAS 24 ANÁLISES (VALORES REAIS)</th></tr>`;
+    html += `<thead><tr><th class="table-main-title" colspan="${COLS_PER_ROW}">REGISTRO DAS ÚLTIMAS 24 ANÁLISES - VALORES REAIS</th></tr>`;
     
-    // Primeira linha de datas
-    html += `<tr>${primeiraLinha.map(x => `<th>${x}</th>`).join('')}</tr>`;
-    // Segunda linha de datas
-    html += `<tr>${segundaLinha.map(x => `<th>${x}</th>`).join('')}</tr>`;
+    // Linha 1: Datas
+    html += `<tr>${row1Labels.map(label => `<th>${label}</th>`).join('')}</tr>`;
+    // Linha 2: Análises
+    html += `<tr>${row1Values.map(val => `<td><strong>${val !== null && val !== undefined ? val : '---'}</strong></td>`).join('')}</tr>`;
     
-    html += `</thead><tbody>`;
-    
-    // Primeira linha de valores série 1
-    html += `<tr>${serie1Linha1.map(x => `<td><strong>${x ?? '—'}</strong></td>`).join('')}</tr>`;
-    // Segunda linha de valores série 1
-    html += `<tr>${serie1Linha2.map(x => `<td><strong>${x ?? '—'}</strong></td>`).join('')}</tr>`;
-    
-    // Série 2 se existir
-    if (serie2Linha1) {
-        html += `<tr style="background:var(--bg-primary);">${serie2Linha1.map(x => `<td><span style="font-weight:600;">${x ?? '—'}</span></td>`).join('')}</tr>`;
-        html += `<tr style="background:var(--bg-primary);">${serie2Linha2.map(x => `<td><span style="font-weight:600;">${x ?? '—'}</span></td>`).join('')}</tr>`;
-    }
+    // Linha 3: Datas
+    html += `<tr>${row2Labels.map(label => `<th>${label}</th>`).join('')}</tr>`;
+    // Linha 4: Análises
+    html += `<tr>${row2Values.map(val => `<td><strong>${val !== null && val !== undefined ? val : '---'}</strong></td>`).join('')}</tr>`;
     
     html += `</tbody></table></div>`;
     return html;
 }
 
 function loadCardData(fileBase) {
-    const wrapperElem = document.getElementById('grid-wrapper');
+    const wrapperElem = document.getElementById('chart-wrapper');
     if (!wrapperElem) return;
-    wrapperElem.innerHTML = `<div class="loader-shimmer" style="padding:40px;text-align:center;border-radius:6px;font-weight:bold;">⏳ Carregando...</div>`;
+    wrapperElem.innerHTML = `<div class="loader-shimmer"></div>`;
     
     fetch(`dados/${fileBase}.json?t=${Date.now()}`)
         .then(r => {
@@ -466,39 +430,34 @@ function loadCardData(fileBase) {
             return r.json();
         })
         .then(data => {
-            const yLabel = document.getElementById('y-axis-label');
-            if (data.yAxisLabel && yLabel) yLabel.textContent = `📈 ${data.yAxisLabel}`;
             if (!wrapperElem) return;
             wrapperElem.innerHTML = '';
 
             if (data.charts && Array.isArray(data.charts) && data.charts.length > 0) {
                 data.charts.forEach((chartData, idx) => {
-                    const columnDiv = document.createElement('div');
-                    columnDiv.className = 'chart-column';
-                    const chartTitleHtml = chartData.title ? `<div class="chart-column-title">🔍 ${chartData.title}</div>` : '';
+                    const chartDiv = document.createElement('div');
+                    chartDiv.className = 'chart-wrapper';
+                    const titleHtml = chartData.title ? `<div class="chart-title">${chartData.title}</div>` : '';
                     const imgSrc = `graficos/${fileBase}-${idx+1}.png?t=${Date.now()}`;
                     const tableHtml = generateTableHTML(chartData.labels, chartData.series1, chartData.series2);
-                    columnDiv.innerHTML = `${chartTitleHtml}<img src="${imgSrc}" class="chart-img" alt="Gráfico ${idx+1}" onerror="this.style.opacity='0.5';this.alt='Gráfico indisponível';">${tableHtml}`;
-                    wrapperElem.appendChild(columnDiv);
+                    chartDiv.innerHTML = `${titleHtml}<img src="${imgSrc}" class="chart-img" alt="Gráfico" onerror="this.style.display='none'">${tableHtml}`;
+                    wrapperElem.appendChild(chartDiv);
                 });
             } else if (data.labels && data.series1) {
-                const columnDiv = document.createElement('div');
-                columnDiv.className = 'chart-column single';
+                const chartDiv = document.createElement('div');
+                chartDiv.className = 'chart-wrapper';
                 const imgSrc = `graficos/${fileBase}-1.png?t=${Date.now()}`;
                 const tableHtml = generateTableHTML(data.labels, data.series1, data.series2);
-                columnDiv.innerHTML = `<img src="${imgSrc}" class="chart-img" alt="Gráfico analítico" onerror="this.src='https://placehold.co/800x400/F5F7FA/00458F?text=Gráfico+Aguardando';">${tableHtml}`;
-                wrapperElem.appendChild(columnDiv);
-            } else {
-                throw new Error("Formato inesperado");
+                chartDiv.innerHTML = `<img src="${imgSrc}" class="chart-img" alt="Gráfico" onerror="this.style.display='none'">${tableHtml}`;
+                wrapperElem.appendChild(chartDiv);
             }
         })
         .catch(err => {
             console.warn(`Erro ao carregar ${fileBase}:`, err);
             if (wrapperElem) {
-                wrapperElem.innerHTML = `<div style="padding:40px;text-align:center;background:var(--bg-primary);border-radius:6px;border:1px solid var(--border-color);">
-                    <span style="font-size:1.5rem;">⚠️</span><br>
-                    <strong style="font-size:1.1rem;color:var(--text-secondary);">Dados não disponíveis</strong><br>
-                    <span style="color:var(--text-muted);font-size:0.9rem;">${fileBase}.json</span>
+                wrapperElem.innerHTML = `<div style="padding:60px;text-align:center;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:4px;">
+                    <div style="color:var(--text-secondary);font-size:1.1rem;">Dados não disponíveis</div>
+                    <div style="color:var(--weg-light-gray);font-size:0.9rem;margin-top:8px;">${fileBase}.json</div>
                 </div>`;
             }
         });
@@ -511,13 +470,13 @@ function renderCard(item) {
         <div class="card">
             <div class="card-header">
                 <div>
-                    <div class="card-title">🧪 ${item.title}</div>
-                    <div class="card-yaxis" id="y-axis-label">🔬 Parâmetros de controle</div>
+                    <div class="card-title">${item.title}</div>
+                    <div class="card-subtitle">Parâmetros de controle</div>
                 </div>
                 <div class="status-badge status-${getStatusClass(item.status)}">${item.status}</div>
             </div>
-            <div class="multi-chart-grid" id="grid-wrapper">
-                <div style="padding:40px;text-align:center;background:var(--bg-primary);border-radius:6px;border:1px solid var(--border-color);">📡 Inicializando...</div>
+            <div id="chart-wrapper">
+                <div style="padding:60px;text-align:center;color:var(--weg-light-gray);">Inicializando...</div>
             </div>
         </div>`;
     loadCardData(item.fileBase);
@@ -526,7 +485,7 @@ function renderCard(item) {
 function updateDisplay() {
     const tab = tabsConfig[currentTabIdx];
     const item = tab.items[currentItemIdx];
-    document.getElementById('current-section').innerHTML = `📌 ${tab.section}`;
+    document.getElementById('current-section').textContent = tab.section;
     renderCard(item);
     
     const dotsContainer = document.getElementById('nav-dots');
@@ -535,7 +494,6 @@ function updateDisplay() {
         tab.items.forEach((it, idx) => {
             const dot = document.createElement('div');
             dot.className = `dot ${idx === currentItemIdx ? 'active' : ''}`;
-            dot.setAttribute('aria-label', it.title);
             dot.onclick = (e) => {
                 e.stopPropagation();
                 currentItemIdx = idx;
@@ -544,17 +502,6 @@ function updateDisplay() {
             };
             dotsContainer.appendChild(dot);
         });
-        const totalCount = tab.items.length;
-        const infoSpan = document.createElement('div');
-        infoSpan.style.marginLeft = '12px';
-        infoSpan.style.fontSize = '0.8rem';
-        infoSpan.style.fontWeight = '600';
-        infoSpan.style.background = 'var(--bg-primary)';
-        infoSpan.style.padding = '4px 10px';
-        infoSpan.style.borderRadius = '4px';
-        infoSpan.style.border = '1px solid var(--border-color)';
-        infoSpan.innerText = `${currentItemIdx+1}/${totalCount}`;
-        dotsContainer.appendChild(infoSpan);
     }
 }
 
@@ -572,17 +519,15 @@ function nextItem() {
 
 function resetRotation() {
     if (rotationTimer) clearInterval(rotationTimer);
-    rotationTimer = setInterval(() => {
-        nextItem();
-    }, 12000);
+    rotationTimer = setInterval(nextItem, 15000);
 }
 
 function initClock() {
     function tick() {
         const now = new Date();
         const optionsDate = { year: 'numeric', month: '2-digit', day: '2-digit' };
-        document.getElementById('clock-date').textContent = `📅 DATA: ${now.toLocaleDateString('pt-BR', optionsDate)}`;
-        document.getElementById('clock-time').textContent = `⏱️ HORA: ${now.toLocaleTimeString('pt-BR')}`;
+        document.getElementById('clock-date').textContent = `DATA: ${now.toLocaleDateString('pt-BR', optionsDate)}`;
+        document.getElementById('clock-time').textContent = `HORA: ${now.toLocaleTimeString('pt-BR')}`;
     }
     tick();
     setInterval(tick, 1000);
@@ -592,27 +537,13 @@ function startPeriodicSync() {
     setInterval(() => {
         const lastSyncSpan = document.getElementById('last-sync');
         if (lastSyncSpan) {
-            const now = new Date();
-            lastSyncSpan.textContent = `${now.toLocaleTimeString('pt-BR')}`;
+            lastSyncSpan.textContent = new Date().toLocaleTimeString('pt-BR');
         }
         const tab = tabsConfig[currentTabIdx];
         if (tab && tab.items[currentItemIdx]) {
-            const currentItem = tab.items[currentItemIdx];
-            const fileBase = currentItem.fileBase;
-            const gridWrap = document.getElementById('grid-wrapper');
-            if (gridWrap) {
-                gridWrap.innerHTML = `<div class="loader-shimmer" style="padding:40px;border-radius:6px;">🔄 Atualizando...</div>`;
-                loadCardData(fileBase);
-            }
+            loadCardData(tab.items[currentItemIdx].fileBase);
         }
-        const badgeElem = document.querySelector('.status-badge');
-        if (badgeElem && tab && tab.items[currentItemIdx]) {
-            const newStatus = tab.items[currentItemIdx].status;
-            const newClass = `status-badge status-${getStatusClass(newStatus)}`;
-            badgeElem.className = newClass;
-            badgeElem.innerHTML = newStatus;
-        }
-    }, 55000);
+    }, 60000);
 }
 
 window.onload = () => {
