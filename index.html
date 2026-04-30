@@ -4,716 +4,193 @@
   <meta charset="UTF-8">
   <meta http-equiv="refresh" content="300">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
   <title>Controle de Banhos Químicos - JGS | WEG</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      /* Paleta WEG - Alto Contraste para TV */
-      --weg-blue: #00458F;
-      --weg-blue-dark: #002A55;
-      --weg-blue-light: #B3D1F0;
-      --weg-orange: #E67E22;
-      --weg-gray-50: #FAFAFA;
-      --weg-gray-100: #F5F5F5;
-      --weg-gray-200: #E0E0E0;
-      --weg-gray-400: #9E9E9E;
-      --weg-gray-700: #212121;
-      --weg-gray-900: #000000;
-      --success: #1B5E20;
-      --success-light: #C8E6C9;
-      --warning: #E65100;
-      --warning-light: #FFE0B2;
-      --danger: #B71C1C;
-      --danger-light: #FFCDD2;
-      --shadow: 0 6px 20px rgba(0,42,85,0.15);
-      --shadow-lg: 0 16px 48px rgba(0,42,85,0.25);
-      --radius: 16px;
-      --radius-sm: 10px;
-      
-      /* 📺 Configurações TV */
-      --font-base: 1.15rem;
-      --font-large: 1.4rem;
-      --font-xlarge: 2rem;
-      --spacing-unit: 1.2rem;
+      --weg-blue: #00458F; --weg-blue-dark: #002A55; --weg-blue-light: #B3D1F0;
+      --weg-orange: #E67E22; --weg-gray-50: #FAFAFA; --weg-gray-100: #F5F5F5;
+      --weg-gray-200: #E0E0E0; --weg-gray-400: #9E9E9E; --weg-gray-700: #212121;
+      --weg-gray-900: #000000; --success: #1B5E20; --success-light: #C8E6C9;
+      --warning: #E65100; --warning-light: #FFE0B2; --danger: #B71C1C;
+      --danger-light: #FFCDD2; --shadow: 0 6px 20px rgba(0,42,85,0.15);
+      --radius: 16px; --radius-sm: 10px;
+      --font-base: 1.15rem; --font-large: 1.4rem;
     }
-
-    /* 🚫 KIOSK MODE: Remove TODA interatividade */
-    * { 
-      margin: 0; padding: 0; box-sizing: border-box;
-      cursor: none !important;
-      user-select: none !important;
-      -webkit-user-select: none !important;
-      -webkit-touch-callout: none !important;
-      -webkit-tap-highlight-color: transparent !important;
-    }
-    
-    html, body {
-      height: 100vh;
-      width: 100vw;
-      overflow: hidden;
-      font-feature-settings: "pnum" 1, "tnum" 1;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; user-select: none !important; }
+    html, body { height: 100vh; width: 100vw; overflow: hidden; }
     body {
-      background: var(--weg-gray-50);
-      color: var(--weg-gray-900);
-      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-      font-size: var(--font-base);
-      line-height: 1.5;
-      /* 🔄 Anti burn-in: leve variação de fundo */
+      background: var(--weg-gray-50); color: var(--weg-gray-900);
+      font-family: 'Inter', Arial, sans-serif; font-size: var(--font-base);
       animation: bgShift 120s ease-in-out infinite alternate;
     }
-
     @keyframes bgShift {
       0% { background: linear-gradient(135deg, #FAFAFA 0%, #F5F7FA 100%); }
       50% { background: linear-gradient(135deg, #F5F7FA 0%, #FAFAFA 100%); }
       100% { background: linear-gradient(135deg, #FAFAFA 0%, #F5F7FA 100%); }
     }
-
-    /* Header - Fixo e legível à distância */
+    
+    /* Header */
     header {
-      background: white;
-      border-bottom: 5px solid var(--weg-blue);
-      padding: 20px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: var(--shadow);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      height: 100px;
+      background: white; border-bottom: 5px solid var(--weg-blue);
+      padding: 20px 40px; display: flex; align-items: center; justify-content: space-between;
+      box-shadow: var(--shadow); position: sticky; top: 0; z-index: 100; height: 100px;
     }
-
-    .header-brand {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
+    .header-brand { display: flex; align-items: center; gap: 20px; }
     .logo-badge {
       background: linear-gradient(135deg, var(--weg-blue), var(--weg-blue-dark));
-      color: white;
-      padding: 12px 24px;
-      border-radius: var(--radius-sm);
-      font-weight: 800;
-      font-size: var(--font-large);
-      letter-spacing: 1px;
-      box-shadow: 0 4px 12px rgba(0,42,85,0.2);
+      color: white; padding: 12px 24px; border-radius: var(--radius-sm);
+      font-weight: 800; font-size: var(--font-large); letter-spacing: 1px;
     }
-
-    header h1 {
-      font-size: var(--font-large);
-      font-weight: 700;
-      color: var(--weg-gray-900);
-      letter-spacing: 0.5px;
-      line-height: 1.3;
-    }
-
-    header h1 span {
-      color: var(--weg-blue);
-      font-weight: 800;
-    }
-
-    .clock-block {
-      text-align: right;
-      min-width: 200px;
-    }
-
+    header h1 { font-size: var(--font-large); font-weight: 700; color: var(--weg-gray-900); }
+    header h1 span { color: var(--weg-blue); font-weight: 800; }
+    .clock-block { text-align: right; min-width: 200px; }
     #relogio {
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: var(--weg-blue-dark);
-      font-variant-numeric: tabular-nums;
-      font-family: 'Inter', monospace;
-      letter-spacing: -1px;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      font-size: 2.2rem; font-weight: 800; color: var(--weg-blue-dark);
+      font-variant-numeric: tabular-nums; font-family: monospace;
     }
-
-    #contador {
-      font-size: 1rem;
-      color: var(--weg-gray-400);
-      margin-top: 4px;
-      font-weight: 600;
-    }
-
-    #contador span {
-      color: var(--weg-blue);
-      font-weight: 800;
-    }
-
+    #contador { font-size: 1rem; color: var(--weg-gray-400); margin-top: 4px; font-weight: 600; }
+    #contador span { color: var(--weg-blue); font-weight: 800; }
+    
     /* Seções */
-    .secao {
-      padding: 28px 40px 20px;
-    }
-
+    .secao { padding: 28px 40px 20px; }
     .secao-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 24px;
-      padding-bottom: 16px;
-      border-bottom: 3px solid var(--weg-gray-200);
+      display: flex; align-items: center; gap: 16px; margin-bottom: 24px;
+      padding-bottom: 16px; border-bottom: 3px solid var(--weg-gray-200);
     }
-
     .secao-icon {
-      width: 44px;
-      height: 44px;
-      background: var(--weg-blue);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 800;
-      font-size: 1.3rem;
-      flex-shrink: 0;
-      box-shadow: 0 4px 12px rgba(0,69,143,0.2);
+      width: 44px; height: 44px; background: var(--weg-blue); border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 800; font-size: 1.3rem; flex-shrink: 0;
     }
-
-    .secao-titulo {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: var(--weg-blue-dark);
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-    }
-
-    .secao-subtitulo {
-      font-size: 1rem;
-      color: var(--weg-gray-400);
-      font-weight: 600;
-      margin-left: 60px;
-      margin-top: 6px;
-    }
-
-    /* 🎠 CAROUSEL AUTOMÁTICO - 2 cards por slide */
-    .carousel-wrapper {
-      position: relative;
-      overflow: hidden;
-      padding: 0 12px;
-      /* 🔄 Micro-shift anti burn-in */
-      animation: microShift 300s ease-in-out infinite alternate;
-    }
-
-    @keyframes microShift {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(1px); }
-      50% { transform: translateX(0); }
-      75% { transform: translateX(-1px); }
-    }
-
-    .carousel-track {
-      display: flex;
-      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-      width: 100%;
-      will-change: transform;
-    }
-
-    .carousel-slide {
-      min-width: 100%;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 24px;
-      padding: 0 8px;
-    }
-
-    /* Card - Otimizado para TV */
+    .secao-titulo { font-size: 1.4rem; font-weight: 800; color: var(--weg-blue-dark); text-transform: uppercase; }
+    .secao-subtitulo { font-size: 1rem; color: var(--weg-gray-400); font-weight: 600; margin-left: 60px; margin-top: 6px; }
+    
+    /* Carousel */
+    .carousel-wrapper { position: relative; overflow: hidden; padding: 0 12px; animation: microShift 300s ease-in-out infinite alternate; }
+    @keyframes microShift { 0%,100%{transform:translateX(0)} 25%{transform:translateX(1px)} 50%{transform:translateX(0)} 75%{transform:translateX(-1px)} }
+    .carousel-track { display: flex; transition: transform 0.8s ease; width: 100%; }
+    .carousel-slide { min-width: 100%; display: grid; grid-template-columns: repeat(2,1fr); gap: 24px; padding: 0 8px; }
+    
+    /* Card */
     .card {
-      background: white;
-      border: 2px solid var(--weg-gray-200);
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      /* 🔄 Fade suave entre slides */
+      background: white; border: 2px solid var(--weg-gray-200); border-radius: var(--radius);
+      overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column; height: 100%;
       animation: cardFade 0.6s ease-out forwards;
     }
-
-    @keyframes cardFade {
-      from { opacity: 0.8; transform: scale(0.99); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
+    @keyframes cardFade { from{opacity:0.8;transform:scale(0.99)} to{opacity:1;transform:scale(1)} }
     .card-header {
-      background: var(--weg-gray-100);
-      padding: 16px 20px;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--weg-gray-700);
-      letter-spacing: 0.4px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border-bottom: 2px solid var(--weg-gray-200);
-      flex-shrink: 0;
+      background: var(--weg-gray-100); padding: 16px 20px; font-size: 1.1rem; font-weight: 700;
+      color: var(--weg-gray-700); display: flex; align-items: center; gap: 10px;
+      border-bottom: 2px solid var(--weg-gray-200); flex-shrink: 0;
     }
-
-    .card-header::before {
-      content: '';
-      width: 5px;
-      height: 20px;
-      border-radius: 3px;
-      flex-shrink: 0;
-    }
-
+    .card-header::before { content:''; width:5px; height:20px; border-radius:3px; flex-shrink:0; }
     .card-header.nano::before { background: var(--weg-blue); }
     .card-header.esta::before { background: var(--success); }
-
-    .card-header .status-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: var(--success);
-      margin-left: auto;
-      box-shadow: 0 0 0 3px rgba(27,94,32,0.2);
-    }
-
-    .card-header.warn .status-dot { 
-      background: var(--warning); 
-      box-shadow: 0 0 0 3px rgba(230,81,0,0.2);
-    }
-    .card-header.crit .status-dot { 
-      background: var(--danger); 
-      box-shadow: 0 0 0 3px rgba(183,28,28,0.2);
-      animation: pulseCrit 1.5s infinite;
-    }
-
-    @keyframes pulseCrit {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.6; }
-    }
-
-    /* Área do gráfico - 55% do card */
-    .card-graph {
-      flex: 0 0 55%;
-      min-height: 0;
-      padding: 16px;
-      background: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-
-    .card-graph img {
-      max-width: 100%;
-      max-height: 100%;
-      width: auto;
-      height: auto;
-      object-fit: contain;
-      display: block;
-      border-radius: var(--radius-sm);
-      /* 🔄 Fade-in suave */
-      animation: imgFadeIn 0.5s ease-out forwards;
-      opacity: 0;
-    }
+    .card-header .status-dot { width:12px; height:12px; border-radius:50%; background:var(--success); margin-left:auto; }
+    .card-header.warn .status-dot { background: var(--warning); }
+    .card-header.crit .status-dot { background: var(--danger); animation: pulseCrit 1.5s infinite; }
+    @keyframes pulseCrit { 0%,100%{opacity:1} 50%{opacity:0.6} }
     
+    /* Gráfico */
+    .card-graph { flex:0 0 55%; min-height:0; padding:16px; background:white; display:flex; align-items:center; justify-content:center; }
+    .card-graph img { max-width:100%; max-height:100%; object-fit:contain; display:block; border-radius:var(--radius-sm); opacity:0; transition:opacity 0.5s; }
     .card-graph img.loaded { opacity: 1; }
-    
-    @keyframes imgFadeIn {
-      to { opacity: 1; }
-    }
-
     .card-graph .erro, .chart-placeholder {
-      padding: 24px 20px;
-      text-align: center;
-      color: var(--weg-gray-400);
-      font-size: 1rem;
-      font-weight: 600;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-      background: var(--weg-gray-100);
-      border-radius: var(--radius-sm);
-      width: 100%;
-      height: 100%;
+      padding:24px 20px; text-align:center; color:var(--weg-gray-400); font-size:1rem; font-weight:600;
+      display:none; flex-direction:column; align-items:center; gap:16px; background:var(--weg-gray-100);
+      border-radius:var(--radius-sm); width:100%; height:100%;
     }
-
-    .chart-placeholder { display: flex; }
-    .chart-placeholder i { 
-      font-size: 2.5rem; 
-      color: var(--warning);
-      animation: floatIcon 3s ease-in-out infinite;
-    }
+    .chart-placeholder { display:flex; }
+    .chart-placeholder i { font-size:2.5rem; color:var(--warning); animation:floatIcon 3s ease-in-out infinite; }
+    @keyframes floatIcon { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    .sparkline { width:100%; height:80px; display:flex; align-items:flex-end; gap:3px; padding:12px 0; justify-content:center; }
+    .sparkline span { flex:1; background:linear-gradient(to top,var(--weg-blue-light),var(--weg-blue)); border-radius:3px 3px 0 0; min-width:6px; }
+    .sparkline span.ok { background:linear-gradient(to top,var(--success-light),var(--success)); }
+    .sparkline span.warn { background:linear-gradient(to top,var(--warning-light),var(--warning)); }
+    .sparkline span.crit { background:linear-gradient(to top,var(--danger-light),var(--danger)); }
+    .placeholder-text { font-size:1rem; color:var(--weg-gray-700); font-weight:700; }
+    .placeholder-text.trend-up { color:var(--success); }
+    .placeholder-text.trend-down { color:var(--danger); }
     
-    @keyframes floatIcon {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
-
-    /* Sparkline CSS para fallback visual */
-    .sparkline {
-      width: 100%;
-      height: 80px;
-      display: flex;
-      align-items: flex-end;
-      gap: 3px;
-      padding: 12px 0;
-      justify-content: center;
-    }
-
-    .sparkline span {
-      flex: 1;
-      background: linear-gradient(to top, var(--weg-blue-light), var(--weg-blue));
-      border-radius: 3px 3px 0 0;
-      min-width: 6px;
-      transition: height 0.4s ease;
-    }
-    
-    .sparkline span.ok { background: linear-gradient(to top, var(--success-light), var(--success)); }
-    .sparkline span.warn { background: linear-gradient(to top, var(--warning-light), var(--warning)); }
-    .sparkline span.crit { background: linear-gradient(to top, var(--danger-light), var(--danger)); }
-
-    .placeholder-text {
-      font-size: 1rem;
-      color: var(--weg-gray-700);
-      font-weight: 700;
-      text-align: center;
-    }
-    
-    .placeholder-text.trend-up { color: var(--success); }
-    .placeholder-text.trend-down { color: var(--danger); }
-    .placeholder-text.stable { color: var(--weg-blue); }
-
-    /* 📊 Tabela de análises - 45% do card - FONTES AMPLIADAS */
-    .card-table {
-      flex: 0 0 45%;
-      min-height: 0;
-      border-top: 3px solid var(--weg-gray-200);
-      background: var(--weg-gray-50);
-      display: flex;
-      flex-direction: column;
-    }
-
+    /* Tabela */
+    .card-table { flex:0 0 45%; min-height:0; border-top:3px solid var(--weg-gray-200); background:var(--weg-gray-50); display:flex; flex-direction:column; }
     .table-header {
-      padding: 12px 16px;
-      background: var(--weg-blue);
-      color: white;
-      font-size: 0.95rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      text-align: center;
-      flex-shrink: 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 8px rgba(0,42,85,0.1);
+      padding:12px 16px; background:var(--weg-blue); color:white; font-size:0.95rem; font-weight:800;
+      text-transform:uppercase; text-align:center; flex-shrink:0; display:flex; justify-content:space-between; align-items:center;
     }
-
-    .trend-indicator {
-      font-size: 0.85rem;
-      font-weight: 700;
-      padding: 4px 12px;
-      border-radius: 99px;
-      background: rgba(255,255,255,0.25);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
+    .trend-indicator { font-size:0.85rem; font-weight:700; padding:4px 12px; border-radius:99px; background:rgba(255,255,255,0.25); }
+    .trend-indicator.up { color:var(--success-light); }
+    .trend-indicator.down { color:var(--warning-light); }
+    .trend-indicator.stable { color:white; }
+    .table-scroll { flex:1; min-height:0; overflow:auto; padding:6px; }
+    .table-scroll::-webkit-scrollbar { width:8px; height:8px; }
+    .table-scroll::-webkit-scrollbar-track { background:var(--weg-gray-200); border-radius:4px; }
+    .table-scroll::-webkit-scrollbar-thumb { background:var(--weg-blue); border-radius:4px; }
+    .analise-table { width:100%; border-collapse:collapse; font-size:0.95rem; table-layout:fixed; }
+    .analise-table th, .analise-table td { border:1px solid var(--weg-gray-200); padding:8px 6px; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:600; }
+    .analise-table th { background:var(--weg-blue-light); color:var(--weg-blue-dark); font-weight:800; font-size:0.85rem; position:sticky; top:0; z-index:10; text-transform:uppercase; }
+    .analise-table .label-row th { background:var(--weg-gray-100); color:var(--weg-gray-700); font-weight:700; }
+    .analise-table .value-row td { background:white; color:var(--weg-gray-900); font-weight:700; font-size:1rem; }
+    .analise-table .value-row td.ok { color:var(--success); background:var(--success-light); font-weight:800; }
+    .analise-table .value-row td.warn { color:var(--warning); background:var(--warning-light); font-weight:800; }
+    .analise-table .value-row td.crit { color:var(--danger); background:var(--danger-light); font-weight:800; animation:highlightCrit 2s infinite; }
+    @keyframes highlightCrit { 0%,100%{box-shadow:inset 0 0 0 2px var(--danger)} 50%{box-shadow:inset 0 0 0 3px var(--danger-light)} }
+    .analise-table .ref-row td { background:var(--success-light); color:var(--success); font-weight:800; font-size:0.9rem; }
+    .analise-table .ref-header { background:var(--success); color:white; font-weight:800; font-size:0.9rem; }
     
-    .trend-indicator.up { color: var(--success-light); }
-    .trend-indicator.down { color: var(--warning-light); }
-    .trend-indicator.stable { color: white; }
-
-    .table-scroll {
-      flex: 1;
-      min-height: 0;
-      overflow: auto;
-      padding: 6px;
-      /* Scroll suave e discreto */
-      scroll-behavior: smooth;
-    }
-
-    .table-scroll::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-    .table-scroll::-webkit-scrollbar-track { 
-      background: var(--weg-gray-200); 
-      border-radius: 4px; 
-    }
-    .table-scroll::-webkit-scrollbar-thumb { 
-      background: var(--weg-blue); 
-      border-radius: 4px;
-      border: 2px solid var(--weg-gray-50);
-    }
-
-    .analise-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.95rem; /* 📺 Fonte ampliada para TV */
-      table-layout: fixed;
-    }
-
-    .analise-table th,
-    .analise-table td {
-      border: 1px solid var(--weg-gray-200);
-      padding: 8px 6px; /* 📺 Padding maior para legibilidade */
-      text-align: center;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-weight: 600;
-    }
-
-    .analise-table th {
-      background: var(--weg-blue-light);
-      color: var(--weg-blue-dark);
-      font-weight: 800;
-      font-size: 0.85rem;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-    }
-
-    .analise-table .label-row th {
-      background: var(--weg-gray-100);
-      color: var(--weg-gray-700);
-      font-weight: 700;
-    }
-
-    .analise-table .value-row td {
-      background: white;
-      color: var(--weg-gray-900);
-      font-weight: 700;
-      font-size: 1rem; /* 📺 Números maiores */
-    }
-
-    /* 🎯 Formatação condicional por valor - ALTO CONTRASTE */
-    .analise-table .value-row td.ok { 
-      color: var(--success); 
-      font-weight: 800; 
-      background: var(--success-light);
-    }
-    .analise-table .value-row td.warn { 
-      color: var(--warning); 
-      font-weight: 800; 
-      background: var(--warning-light);
-    }
-    .analise-table .value-row td.crit { 
-      color: var(--danger); 
-      font-weight: 800; 
-      background: var(--danger-light);
-      animation: highlightCrit 2s ease-in-out infinite;
-    }
+    /* Navegação visual */
+    .carousel-nav { display:flex; justify-content:center; gap:16px; padding:24px 0 36px; pointer-events:none; }
+    .nav-dot { width:18px; height:18px; border-radius:50%; background:var(--weg-gray-300); border:3px solid white; box-shadow:0 3px 10px rgba(0,0,0,0.15); }
+    .nav-dot.active { background:var(--weg-blue); border-color:var(--weg-orange); transform:scale(1.4); box-shadow:0 0 0 4px var(--weg-blue-light); }
     
-    @keyframes highlightCrit {
-      0%, 100% { box-shadow: inset 0 0 0 2px var(--danger); }
-      50% { box-shadow: inset 0 0 0 3px var(--danger-light); }
-    }
-
-    .analise-table .ref-row td {
-      background: var(--success-light);
-      color: var(--success);
-      font-weight: 800;
-      font-size: 0.9rem;
-    }
-    
-    .analise-table .ref-header {
-      background: var(--success);
-      color: white;
-      font-weight: 800;
-      font-size: 0.9rem;
-    }
-
-    /* 🎯 Indicador visual de slides (apenas visual, não clicável) */
-    .carousel-nav {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      padding: 24px 0 36px;
-      pointer-events: none; /* 🚫 Desabilita cliques */
-    }
-
-    .nav-dot {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: var(--weg-gray-300);
-      transition: all 0.4s ease;
-      border: 3px solid white;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
-      pointer-events: none; /* 🚫 Sem interação */
-    }
-
-    .nav-dot.active {
-      background: var(--weg-blue);
-      border-color: var(--weg-orange);
-      transform: scale(1.4);
-      box-shadow: 0 0 0 4px var(--weg-blue-light), 0 6px 20px rgba(0,69,143,0.3);
-    }
-
-    /* Footer - Fixo e informativo */
+    /* Footer */
     footer {
-      text-align: center;
-      padding: 24px 40px;
-      font-size: 1rem;
-      color: var(--weg-gray-400);
-      border-top: 2px solid var(--weg-gray-200);
-      background: white;
-      font-weight: 600;
-      position: sticky;
-      bottom: 0;
-      z-index: 100;
-      box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
+      text-align:center; padding:24px 40px; font-size:1rem; color:var(--weg-gray-400);
+      border-top:2px solid var(--weg-gray-200); background:white; font-weight:600;
+      position:sticky; bottom:0; z-index:100; box-shadow:0 -4px 16px rgba(0,0,0,0.08);
     }
-
-    footer span {
-      color: var(--weg-blue);
-      font-weight: 800;
-    }
-
-    /* 🔄 Barra de progresso de atualização */
-    .refresh-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--weg-blue), var(--weg-orange), var(--weg-blue));
-      background-size: 200% 100%;
-      animation: refreshProgress 60s linear infinite, gradientShift 3s ease-in-out infinite;
-      z-index: 1000;
-      opacity: 0.9;
-    }
-
-    @keyframes refreshProgress {
-      0% { width: 0%; }
-      100% { width: 100%; }
-    }
+    footer span { color:var(--weg-blue); font-weight:800; }
     
-    @keyframes gradientShift {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
-
-    /* 💓 Indicador "Sistema Vivo" - heartbeat visual */
-    .heartbeat {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.95rem;
-      color: var(--success);
-      font-weight: 700;
-      margin-left: 16px;
-    }
-
-    .heartbeat::before {
-      content: '';
-      width: 12px;
-      height: 12px;
-      background: var(--success);
-      border-radius: 50%;
-      animation: heartbeat 1.5s ease-in-out infinite;
-      box-shadow: 0 0 0 0 rgba(27,94,32,0.6);
-    }
-
-    @keyframes heartbeat {
-      0% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(27,94,32,0.6); }
-      30% { transform: scale(1.2); opacity: 0.9; box-shadow: 0 0 0 8px rgba(27,94,32,0); }
-      60% { transform: scale(1); opacity: 1; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    /* 🔄 Loader para carregamento inicial */
+    /* Barra de progresso */
+    .refresh-bar { position:fixed; top:0; left:0; height:4px; background:linear-gradient(90deg,var(--weg-blue),var(--weg-orange)); animation:refreshProgress 60s linear infinite; z-index:1000; }
+    @keyframes refreshProgress { 0%{width:0%} 100%{width:100%} }
+    
+    /* Heartbeat */
+    .heartbeat { display:inline-flex; align-items:center; gap:8px; font-size:0.95rem; color:var(--success); font-weight:700; margin-left:16px; }
+    .heartbeat::before { content:''; width:12px; height:12px; background:var(--success); border-radius:50%; animation:heartbeat 1.5s infinite; }
+    @keyframes heartbeat { 0%{transform:scale(1);opacity:1} 30%{transform:scale(1.2);opacity:0.9} 60%{transform:scale(1);opacity:1} }
+    
+    /* Loader inicial - COM FALLBACK DE SEGURANÇA */
     .initial-loader {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 24px;
-      z-index: 1000;
-      transition: opacity 0.5s ease, visibility 0.5s ease;
+      position:fixed; top:0; left:0; right:0; bottom:0; background:white;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:24px; z-index:1000; transition:opacity 0.5s ease, visibility 0.5s ease;
     }
-
-    .initial-loader.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-
+    .initial-loader.hidden { opacity:0; visibility:hidden; pointer-events:none; }
     .loader-spinner {
-      width: 60px;
-      height: 60px;
-      border: 5px solid var(--weg-gray-200);
-      border-top-color: var(--weg-blue);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
+      width:60px; height:60px; border:5px solid var(--weg-gray-200);
+      border-top-color:var(--weg-blue); border-radius:50%; animation:spin 1s linear infinite;
     }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .loader-text {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: var(--weg-gray-700);
-    }
-
-    /* 📺 Responsive para diferentes tamanhos de TV */
-    @media screen and (min-width: 1920px) {
-      :root {
-        --font-base: 1.25rem;
-        --font-large: 1.6rem;
-        --font-xlarge: 2.4rem;
-      }
-      .analise-table { font-size: 1.05rem; }
-      .analise-table .value-row td { font-size: 1.1rem; }
-    }
-
-    @media screen and (max-width: 1600px) {
-      .carousel-slide { grid-template-columns: 1fr; }
-      .card-graph, .card-table { flex: 0 0 50%; }
-      header { padding: 16px 28px; height: 90px; }
-      .secao { padding: 20px 28px 16px; }
-    }
-
-    @media screen and (max-height: 900px) {
-      :root { --font-base: 1rem; --font-large: 1.3rem; }
-      .card-graph { flex: 0 0 52%; }
-      .card-table { flex: 0 0 48%; }
-      .analise-table th, .analise-table td { padding: 6px 4px; }
-    }
-
-    /* 🖨️ Otimização para captura de tela / print */
-    @media print {
-      .refresh-bar, .carousel-nav, .heartbeat::before { display: none; }
-      .card { break-inside: avoid; box-shadow: none; border: 2px solid #ccc; }
-      body { animation: none !important; }
-    }
-
-    /* 🎨 Utilitários de cor e visibilidade */
-    .text-blue { color: var(--weg-blue); }
-    .text-success { color: var(--success); }
-    .text-warning { color: var(--warning); }
-    .text-danger { color: var(--danger); }
-    .hidden { display: none !important; }
-    .visible { display: flex !important; }
+    @keyframes spin { to { transform:rotate(360deg) } }
+    .loader-text { font-size:1.2rem; font-weight:600; color:var(--weg-gray-700); }
+    
+    /* Responsive */
+    @media (max-width:1600px) { .carousel-slide{grid-template-columns:1fr} .card-graph,.card-table{flex:0 0 50%} }
+    @media (max-height:900px) { :root{--font-base:1rem;--font-large:1.3rem} }
   </style>
 </head>
 <body>
 
-<!-- 🔄 Barra de progresso de atualização (sempre visível) -->
-<div class="refresh-bar" aria-hidden="true"></div>
+<div class="refresh-bar"></div>
 
-<!-- 🔄 Loader inicial -->
+<!-- Loader com fallback automático de 5 segundos -->
 <div class="initial-loader" id="initial-loader">
   <div class="loader-spinner"></div>
   <div class="loader-text">Inicializando sistema...</div>
-  <div style="font-size:0.9rem;color:var(--weg-gray-400);font-weight:500">JGS • Controle de Banhos Químicos</div>
+  <div style="font-size:0.9rem;color:var(--weg-gray-400)">JGS • Controle de Banhos Químicos</div>
 </div>
 
-<!-- Header Fixo -->
 <header>
   <div class="header-brand">
     <div class="logo-badge">WEG</div>
@@ -727,7 +204,6 @@
 </header>
 
 <main>
-  <!-- NANOCERÂMICO -->
   <div class="secao">
     <div class="secao-header">
       <div class="secao-icon">N</div>
@@ -737,11 +213,10 @@
       </div>
     </div>
     <div class="carousel-wrapper">
-      <div class="carousel-track" id="track-nano" role="region" aria-label="Gráficos Nanocerâmico"></div>
+      <div class="carousel-track" id="track-nano"></div>
     </div>
   </div>
 
-  <!-- ESTANHAGEM -->
   <div class="secao">
     <div class="secao-header">
       <div class="secao-icon" style="background:var(--success)">E</div>
@@ -751,12 +226,11 @@
       </div>
     </div>
     <div class="carousel-wrapper">
-      <div class="carousel-track" id="track-esta" role="region" aria-label="Gráficos Estanhagem"></div>
+      <div class="carousel-track" id="track-esta"></div>
     </div>
   </div>
 
-  <!-- Indicador visual de slides (não interativo) -->
-  <div class="carousel-nav" id="carousel-nav" aria-hidden="true"></div>
+  <div class="carousel-nav" id="carousel-nav"></div>
 </main>
 
 <footer>
@@ -767,543 +241,280 @@
 
 <script>
   // ============================================
-  // ⚙️ CONFIGURAÇÃO PARA TV AUTÔNOMA
+  // CONFIGURAÇÃO
   // ============================================
   const CONFIG = {
-    autoRotateInterval: 25000,    // 25s entre slides (tempo suficiente para leitura)
-    imageRefreshInterval: 60000,   // 60s para recarregar imagens
-    dataRetryAttempts: 3,          // Tentativas de reconexão em caso de falha
-    dataRetryDelay: 5000,          // 5s entre tentativas
-    wakeLockEnabled: true,         // Previne sleep da TV
-    burnInProtection: true         // Micro-animações para evitar burn-in
+    autoRotateInterval: 25000,
+    imageRefreshInterval: 60000,
+    loaderTimeout: 5000  // 🛡️ Fallback: força hide do loader após 5s
   };
 
-  // ============================================
-  // 📋 DADOS DOS PROCESSOS
-  // ============================================
   const processos = {
     nano: {
       prefix: 'graficos/graf-',
       items: [
-        { id: 'des1', nome: '1º Desengraxante', file: 'des1', status: 'ok', ref: 29.0, tolerance: 4.35 },
-        { id: 'des2', nome: '2º Desengraxante', file: 'des2', status: 'ok', ref: 28.5, tolerance: 4.28 },
-        { id: 'dec1', nome: 'Decapante 1', file: 'dec1', status: 'warn', ref: 12.0, tolerance: 1.8 },
-        { id: 'dec2', nome: 'Decapante 2', file: 'dec2', status: 'ok', ref: 11.5, tolerance: 1.73 },
-        { id: 'nano', nome: 'Nanocerâmico — Concentração', file: 'nano', status: 'crit', ref: 35.0, tolerance: 5.25 },
-        { id: 'abso', nome: 'Nanocerâmico — Absorção', file: 'abso-nano', status: 'ok', ref: 1.2, tolerance: 0.18 },
-        { id: 'ph', nome: 'Nanocerâmico — pH', file: 'ph-nano', status: 'ok', ref: 4.5, tolerance: 0.68 },
-        { id: 'neu', nome: 'Neutralizador', file: 'neu', status: 'ok', ref: 7.0, tolerance: 1.05 },
-        { id: 'sel', nome: 'Selante Final', file: 'sel', status: 'ok', ref: 22.0, tolerance: 3.3 }
+        { id: 'des1', nome: '1º Desengraxante', file: 'des1', status: 'ok', ref: 29.0, tol: 4.35 },
+        { id: 'des2', nome: '2º Desengraxante', file: 'des2', status: 'ok', ref: 28.5, tol: 4.28 },
+        { id: 'dec1', nome: 'Decapante 1', file: 'dec1', status: 'warn', ref: 12.0, tol: 1.8 },
+        { id: 'dec2', nome: 'Decapante 2', file: 'dec2', status: 'ok', ref: 11.5, tol: 1.73 },
+        { id: 'nano', nome: 'Nanocerâmico — Concentração', file: 'nano', status: 'crit', ref: 35.0, tol: 5.25 },
+        { id: 'abso', nome: 'Nanocerâmico — Absorção', file: 'abso-nano', status: 'ok', ref: 1.2, tol: 0.18 },
+        { id: 'ph', nome: 'Nanocerâmico — pH', file: 'ph-nano', status: 'ok', ref: 4.5, tol: 0.68 },
+        { id: 'neu', nome: 'Neutralizador', file: 'neu', status: 'ok', ref: 7.0, tol: 1.05 },
+        { id: 'sel', nome: 'Selante Final', file: 'sel', status: 'ok', ref: 22.0, tol: 3.3 }
       ]
     },
     esta: {
       prefix: 'graficos/graf-',
       items: [
-        { id: 'des', nome: 'Desengraxante Químico', file: 'des', status: 'ok', ref: 26.0, tolerance: 3.9 },
-        { id: 'ativ5', nome: 'Ativação — Tanque 5', file: 'ativacao-tanque-5', status: 'warn', ref: 8.5, tolerance: 1.28 },
-        { id: 'ativ6', nome: 'Ativação — Tanque 6', file: 'ativacao-tanque-6', status: 'ok', ref: 8.5, tolerance: 1.28 },
-        { id: 'niquel', nome: 'Níquel WATT', file: 'niquel-watt', status: 'ok', ref: 45.0, tolerance: 6.75 },
-        { id: 'estaA', nome: 'Estanhagem A', file: 'estanhagem-a', status: 'crit', ref: 32.0, tolerance: 4.8 },
-        { id: 'estaB', nome: 'Estanhagem B', file: 'estanhagem-b', status: 'ok', ref: 31.5, tolerance: 4.73 },
-        { id: 'selante', nome: 'Selante Protetivo', file: 'selante', status: 'ok', ref: 18.0, tolerance: 2.7 }
+        { id: 'des', nome: 'Desengraxante Químico', file: 'des', status: 'ok', ref: 26.0, tol: 3.9 },
+        { id: 'ativ5', nome: 'Ativação — Tanque 5', file: 'ativacao-tanque-5', status: 'warn', ref: 8.5, tol: 1.28 },
+        { id: 'ativ6', nome: 'Ativação — Tanque 6', file: 'ativacao-tanque-6', status: 'ok', ref: 8.5, tol: 1.28 },
+        { id: 'niquel', nome: 'Níquel WATT', file: 'niquel-watt', status: 'ok', ref: 45.0, tol: 6.75 },
+        { id: 'estaA', nome: 'Estanhagem A', file: 'estanhagem-a', status: 'crit', ref: 32.0, tol: 4.8 },
+        { id: 'estaB', nome: 'Estanhagem B', file: 'estanhagem-b', status: 'ok', ref: 31.5, tol: 4.73 },
+        { id: 'selante', nome: 'Selante Protetivo', file: 'selante', status: 'ok', ref: 18.0, tol: 2.7 }
       ]
     }
   };
 
   // ============================================
-  // 🎲 GERADOR DE DADOS REALISTAS (substituir por fetch real)
+  // FUNÇÕES AUXILIARES
   // ============================================
-  function gerarDadosAnalise(item) {
-    const labels = [], values = [], refs = [];
-    const { ref, tolerance } = item;
-    
-    for (let i = 1; i <= 24; i++) {
-      labels.push(`${String(i).padStart(2,'0')}h`);
-      // Variação realista: tendência suave + ruído controlado
-      const trend = Math.sin(i * 0.35 + item.id.length) * (tolerance * 0.4);
-      const noise = (Math.random() - 0.5) * tolerance * 0.6;
-      const drift = (i > 18) ? (Math.random() - 0.3) * 0.8 : 0; // Leve deriva no final do turno
-      const val = ref + trend + noise + drift;
-      
-      values.push(parseFloat(val.toFixed(1)));
-      refs.push(parseFloat(ref.toFixed(1)));
+  function gerarDados(item) {
+    const labels=[], values=[], refs=[];
+    for(let i=1;i<=24;i++){
+      labels.push(String(i).padStart(2,'0')+'h');
+      const trend = Math.sin(i*0.35+item.id.length)*(item.tol*0.4);
+      const noise = (Math.random()-0.5)*item.tol*0.6;
+      values.push(parseFloat((item.ref+trend+noise).toFixed(1)));
+      refs.push(parseFloat(item.ref.toFixed(1)));
     }
-    return { labels, values, refs, ref, tolerance };
+    return {labels,values,refs,ref:item.ref,tol:item.tol};
   }
 
-  // ============================================
-  // 🎯 CLASSIFICAÇÃO DE VALOR vs REFERÊNCIA
-  // ============================================
-  function classificarValor(valor, ref, tolerance) {
-    if (valor === null || valor === undefined) return 'warn';
-    const diff = Math.abs(valor - ref);
-    const pctTolerance = tolerance / ref;
-    
-    if (diff <= tolerance * 0.5) return 'ok';      // Dentro de ±50% da tolerância
-    if (diff <= tolerance) return 'warn';           // Entre 50-100% da tolerância
-    return 'crit';                                  // Fora da tolerância
+  function classificar(valor,ref,tol){
+    if(valor==null)return'warn';
+    const diff=Math.abs(valor-ref);
+    if(diff<=tol*0.5)return'ok';
+    if(diff<=tol)return'warn';
+    return'crit';
   }
 
-  // ============================================
-  // 📈 SPARKLINE CSS PARA FALLBACK VISUAL
-  // ============================================
-  function gerarSparkline(values, ref, tolerance) {
-    const validValues = values.filter(v => v != null);
-    if (validValues.length === 0) return '';
-    
-    const max = Math.max(...validValues, ref) * 1.15;
-    const min = Math.min(...validValues, ref) * 0.85;
-    const range = max - min || 1;
-    
-    return values.map(v => {
-      if (v == null) return '<span style="height:10%;background:var(--weg-gray-300)"></span>';
-      const h = Math.max(5, ((v - min) / range) * 100);
-      const cls = classificarValor(v, ref, tolerance);
-      return `<span style="height:${h}%" class="${cls}" title="${v} ml/L"></span>`;
+  function sparkline(values,ref,tol){
+    const max=Math.max(...values.filter(v=>v!=null),ref)*1.15;
+    const min=Math.min(...values.filter(v=>v!=null),ref)*0.85;
+    const range=max-min||1;
+    return values.map(v=>{
+      if(v==null)return'<span style="height:10%;background:var(--weg-gray-300)"></span>';
+      const h=Math.max(5,((v-min)/range)*100);
+      return `<span style="height:${h}%" class="${classificar(v,ref,tol)}"></span>`;
     }).join('');
   }
 
-  // ============================================
-  // 📊 CALCULAR TENDÊNCIA (média inicial vs final)
-  // ============================================
-  function calcularTendencia(values) {
-    const valid = values.filter(v => v != null);
-    if (valid.length < 12) return { txt: '➡️ Dados insuficientes', cls: 'stable' };
-    
-    const first = valid.slice(0, 6).reduce((a,b) => a+b, 0) / 6;
-    const last = valid.slice(-6).reduce((a,b) => a+b, 0) / 6;
-    
-    if (first === 0) return { txt: '➡️ Estável', cls: 'stable' };
-    
-    const diff = ((last - first) / first) * 100;
-    
-    if (diff > 3) return { txt: `▲ +${diff.toFixed(1)}%`, cls: 'up' };
-    if (diff < -3) return { txt: `▼ ${diff.toFixed(1)}%`, cls: 'down' };
-    return { txt: '➡️ Estável', cls: 'stable' };
+  function tendencia(values){
+    const v=values.filter(x=>x!=null);
+    if(v.length<12)return{txt:'➡️ Estável',cls:'stable'};
+    const first=v.slice(0,6).reduce((a,b)=>a+b,0)/6;
+    const last=v.slice(-6).reduce((a,b)=>a+b,0)/6;
+    if(first===0)return{txt:'➡️ Estável',cls:'stable'};
+    const diff=((last-first)/first)*100;
+    if(diff>3)return{txt:`▲ +${diff.toFixed(1)}%`,cls:'up'};
+    if(diff<-3)return{txt:`▼ ${diff.toFixed(1)}%`,cls:'down'};
+    return{txt:'➡️ Estável',cls:'stable'};
   }
 
-  // ============================================
-  // 📋 GERAR TABELA HTML COM FORMATAÇÃO CONDICIONAL
-  // ============================================
-  function gerarTabelaHTML(dados) {
-    const { labels, values, refs, ref, tolerance } = dados;
-    const COLS = 12;
-    const trend = calcularTendencia(values);
-    
-    let html = `<table class="analise-table" role="table" aria-label="Últimas 24 análises">`;
-    
-    // Cabeçalho: horários (linha 1)
-    html += `<tr class="label-row" role="row">`;
-    for (let i = 0; i < COLS; i++) {
-      html += `<th scope="col" role="columnheader">${labels[i] || ''}</th>`;
-    }
-    html += `</tr>`;
-    
-    // Valores (linha 1) com classificação visual
-    html += `<tr class="value-row" role="row">`;
-    for (let i = 0; i < COLS; i++) {
-      const cls = classificarValor(values[i], ref, tolerance);
-      const ariaLabel = `${labels[i]}: ${values[i] ?? '---'} ml/L - Status: ${cls}`;
-      html += `<td role="cell" class="${cls}" aria-label="${ariaLabel}">${values[i] ?? '---'}</td>`;
-    }
-    html += `</tr>`;
-    
-    // Cabeçalho: horários (linha 2)
-    html += `<tr class="label-row" role="row">`;
-    for (let i = COLS; i < 24; i++) {
-      html += `<th scope="col" role="columnheader">${labels[i] || ''}</th>`;
-    }
-    html += `</tr>`;
-    
-    // Valores (linha 2)
-    html += `<tr class="value-row" role="row">`;
-    for (let i = COLS; i < 24; i++) {
-      const cls = classificarValor(values[i], ref, tolerance);
-      const ariaLabel = `${labels[i]}: ${values[i] ?? '---'} ml/L - Status: ${cls}`;
-      html += `<td role="cell" class="${cls}" aria-label="${ariaLabel}">${values[i] ?? '---'}</td>`;
-    }
-    html += `</tr>`;
-    
-    // Linha de referência destacada
-    html += `<tr class="ref-row ref-header" role="row">
-      <th scope="col" colspan="${COLS}" role="columnheader">
-        📈 Referência: ${ref.toFixed(1)} ml/L (±${((tolerance/ref)*100).toFixed(0)}%)
-      </th>
-    </tr>`;
-    
-    html += `<tr class="ref-row" role="row">`;
-    for (let i = 0; i < COLS; i++) html += `<td role="cell">${refs[i]?.toFixed(1) ?? '---'}</td>`;
-    html += `</tr><tr class="ref-row" role="row">`;
-    for (let i = COLS; i < 24; i++) html += `<td role="cell">${refs[i]?.toFixed(1) ?? '---'}</td>`;
-    html += `</tr></table>`;
-    
-    return { html, trend };
+  function tabelaHTML(dados){
+    const{labels,values,refs,ref,tol}=dados;
+    const COLS=12, trend=tendencia(values);
+    let h='<table class="analise-table">';
+    h+=`<tr class="label-row">`;
+    for(let i=0;i<COLS;i++)h+=`<th>${labels[i]||''}</th>`;h+='</tr>';
+    h+=`<tr class="value-row">`;
+    for(let i=0;i<COLS;i++){const c=classificar(values[i],ref,tol);h+=`<td class="${c}">${values[i]??'---'}</td>`}h+='</tr>';
+    h+=`<tr class="label-row">`;
+    for(let i=COLS;i<24;i++)h+=`<th>${labels[i]||''}</th>`;h+='</tr>';
+    h+=`<tr class="value-row">`;
+    for(let i=COLS;i<24;i++){const c=classificar(values[i],ref,tol);h+=`<td class="${c}">${values[i]??'---'}</td>`}h+='</tr>';
+    h+=`<tr class="ref-row ref-header"><th colspan="${COLS}">📈 Referência: ${ref.toFixed(1)} ml/L</th></tr>`;
+    h+=`<tr class="ref-row">`;for(let i=0;i<COLS;i++)h+=`<td>${refs[i]?.toFixed(1)??'---'}</td>`;h+='</tr>';
+    h+=`<tr class="ref-row">`;for(let i=COLS;i<24;i++)h+=`<td>${refs[i]?.toFixed(1)??'---'}</td>`;h+='</tr></table>';
+    return{html:h,trend};
   }
 
-  // ============================================
-  // 🃏 CRIAR CARD COMPLETO (gráfico + tabela)
-  // ============================================
-  function criarCard(item, processo) {
-    const dados = gerarDadosAnalise(item);
-    const { html: tabelaHtml, trend } = gerarTabelaHTML(dados);
-    const statusClass = item.status === 'ok' ? '' : item.status === 'warn' ? 'warn' : 'crit';
-    const classeHeader = processo === 'nano' ? 'nano' : 'esta';
-    const sparkline = gerarSparkline(dados.values, dados.ref, dados.tolerance);
-    const imgSrc = `${processos[processo].prefix}${item.file}.png`;
-    
+  function criarCard(item,proc){
+    const dados=gerarDados(item);
+    const{html:tabela,trend}=tabelaHTML(dados);
+    const status=item.status==='ok'?'':item.status==='warn'?'warn':'crit';
+    const cls=proc==='nano'?'nano':'esta';
+    const spark=sparkline(dados.values,dados.ref,dados.tol);
+    const src=`${processos[proc].prefix}${item.file}.png`;
     return `
-      <article class="card" role="article" aria-labelledby="card-title-${item.id}">
-        <header class="card-header ${classeHeader} ${statusClass}">
-          <span id="card-title-${item.id}">${item.nome}</span>
-          <span class="status-dot" aria-label="Status: ${item.status}" aria-hidden="true"></span>
-        </header>
-        
-        <section class="card-graph" aria-label="Gráfico de tendência">
-          <img 
-            src="${imgSrc}?t=${Date.now()}" 
-            alt="Gráfico de concentração: ${item.nome}"
-            class="chart-img"
-            onload="this.classList.add('loaded')"
-            onerror="handleImageError(this)">
-          
-          <div class="chart-placeholder" role="img" aria-label="Visualização alternativa do gráfico">
-            <i aria-hidden="true">📊</i>
-            <div class="sparkline" aria-hidden="true">${sparkline}</div>
-            <span class="placeholder-text trend-${trend.cls}">
-              ${trend.txt} • Ref: ${dados.ref.toFixed(1)} ml/L
-            </span>
+      <div class="card">
+        <div class="card-header ${cls} ${status}">${item.nome}<span class="status-dot"></span></div>
+        <div class="card-graph">
+          <img src="${src}?t=${Date.now()}" alt="${item.nome}" class="chart-img" onload="this.classList.add('loaded')" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="chart-placeholder" style="display:none">
+            <i>📊</i><div class="sparkline">${spark}</div>
+            <span class="placeholder-text trend-${trend.cls}">${trend.txt} • Ref: ${dados.ref.toFixed(1)}</span>
           </div>
-        </section>
-        
-        <section class="card-table" aria-label="Dados numéricos">
-          <div class="table-header">
-            <span>📊 Últimas 24 Análises</span>
-            <span class="trend-indicator ${trend.cls}" aria-label="Tendência: ${trend.txt}">
-              ${trend.txt}
-            </span>
-          </div>
-          <div class="table-scroll" role="region" aria-label="Tabela com valores horários em ml/L">
-            ${tabelaHtml}
-          </div>
-        </section>
-      </article>
-    `;
+        </div>
+        <div class="card-table">
+          <div class="table-header"><span>📊 Últimas 24 Análises</span><span class="trend-indicator ${trend.cls}">${trend.txt}</span></div>
+          <div class="table-scroll">${tabela}</div>
+        </div>
+      </div>`;
   }
 
-  // ============================================
-  // 🖼️ HANDLER DE ERRO DE IMAGEM (fallback automático)
-  // ============================================
-  window.handleImageError = function(img) {
-    img.style.display = 'none';
-    const placeholder = img.closest('.card-graph')?.querySelector('.chart-placeholder');
-    if (placeholder) {
-      placeholder.style.display = 'flex';
-      // 🔄 Tentar recarregar após delay (recuperação automática)
-      setTimeout(() => {
-        const src = img.src.split('?')[0];
-        img.src = `${src}?retry=${Date.now()}`;
-      }, CONFIG.dataRetryDelay);
+  function montarCarousel(proc,trackId){
+    const track=document.getElementById(trackId); if(!track)return 0;
+    const items=processos[proc].items; let count=0;
+    for(let i=0;i<items.length;i+=2){
+      const slide=document.createElement('div'); slide.className='carousel-slide';
+      slide.innerHTML=criarCard(items[i],proc);
+      if(items[i+1])slide.innerHTML+=criarCard(items[i+1],proc);
+      track.appendChild(slide); count++;
     }
-  };
-
-  // ============================================
-  // 🎠 MONTAR CAROUSEL AUTOMÁTICO
-  // ============================================
-  function montarCarousel(processo, trackId) {
-    const track = document.getElementById(trackId);
-    if (!track) return 0;
-    
-    const items = processos[processo].items;
-    let slideCount = 0;
-    
-    // Agrupa em pares (2 cards por slide)
-    for (let i = 0; i < items.length; i += 2) {
-      const slide = document.createElement('div');
-      slide.className = 'carousel-slide';
-      slide.setAttribute('role', 'group');
-      slide.setAttribute('aria-roledescription', 'slide');
-      slide.setAttribute('aria-label', `Grupo ${Math.floor(i/2)+1} de ${processo}`);
-      
-      slide.innerHTML = criarCard(items[i], processo);
-      if (items[i+1]) slide.innerHTML += criarCard(items[i+1], processo);
-      
-      track.appendChild(slide);
-      slideCount++;
-    }
-    return slideCount;
+    return count;
   }
 
   // ============================================
-  // 🔄 CONTROLE DO CAROUSEL (100% AUTOMÁTICO)
+  // CONTROLE DO CAROUSEL
   // ============================================
-  let currentSlide = 0;
-  let totalSlides = 0;
-  let autoRotateTimer = null;
-  let isTransitioning = false;
+  let slideIdx=0,totalSlides=0,rotTimer=null;
 
-  function goToSlide(index, force = false) {
-    if (isTransitioning && !force) return;
-    if (index < 0 || index >= totalSlides) return;
-    
-    isTransitioning = true;
-    currentSlide = index;
-    
-    // Move ambas as tracks simultaneamente
-    document.querySelectorAll('.carousel-track').forEach(track => {
-      track.style.transform = `translateX(-${index * 100}%)`;
-    });
-    
-    // Atualiza dots (apenas visual)
-    document.querySelectorAll('.nav-dot').forEach((dot, i) => {
-      dot.classList.toggle('active', i === index);
-    });
-    
-    // Reset flag após transição
-    setTimeout(() => { isTransitioning = false; }, 900);
+  function goToSlide(idx){
+    if(idx<0||idx>=totalSlides)return;
+    slideIdx=idx;
+    document.querySelectorAll('.carousel-track').forEach(t=>t.style.transform=`translateX(-${idx*100}%)`);
+    document.querySelectorAll('.nav-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
   }
 
-  function nextSlide() {
-    goToSlide((currentSlide + 1) % totalSlides);
-  }
+  function nextSlide(){ goToSlide((slideIdx+1)%totalSlides); }
 
-  function criarDots(count) {
-    const nav = document.getElementById('carousel-nav');
-    if (!nav) return;
-    
-    nav.innerHTML = '';
-    for (let i = 0; i < count; i++) {
-      const dot = document.createElement('div');
-      dot.className = `nav-dot ${i === 0 ? 'active' : ''}`;
-      dot.setAttribute('aria-hidden', 'true');
-      nav.appendChild(dot);
+  function criarDots(n){
+    const nav=document.getElementById('carousel-nav'); if(!nav)return;
+    nav.innerHTML='';
+    for(let i=0;i<n;i++){
+      const d=document.createElement('div');
+      d.className=`nav-dot${i===0?' active':''}`;
+      nav.appendChild(d);
     }
   }
 
-  function startAutoRotation() {
-    if (autoRotateTimer) clearInterval(autoRotateTimer);
-    autoRotateTimer = setInterval(nextSlide, CONFIG.autoRotateInterval);
-  }
-
-  function resetAutoRotation() {
-    startAutoRotation();
+  function startRotation(){
+    if(rotTimer)clearInterval(rotTimer);
+    rotTimer=setInterval(nextSlide,CONFIG.autoRotateInterval);
   }
 
   // ============================================
-  # ⏰ RELÓGIO / CONTADOR / SYNC
+  // RELÓGIO / CONTADOR / REFRESH
   // ============================================
-  function atualizarRelogio() {
-    const agora = new Date();
-    const h = String(agora.getHours()).padStart(2,'0');
-    const m = String(agora.getMinutes()).padStart(2,'0');
-    const s = String(agora.getSeconds()).padStart(2,'0');
-    
-    document.getElementById('relogio').textContent = `${h}:${m}:${s}`;
-    document.getElementById('ultima').textContent = `${h}:${m}:${s}`;
+  function atualizarRelogio(){
+    const n=new Date();
+    const h=String(n.getHours()).padStart(2,'0');
+    const m=String(n.getMinutes()).padStart(2,'0');
+    const s=String(n.getSeconds()).padStart(2,'0');
+    document.getElementById('relogio').textContent=`${h}:${m}:${s}`;
+    document.getElementById('ultima').textContent=`${h}:${m}:${s}`;
   }
 
-  function iniciarRelogio() {
+  function iniciarRelogio(){
     atualizarRelogio();
-    setInterval(atualizarRelogio, 1000);
+    setInterval(atualizarRelogio,1000);
   }
 
-  function iniciarContador() {
-    let seg = 60;
-    setInterval(() => {
-      seg = (seg - 1 + 60) % 60;
-      document.getElementById('seg').textContent = seg;
-      
-      // Destaque visual nos últimos segundos
-      const el = document.getElementById('seg');
-      if (seg <= 10) {
-        el.style.color = 'var(--weg-orange)';
-        el.style.fontWeight = '800';
-      } else {
-        el.style.color = 'var(--weg-blue)';
-        el.style.fontWeight = '700';
-      }
-    }, 1000);
+  function iniciarContador(){
+    let seg=60;
+    setInterval(()=>{
+      seg=(seg-1+60)%60;
+      document.getElementById('seg').textContent=seg;
+      const el=document.getElementById('seg');
+      el.style.color=seg<=10?'var(--weg-orange)':'var(--weg-blue)';
+    },1000);
   }
 
-  function recarregarImagens() {
-    document.querySelectorAll('.chart-img').forEach(img => {
-      if (img.style.display !== 'none') {
-        const src = img.src.split('?')[0];
-        img.src = `${src}?t=${Date.now()}`;
+  function recarregarImagens(){
+    document.querySelectorAll('.chart-img').forEach(img=>{
+      if(img.style.display!=='none'){
+        const src=img.src.split('?')[0];
+        img.src=`${src}?t=${Date.now()}`;
         img.classList.remove('loaded');
       }
     });
     atualizarRelogio();
   }
 
-  function iniciarRefresh() {
-    // Primeira recarga após carregamento inicial
-    setTimeout(() => {
-      recarregarImagens();
-      // Recargas periódicas
-      setInterval(recarregarImagens, CONFIG.imageRefreshInterval);
-    }, 10000);
-  }
-
   // ============================================
-  // 🔒 PREVENÇÃO DE SLEEP / SCREENSAVER
+  // 🚀 INICIALIZAÇÃO SIMPLIFICADA E ROBUSTA
   // ============================================
-  async function ativarWakeLock() {
-    if (!CONFIG.wakeLockEnabled || !('wakeLock' in navigator)) {
-      console.log('ℹ️ Wake Lock não disponível - usando fallback');
-      return;
-    }
-    
-    let wakeLock = null;
-    
-    const solicitarWakeLock = async () => {
-      try {
-        wakeLock = await navigator.wakeLock.request('screen');
-        console.log('✅ Wake Lock ativado');
-        
-        wakeLock.addEventListener('release', () => {
-          console.log('🔓 Wake Lock liberado');
-          // Tenta reativar se a página voltar a ficar visível
-          if (document.visibilityState === 'visible') {
-            solicitarWakeLock();
-          }
-        });
-      } catch (err) {
-        console.warn('⚠️ Falha ao ativar Wake Lock:', err.message);
-      }
-    };
-    
-    // Ativa inicialmente
-    await solicitarWakeLock();
-    
-    // Reativa quando a página voltar do background
-    document.addEventListener('visibilitychange', async () => {
-      if (document.visibilityState === 'visible' && wakeLock === null) {
-        await solicitarWakeLock();
-      }
-    });
-  }
-
-  // Fallback para navegadores sem Wake Lock: simula atividade
-  function fallbackPreventSleep() {
-    // Envia eventos de mouse/tecla falsos periodicamente
-    setInterval(() => {
-      // Apenas para navegadores que respeitam eventos sintéticos
-      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
-    }, 30000);
-  }
-
-  // ============================================
-  // 🔄 RECUPERAÇÃO AUTOMÁTICA DE FALHAS
-  // ============================================
-  let retryCount = 0;
-  
-  async function fetchComRetry(url, options = {}) {
-    for (let attempt = 1; attempt <= CONFIG.dataRetryAttempts; attempt++) {
-      try {
-        const response = await fetch(url, { 
-          ...options, 
-          cache: 'no-store',
-          headers: { ...options.headers, 'Cache-Control': 'no-cache' }
-        });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return await response.json();
-      } catch (err) {
-        console.warn(`⚠️ Tentativa ${attempt}/${CONFIG.dataRetryAttempts} falhou:`, err.message);
-        if (attempt < CONFIG.dataRetryAttempts) {
-          await new Promise(res => setTimeout(res, CONFIG.dataRetryDelay * attempt));
-        } else {
-          console.error('❌ Todas as tentativas falharam');
-          throw err;
-        }
-      }
-    }
-  }
-
-  // ============================================
-  // 🚀 INICIALIZAÇÃO COMPLETA
-  // ============================================
-  async function inicializarSistema() {
-    try {
-      // 1. Ativa prevenção de sleep
-      await ativarWakeLock();
-      fallbackPreventSleep();
+  function iniciarSistema(){
+    try{
+      console.log('🔄 Iniciando dashboard...');
       
-      // 2. Inicia relógio e contador
+      // Relógio e contador
       iniciarRelogio();
       iniciarContador();
       
-      // 3. Monta os carousels
-      const slidesNano = montarCarousel('nano', 'track-nano');
-      const slidesEsta = montarCarousel('esta', 'track-esta');
-      
-      // 4. Configura navegação visual
-      totalSlides = Math.max(slidesNano, slidesEsta);
+      // Carousels
+      const s1=montarCarousel('nano','track-nano');
+      const s2=montarCarousel('esta','track-esta');
+      totalSlides=Math.max(s1,s2);
       criarDots(totalSlides);
       
-      // 5. Inicia rotação automática
-      startAutoRotation();
+      // Rotação automática
+      startRotation();
       
-      // 6. Inicia refresh de imagens
-      iniciarRefresh();
+      // Refresh de imagens
+      setTimeout(()=>{
+        recarregarImagens();
+        setInterval(recarregarImagens,CONFIG.imageRefreshInterval);
+      },10000);
       
-      // 7. Esconde loader inicial com delay suave
-      setTimeout(() => {
-        document.getElementById('initial-loader')?.classList.add('hidden');
-        console.log('✅ Dashboard JGS inicializado • Modo TV Autônomo');
-        console.log(`📊 ${document.querySelectorAll('.card').length} cards carregados`);
-        console.log(`🔄 Rotação: ${CONFIG.autoRotateInterval/1000}s • Refresh: ${CONFIG.imageRefreshInterval/1000}s`);
-      }, 1500);
+      console.log('✅ Dashboard iniciado com sucesso');
       
-      // 8. Monitora visibilidade para recuperação
-      document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'visible') {
-          console.log('🔄 Página visível - reativando rotação');
-          resetAutoRotation();
-          atualizarRelogio();
+    }catch(err){
+      console.error('❌ Erro na inicialização:',err);
+    }finally{
+      // 🛡️ GARANTIA: Esconde loader sempre, mesmo com erro
+      setTimeout(()=>{
+        const loader=document.getElementById('initial-loader');
+        if(loader){
+          loader.classList.add('hidden');
+          console.log('🔓 Loader removido');
         }
-      });
-      
-    } catch (err) {
-      console.error('❌ Erro na inicialização:', err);
-      // Fallback: tenta recarregar após delay
-      setTimeout(() => window.location.reload(), 10000);
+      }, CONFIG.loaderTimeout);
     }
   }
 
   // ============================================
-  // 🎯 EVENTOS GLOBAIS (proteção para TV)
+  // FALLBACK DE SEGURANÇA PARA O LOADER
   // ============================================
-  
-  // Previne teclas de sistema em modo kiosk
-  document.addEventListener('keydown', (e) => {
-    // Permite apenas F11 para sair do fullscreen (se necessário)
-    if (['F5', 'F12', 'Ctrl+R', 'Meta+R'].includes(e.key) || 
-        (e.ctrlKey && e.key === 'r')) {
-      e.preventDefault();
-      return false;
+  // Se por algum motivo iniciarSistema() não rodar,
+  // este timeout garante que o loader some após 5 segundos
+  setTimeout(()=>{
+    const loader=document.getElementById('initial-loader');
+    if(loader && !loader.classList.contains('hidden')){
+      console.warn('⚠️ Fallback: forçando hide do loader após timeout');
+      loader.classList.add('hidden');
+      // Tenta iniciar mesmo assim
+      try{ iniciarSistema(); }catch(e){ console.error('Fallback failed:',e); }
     }
-  }, { capture: true });
-  
-  // Previne menu de contexto (clique direito)
-  document.addEventListener('contextmenu', (e) => {
-    e.preventDefault();
-    return false;
-  }, { capture: true });
-  
-  // Previne seleção de texto (acidental)
-  document.addEventListener('selectstart', (e) => {
-    e.preventDefault();
-    return false;
-  }, { capture: true });
+  }, CONFIG.loaderTimeout);
 
   // ============================================
-  // 🏁 INICIA QUANDO O DOM ESTIVER PRONTO
+  // INICIA QUANDO DOM PRONTO
   // ============================================
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', inicializarSistema);
-  } else {
-    inicializarSistema();
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', iniciarSistema);
+  }else{
+    iniciarSistema();
   }
+
+  // Previne teclas em modo kiosk
+  document.addEventListener('keydown',(e)=>{
+    if(['F5','F11','F12'].includes(e.key))e.preventDefault();
+  },{capture:true});
 </script>
 </body>
 </html>
