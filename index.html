@@ -444,6 +444,44 @@
   // Cache dos dados carregados
   let dadosCache = {};
 
+  // Formatar data para mostrar apenas dia/mês
+  function formatarData(dataStr) {
+    if (!dataStr || dataStr === '#N/D' || dataStr.trim() === '') return '--/--';
+    
+    // Tenta parsear a data
+    let dataObj = null;
+    
+    // Formato DD/MM/YYYY ou DD/MM/YY
+    if (dataStr.includes('/')) {
+      const partes = dataStr.split('/');
+      if (partes.length === 3) {
+        const dia = parseInt(partes[0]);
+        const mes = parseInt(partes[1]) - 1; // Meses em JS começam em 0
+        let ano = parseInt(partes[2]);
+        
+        // Se ano tem 2 dígitos, assume 20XX
+        if (ano < 100) ano += 2000;
+        
+        dataObj = new Date(ano, mes, dia);
+      }
+    }
+    
+    // Se não conseguiu parsear, tenta como data ISO
+    if (!dataObj || isNaN(dataObj.getTime())) {
+      dataObj = new Date(dataStr);
+    }
+    
+    // Se ainda não é válida, retorna a string original
+    if (isNaN(dataObj.getTime())) {
+      return dataStr;
+    }
+    
+    // Formata para DD/MM (sem ano)
+    const dia = dataObj.getDate().toString().padStart(2, '0');
+    const mes = (dataObj.getMonth() + 1).toString().padStart(2, '0');
+    return `${dia}/${mes}`;
+  }
+
   // Carregar dados JSON da pasta dados
   async function carregarDadosJSON(fileName) {
     try {
@@ -490,6 +528,7 @@
       
       medicoes.push({
         data: label,
+        dataFormatada: formatarData(label),
         valor: valor,
         hasData: hasData
       });
@@ -529,7 +568,7 @@
       if (chunk.length === 0) continue;
 
       html += '<tr>';
-      chunk.forEach(m => html += `<th>${m.data}</th>`);
+      chunk.forEach(m => html += `<th>${m.dataFormatada}</th>`);
       html += '</tr>';
 
       html += '<tr>';
