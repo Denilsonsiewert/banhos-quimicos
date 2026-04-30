@@ -1,11 +1,7 @@
 {
-"title": "",
-"yAxisLabel": "",
-"labels": ["","","","","","","","","","","","","","","","","0"],
-"series1": [Responsável,Hora,Tanque,Análise do Sn° 
-
-Volume gasto na titulação (Vt),Análise do H2SO4 
-
-Volume gasto na titulação  (Vt),Concentração do banho Sn° (g/L) ,Concentração do banho H2SO4 (mL/L) ,Concentração do banho SnSO4,Correção com TinSol,,,Correção com H2SO4,,,Vide Obs.,Tin Sol,H2SO4],
-"series2": [,,,,,,,,Em quilos (kg),Em litros (L),Executada em L,Em quilos (kg),Em litros (L),Executada em L,,0,0]
+  "title": "",
+  "yAxisLabel": "",
+  "chartCount": 2,
+  "labels": ["2/3/26","4/3/26","6/3/26","9/3/26","11/3/26","13/3/26","16/3/26","18/3/26","20/3/26","23/3/26","25/3/26","27/3/26","30/3/26","1/4/26","6/4/26","8/4/26","10/4/26","13/4/26","15/4/26","17/4/26","21/4/26","22/4/26","25/4/26","27/4/26"],
+  "series1": ["20,1","21,3","21,7","21,3","20,9","20,1","19,9","20,1","20,3","20,0","21,3","21,3","22,5","21,9","21,9","16,6","16,6","17,8","17,2","17,8","19,8","19,6","19,6","20,7"]
 }
