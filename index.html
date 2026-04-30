@@ -42,15 +42,15 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 48px;
+  padding: 12px 40px;
   background: var(--bg-secondary);
   box-shadow: 0 1px 3px var(--shadow);
-  height: 88px;
-  border-bottom: 4px solid var(--weg-blue);
+  height: 72px;
+  border-bottom: 3px solid var(--weg-blue);
 }
 
 .logo-weg { 
-  height: 52px;
+  height: 44px;
   opacity: 0.95;
 }
 
@@ -60,7 +60,7 @@ header {
 }
 
 .title {
-  font-size: 2rem;
+  font-size: 1.7rem;
   font-weight: 700;
   color: var(--weg-blue);
   letter-spacing: -0.5px;
@@ -69,11 +69,11 @@ header {
 
 .info-pill {
   display: flex;
-  gap: 24px;
+  gap: 20px;
   background: var(--bg-primary);
-  padding: 12px 28px;
-  border-radius: 4px;
-  font-size: 0.95rem;
+  padding: 10px 20px;
+  border-radius: 3px;
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--weg-blue-dark);
   font-family: 'Inter', monospace;
@@ -81,17 +81,17 @@ header {
 }
 
 main {
-  padding: 24px 40px;
-  height: calc(100vh - 136px);
+  padding: 16px 24px;
+  height: calc(100vh - 112px);
   display: flex;
   flex-direction: column;
 }
 
 .section-title {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  margin-bottom: 20px;
-  padding: 12px 24px;
+  margin-bottom: 12px;
+  padding: 10px 20px;
   background: var(--weg-blue);
   color: white;
   border-radius: 2px;
@@ -101,56 +101,56 @@ main {
 #dashboard-content {
   flex: 1;
   overflow-y: auto;
-  padding-right: 8px;
+  padding-right: 6px;
 }
 
 #dashboard-content::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 #dashboard-content::-webkit-scrollbar-track {
   background: var(--bg-primary);
 }
 #dashboard-content::-webkit-scrollbar-thumb {
   background: var(--weg-blue);
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 .card {
   background: var(--bg-secondary);
-  padding: 28px;
-  border-radius: 4px;
-  box-shadow: 0 2px 8px var(--shadow);
+  padding: 16px;
+  border-radius: 3px;
+  box-shadow: 0 1px 4px var(--shadow);
   border: 1px solid var(--border-color);
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 28px;
-  padding-bottom: 16px;
-  border-bottom: 2px solid var(--border-color);
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .card-title {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 600;
   color: var(--weg-blue-dark);
-  letter-spacing: -0.3px;
+  letter-spacing: -0.2px;
 }
 
 .card-subtitle {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: var(--weg-light-gray);
   font-weight: 500;
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
 .status-badge {
-  padding: 8px 24px;
+  padding: 6px 18px;
   border-radius: 3px;
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -158,51 +158,58 @@ main {
 .status-ok { 
   background: #F0FFF4; 
   color: #276749; 
-  border: 2px solid var(--success); 
+  border: 1.5px solid var(--success); 
 }
 .status-warn { 
   background: #FFFBEB; 
   color: #B7791F; 
-  border: 2px solid var(--warning); 
+  border: 1.5px solid var(--warning); 
 }
 .status-crit { 
   background: #FFF5F5; 
   color: #C53030; 
-  border: 2px solid var(--danger); 
+  border: 1.5px solid var(--danger); 
 }
 
-.chart-wrapper {
+/* Container de gráficos em grid 2 colunas */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.chart-block {
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  border-radius: 4px;
-  padding: 20px;
-  margin-bottom: 24px;
+  border-radius: 3px;
+  overflow: hidden;
 }
 
 .chart-title {
   text-align: center;
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--weg-blue);
-  margin-bottom: 16px;
-  padding-bottom: 12px;
+  padding: 8px 12px;
   border-bottom: 1px solid var(--border-color);
+  background: var(--bg-primary);
 }
 
 .chart-img {
   width: 100%;
-  height: 400px;
+  height: 280px;
   object-fit: contain;
   background: var(--bg-primary);
-  border: 1px solid var(--border-color);
+  display: block;
 }
 
-/* Tabela profissional - 2 linhas de 12 colunas */
+/* Tabela compacta */
 .table-container {
   width: 100%;
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  border-radius: 4px;
+  border-radius: 3px;
   overflow: hidden;
 }
 
@@ -210,16 +217,20 @@ main {
   width: 100%;
   border-collapse: collapse;
   font-family: 'Inter', sans-serif;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
+  table-layout: fixed;
 }
 
 .custom-table th,
 .custom-table td {
   border: 1px solid var(--border-color);
-  padding: 10px 8px;
+  padding: 6px 4px;
   text-align: center;
   font-weight: 500;
   color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .custom-table th {
@@ -227,13 +238,14 @@ main {
   color: white;
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 0.8rem;
-  letter-spacing: 0.3px;
+  font-size: 0.7rem;
+  letter-spacing: 0.2px;
+  padding: 7px 3px;
 }
 
 .table-main-title {
-  font-size: 1rem !important;
-  padding: 14px !important;
+  font-size: 0.9rem !important;
+  padding: 10px !important;
   background: var(--weg-blue-dark) !important;
   text-align: center;
   font-weight: 600;
@@ -247,11 +259,11 @@ main {
 .nav-dots {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin-top: 24px;
-  padding: 12px 24px;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 10px 20px;
   background: var(--bg-secondary);
-  border-radius: 4px;
+  border-radius: 3px;
   box-shadow: 0 1px 3px var(--shadow);
   width: fit-content;
   align-self: center;
@@ -259,47 +271,45 @@ main {
 }
 
 .dot {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: var(--weg-light-gray);
   cursor: pointer;
   transition: all 0.2s;
-  border: 2px solid transparent;
 }
 
 .dot.active {
   background: var(--weg-blue);
-  transform: scale(1.1);
-  border-color: var(--weg-blue-dark);
+  transform: scale(1.2);
 }
 
 footer {
-  height: 52px;
+  height: 44px;
   background: var(--bg-secondary);
   color: var(--text-secondary);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 40px;
-  font-size: 0.875rem;
+  padding: 0 32px;
+  font-size: 0.8rem;
   border-top: 1px solid var(--border-color);
   font-weight: 500;
 }
 
 .pulse {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: var(--success);
   animation: pulse 2s infinite;
   display: inline-block;
-  margin-right: 8px;
+  margin-right: 6px;
 }
 
 @keyframes pulse {
   0% { box-shadow: 0 0 0 0 rgba(56, 161, 105, 0.7); }
-  70% { box-shadow: 0 0 0 6px rgba(56, 161, 105, 0); }
+  70% { box-shadow: 0 0 0 5px rgba(56, 161, 105, 0); }
   100% { box-shadow: 0 0 0 0 rgba(56, 161, 105, 0); }
 }
 
@@ -307,8 +317,8 @@ footer {
   background: linear-gradient(90deg, #E2E8F0 25%, #CBD5E0 50%, #E2E8F0 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
-  border-radius: 4px;
-  height: 400px;
+  border-radius: 3px;
+  height: 280px;
 }
 
 @keyframes shimmer {
@@ -317,12 +327,11 @@ footer {
 }
 
 @media (max-width: 1200px) {
-  .custom-table th, .custom-table td { 
-    font-size: 0.8rem; 
-    padding: 8px 6px; 
+  .charts-grid {
+    grid-template-columns: 1fr;
   }
-  .chart-img { 
-    height: 350px; 
+  .chart-img {
+    height: 240px;
   }
 }
 </style>
@@ -392,11 +401,9 @@ function getStatusClass(status) {
     return "crit";
 }
 
-// Gera tabela com 2 linhas: primeira com datas/valores, segunda com datas/valores
 function generateTableHTML(labels, series1, series2) {
     if (!labels || labels.length === 0) return '';
     
-    // Divide em 2 linhas de 12 colunas
     const row1Labels = labels.slice(0, COLS_PER_ROW);
     const row1Values = series1.slice(0, COLS_PER_ROW);
     const row2Labels = labels.slice(COLS_PER_ROW, COLS_PER_ROW * 2);
@@ -404,25 +411,26 @@ function generateTableHTML(labels, series1, series2) {
     
     let html = `<div class="table-container"><table class="custom-table">`;
     html += `<thead><tr><th class="table-main-title" colspan="${COLS_PER_ROW}">REGISTRO DAS ÚLTIMAS 24 ANÁLISES - VALORES REAIS</th></tr>`;
+    html += `<tr>${row1Labels.map(l => `<th>${l}</th>`).join('')}</tr>`;
+    html += `<tr>${row1Values.map(v => `<td>${v != null ? v : '---'}</td>`).join('')}</tr>`;
+    html += `<tr>${row2Labels.map(l => `<th>${l}</th>`).join('')}</tr>`;
+    html += `<tr>${row2Values.map(v => `<td>${v != null ? v : '---'}</td>`).join('')}</tr>`;
     
-    // Linha 1: Datas
-    html += `<tr>${row1Labels.map(label => `<th>${label}</th>`).join('')}</tr>`;
-    // Linha 2: Análises
-    html += `<tr>${row1Values.map(val => `<td><strong>${val !== null && val !== undefined ? val : '---'}</strong></td>`).join('')}</tr>`;
-    
-    // Linha 3: Datas
-    html += `<tr>${row2Labels.map(label => `<th>${label}</th>`).join('')}</tr>`;
-    // Linha 4: Análises
-    html += `<tr>${row2Values.map(val => `<td><strong>${val !== null && val !== undefined ? val : '---'}</strong></td>`).join('')}</tr>`;
+    if (series2) {
+        const row2S1 = series2.slice(0, COLS_PER_ROW);
+        const row2S2 = series2.slice(COLS_PER_ROW, COLS_PER_ROW * 2);
+        html += `<tr style="background:#EBF5FB;">${row2S1.map(v => `<td style="color:var(--weg-blue);font-weight:600;">${v != null ? v : '---'}</td>`).join('')}</tr>`;
+        html += `<tr style="background:#EBF5FB;">${row2S2.map(v => `<td style="color:var(--weg-blue);font-weight:600;">${v != null ? v : '---'}</td>`).join('')}</tr>`;
+    }
     
     html += `</tbody></table></div>`;
     return html;
 }
 
 function loadCardData(fileBase) {
-    const wrapperElem = document.getElementById('chart-wrapper');
+    const wrapperElem = document.getElementById('charts-area');
     if (!wrapperElem) return;
-    wrapperElem.innerHTML = `<div class="loader-shimmer"></div>`;
+    wrapperElem.innerHTML = `<div class="charts-grid"><div class="chart-block"><div class="loader-shimmer"></div></div></div>`;
     
     fetch(`dados/${fileBase}.json?t=${Date.now()}`)
         .then(r => {
@@ -433,31 +441,31 @@ function loadCardData(fileBase) {
             if (!wrapperElem) return;
             wrapperElem.innerHTML = '';
 
-            if (data.charts && Array.isArray(data.charts) && data.charts.length > 0) {
-                data.charts.forEach((chartData, idx) => {
-                    const chartDiv = document.createElement('div');
-                    chartDiv.className = 'chart-wrapper';
-                    const titleHtml = chartData.title ? `<div class="chart-title">${chartData.title}</div>` : '';
-                    const imgSrc = `graficos/${fileBase}-${idx+1}.png?t=${Date.now()}`;
-                    const tableHtml = generateTableHTML(chartData.labels, chartData.series1, chartData.series2);
-                    chartDiv.innerHTML = `${titleHtml}<img src="${imgSrc}" class="chart-img" alt="Gráfico" onerror="this.style.display='none'">${tableHtml}`;
-                    wrapperElem.appendChild(chartDiv);
-                });
-            } else if (data.labels && data.series1) {
+            const charts = (data.charts && Array.isArray(data.charts) && data.charts.length > 0) 
+                ? data.charts 
+                : [{ title: null, labels: data.labels, series1: data.series1, series2: data.series2 }];
+
+            // Grid para exibir 2 por linha
+            const gridDiv = document.createElement('div');
+            gridDiv.className = 'charts-grid';
+
+            charts.forEach((chartData, idx) => {
                 const chartDiv = document.createElement('div');
-                chartDiv.className = 'chart-wrapper';
-                const imgSrc = `graficos/${fileBase}-1.png?t=${Date.now()}`;
-                const tableHtml = generateTableHTML(data.labels, data.series1, data.series2);
-                chartDiv.innerHTML = `<img src="${imgSrc}" class="chart-img" alt="Gráfico" onerror="this.style.display='none'">${tableHtml}`;
-                wrapperElem.appendChild(chartDiv);
-            }
+                chartDiv.className = 'chart-block';
+                const titleHtml = chartData.title ? `<div class="chart-title">${chartData.title}</div>` : '';
+                const imgSrc = `graficos/${fileBase}-${idx+1}.png?t=${Date.now()}`;
+                const tableHtml = generateTableHTML(chartData.labels, chartData.series1, chartData.series2);
+                chartDiv.innerHTML = `${titleHtml}<img src="${imgSrc}" class="chart-img" alt="Gráfico" onerror="this.style.display='none'">${tableHtml}`;
+                gridDiv.appendChild(chartDiv);
+            });
+
+            wrapperElem.appendChild(gridDiv);
         })
         .catch(err => {
             console.warn(`Erro ao carregar ${fileBase}:`, err);
             if (wrapperElem) {
-                wrapperElem.innerHTML = `<div style="padding:60px;text-align:center;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:4px;">
-                    <div style="color:var(--text-secondary);font-size:1.1rem;">Dados não disponíveis</div>
-                    <div style="color:var(--weg-light-gray);font-size:0.9rem;margin-top:8px;">${fileBase}.json</div>
+                wrapperElem.innerHTML = `<div style="padding:40px;text-align:center;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:3px;">
+                    <div style="color:var(--text-secondary);font-size:1rem;">Dados não disponíveis</div>
                 </div>`;
             }
         });
@@ -475,8 +483,8 @@ function renderCard(item) {
                 </div>
                 <div class="status-badge status-${getStatusClass(item.status)}">${item.status}</div>
             </div>
-            <div id="chart-wrapper">
-                <div style="padding:60px;text-align:center;color:var(--weg-light-gray);">Inicializando...</div>
+            <div id="charts-area">
+                <div class="charts-grid"><div class="chart-block"><div class="loader-shimmer"></div></div></div>
             </div>
         </div>`;
     loadCardData(item.fileBase);
