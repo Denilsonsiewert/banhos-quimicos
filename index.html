@@ -265,6 +265,11 @@
       color: var(--status-crit) !important;
     }
 
+    .val-nodata {
+      background: #F5F5F5 !important;
+      color: #999999 !important;
+    }
+
     /* Footer */
     footer {
       background: white;
@@ -386,22 +391,15 @@
   };
 
   // Mapeamento de arquivos para itens dos processos
+  // Ajustado para corresponder aos arquivos reais no repositório
   const fileToItemMap = {
     // Estanhagem Eletrolítica
     'des': { processo: 0, itemIndex: 0, nome: 'Desengraxante Químico', ref: 26.0, tol: 3.9 },
     'ativacao-tanque-5': { processo: 0, itemIndex: 1, nome: 'Ativação — Tanque 5', ref: 8.5, tol: 1.28 },
     'ativacao-tanque-6': { processo: 0, itemIndex: 2, nome: 'Ativação — Tanque 6', ref: 8.5, tol: 1.28 },
-    'niquel-watt': { processo: 0, itemIndex: 3, nome: 'Níquel WATT (1/5)', ref: 45.0, tol: 6.75 },
-    'niquel-watt-1': { processo: 0, itemIndex: 3, nome: 'Níquel WATT (2/5)', ref: 45.0, tol: 6.75 },
-    'niquel-watt-2': { processo: 0, itemIndex: 3, nome: 'Níquel WATT (3/5)', ref: 45.0, tol: 6.75 },
-    'niquel-watt-3': { processo: 0, itemIndex: 3, nome: 'Níquel WATT (4/5)', ref: 45.0, tol: 6.75 },
-    'niquel-watt-4': { processo: 0, itemIndex: 3, nome: 'Níquel WATT (5/5)', ref: 45.0, tol: 6.75 },
-    'estanhagem-a': { processo: 0, itemIndex: 4, nome: 'Estanhagem A (1/3)', ref: 32.0, tol: 4.8 },
-    'estanhagem-a-1': { processo: 0, itemIndex: 4, nome: 'Estanhagem A (2/3)', ref: 32.0, tol: 4.8 },
-    'estanhagem-a-2': { processo: 0, itemIndex: 4, nome: 'Estanhagem A (3/3)', ref: 32.0, tol: 4.8 },
-    'estanhagem-b': { processo: 0, itemIndex: 5, nome: 'Estanhagem B (1/3)', ref: 31.5, tol: 4.73 },
-    'estanhagem-b-1': { processo: 0, itemIndex: 5, nome: 'Estanhagem B (2/3)', ref: 31.5, tol: 4.73 },
-    'estanhagem-b-2': { processo: 0, itemIndex: 5, nome: 'Estanhagem B (3/3)', ref: 31.5, tol: 4.73 },
+    'niquel-watt': { processo: 0, itemIndex: 3, nome: 'Níquel WATT', ref: 45.0, tol: 6.75 },
+    'estanhagem-a': { processo: 0, itemIndex: 4, nome: 'Estanhagem A', ref: 32.0, tol: 4.8 },
+    'estanhagem-b': { processo: 0, itemIndex: 5, nome: 'Estanhagem B', ref: 31.5, tol: 4.73 },
     'selante': { processo: 0, itemIndex: 6, nome: 'Selante Protetivo', ref: 18.0, tol: 2.7 },
     
     // Processo Nanocerâmico
@@ -424,20 +422,24 @@
   // Cache dos dados carregados
   let dadosCache = {};
 
-  // Carregar dados JSON da pasta
+  // Carregar dados JSON da pasta dados (CORREÇÃO: caminho correto)
   async function carregarDadosJSON(fileName) {
     try {
-      const response = await fetch(`dados do github/${fileName}.json?t=${Date.now()}`);
-      if (!response.ok) return null;
+      // CORREÇÃO: Caminho correto para a pasta "dados"
+      const response = await fetch(`dados/graf-${fileName}.json?t=${Date.now()}`);
+      if (!response.ok) {
+        console.warn(`Arquivo não encontrado: dados/graf-${fileName}.json`);
+        return null;
+      }
       const data = await response.json();
       return data;
     } catch (error) {
-      console.warn(`Erro ao carregar ${fileName}.json:`, error);
+      console.warn(`Erro ao carregar graf-${fileName}.json:`, error);
       return null;
     }
   }
 
-  // Obter medições reais do JSON
+  // Obter medições reais do JSON (CORREÇÃO: tratamento de #N/D)
   async function getMedicoesReal(fileName) {
     const dados = await carregarDadosJSON(fileName);
     if (!dados || !dados.charts || !dados.charts[0]) return [];
@@ -445,18 +447,41 @@
     const labels = dados.charts[0].labels || [];
     const series1 = dados.charts[0].series1 || [];
     
-    return labels.slice(-24).map((label, index) => {
-      const valorStr = series1[Math.max(0, series1.length - 24 + index)] || '0';
-      const valor = parseFloat(valorStr.replace(',', '.'));
-      return {
+    // CORREÇÃO: Filtrar e processar últimos 24 valores
+    const medicoes = [];
+    const startIndex = Math.max(0, labels.length - 24);
+    
+    for (let i = startIndex; i < labels.length; i++) {
+      const label = labels[i];
+      const valorStr = series1[i] || '0';
+      
+      // CORREÇÃO: Tratar valores "#N/D" como dados ausentes
+      let valor = 0;
+      let hasData = true;
+      
+      if (valorStr === '#N/D' || valorStr === '#N/A' || valorStr === '' || valorStr === null) {
+        hasData = false;
+        valor = NaN;
+      } else {
+        valor = parseFloat(valorStr.replace(',', '.'));
+        if (isNaN(valor)) {
+          hasData = false;
+        }
+      }
+      
+      medicoes.push({
         data: label,
-        valor: isNaN(valor) ? 0 : valor
-      };
-    });
+        valor: valor,
+        hasData: hasData
+      });
+    }
+    
+    return medicoes;
   }
 
-  // Classificar status
-  function getStatusClass(valor, ref, tol) {
+  // Classificar status (CORREÇÃO: considerar dados ausentes)
+  function getStatusClass(valor, ref, tol, hasData) {
+    if (!hasData || isNaN(valor)) return 'val-nodata';
     const diff = Math.abs(valor - ref);
     if (diff <= tol * 0.5) return 'val-ok'; // Normal
     if (diff <= tol) return 'val-warn'; // Alerta
@@ -483,6 +508,8 @@
       const end = start + colsPerRow;
       const chunk = medicoes.slice(start, end);
 
+      if (chunk.length === 0) continue;
+
       // Linha de Datas
       html += '<tr>';
       chunk.forEach(m => html += `<th>${m.data}</th>`);
@@ -491,8 +518,9 @@
       // Linha de Valores
       html += '<tr>';
       chunk.forEach(m => {
-        const cls = getStatusClass(m.valor, item.ref, item.tol);
-        html += `<td class="${cls}">${m.valor.toFixed(2)}</td>`;
+        const cls = getStatusClass(m.valor, item.ref, item.tol, m.hasData);
+        const displayValue = m.hasData ? m.valor.toFixed(2) : '---';
+        html += `<td class="${cls}">${displayValue}</td>`;
       });
       html += '</tr>';
     }
@@ -508,13 +536,14 @@
     // Renderizar tabela com dados reais
     const tabelaHtml = await renderTabela(itemInfo, fileName);
 
+    // CORREÇÃO: Caminho correto para imagens PNG (com -1 no final)
     return `
       <div class="card">
         <div class="card-header">${displayName}</div>
         <div class="card-body">
           <div class="graph-container">
-            <div class="graph-placeholder">📊 Gráfico: ${fileName}.png</div>
-            <img src="graficos/graf-${fileName}.png?t=${Date.now()}"
+            <div class="graph-placeholder">📊 Gráfico: ${fileName}</div>
+            <img src="graficos/graf-${fileName}-1.png?t=${Date.now()}"
                  onerror="this.style.display='none'"
                  onload="this.previousElementSibling.style.display='none'">
           </div>
@@ -548,12 +577,14 @@
         const slide = document.createElement('div');
         slide.className = 'carousel-slide';
 
-        // Adicionar título do processo
-        const titleDiv = document.createElement('div');
-        titleDiv.style.gridColumn = '1 / -1';
-        titleDiv.style.marginBottom = '0';
-        titleDiv.innerHTML = `<div class="secao-titulo">${processoNome}</div>`;
-        slide.appendChild(titleDiv);
+        // Adicionar título do processo apenas no primeiro slide
+        if (i === 0) {
+          const titleDiv = document.createElement('div');
+          titleDiv.style.gridColumn = '1 / -1';
+          titleDiv.style.marginBottom = '0';
+          titleDiv.innerHTML = `<div class="secao-titulo">${processoNome}</div>`;
+          slide.appendChild(titleDiv);
+        }
 
         // Adicionar cards do slide
         const start = i * CONFIG.itemsPerSlide;
@@ -598,12 +629,21 @@
     // Re-carregar dados para todos os cards visíveis
     const cards = document.querySelectorAll('.card');
     for (const card of cards) {
-      const fileName = card.querySelector('.graph-placeholder')?.textContent.match(/Gráfico: (.*)\.png/)?.[1];
+      const fileName = card.querySelector('.graph-placeholder')?.textContent.match(/Gráfico: (.*)/)?.[1]?.trim();
       if (fileName) {
         // Re-renderizar apenas a tabela (otimização)
-        const itemInfo = fileToItemMap[fileName];
-        if (itemInfo) {
-          const tabelaHtml = await renderTabela(itemInfo, fileName);
+        const itemInfo = Object.values(fileToItemMap).find(item => 
+          Object.entries(fileToItemMap).find(([key, val]) => val === item && key === fileName)
+        );
+        
+        // Encontrar o itemInfo correto
+        const fileKey = Object.keys(fileToItemMap).find(key => {
+          const placeholder = card.querySelector('.graph-placeholder');
+          return placeholder && placeholder.textContent.includes(key);
+        });
+        
+        if (fileKey && fileToItemMap[fileKey]) {
+          const tabelaHtml = await renderTabela(fileToItemMap[fileKey], fileKey);
           const container = card.querySelector('.measurements-container');
           if (container) {
             container.innerHTML = `
@@ -614,6 +654,10 @@
         }
       }
     }
+    
+    // Atualizar timestamp
+    const agora = new Date();
+    document.getElementById('ultima').innerText = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   }
 
   // Navegar para slide
