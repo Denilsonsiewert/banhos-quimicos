@@ -209,6 +209,7 @@
       border: 1px solid var(--weg-gray-200);
       padding: 12px;
       flex-shrink: 0;
+      overflow-x: auto;
     }
 
     .table-title {
@@ -226,6 +227,7 @@
       border-collapse: separate;
       border-spacing: 3px;
       table-layout: fixed;
+      min-width: 100%;
     }
 
     .analise-table th {
@@ -415,24 +417,54 @@
     }
   ];
 
-  // Gerar dados de medições
-  function getMedicoes(item) {
-    const dados = [];
-    const agora = new Date();
-    for (let i = 0; i < 24; i++) {
-      const data = new Date(agora);
-      data.setHours(agora.getHours() - (23 - i));
-      const valor = item.ref + (Math.random() - 0.5) * item.tol * 2.5;
-      dados.push({
-        data: `${String(data.getDate()).padStart(2, '0')}/${String(data.getMonth() + 1).padStart(2, '0')}`,
-        valor: parseFloat(valor.toFixed(1))
+  // Cache para dados carregados
+  let dataCache = {};
+
+  // Carregar dados do arquivo JSON
+  async function carregarDados(fileId) {
+    if (dataCache[fileId]) {
+      return dataCache[fileId];
+    }
+
+    try {
+      const response = await fetch(`dados/${fileId}.json`);
+      if (!response.ok) throw new Error(`Arquivo não encontrado: ${fileId}.json`);
+      
+      const data = await response.json();
+      dataCache[fileId] = data;
+      return data;
+    } catch (error) {
+      console.warn(`Erro ao carregar dados/${fileId}.json:`, error);
+      return null;
+    }
+  }
+
+  // Extrair últimas 24 medições do JSON
+  function extrairMedicoes(jsonData) {
+    if (!jsonData || !jsonData.charts || jsonData.charts.length === 0) {
+      return [];
+    }
+
+    const chart = jsonData.charts[0];
+    const labels = chart.labels || [];
+    const series = chart.series1 || [];
+
+    const medicoes = [];
+    const ultimasIndices = Math.max(0, labels.length - 24);
+
+    for (let i = ultimasIndices; i < labels.length; i++) {
+      medicoes.push({
+        data: labels[i],
+        valor: series[i] ? parseFloat(series[i].replace(',', '.')) : null
       });
     }
-    return dados;
+
+    return medicoes;
   }
 
   // Classificar status
   function getStatusClass(valor, ref, tol) {
+    if (valor === null) return 'val-warn';
     const diff = Math.abs(valor - ref);
     if (diff <= tol * 0.5) return 'val-ok'; // Normal
     if (diff <= tol) return 'val-warn'; // Alerta
@@ -440,8 +472,7 @@
   }
 
   // Renderizar tabela de medições
-  function renderTabela(item) {
-    const medicoes = getMedicoes(item);
+  function renderTabela(medicoes, ref, tol) {
     const colsPerRow = 12;
     let html = '<table class="analise-table">';
 
@@ -458,8 +489,9 @@
       // Linha de Valores
       html += '<tr>';
       chunk.forEach(m => {
-        const cls = getStatusClass(m.valor, item.ref, item.tol);
-        html += `<td class="${cls}">${m.valor}</td>`;
+        const cls = getStatusClass(m.valor, ref, tol);
+        const displayValue = m.valor !== null ? m.valor.toFixed(1).replace('.', ',') : '---';
+        html += `<td class="${cls}">${displayValue}</td>`;
       });
       html += '</tr>';
     }
@@ -469,10 +501,15 @@
   }
 
   // Criar card individual para um arquivo de gráfico específico
-  function criarCard(item, fileIndex) {
+  async function criarCard(item, fileIndex) {
     const fileName = item.files[fileIndex];
     const totalFiles = item.files.length;
     const displayName = totalFiles > 1 ? `${item.nome} (${fileIndex + 1}/${totalFiles})` : item.nome;
+
+    // Carregar dados reais
+    const jsonData = await carregarDados(fileName);
+    const medicoes = extrairMedicoes(jsonData);
+    const tabelaHtml = renderTabela(medicoes, item.ref, item.tol);
 
     return `
       <div class="card">
@@ -486,7 +523,7 @@
           </div>
           <div class="measurements-container">
             <div class="table-title">Últimas 24 Medições</div>
-            ${renderTabela(item)}
+            ${tabelaHtml}
           </div>
         </div>
       </div>
@@ -494,7 +531,7 @@
   }
 
   // Inicializar carrossel unificado
-  function initCarousel() {
+  async function initCarousel() {
     const track = document.getElementById('track-main');
     const nav = document.getElementById('nav-main');
 
@@ -502,7 +539,7 @@
     let slideIndex = 0;
 
     // Criar slides para cada processo
-    processos.forEach(processo => {
+    for (const processo of processos) {
       const items = processo.items;
       
       // Expandir items para incluir cada arquivo como um item separado
@@ -530,11 +567,12 @@
         const start = i * CONFIG.itemsPerSlide;
         const slideItems = expandedItems.slice(start, start + CONFIG.itemsPerSlide);
 
-        slideItems.forEach(item => {
+        for (const item of slideItems) {
+          const cardHtml = await criarCard(item, item.fileIndex);
           const cardDiv = document.createElement('div');
-          cardDiv.innerHTML = criarCard(item, item.fileIndex);
+          cardDiv.innerHTML = cardHtml;
           slide.appendChild(cardDiv.firstElementChild);
-        });
+        }
 
         track.appendChild(slide);
         allSlides.push(slide);
@@ -547,7 +585,7 @@
 
         slideIndex++;
       }
-    });
+    }
 
     // Rotação automática
     let currentSlide = 0;
@@ -574,14 +612,14 @@
   }
 
   // Inicializar
-  function init() {
-    initCarousel();
+  async function init() {
+    await initCarousel();
     updateClock();
     setInterval(updateClock, 1000);
 
     setTimeout(() => {
       document.getElementById('loader').classList.add('hidden');
-    }, 1000);
+    }, 1500);
   }
 
   window.onload = init;
