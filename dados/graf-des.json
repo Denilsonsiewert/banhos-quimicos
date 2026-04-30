@@ -1,7 +1,8 @@
 {
-"title": "",
-"yAxisLabel": "",
-"labels": ["","","","","","","","","","","","","","0"],
-"series1": [Responsável,Hora,Tanque,Volume gasto na titulação (Vt),Concentração do banho (mL/L),Correção com Surtec 168,,,Correção com Surtec 088,,,Vide Obs.,,Surtec 136],
-"series2": [,,,,,Em quilos (kg),Em litros (L),Executada em L,Em quilos (kg),Em mililitros (mL),Executada em mL,,,0]
+  "title": "",
+  "yAxisLabel": "",
+  "chartCount": 1,
+  "labels": ["","","","","","","","","","","","","","0"],
+  "series1": [Responsável,Hora,Tanque,Volume gasto na titulação (Vt),Concentração do banho (mL/L),Correção com Surtec 168,null,null,Correção com Surtec 088,null,null,Vide Obs.,null,Surtec 136],
+  "series2": [null,null,null,null,null,Em quilos (kg),Em litros (L),Executada em L,Em quilos (kg),Em mililitros (mL),Executada em mL,null,null,0]
 }
