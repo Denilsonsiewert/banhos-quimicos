@@ -388,27 +388,24 @@
   };
 
   // Configuração dos processos e mapeamento dos gráficos
-  // chartIndex: qual índice do array "charts" no JSON deve ser usado (0 a 3)
+  // ATENÇÃO: Ajuste os nomes dos arquivos ('file') e índices ('chartIndex') conforme seus arquivos reais no GitHub
   const processos = [
     {
       nome: 'Estanhagem Eletrolítica',
       items: [
         // Exemplo: Se o arquivo 'estanhagem-a.json' tem 4 gráficos no array charts
-        // O primeiro card usa charts[0], o segundo charts[1], etc.
-        // Ajuste os nomes dos arquivos e índices conforme sua estrutura real no GitHub
         { id: 'estaA_1', nome: 'Estanhagem A - Gráfico 1', file: 'estanhagem-a', chartIndex: 0, ref: 32.0, tol: 4.8 },
         { id: 'estaA_2', nome: 'Estanhagem A - Gráfico 2', file: 'estanhagem-a', chartIndex: 1, ref: 32.0, tol: 4.8 },
         { id: 'estaA_3', nome: 'Estanhagem A - Gráfico 3', file: 'estanhagem-a', chartIndex: 2, ref: 32.0, tol: 4.8 },
         { id: 'estaA_4', nome: 'Estanhagem A - Gráfico 4', file: 'estanhagem-a', chartIndex: 3, ref: 32.0, tol: 4.8 }
-        // Adicione outros itens conforme necessário, apontando para o arquivo e índice corretos
       ]
     },
     {
       nome: 'Processo Nanocerâmico',
       items: [
-        // Exemplo genérico para demonstrar a lógica
+        // Exemplo genérico: Ajuste 'file' para o nome real do seu arquivo JSON (ex: 'graf-abso-nano')
         { id: 'nano_1', nome: 'Nanocerâmico - Conc.', file: 'nano-dados', chartIndex: 0, ref: 35.0, tol: 5.25 },
-        { id: 'nano_2', nome: 'Nanocerâmico - Abs.', file: 'nano-dados', chartIndex: 1, ref: 1.2, tol: 0.18 },
+        { id: 'nano_2', nome: 'Nanocerâmico - Abs.', file: 'graf-abso-nano', chartIndex: 0, ref: 1.2, tol: 0.18 }, // Usando o arquivo de exemplo
         { id: 'nano_3', nome: 'Nanocerâmico - pH', file: 'nano-dados', chartIndex: 2, ref: 4.5, tol: 0.68 },
         { id: 'nano_4', nome: 'Nanocerâmico - Temp', file: 'nano-dados', chartIndex: 3, ref: 25.0, tol: 2.0 }
       ]
@@ -418,31 +415,48 @@
   // Cache para dados carregados
   let dataCache = {};
 
-  // Carregar dados do arquivo JSON
+  // Carregar dados do arquivo JSON e limpar chaves com espaços (bug da macro Excel)
   async function carregarDados(fileName) {
     if (dataCache[fileName]) {
       return dataCache[fileName];
     }
 
     try {
-      // Adiciona timestamp para evitar cache do navegador se necessário, 
-      // mas o cache interno da variável dataCache já resolve performance
       const response = await fetch(`dados/${fileName}.json?t=${Date.now()}`);
       if (!response.ok) throw new Error(`Arquivo não encontrado: ${fileName}.json`);
       
-      const data = await response.json();
-      dataCache[fileName] = data;
-      return data;
+      let rawData = await response.json();
+      
+      // CORREÇÃO: Remover espaços em branco das chaves principais (ex: "charts " -> "charts")
+      const cleanData = {};
+      for (const key in rawData) {
+        const cleanKey = key.trim(); 
+        cleanData[cleanKey] = rawData[key];
+      }
+
+      // Limpar também dentro do array de charts se necessário (títulos, labels, series)
+      if (cleanData.charts && Array.isArray(cleanData.charts)) {
+        cleanData.charts = cleanData.charts.map(chart => {
+          const cleanChart = {};
+          for (const k in chart) {
+            cleanChart[k.trim()] = chart[k];
+          }
+          return cleanChart;
+        });
+      }
+
+      dataCache[fileName] = cleanData;
+      return cleanData;
     } catch (error) {
       console.error(`Erro ao carregar dados/${fileName}.json:`, error);
       return null;
     }
   }
 
-  // Extrair últimas 24 medições do JSON baseado no índice do gráfico
+  // Extrair últimas 24 medições tratando valores "#N/D" e chaves limpas
   function extrairMedicoes(jsonData, chartIndex) {
     if (!jsonData || !jsonData.charts || jsonData.charts.length <= chartIndex) {
-      console.warn(`Gráfico no índice ${chartIndex} não encontrado.`);
+      console.warn(`Gráfico no índice ${chartIndex} não encontrado ou JSON vazio.`);
       return [];
     }
 
@@ -450,18 +464,29 @@
     const labels = chart.labels || [];
     const series = chart.series1 || [];
 
-    // Garante que ambos tenham o mesmo tamanho
+    const medicoes = [];
     const count = Math.min(labels.length, series.length);
     
     // Pega os últimos 24 itens
     const startIndex = Math.max(0, count - 24);
-    const medicoes = [];
 
     for (let i = startIndex; i < count; i++) {
-      medicoes.push({
-        data: labels[i],
-        valor: series[i] ? parseFloat(String(series[i]).replace(',', '.')) : null
-      });
+      let rawLabel = String(labels[i]).trim();
+      let rawValue = String(series[i]).trim();
+
+      // Tratamento para "#N/D" ou valores vazios
+      let valorNum = null;
+      if (rawValue !== "#N/D" && rawValue !== "" && !isNaN(parseFloat(rawValue.replace(',', '.')))) {
+        valorNum = parseFloat(rawValue.replace(',', '.'));
+      }
+
+      // Só adiciona se a data for válida (não for #N/D)
+      if (rawLabel !== "#N/D") {
+        medicoes.push({
+          data: rawLabel,
+          valor: valorNum
+        });
+      }
     }
 
     return medicoes;
@@ -478,14 +503,11 @@
 
   // Renderizar tabela de medições
   function renderTabela(medicoes, ref, tol) {
-    if (medicoes.length === 0) return '<div style="text-align:center; padding:10px;">Sem dados recentes</div>';
+    if (medicoes.length === 0) return '<div style="text-align:center; padding:10px; color:#999;">Sem dados recentes</div>';
 
     const colsPerRow = 12;
     let html = '<table class="analise-table">';
 
-    // Precisamos dividir em até 2 linhas para caber bem
-    // Se tiver menos de 12, faz uma linha só centralizada se quiser, mas aqui mantemos a lógica de blocos
-    
     const totalRows = Math.ceil(medicoes.length / colsPerRow);
     
     for (let row = 0; row < totalRows; row++) {
@@ -521,10 +543,7 @@
     const medicoes = extrairMedicoes(jsonData, chartIndex);
     const tabelaHtml = renderTabela(medicoes, ref, tol);
 
-    // Nome do arquivo da imagem do gráfico (ajuste a lógica de nomenclatura se necessário)
-    // Assumindo que a imagem segue o padrão graf-[nome-do-arquivo].png
-    // Se cada gráfico no JSON tiver uma imagem diferente, você precisaria mapear isso também.
-    // Aqui assumimos uma imagem por processo/arquivo ou usamos um placeholder dinâmico.
+    // Nome do arquivo da imagem do gráfico
     const imgName = `graf-${file}.png`; 
 
     return `
@@ -559,7 +578,6 @@
     let allItems = [];
     
     for (const processo of processos) {
-      // Para cada item configurado no processo (que já inclui o chartIndex)
       processo.items.forEach(item => {
         allItems.push({ ...item, processoNome: processo.nome });
       });
@@ -576,8 +594,6 @@
       const slide = document.createElement('div');
       slide.className = 'carousel-slide';
 
-      // Determinar qual processo pertence ao primeiro item deste slide para o título
-      // Ou agrupar por processo se preferir. Aqui vamos colocar o título do processo do primeiro item.
       const startItem = allItems[i * CONFIG.itemsPerSlide];
       
       const titleDiv = document.createElement('div');
@@ -586,7 +602,6 @@
       titleDiv.innerHTML = `<div class="secao-titulo">${startItem.processoNome}</div>`;
       slide.appendChild(titleDiv);
 
-      // Adicionar cards do slide
       const end = (i + 1) * CONFIG.itemsPerSlide;
       const slideItems = allItems.slice(i * CONFIG.itemsPerSlide, end);
 
@@ -600,7 +615,6 @@
       track.appendChild(slide);
       allSlides.push(slide);
 
-      // Criar dot de navegação
       const dot = document.createElement('div');
       dot.className = `nav-dot ${slideIndex === 0 ? 'active' : ''}`;
       dot.onclick = () => goToSlide(slideIndex);
