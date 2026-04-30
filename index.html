@@ -19,7 +19,7 @@
       --weg-gray-900: #1A1A1A;
       --status-ok: #2E7D32;
       --status-warn: #F57C00;
-      --status-crit: #C62828;
+      --status-crit: #000000;
       --shadow: 0 2px 8px rgba(0,0,0,0.08);
       --radius: 16px;
       --radius-sm: 8px;
@@ -41,7 +41,7 @@
     header {
       background: white;
       border-bottom: 3px solid var(--weg-blue);
-      padding: 12px 30px;
+      padding: 12px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -49,6 +49,9 @@
       position: sticky;
       top: 0;
       z-index: 100;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
     }
 
     .header-brand {
@@ -79,10 +82,9 @@
     }
 
     .clock-block {
-      text-align: right;
       display: flex;
-      flex-direction: column;
-      gap: 4px;
+      align-items: center;
+      gap: 12px;
     }
 
     #relogio {
@@ -93,16 +95,17 @@
     }
 
     #data {
-      font-size: 0.9rem;
-      color: var(--weg-gray-400);
-      font-weight: 600;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--weg-blue-dark);
+      font-family: 'Courier New', monospace;
     }
 
     /* Layout Principal */
     main {
       flex: 1;
-      padding: 20px 30px;
-      max-width: 1600px;
+      padding: 20px 20px;
+      max-width: 1400px;
       margin: 0 auto;
       width: 100%;
     }
@@ -115,6 +118,8 @@
       margin-bottom: 15px;
       padding-bottom: 8px;
       border-bottom: 2px solid var(--weg-blue-light);
+      text-align: center;
+      width: 100%;
     }
 
     /* Carousel */
@@ -273,11 +278,14 @@
     /* Footer */
     footer {
       background: white;
-      padding: 12px 30px;
+      padding: 12px 20px;
       text-align: center;
       font-size: 0.85rem;
       color: var(--weg-gray-400);
       border-top: 1px solid var(--weg-gray-200);
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
     }
 
     footer span {
