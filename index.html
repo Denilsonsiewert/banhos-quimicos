@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Controle de Banhos Químicos - JGS | WEG</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
   <style>
     :root {
       --weg-blue: #00458F;
@@ -27,7 +26,7 @@
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
+    
     body {
       background: var(--weg-gray-50);
       color: var(--weg-gray-900);
@@ -38,11 +37,13 @@
       flex-direction: column;
     }
 
+    /* Header */
     header {
       background: white;
       border-bottom: 3px solid var(--weg-blue);
       padding: 12px 30px;
       display: flex;
+      align-items: center;
       justify-content: space-between;
       box-shadow: var(--shadow);
       position: sticky;
@@ -63,6 +64,25 @@
       border-radius: 6px;
       font-weight: 800;
       font-size: 1.3rem;
+      letter-spacing: 1px;
+    }
+
+    header h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--weg-gray-900);
+    }
+
+    header h1 span {
+      color: var(--weg-blue);
+      font-weight: 800;
+    }
+
+    .clock-block {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
     #relogio {
@@ -75,13 +95,15 @@
     #data {
       font-size: 0.9rem;
       color: var(--weg-gray-400);
+      font-weight: 600;
     }
 
+    /* Layout Principal */
     main {
       flex: 1;
       padding: 20px 30px;
       max-width: 1600px;
-      margin: auto;
+      margin: 0 auto;
       width: 100%;
     }
 
@@ -90,19 +112,21 @@
       font-weight: 800;
       color: var(--weg-blue-dark);
       text-transform: uppercase;
+      margin-bottom: 15px;
+      padding-bottom: 8px;
       border-bottom: 2px solid var(--weg-blue-light);
-      margin-bottom: 10px;
-      padding-bottom: 6px;
-      grid-column: 1 / -1;
     }
 
+    /* Carousel */
     .carousel-container {
+      position: relative;
       overflow: hidden;
+      border-radius: var(--radius);
     }
 
     .carousel-track {
       display: flex;
-      transition: transform 0.6s ease;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .carousel-slide {
@@ -113,116 +137,231 @@
       padding: 10px;
     }
 
+    /* Card */
     .card {
       background: white;
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      border: 1px solid var(--weg-gray-200);
-      overflow: hidden;
       display: flex;
       flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--weg-gray-200);
     }
 
     .card-header {
-      background: var(--weg-blue);
-      color: white;
       padding: 12px 16px;
       font-weight: 700;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
+      color: white;
+      background: var(--weg-blue);
       text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .card-body {
-      padding: 16px;
       display: flex;
       flex-direction: column;
+      padding: 16px;
       gap: 12px;
+      flex: 1;
     }
 
+    /* Gráfico - Maior Destaque */
     .graph-container {
+      width: 100%;
       height: 280px;
       background: var(--weg-gray-100);
       border-radius: var(--radius-sm);
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
       position: relative;
+      flex-shrink: 0;
     }
 
     .graph-container img {
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
+      z-index: 2;
     }
 
     .graph-placeholder {
       position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       color: var(--weg-gray-400);
-      font-weight: 600;
       font-size: 0.9rem;
+      font-weight: 600;
     }
 
+    /* Tabela de Medições - Menor Destaque */
     .measurements-container {
-      border: 1px solid var(--weg-gray-200);
-      padding: 10px;
+      background: white;
       border-radius: var(--radius-sm);
+      border: 1px solid var(--weg-gray-200);
+      padding: 12px;
+      flex-shrink: 0;
     }
 
     .table-title {
       font-weight: 700;
-      font-size: 0.8rem;
-      text-align: center;
+      font-size: 0.85rem;
       color: var(--weg-blue-dark);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    table {
+    .analise-table {
       width: 100%;
+      border-collapse: separate;
       border-spacing: 3px;
+      table-layout: fixed;
+    }
+
+    .analise-table th {
+      background: var(--weg-blue-light);
+      color: var(--weg-blue-dark);
+      font-weight: 700;
       font-size: 0.75rem;
+      padding: 4px 2px;
+      border-radius: 3px;
       text-align: center;
     }
 
-    th {
-      background: var(--weg-blue-light);
-      padding: 4px;
-      border-radius: 3px;
-    }
-
-    td {
+    .analise-table td {
       background: var(--weg-gray-100);
-      padding: 4px;
-      border-radius: 3px;
+      color: var(--weg-gray-900);
       font-weight: 600;
+      font-size: 0.8rem;
+      padding: 4px 2px;
+      text-align: center;
+      border-radius: 3px;
+      border: 1px solid var(--weg-gray-200);
     }
 
-    .val-ok { background: #E8F5E9; color: var(--status-ok); }
-    .val-warn { background: #FFF3E0; color: var(--status-warn); }
-    .val-crit { background: #FFEBEE; color: var(--status-crit); }
+    /* Status Colors - Sóbrio */
+    .val-ok {
+      background: #E8F5E9 !important;
+      color: var(--status-ok) !important;
+    }
 
+    .val-warn {
+      background: #FFF3E0 !important;
+      color: var(--status-warn) !important;
+    }
+
+    .val-crit {
+      background: #FFEBEE !important;
+      color: var(--status-crit) !important;
+    }
+
+    /* Footer */
     footer {
       background: white;
-      padding: 12px;
+      padding: 12px 30px;
       text-align: center;
       font-size: 0.85rem;
       color: var(--weg-gray-400);
       border-top: 1px solid var(--weg-gray-200);
     }
 
+    footer span {
+      color: var(--weg-blue);
+      font-weight: 700;
+    }
+
+    /* Navegação */
+    .carousel-nav {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .nav-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--weg-gray-300);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid white;
+      box-shadow: var(--shadow);
+    }
+
+    .nav-dot.active {
+      background: var(--weg-blue);
+      transform: scale(1.2);
+    }
+
+    /* Loader */
+    .loader-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      transition: opacity 0.5s ease;
+    }
+
+    .loader-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--weg-gray-200);
+      border-top-color: var(--weg-blue);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Responsividade */
     @media (max-width: 1200px) {
-      .carousel-slide { grid-template-columns: 1fr; }
+      .carousel-slide {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
-
 <body>
+
+<div class="loader-overlay" id="loader">
+  <div class="spinner"></div>
+  <div style="font-weight: 700; color: var(--weg-blue-dark)">Carregando Dashboard...</div>
+</div>
 
 <header>
   <div class="header-brand">
     <div class="logo-badge">WEG</div>
-    <h1>Controle de Banhos Químicos <span style="color:#00458F">JGS</span></h1>
+    <h1>Controle de Banhos Químicos &nbsp;<span>JGS</span></h1>
   </div>
-  <div>
+  <div class="clock-block">
     <div id="relogio">--:--:--</div>
     <div id="data">--/--/----</div>
   </div>
@@ -232,101 +371,279 @@
   <div class="carousel-container">
     <div class="carousel-track" id="track-main"></div>
   </div>
+  <div class="carousel-nav" id="nav-main"></div>
 </main>
 
 <footer>
-  JGS - Controle de Qualidade & Processos | <span>WEG S.A.</span> |
-  Última Sincronização: <span id="ultima">--:--</span>
+  JGS - Controle de Qualidade & Processos | <span>WEG S.A.</span> | Última Sincronização: <span id="ultima">--:--</span>
 </footer>
 
 <script>
-const CONFIG = { rotateInterval: 20000, itemsPerSlide: 2 };
+  const CONFIG = {
+    rotateInterval: 20000,
+    refreshInterval: 60000,
+    itemsPerSlide: 2
+  };
 
-const processos = [
-  {
-    nome: 'Estanhagem Eletrolítica',
-    items: [
-      { id:'des', nome:'Desengraxante Químico', files:['des'], ref:26, tol:3.9 },
-      { id:'ativ5', nome:'Ativação — Tanque 5', files:['ativacao-tanque-5'], ref:8.5, tol:1.28 },
-      { id:'ativ6', nome:'Ativação — Tanque 6', files:['ativacao-tanque-6'], ref:8.5, tol:1.28 }
-    ]
+  // Mapeamento de arquivos para itens dos processos
+  const fileToItemMap = {
+    // Estanhagem Eletrolítica
+    'des': { processo: 0, itemIndex: 0, nome: 'Desengraxante Químico', ref: 26.0, tol: 3.9 },
+    'ativacao-tanque-5': { processo: 0, itemIndex: 1, nome: 'Ativação — Tanque 5', ref: 8.5, tol: 1.28 },
+    'ativacao-tanque-6': { processo: 0, itemIndex: 2, nome: 'Ativação — Tanque 6', ref: 8.5, tol: 1.28 },
+    'niquel-watt': { processo: 0, itemIndex: 3, nome: 'Níquel WATT (1/5)', ref: 45.0, tol: 6.75 },
+    'niquel-watt-1': { processo: 0, itemIndex: 3, nome: 'Níquel WATT (2/5)', ref: 45.0, tol: 6.75 },
+    'niquel-watt-2': { processo: 0, itemIndex: 3, nome: 'Níquel WATT (3/5)', ref: 45.0, tol: 6.75 },
+    'niquel-watt-3': { processo: 0, itemIndex: 3, nome: 'Níquel WATT (4/5)', ref: 45.0, tol: 6.75 },
+    'niquel-watt-4': { processo: 0, itemIndex: 3, nome: 'Níquel WATT (5/5)', ref: 45.0, tol: 6.75 },
+    'estanhagem-a': { processo: 0, itemIndex: 4, nome: 'Estanhagem A (1/3)', ref: 32.0, tol: 4.8 },
+    'estanhagem-a-1': { processo: 0, itemIndex: 4, nome: 'Estanhagem A (2/3)', ref: 32.0, tol: 4.8 },
+    'estanhagem-a-2': { processo: 0, itemIndex: 4, nome: 'Estanhagem A (3/3)', ref: 32.0, tol: 4.8 },
+    'estanhagem-b': { processo: 0, itemIndex: 5, nome: 'Estanhagem B (1/3)', ref: 31.5, tol: 4.73 },
+    'estanhagem-b-1': { processo: 0, itemIndex: 5, nome: 'Estanhagem B (2/3)', ref: 31.5, tol: 4.73 },
+    'estanhagem-b-2': { processo: 0, itemIndex: 5, nome: 'Estanhagem B (3/3)', ref: 31.5, tol: 4.73 },
+    'selante': { processo: 0, itemIndex: 6, nome: 'Selante Protetivo', ref: 18.0, tol: 2.7 },
+    
+    // Processo Nanocerâmico
+    'des1': { processo: 1, itemIndex: 0, nome: '1º Desengraxante', ref: 29.0, tol: 4.35 },
+    'des2': { processo: 1, itemIndex: 1, nome: '2º Desengraxante', ref: 28.5, tol: 4.28 },
+    'dec1': { processo: 1, itemIndex: 2, nome: 'Decapante 1', ref: 12.0, tol: 1.8 },
+    'dec2': { processo: 1, itemIndex: 3, nome: 'Decapante 2', ref: 11.5, tol: 1.73 },
+    'nano': { processo: 1, itemIndex: 4, nome: 'Nanocerâmico — Conc.', ref: 35.0, tol: 5.25 },
+    'abso-nano': { processo: 1, itemIndex: 5, nome: 'Nanocerâmico — Abs.', ref: 1.2, tol: 0.18 },
+    'ph-nano': { processo: 1, itemIndex: 6, nome: 'Nanocerâmico — pH', ref: 4.5, tol: 0.68 },
+    'neu': { processo: 1, itemIndex: 7, nome: 'Neutralizador', ref: 7.0, tol: 1.05 },
+    'sel': { processo: 1, itemIndex: 8, nome: 'Selante Final', ref: 22.0, tol: 3.3 }
+  };
+
+  const processosNomes = [
+    'Estanhagem Eletrolítica',
+    'Processo Nanocerâmico'
+  ];
+
+  // Cache dos dados carregados
+  let dadosCache = {};
+
+  // Carregar dados JSON da pasta
+  async function carregarDadosJSON(fileName) {
+    try {
+      const response = await fetch(`dados do github/${fileName}.json?t=${Date.now()}`);
+      if (!response.ok) return null;
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.warn(`Erro ao carregar ${fileName}.json:`, error);
+      return null;
+    }
   }
-];
 
-function getStatusClass(valor, ref, tol) {
-  const d = Math.abs(valor - ref);
-  if (d <= tol * 0.5) return 'val-ok';
-  if (d <= tol) return 'val-warn';
-  return 'val-crit';
-}
+  // Obter medições reais do JSON
+  async function getMedicoesReal(fileName) {
+    const dados = await carregarDadosJSON(fileName);
+    if (!dados || !dados.charts || !dados.charts[0]) return [];
 
-async function carregarJSON(file) {
-  try {
-    const r = await fetch(`dados/graf-${file}.json?t=${Date.now()}`);
-    const j = await r.json();
-    const c = j.charts[0];
-    const labels = c.labels.slice(-24);
-    const valores = c.series1.slice(-24).map(v => parseFloat(v.replace(',', '.')));
-    return labels.map((d,i)=>({data:d, valor:valores[i]}));
-  } catch {
-    return [];
+    const labels = dados.charts[0].labels || [];
+    const series1 = dados.charts[0].series1 || [];
+    
+    return labels.slice(-24).map((label, index) => {
+      const valorStr = series1[Math.max(0, series1.length - 24 + index)] || '0';
+      const valor = parseFloat(valorStr.replace(',', '.'));
+      return {
+        data: label,
+        valor: isNaN(valor) ? 0 : valor
+      };
+    });
   }
-}
 
-async function renderTabela(item, file) {
-  const dados = await carregarJSON(file);
-  if (!dados.length) return '<div style="text-align:center;color:#999">Sem dados</div>';
-
-  let h = '<table>';
-  for (let r = 0; r < 2; r++) {
-    const p = dados.slice(r*12, r*12+12);
-    h += '<tr>' + p.map(x=>`<th>${x.data}</th>`).join('') + '</tr>';
-    h += '<tr>' + p.map(x=>`<td class="${getStatusClass(x.valor,item.ref,item.tol)}">${x.valor.toFixed(2)}</td>`).join('') + '</tr>';
+  // Classificar status
+  function getStatusClass(valor, ref, tol) {
+    const diff = Math.abs(valor - ref);
+    if (diff <= tol * 0.5) return 'val-ok'; // Normal
+    if (diff <= tol) return 'val-warn'; // Alerta
+    return 'val-crit'; // Crítico
   }
-  return h + '</table>';
-}
 
-function criarCard(item, file) {
-  const id = `tbl-${item.id}-${file}`;
-  setTimeout(async ()=>{
-    document.getElementById(id).innerHTML = await renderTabela(item, file);
-  },0);
+  // Renderizar tabela de medições com dados reais
+  async function renderTabela(item, fileName) {
+    let medicoes;
+    
+    // Verificar cache primeiro
+    if (dadosCache[fileName]) {
+      medicoes = dadosCache[fileName];
+    } else {
+      medicoes = await getMedicoesReal(fileName);
+      dadosCache[fileName] = medicoes;
+    }
+    
+    const colsPerRow = 12;
+    let html = '<table class="analise-table">';
 
-  return `
-  <div class="card">
-    <div class="card-header">${item.nome}</div>
-    <div class="card-body">
-      <div class="graph-container">
-        <div class="graph-placeholder">📊 ${file}.png</div>
-        <img src="graficos/graf-${file}.pngnts-container">
-        <div class="table-title">Últimas 24 Medições</div>
-        <div id="${id}">Carregando...</div>
+    for (let row = 0; row < 2; row++) {
+      const start = row * colsPerRow;
+      const end = start + colsPerRow;
+      const chunk = medicoes.slice(start, end);
+
+      // Linha de Datas
+      html += '<tr>';
+      chunk.forEach(m => html += `<th>${m.data}</th>`);
+      html += '</tr>';
+
+      // Linha de Valores
+      html += '<tr>';
+      chunk.forEach(m => {
+        const cls = getStatusClass(m.valor, item.ref, item.tol);
+        html += `<td class="${cls}">${m.valor.toFixed(2)}</td>`;
+      });
+      html += '</tr>';
+    }
+
+    html += '</table>';
+    return html;
+  }
+
+  // Criar card individual para um arquivo de gráfico específico
+  async function criarCard(itemInfo, fileName) {
+    const displayName = itemInfo.nome;
+
+    // Renderizar tabela com dados reais
+    const tabelaHtml = await renderTabela(itemInfo, fileName);
+
+    return `
+      <div class="card">
+        <div class="card-header">${displayName}</div>
+        <div class="card-body">
+          <div class="graph-container">
+            <div class="graph-placeholder">📊 Gráfico: ${fileName}.png</div>
+            <img src="graficos/graf-${fileName}.png?t=${Date.now()}"
+                 onerror="this.style.display='none'"
+                 onload="this.previousElementSibling.style.display='none'">
+          </div>
+          <div class="measurements-container">
+            <div class="table-title">Últimas 24 Medições</div>
+            ${tabelaHtml}
+          </div>
+        </div>
       </div>
-    </div>
-  </div>`;
-}
+    `;
+  }
 
-function init() {
-  const track = document.getElementById('track-main');
-  processos.forEach(p => {
-    const slide = document.createElement('div');
-    slide.className = 'carousel-slide';
-    slide.innerHTML = `<div class="secao-titulo">${p.nome}</div>`;
-    p.items.forEach(i =>
-      i.files.forEach(f => slide.innerHTML += criarCard(i,f))
-    );
-    track.appendChild(slide);
-  });
+  // Inicializar carrossel unificado
+  async function initCarousel() {
+    const track = document.getElementById('track-main');
+    const nav = document.getElementById('nav-main');
 
-  setInterval(()=>{
-    const d=new Date();
-    relogio.innerText=d.toLocaleTimeString('pt-BR');
-    data.innerText=d.toLocaleDateString('pt-BR');
-    ultima.innerText=d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-  },1000);
-}
+    let allSlides = [];
+    let slideIndex = 0;
 
-window.onload = init;
+    // Processar cada processo
+    for (let processoIndex = 0; processoIndex < processosNomes.length; processoIndex++) {
+      const processoNome = processosNomes[processoIndex];
+      const arquivosProcesso = Object.entries(fileToItemMap)
+        .filter(([file, info]) => info.processo === processoIndex)
+        .map(([file, info]) => ({ file, info }));
+
+      const slidesCount = Math.ceil(arquivosProcesso.length / CONFIG.itemsPerSlide);
+
+      for (let i = 0; i < slidesCount; i++) {
+        const slide = document.createElement('div');
+        slide.className = 'carousel-slide';
+
+        // Adicionar título do processo
+        const titleDiv = document.createElement('div');
+        titleDiv.style.gridColumn = '1 / -1';
+        titleDiv.style.marginBottom = '0';
+        titleDiv.innerHTML = `<div class="secao-titulo">${processoNome}</div>`;
+        slide.appendChild(titleDiv);
+
+        // Adicionar cards do slide
+        const start = i * CONFIG.itemsPerSlide;
+        const slideItems = arquivosProcesso.slice(start, start + CONFIG.itemsPerSlide);
+
+        for (const { file, info } of slideItems) {
+          const cardHtml = await criarCard(info, file);
+          const cardDiv = document.createElement('div');
+          cardDiv.innerHTML = cardHtml;
+          slide.appendChild(cardDiv.firstElementChild);
+        }
+
+        track.appendChild(slide);
+        allSlides.push(slide);
+
+        // Criar dot de navegação
+        const dot = document.createElement('div');
+        dot.className = `nav-dot ${slideIndex === 0 ? 'active' : ''}`;
+        dot.onclick = () => goToSlide(slideIndex);
+        nav.appendChild(dot);
+
+        slideIndex++;
+      }
+    }
+
+    // Rotação automática
+    let currentSlide = 0;
+    setInterval(() => {
+      currentSlide = (currentSlide + 1) % allSlides.length;
+      goToSlide(currentSlide);
+    }, CONFIG.rotateInterval);
+
+    // Atualização automática dos dados a cada 60s
+    setInterval(async () => {
+      dadosCache = {}; // Limpar cache
+      await refreshAllCards();
+    }, CONFIG.refreshInterval);
+  }
+
+  // Função para atualizar todos os cards
+  async function refreshAllCards() {
+    // Re-carregar dados para todos os cards visíveis
+    const cards = document.querySelectorAll('.card');
+    for (const card of cards) {
+      const fileName = card.querySelector('.graph-placeholder')?.textContent.match(/Gráfico: (.*)\.png/)?.[1];
+      if (fileName) {
+        // Re-renderizar apenas a tabela (otimização)
+        const itemInfo = fileToItemMap[fileName];
+        if (itemInfo) {
+          const tabelaHtml = await renderTabela(itemInfo, fileName);
+          const container = card.querySelector('.measurements-container');
+          if (container) {
+            container.innerHTML = `
+              <div class="table-title">Últimas 24 Medições</div>
+              ${tabelaHtml}
+            `;
+          }
+        }
+      }
+    }
+  }
+
+  // Navegar para slide
+  function goToSlide(index) {
+    const track = document.getElementById('track-main');
+    const dots = document.querySelectorAll('#nav-main .nav-dot');
+    track.style.transform = `translateX(-${index * 100}%)`;
+    dots.forEach((d, i) => d.classList.toggle('active', i === index));
+  }
+
+  // Atualizar relógio e data
+  function updateClock() {
+    const agora = new Date();
+    document.getElementById('relogio').innerText = agora.toLocaleTimeString('pt-BR');
+    document.getElementById('data').innerText = agora.toLocaleDateString('pt-BR');
+    document.getElementById('ultima').innerText = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  // Inicializar
+  async function init() {
+    await initCarousel();
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    setTimeout(() => {
+      document.getElementById('loader').classList.add('hidden');
+    }, 2000);
+  }
+
+  window.onload = init;
 </script>
 
 </body>
