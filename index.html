@@ -8,22 +8,27 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --weg-blue: #00458F; --weg-blue-dark: #002A55; --weg-blue-light: #B3D1F0;
-      --weg-orange: #E67E22; --weg-gray-50: #FAFAFA; --weg-gray-100: #F5F5F5;
-      --weg-gray-200: #E0E0E0; --weg-gray-300: #D1D1D1; --weg-gray-400: #9E9E9E; 
-      --weg-gray-700: #212121; --weg-gray-900: #000000; 
-      --success: #1B5E20; --success-light: #C8E6C9;
-      --warning: #E65100; --warning-light: #FFE0B2; 
-      --danger: #B71C1C; --danger-light: #FFCDD2; 
-      --shadow: 0 10px 30px rgba(0,42,85,0.1);
-      --radius: 20px; --radius-sm: 12px;
-      --font-base: 1rem;
+      --weg-blue: #00458F;
+      --weg-blue-dark: #002A55;
+      --weg-blue-light: #E8F0F8;
+      --weg-gray-50: #FAFAFA;
+      --weg-gray-100: #F5F5F5;
+      --weg-gray-200: #E8E8E8;
+      --weg-gray-400: #999999;
+      --weg-gray-700: #333333;
+      --weg-gray-900: #1A1A1A;
+      --status-ok: #2E7D32;
+      --status-warn: #F57C00;
+      --status-crit: #C62828;
+      --shadow: 0 2px 8px rgba(0,0,0,0.08);
+      --radius: 16px;
+      --radius-sm: 8px;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
     body {
-      background: var(--weg-gray-100);
+      background: var(--weg-gray-50);
       color: var(--weg-gray-900);
       font-family: 'Inter', sans-serif;
       line-height: 1.5;
@@ -35,56 +40,100 @@
     /* Header */
     header {
       background: white;
-      border-bottom: 6px solid var(--weg-blue);
-      padding: 15px 30px;
+      border-bottom: 3px solid var(--weg-blue);
+      padding: 12px 30px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      box-shadow: var(--shadow);
       position: sticky;
       top: 0;
       z-index: 100;
     }
-    .header-brand { display: flex; align-items: center; gap: 20px; }
-    .logo-badge {
-      background: linear-gradient(135deg, var(--weg-blue), var(--weg-blue-dark));
-      color: white; padding: 10px 20px; border-radius: 8px;
-      font-weight: 800; font-size: 1.5rem; letter-spacing: 1px;
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 15px;
     }
-    header h1 { font-size: 1.5rem; font-weight: 700; color: var(--weg-gray-900); }
-    header h1 span { color: var(--weg-blue); font-weight: 800; }
-    
-    .clock-block { text-align: right; }
+
+    .logo-badge {
+      background: var(--weg-blue);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 1.3rem;
+      letter-spacing: 1px;
+    }
+
+    header h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--weg-gray-900);
+    }
+
+    header h1 span {
+      color: var(--weg-blue);
+      font-weight: 800;
+    }
+
+    .clock-block {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
     #relogio {
-      font-size: 2rem; font-weight: 800; color: var(--weg-blue-dark);
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--weg-blue-dark);
       font-family: 'Courier New', monospace;
     }
-    #contador { font-size: 0.9rem; color: var(--weg-gray-400); font-weight: 600; }
-    #contador span { color: var(--weg-blue); }
+
+    #data {
+      font-size: 0.9rem;
+      color: var(--weg-gray-400);
+      font-weight: 600;
+    }
 
     /* Layout Principal */
-    main { flex: 1; padding: 20px; max-width: 1800px; margin: 0 auto; width: 100%; }
+    main {
+      flex: 1;
+      padding: 20px 30px;
+      max-width: 1600px;
+      margin: 0 auto;
+      width: 100%;
+    }
 
-    .secao { margin-bottom: 40px; }
-    .secao-header {
-      display: flex; align-items: center; gap: 15px; margin-bottom: 20px;
-      padding-bottom: 10px; border-bottom: 2px solid var(--weg-blue-light);
+    .secao-titulo {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--weg-blue-dark);
+      text-transform: uppercase;
+      margin-bottom: 15px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--weg-blue-light);
     }
-    .secao-icon {
-      width: 40px; height: 40px; background: var(--weg-blue); border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      color: white; font-weight: 800; font-size: 1.2rem;
-    }
-    .secao-titulo { font-size: 1.4rem; font-weight: 800; color: var(--weg-blue-dark); text-transform: uppercase; }
 
     /* Carousel */
-    .carousel-container { position: relative; overflow: hidden; border-radius: var(--radius); }
-    .carousel-track { display: flex; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
-    .carousel-slide { 
-      min-width: 100%; 
-      display: grid; 
-      grid-template-columns: repeat(auto-fit, minmax(600px, 1fr)); 
-      gap: 25px; 
+    .carousel-container {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius);
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
       padding: 10px;
     }
 
@@ -97,146 +146,206 @@
       flex-direction: column;
       overflow: hidden;
       border: 1px solid var(--weg-gray-200);
-      transition: transform 0.3s ease;
     }
-    .card:hover { transform: translateY(-5px); }
 
     .card-header {
-      padding: 15px 20px;
+      padding: 12px 16px;
       font-weight: 700;
-      font-size: 1.1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      font-size: 0.95rem;
       color: white;
-    }
-    .card-header.nano { background: var(--weg-blue); }
-    .card-header.esta { background: var(--success); }
-    
-    .status-badge {
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      background: rgba(255,255,255,0.2);
+      background: var(--weg-blue);
       text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    /* Gráfico */
-    .card-body { display: flex; flex-direction: column; padding: 20px; gap: 20px; }
-    
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      gap: 12px;
+      flex: 1;
+    }
+
+    /* Gráfico - Maior Destaque */
     .graph-container {
       width: 100%;
-      height: 250px;
-      background: var(--weg-gray-50);
+      height: 280px;
+      background: var(--weg-gray-100);
       border-radius: var(--radius-sm);
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
       position: relative;
+      flex-shrink: 0;
     }
+
     .graph-container img {
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
       z-index: 2;
     }
+
     .graph-placeholder {
       position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       color: var(--weg-gray-400);
+      font-size: 0.9rem;
+      font-weight: 600;
     }
 
-    /* Tabela de Medições */
-    .measurements-container { background: white; border-radius: var(--radius-sm); }
+    /* Tabela de Medições - Menor Destaque */
+    .measurements-container {
+      background: white;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--weg-gray-200);
+      padding: 12px;
+      flex-shrink: 0;
+    }
+
     .table-title {
-      font-weight: 800;
-      font-size: 0.9rem;
+      font-weight: 700;
+      font-size: 0.85rem;
       color: var(--weg-blue-dark);
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      margin-bottom: 8px;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .analise-table {
       width: 100%;
       border-collapse: separate;
-      border-spacing: 2px;
+      border-spacing: 3px;
       table-layout: fixed;
     }
-    .analise-table th, .analise-table td {
-      padding: 6px 2px;
-      text-align: center;
-      font-size: 0.85rem;
-      border-radius: 4px;
-    }
+
     .analise-table th {
       background: var(--weg-blue-light);
       color: var(--weg-blue-dark);
       font-weight: 700;
+      font-size: 0.75rem;
+      padding: 4px 2px;
+      border-radius: 3px;
+      text-align: center;
     }
+
     .analise-table td {
       background: var(--weg-gray-100);
+      color: var(--weg-gray-900);
       font-weight: 600;
+      font-size: 0.8rem;
+      padding: 4px 2px;
+      text-align: center;
+      border-radius: 3px;
       border: 1px solid var(--weg-gray-200);
     }
-    
-    /* Cores de Status na Tabela */
-    .val-ok { background: var(--success-light) !important; color: var(--success) !important; }
-    .val-warn { background: var(--warning-light) !important; color: var(--warning) !important; }
-    .val-crit { background: var(--danger-light) !important; color: var(--danger) !important; animation: pulse-danger 2s infinite; }
-    
-    @keyframes pulse-danger {
-      0% { opacity: 1; }
-      50% { opacity: 0.7; }
-      100% { opacity: 1; }
+
+    /* Status Colors - Sóbrio */
+    .val-ok {
+      background: #E8F5E9 !important;
+      color: var(--status-ok) !important;
+    }
+
+    .val-warn {
+      background: #FFF3E0 !important;
+      color: var(--status-warn) !important;
+    }
+
+    .val-crit {
+      background: #FFEBEE !important;
+      color: var(--status-crit) !important;
     }
 
     /* Footer */
     footer {
       background: white;
-      padding: 15px 30px;
+      padding: 12px 30px;
       text-align: center;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: var(--weg-gray-400);
       border-top: 1px solid var(--weg-gray-200);
     }
-    footer span { color: var(--weg-blue); font-weight: 700; }
+
+    footer span {
+      color: var(--weg-blue);
+      font-weight: 700;
+    }
 
     /* Navegação */
     .carousel-nav {
-      display: flex; justify-content: center; gap: 10px; margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 15px;
     }
+
     .nav-dot {
-      width: 12px; height: 12px; border-radius: 50%;
-      background: var(--weg-gray-300); cursor: pointer;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--weg-gray-300);
+      cursor: pointer;
       transition: all 0.3s ease;
+      border: 2px solid white;
+      box-shadow: var(--shadow);
     }
+
     .nav-dot.active {
       background: var(--weg-blue);
-      transform: scale(1.3);
+      transform: scale(1.2);
     }
 
     /* Loader */
     .loader-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: white; z-index: 2000; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
       transition: opacity 0.5s ease;
     }
-    .loader-overlay.hidden { opacity: 0; pointer-events: none; }
+
+    .loader-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
     .spinner {
-      width: 50px; height: 50px; border: 5px solid var(--weg-gray-200);
-      border-top-color: var(--weg-blue); border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--weg-gray-200);
+      border-top-color: var(--weg-blue);
+      border-radius: 50%;
       animation: spin 1s linear infinite;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
 
     /* Responsividade */
     @media (max-width: 1200px) {
-      .carousel-slide { grid-template-columns: 1fr; }
+      .carousel-slide {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -254,34 +363,15 @@
   </div>
   <div class="clock-block">
     <div id="relogio">--:--:--</div>
-    <div id="contador">Atualizando em <span id="seg">60</span>s</div>
+    <div id="data">--/--/----</div>
   </div>
 </header>
 
 <main>
-  <!-- Seção Nanocerâmico -->
-  <div class="secao">
-    <div class="secao-header">
-      <div class="secao-icon">N</div>
-      <div class="secao-titulo">Processo Nanocerâmico</div>
-    </div>
-    <div class="carousel-container">
-      <div class="carousel-track" id="track-nano"></div>
-    </div>
-    <div class="carousel-nav" id="nav-nano"></div>
+  <div class="carousel-container">
+    <div class="carousel-track" id="track-main"></div>
   </div>
-
-  <!-- Seção Estanhagem -->
-  <div class="secao">
-    <div class="secao-header">
-      <div class="secao-icon" style="background: var(--success)">E</div>
-      <div class="secao-titulo">Estanhagem Eletrolítica</div>
-    </div>
-    <div class="carousel-container">
-      <div class="carousel-track" id="track-esta"></div>
-    </div>
-    <div class="carousel-nav" id="nav-esta"></div>
-  </div>
+  <div class="carousel-nav" id="nav-main"></div>
 </main>
 
 <footer>
@@ -290,13 +380,26 @@
 
 <script>
   const CONFIG = {
-    rotateInterval: 20000, // 20 segundos por slide
-    refreshInterval: 60000, // 1 minuto para refresh de dados
+    rotateInterval: 20000,
+    refreshInterval: 60000,
     itemsPerSlide: 2
   };
 
-  const processos = {
-    nano: {
+  const processos = [
+    {
+      nome: 'Estanhagem Eletrolítica',
+      items: [
+        { id: 'des', nome: 'Desengraxante Químico', file: 'des', ref: 26.0, tol: 3.9 },
+        { id: 'ativ5', nome: 'Ativação — Tanque 5', file: 'ativacao-tanque-5', ref: 8.5, tol: 1.28 },
+        { id: 'ativ6', nome: 'Ativação — Tanque 6', file: 'ativacao-tanque-6', ref: 8.5, tol: 1.28 },
+        { id: 'niquel', nome: 'Níquel WATT', file: 'niquel-watt', ref: 45.0, tol: 6.75 },
+        { id: 'estaA', nome: 'Estanhagem A', file: 'estanhagem-a', ref: 32.0, tol: 4.8 },
+        { id: 'estaB', nome: 'Estanhagem B', file: 'estanhagem-b', ref: 31.5, tol: 4.73 },
+        { id: 'selante', nome: 'Selante Protetivo', file: 'selante', ref: 18.0, tol: 2.7 }
+      ]
+    },
+    {
+      nome: 'Processo Nanocerâmico',
       items: [
         { id: 'des1', nome: '1º Desengraxante', file: 'des1', ref: 29.0, tol: 4.35 },
         { id: 'des2', nome: '2º Desengraxante', file: 'des2', ref: 28.5, tol: 4.28 },
@@ -308,21 +411,10 @@
         { id: 'neu', nome: 'Neutralizador', file: 'neu', ref: 7.0, tol: 1.05 },
         { id: 'sel', nome: 'Selante Final', file: 'sel', ref: 22.0, tol: 3.3 }
       ]
-    },
-    esta: {
-      items: [
-        { id: 'des', nome: 'Desengraxante Químico', file: 'des', ref: 26.0, tol: 3.9 },
-        { id: 'ativ5', nome: 'Ativação — Tanque 5', file: 'ativacao-tanque-5', ref: 8.5, tol: 1.28 },
-        { id: 'ativ6', nome: 'Ativação — Tanque 6', file: 'ativacao-tanque-6', ref: 8.5, tol: 1.28 },
-        { id: 'niquel', nome: 'Níquel WATT', file: 'niquel-watt', ref: 45.0, tol: 6.75 },
-        { id: 'estaA', nome: 'Estanhagem A', file: 'estanhagem-a', ref: 32.0, tol: 4.8 },
-        { id: 'estaB', nome: 'Estanhagem B', file: 'estanhagem-b', ref: 31.5, tol: 4.73 },
-        { id: 'selante', nome: 'Selante Protetivo', file: 'selante', ref: 18.0, tol: 2.7 }
-      ]
     }
-  };
+  ];
 
-  // Simulação de dados (substitua pela sua lógica de backend se necessário)
+  // Gerar dados de medições
   function getMedicoes(item) {
     const dados = [];
     const agora = new Date();
@@ -331,70 +423,64 @@
       data.setHours(agora.getHours() - (23 - i));
       const valor = item.ref + (Math.random() - 0.5) * item.tol * 2.5;
       dados.push({
-        data: `${data.getDate()}/${data.getMonth()+1}`,
-        valor: valor.toFixed(1)
+        data: `${String(data.getDate()).padStart(2, '0')}/${String(data.getMonth() + 1).padStart(2, '0')}`,
+        valor: parseFloat(valor.toFixed(1))
       });
     }
     return dados;
   }
 
+  // Classificar status
   function getStatusClass(valor, ref, tol) {
     const diff = Math.abs(valor - ref);
-    if (diff <= tol * 0.5) return 'val-ok';
-    if (diff <= tol) return 'val-warn';
-    return 'val-crit';
+    if (diff <= tol * 0.5) return 'val-ok'; // Normal
+    if (diff <= tol) return 'val-warn'; // Alerta
+    return 'val-crit'; // Crítico
   }
 
+  // Renderizar tabela de medições
   function renderTabela(item) {
     const medicoes = getMedicoes(item);
     const colsPerRow = 8;
     let html = '<table class="analise-table">';
-    
+
     for (let row = 0; row < 3; row++) {
       const start = row * colsPerRow;
       const end = start + colsPerRow;
       const chunk = medicoes.slice(start, end);
-      
+
       // Linha de Datas
       html += '<tr>';
       chunk.forEach(m => html += `<th>${m.data}</th>`);
       html += '</tr>';
-      
+
       // Linha de Valores
       html += '<tr>';
       chunk.forEach(m => {
-        const cls = getStatusClass(parseFloat(m.valor), item.ref, item.tol);
+        const cls = getStatusClass(m.valor, item.ref, item.tol);
         html += `<td class="${cls}">${m.valor}</td>`;
       });
       html += '</tr>';
     }
-    
+
     html += '</table>';
     return html;
   }
 
-  function criarCard(item, type) {
-    const lastVal = parseFloat(getMedicoes(item).pop().valor);
-    const statusClass = getStatusClass(lastVal, item.ref, item.tol);
-    const statusText = statusClass === 'val-ok' ? 'Normal' : statusClass === 'val-warn' ? 'Alerta' : 'Crítico';
-
+  // Criar card individual
+  function criarCard(item) {
     return `
       <div class="card">
-        <div class="card-header ${type}">
-          <span>${item.nome}</span>
-          <span class="status-badge">${statusText}</span>
-        </div>
+        <div class="card-header">${item.nome}</div>
         <div class="card-body">
           <div class="graph-container">
             <div class="graph-placeholder">📊 Gráfico: ${item.file}.png</div>
-            <img src="graficos/graf-${item.file}.png?t=${Date.now()}" 
-                 onerror="this.style.display='none'" 
+            <img src="graficos/graf-${item.file}.png?t=${Date.now()}"
+                 onerror="this.style.display='none'"
                  onload="this.previousElementSibling.style.display='none'">
           </div>
           <div class="measurements-container">
-            <div class="table-title">
-              <span>Últimas 24 Medições</span>
-            </div>
+            <div class="table-title">Últimas 24 Medições</div>
             ${renderTabela(item)}
           </div>
         </div>
@@ -402,63 +488,82 @@
     `;
   }
 
-  function initCarousel(type) {
-    const track = document.getElementById(`track-${type}`);
-    const nav = document.getElementById(`nav-${type}`);
-    const items = processos[type].items;
-    const itemsPerSlide = 2; // Sempre 2 gráficos por slide
-    const slidesCount = Math.ceil(items.length / itemsPerSlide);
-    
-    for (let i = 0; i < slidesCount; i++) {
-      const slide = document.createElement('div');
-      slide.className = 'carousel-slide';
-      const start = i * itemsPerSlide;
-      const slideItems = items.slice(start, start + itemsPerSlide);
-      
-      slideItems.forEach(item => {
-        slide.innerHTML += criarCard(item, type);
-      });
-      
-      track.appendChild(slide);
-      
-      const dot = document.createElement('div');
-      dot.className = `nav-dot ${i === 0 ? 'active' : ''}`;
-      dot.onclick = () => goToSlide(type, i);
-      nav.appendChild(dot);
-    }
+  // Inicializar carrossel unificado
+  function initCarousel() {
+    const track = document.getElementById('track-main');
+    const nav = document.getElementById('nav-main');
 
+    let allSlides = [];
+    let slideIndex = 0;
+
+    // Criar slides para cada processo
+    processos.forEach(processo => {
+      const items = processo.items;
+      const slidesCount = Math.ceil(items.length / CONFIG.itemsPerSlide);
+
+      for (let i = 0; i < slidesCount; i++) {
+        const slide = document.createElement('div');
+        slide.className = 'carousel-slide';
+
+        // Adicionar título do processo
+        const titleDiv = document.createElement('div');
+        titleDiv.style.gridColumn = '1 / -1';
+        titleDiv.style.marginBottom = '0';
+        titleDiv.innerHTML = `<div class="secao-titulo">${processo.nome}</div>`;
+        slide.appendChild(titleDiv);
+
+        // Adicionar cards do slide
+        const start = i * CONFIG.itemsPerSlide;
+        const slideItems = items.slice(start, start + CONFIG.itemsPerSlide);
+
+        slideItems.forEach(item => {
+          const cardDiv = document.createElement('div');
+          cardDiv.innerHTML = criarCard(item);
+          slide.appendChild(cardDiv.firstElementChild);
+        });
+
+        track.appendChild(slide);
+        allSlides.push(slide);
+
+        // Criar dot de navegação
+        const dot = document.createElement('div');
+        dot.className = `nav-dot ${slideIndex === 0 ? 'active' : ''}`;
+        dot.onclick = () => goToSlide(slideIndex);
+        nav.appendChild(dot);
+
+        slideIndex++;
+      }
+    });
+
+    // Rotação automática
     let currentSlide = 0;
-    const carouselInterval = setInterval(() => {
-      currentSlide = (currentSlide + 1) % slidesCount;
-      goToSlide(type, currentSlide);
+    setInterval(() => {
+      currentSlide = (currentSlide + 1) % allSlides.length;
+      goToSlide(currentSlide);
     }, CONFIG.rotateInterval);
   }
 
-  function goToSlide(type, index) {
-    const track = document.getElementById(`track-${type}`);
-    const dots = document.querySelectorAll(`#nav-${type} .nav-dot`);
+  // Navegar para slide
+  function goToSlide(index) {
+    const track = document.getElementById('track-main');
+    const dots = document.querySelectorAll('#nav-main .nav-dot');
     track.style.transform = `translateX(-${index * 100}%)`;
     dots.forEach((d, i) => d.classList.toggle('active', i === index));
   }
 
+  // Atualizar relógio e data
   function updateClock() {
     const agora = new Date();
     document.getElementById('relogio').innerText = agora.toLocaleTimeString('pt-BR');
-    document.getElementById('ultima').innerText = agora.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+    document.getElementById('data').innerText = agora.toLocaleDateString('pt-BR');
+    document.getElementById('ultima').innerText = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   }
 
+  // Inicializar
   function init() {
-    initCarousel('nano');
-    initCarousel('esta');
+    initCarousel();
     updateClock();
     setInterval(updateClock, 1000);
-
-    let seg = 60;
-    setInterval(() => {
-      seg--;
-      if (seg < 0) seg = 59;
-      document.getElementById('seg').innerText = seg;
-    }, 1000);
 
     setTimeout(() => {
       document.getElementById('loader').classList.add('hidden');
