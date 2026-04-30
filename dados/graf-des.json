@@ -2,7 +2,6 @@
   "title": "",
   "yAxisLabel": "",
   "chartCount": 1,
-  "labels": ["","","","","","","","","","","","","","0"],
-  "series1": [Responsável,Hora,Tanque,Volume gasto na titulação (Vt),Concentração do banho (mL/L),Correção com Surtec 168,null,null,Correção com Surtec 088,null,null,Vide Obs.,null,Surtec 136],
-  "series2": [null,null,null,null,null,Em quilos (kg),Em litros (L),Executada em L,Em quilos (kg),Em mililitros (mL),Executada em mL,null,null,0]
+  "labels": ["6/3/26","9/3/26","11/3/26","13/3/26","16/3/26","18/3/26","20/3/26","23/3/26","25/3/26","27/3/26","30/3/26","1/4/26","6/4/26","8/4/26","8/4/26","10/4/26"],
+  "series1": ["72,0","72,0","72,0","72,0","72,0","72,0","72,0","70,6","73,4","72,0","72,0","72,0","72,0","66,2","73,4","69,1"]
 }
