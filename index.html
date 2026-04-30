@@ -19,7 +19,7 @@
       --weg-gray-900: #1A1A1A;
       --status-ok: #2E7D32;
       --status-warn: #F57C00;
-      --status-crit: #000000;
+      --status-crit: #1A1A1A;
       --shadow: 0 2px 8px rgba(0,0,0,0.08);
       --radius: 16px;
       --radius-sm: 8px;
@@ -41,7 +41,7 @@
     header {
       background: white;
       border-bottom: 3px solid var(--weg-blue);
-      padding: 12px 20px;
+      padding: 20px 40px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -49,7 +49,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      max-width: 1400px;
+      max-width: 1600px;
       margin: 0 auto;
       width: 100%;
     }
@@ -57,21 +57,21 @@
     .header-brand {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 20px;
     }
 
     .logo-badge {
       background: var(--weg-blue);
       color: white;
-      padding: 8px 16px;
+      padding: 10px 20px;
       border-radius: 6px;
       font-weight: 800;
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       letter-spacing: 1px;
     }
 
     header h1 {
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       font-weight: 700;
       color: var(--weg-gray-900);
     }
@@ -84,18 +84,18 @@
     .clock-block {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 20px;
     }
 
     #relogio {
-      font-size: 1.8rem;
+      font-size: 2rem;
       font-weight: 800;
       color: var(--weg-blue-dark);
       font-family: 'Courier New', monospace;
     }
 
     #data {
-      font-size: 1.8rem;
+      font-size: 2rem;
       font-weight: 800;
       color: var(--weg-blue-dark);
       font-family: 'Courier New', monospace;
@@ -104,22 +104,24 @@
     /* Layout Principal */
     main {
       flex: 1;
-      padding: 20px 20px;
-      max-width: 1400px;
+      padding: 30px 30px;
+      max-width: 1600px;
       margin: 0 auto;
       width: 100%;
     }
 
     .secao-titulo {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: 800;
       color: var(--weg-blue-dark);
       text-transform: uppercase;
-      margin-bottom: 15px;
-      padding-bottom: 8px;
-      border-bottom: 2px solid var(--weg-blue-light);
+      margin-bottom: 20px;
+      padding: 12px 20px;
+      background: var(--weg-blue-light);
+      border-radius: var(--radius-sm);
       text-align: center;
       width: 100%;
+      letter-spacing: 0.5px;
     }
 
     /* Carousel */
@@ -138,8 +140,8 @@
       min-width: 100%;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      padding: 10px;
+      gap: 25px;
+      padding: 15px;
     }
 
     /* Card */
@@ -154,9 +156,9 @@
     }
 
     .card-header {
-      padding: 12px 16px;
+      padding: 14px 18px;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 1rem;
       color: white;
       background: var(--weg-blue);
       text-transform: uppercase;
@@ -166,15 +168,15 @@
     .card-body {
       display: flex;
       flex-direction: column;
-      padding: 16px;
-      gap: 12px;
+      padding: 18px;
+      gap: 15px;
       flex: 1;
     }
 
     /* Gráfico - Maior Destaque */
     .graph-container {
       width: 100%;
-      height: 280px;
+      height: 300px;
       background: var(--weg-gray-100);
       border-radius: var(--radius-sm);
       display: flex;
@@ -212,15 +214,15 @@
       background: white;
       border-radius: var(--radius-sm);
       border: 1px solid var(--weg-gray-200);
-      padding: 12px;
+      padding: 15px;
       flex-shrink: 0;
     }
 
     .table-title {
       font-weight: 700;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       color: var(--weg-blue-dark);
-      margin-bottom: 8px;
+      margin-bottom: 12px;
       text-align: center;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -229,7 +231,7 @@
     .analise-table {
       width: 100%;
       border-collapse: separate;
-      border-spacing: 3px;
+      border-spacing: 4px;
       table-layout: fixed;
     }
 
@@ -237,24 +239,25 @@
       background: var(--weg-blue-light);
       color: var(--weg-blue-dark);
       font-weight: 700;
-      font-size: 0.75rem;
-      padding: 4px 2px;
-      border-radius: 3px;
+      font-size: 0.8rem;
+      padding: 8px 4px;
+      border-radius: 4px;
       text-align: center;
+      white-space: nowrap;
     }
 
     .analise-table td {
       background: var(--weg-gray-100);
       color: var(--weg-gray-900);
       font-weight: 600;
-      font-size: 0.8rem;
-      padding: 4px 2px;
+      font-size: 0.85rem;
+      padding: 8px 4px;
       text-align: center;
-      border-radius: 3px;
+      border-radius: 4px;
       border: 1px solid var(--weg-gray-200);
     }
 
-    /* Status Colors - Sóbrio */
+    /* Status Colors - Cores Neutras */
     .val-ok {
       background: #E8F5E9 !important;
       color: var(--status-ok) !important;
@@ -266,7 +269,7 @@
     }
 
     .val-crit {
-      background: #FFEBEE !important;
+      background: #ECEFF1 !important;
       color: var(--status-crit) !important;
     }
 
@@ -278,12 +281,12 @@
     /* Footer */
     footer {
       background: white;
-      padding: 12px 20px;
+      padding: 15px 30px;
       text-align: center;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       color: var(--weg-gray-400);
       border-top: 1px solid var(--weg-gray-200);
-      max-width: 1400px;
+      max-width: 1600px;
       margin: 0 auto;
       width: 100%;
     }
@@ -297,13 +300,13 @@
     .carousel-nav {
       display: flex;
       justify-content: center;
-      gap: 8px;
-      margin-top: 15px;
+      gap: 10px;
+      margin-top: 20px;
     }
 
     .nav-dot {
-      width: 10px;
-      height: 10px;
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
       background: var(--weg-gray-300);
       cursor: pointer;
@@ -314,7 +317,7 @@
 
     .nav-dot.active {
       background: var(--weg-blue);
-      transform: scale(1.2);
+      transform: scale(1.3);
     }
 
     /* Loader */
@@ -359,6 +362,18 @@
       .carousel-slide {
         grid-template-columns: 1fr;
       }
+      
+      header {
+        padding: 15px 25px;
+      }
+      
+      #relogio, #data {
+        font-size: 1.6rem;
+      }
+      
+      main {
+        padding: 20px 20px;
+      }
     }
   </style>
 </head>
@@ -399,7 +414,6 @@
   };
 
   // Mapeamento de arquivos para itens dos processos
-  // Ajustado para corresponder aos arquivos reais no repositório
   const fileToItemMap = {
     // Estanhagem Eletrolítica
     'des': { processo: 0, itemIndex: 0, nome: 'Desengraxante Químico', ref: 26.0, tol: 3.9 },
@@ -430,10 +444,9 @@
   // Cache dos dados carregados
   let dadosCache = {};
 
-  // Carregar dados JSON da pasta dados (CORREÇÃO: caminho correto)
+  // Carregar dados JSON da pasta dados
   async function carregarDadosJSON(fileName) {
     try {
-      // CORREÇÃO: Caminho correto para a pasta "dados"
       const response = await fetch(`dados/graf-${fileName}.json?t=${Date.now()}`);
       if (!response.ok) {
         console.warn(`Arquivo não encontrado: dados/graf-${fileName}.json`);
@@ -447,7 +460,7 @@
     }
   }
 
-  // Obter medições reais do JSON (CORREÇÃO: tratamento de #N/D)
+  // Obter medições reais do JSON
   async function getMedicoesReal(fileName) {
     const dados = await carregarDadosJSON(fileName);
     if (!dados || !dados.charts || !dados.charts[0]) return [];
@@ -455,7 +468,6 @@
     const labels = dados.charts[0].labels || [];
     const series1 = dados.charts[0].series1 || [];
     
-    // CORREÇÃO: Filtrar e processar últimos 24 valores
     const medicoes = [];
     const startIndex = Math.max(0, labels.length - 24);
     
@@ -463,7 +475,6 @@
       const label = labels[i];
       const valorStr = series1[i] || '0';
       
-      // CORREÇÃO: Tratar valores "#N/D" como dados ausentes
       let valor = 0;
       let hasData = true;
       
@@ -487,20 +498,19 @@
     return medicoes;
   }
 
-  // Classificar status (CORREÇÃO: considerar dados ausentes)
+  // Classificar status
   function getStatusClass(valor, ref, tol, hasData) {
     if (!hasData || isNaN(valor)) return 'val-nodata';
     const diff = Math.abs(valor - ref);
-    if (diff <= tol * 0.5) return 'val-ok'; // Normal
-    if (diff <= tol) return 'val-warn'; // Alerta
-    return 'val-crit'; // Crítico
+    if (diff <= tol * 0.5) return 'val-ok';
+    if (diff <= tol) return 'val-warn';
+    return 'val-crit';
   }
 
   // Renderizar tabela de medições com dados reais
   async function renderTabela(item, fileName) {
     let medicoes;
     
-    // Verificar cache primeiro
     if (dadosCache[fileName]) {
       medicoes = dadosCache[fileName];
     } else {
@@ -518,12 +528,10 @@
 
       if (chunk.length === 0) continue;
 
-      // Linha de Datas
       html += '<tr>';
       chunk.forEach(m => html += `<th>${m.data}</th>`);
       html += '</tr>';
 
-      // Linha de Valores
       html += '<tr>';
       chunk.forEach(m => {
         const cls = getStatusClass(m.valor, item.ref, item.tol, m.hasData);
@@ -537,14 +545,11 @@
     return html;
   }
 
-  // Criar card individual para um arquivo de gráfico específico
-  async function criarCard(itemInfo, fileName) {
+  // Criar card individual
+  async function criarCard(itemInfo, fileName, processoNome) {
     const displayName = itemInfo.nome;
-
-    // Renderizar tabela com dados reais
     const tabelaHtml = await renderTabela(itemInfo, fileName);
 
-    // CORREÇÃO: Caminho correto para imagens PNG (com -1 no final)
     return `
       <div class="card">
         <div class="card-header">${displayName}</div>
@@ -572,7 +577,6 @@
     let allSlides = [];
     let slideIndex = 0;
 
-    // Processar cada processo
     for (let processoIndex = 0; processoIndex < processosNomes.length; processoIndex++) {
       const processoNome = processosNomes[processoIndex];
       const arquivosProcesso = Object.entries(fileToItemMap)
@@ -585,21 +589,18 @@
         const slide = document.createElement('div');
         slide.className = 'carousel-slide';
 
-        // Adicionar título do processo apenas no primeiro slide
-        if (i === 0) {
-          const titleDiv = document.createElement('div');
-          titleDiv.style.gridColumn = '1 / -1';
-          titleDiv.style.marginBottom = '0';
-          titleDiv.innerHTML = `<div class="secao-titulo">${processoNome}</div>`;
-          slide.appendChild(titleDiv);
-        }
+        // ADICIONAR título do processo em TODOS os slides
+        const titleDiv = document.createElement('div');
+        titleDiv.style.gridColumn = '1 / -1';
+        titleDiv.style.marginBottom = '5px';
+        titleDiv.innerHTML = `<div class="secao-titulo">${processoNome}</div>`;
+        slide.appendChild(titleDiv);
 
-        // Adicionar cards do slide
         const start = i * CONFIG.itemsPerSlide;
         const slideItems = arquivosProcesso.slice(start, start + CONFIG.itemsPerSlide);
 
         for (const { file, info } of slideItems) {
-          const cardHtml = await criarCard(info, file);
+          const cardHtml = await criarCard(info, file, processoNome);
           const cardDiv = document.createElement('div');
           cardDiv.innerHTML = cardHtml;
           slide.appendChild(cardDiv.firstElementChild);
@@ -608,7 +609,6 @@
         track.appendChild(slide);
         allSlides.push(slide);
 
-        // Criar dot de navegação
         const dot = document.createElement('div');
         dot.className = `nav-dot ${slideIndex === 0 ? 'active' : ''}`;
         dot.onclick = () => goToSlide(slideIndex);
@@ -618,33 +618,24 @@
       }
     }
 
-    // Rotação automática
     let currentSlide = 0;
     setInterval(() => {
       currentSlide = (currentSlide + 1) % allSlides.length;
       goToSlide(currentSlide);
     }, CONFIG.rotateInterval);
 
-    // Atualização automática dos dados a cada 60s
     setInterval(async () => {
-      dadosCache = {}; // Limpar cache
+      dadosCache = {};
       await refreshAllCards();
     }, CONFIG.refreshInterval);
   }
 
   // Função para atualizar todos os cards
   async function refreshAllCards() {
-    // Re-carregar dados para todos os cards visíveis
     const cards = document.querySelectorAll('.card');
     for (const card of cards) {
       const fileName = card.querySelector('.graph-placeholder')?.textContent.match(/Gráfico: (.*)/)?.[1]?.trim();
       if (fileName) {
-        // Re-renderizar apenas a tabela (otimização)
-        const itemInfo = Object.values(fileToItemMap).find(item => 
-          Object.entries(fileToItemMap).find(([key, val]) => val === item && key === fileName)
-        );
-        
-        // Encontrar o itemInfo correto
         const fileKey = Object.keys(fileToItemMap).find(key => {
           const placeholder = card.querySelector('.graph-placeholder');
           return placeholder && placeholder.textContent.includes(key);
@@ -663,7 +654,6 @@
       }
     }
     
-    // Atualizar timestamp
     const agora = new Date();
     document.getElementById('ultima').innerText = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   }
