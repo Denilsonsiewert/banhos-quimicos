@@ -1,12 +1,3 @@
-A versão que te mandei na resposta anterior **mudou a estrutura** para focar no layout "lado a lado" e acabou deixando de fora duas funções que existiam nesse seu código original:
-1. O suporte a **`series2`** (uma segunda linha de valores na tabela, caso exista).
-2. O **`yAxisLabel`** (o texto do eixo Y que ficava no cabeçalho).
-
-Para garantir que você tenha **absolutamente todas as funções do seu código original**, mas com a **nova capacidade de exibir gráficos e tabelas lado a lado**, eu mesclei os dois códigos.
-
-Aqui está a **versão definitiva do seu `index.html`**. Ele mantém o relógio, a rotação, o status, o suporte a `series2`, o `yAxisLabel` e agora exibe os múltiplos gráficos lado a lado perfeitamente:
-
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -30,7 +21,7 @@ Aqui está a **versão definitiva do seu `index.html`**. Ele mantém o relógio,
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
+            background-color: var(--bg-color );
             color: var(--text-primary);
             height: 100vh;
             display: flex;
