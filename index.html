@@ -3,300 +3,63 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Controle Analítico | WEG Banhos Industriais</title>
+<title>WEG Banhos Industriais | Classic</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
 <style>
-:root {
-  --weg-blue: #005BAC;
-  --weg-blue-dark: #003B73;
-  --weg-light: #EAF4FF;
-  --bg-main: #F4F8FC;
-  --card-bg: #FFFFFF;
-  --border: #D9E2EC;
-  --text-main: #1F2937;
-  --text-soft: #6B7280;
-  --success: #16A34A;
-  --warning: #D97706;
-  --danger: #DC2626;
-  --shadow: rgba(0,0,0,0.08);
-}
-
-body {
-  font-family: 'Inter', sans-serif;
-  background: linear-gradient(180deg, #F8FBFF 0%, #EEF4FA 100%);
-}
-
-header {
-  height: 88px;
-  padding: 0 50px;
-  background: linear-gradient(90deg, var(--weg-blue-dark), var(--weg-blue));
-  color: white;
-  border-bottom: 4px solid #00A3FF;
-}
-
-.title {
-  color: white;
-  font-size: 2rem;
-  letter-spacing: 1px;
-}
-
-.info-pill {
-  background: rgba(255,255,255,0.12);
-  color: white;
-  border: 1px solid rgba(255,255,255,0.2);
-}
-
-main {
-  max-width: 1800px;
-  margin: auto;
-  width: 100%;
-}
-
-.card {
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-}
-
-.card-title {
-  font-size: 2rem;
-}
-
-.chart-img {
-  height: 420px;
-}
-
-.custom-table th,
-.custom-table td {
-  padding: 10px 6px;
-  font-size: 0.9rem;
-}
-</style></head>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--weg-blue:#003f6f;--weg-orange:#e67e22;--weg-dark:#1a2a3a;--weg-gray:#eceef2;--bg-page:#eef2f5;--card-white:#fff;--border:#b0c4de;--text-main:#1e2a36;--ok:#2e7d32;--warn:#f57c00;--crit:#c62828;}
+body{font-family:'Inter',sans-serif;background:var(--bg-page);color:var(--text-main);height:100vh;display:flex;flex-direction:column;overflow:hidden;}
+header{background:var(--weg-dark);color:white;padding:12px 32px;display:flex;justify-content:space-between;align-items:center;border-bottom:4px solid var(--weg-orange);}
+.logo{font-weight:800;font-size:1.6rem;letter-spacing:-0.5px;}.logo span{color:var(--weg-orange);}
+.title-block h1{font-size:1.5rem;font-weight:600;}
+.info-pill{background:#2c3e44;padding:6px 18px;border-radius:30px;font-family:monospace;font-weight:500;}
+main{flex:1;padding:20px 28px;display:flex;flex-direction:column;overflow:hidden;}
+.section-badge{background:var(--weg-blue);color:white;padding:8px 20px;font-weight:700;width:fit-content;border-radius:4px;margin-bottom:16px;}
+.dashboard-scroll{flex:1;overflow-y:auto;padding-right:8px;}
+.card{background:var(--card-white);border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.05);margin-bottom:20px;border:1px solid var(--border);overflow:hidden;}
+.card-header{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;background:#fafcfd;border-bottom:2px solid var(--weg-blue);}
+.card-title{font-size:1.6rem;font-weight:700;color:var(--weg-blue);}
+.status{font-weight:700;padding:6px 18px;border-radius:30px;font-size:0.75rem;}
+.status-ok{background:#e8f5e9;color:var(--ok);border-left:4px solid var(--ok);}
+.status-warn{background:#fff3e0;color:var(--warn);border-left:4px solid var(--warn);}
+.status-crit{background:#ffebee;color:var(--crit);border-left:4px solid var(--crit);}
+.charts-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;padding:20px;}
+.chart-card{background:white;border-radius:10px;border:1px solid #ddd;overflow:hidden;}
+.chart-title{background:var(--weg-gray);padding:10px;font-weight:600;text-align:center;border-bottom:1px solid #ccc;}
+.chart-img{width:100%;height:260px;object-fit:contain;background:#fff;}
+.table-wrap{overflow-x:auto;padding:0 20px 20px 20px;}
+.custom-table{width:100%;border-collapse:collapse;font-size:0.75rem;}
+.custom-table th,.custom-table td{border:1px solid #bbb;padding:8px 5px;text-align:center;}
+.custom-table th{background:var(--weg-blue);color:white;font-weight:600;}
+.nav-dots{display:flex;justify-content:center;gap:12px;padding:12px;background:white;border-radius:40px;width:fit-content;margin:10px auto 0 auto;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+.dot{width:12px;height:12px;background:#bbb;border-radius:50%;cursor:pointer;}
+.dot.active{background:var(--weg-orange);transform:scale(1.3);}
+footer{background:var(--weg-dark);color:#cddde9;padding:10px 32px;display:flex;justify-content:space-between;font-size:0.8rem;}
+.pulse{display:inline-block;width:8px;height:8px;background:#2ecc71;border-radius:50%;animation:pulse 1.8s infinite;margin-right:8px;}
+@keyframes pulse{0%{opacity:0.4;}100%{opacity:1;}}
+.loader{background:#e2e8f0;height:260px;animation:pulsebg 1.2s infinite;}
+@keyframes pulsebg{0%{opacity:0.6;}100%{opacity:1;}}
+</style>
+</head>
 <body>
-
-<header>
-  <img src="" class="logo-weg" alt="WEG Logo">
-  <div class="title-block">
-    <div class="title">CONTROLE ANALÍTICO-BANHOS QUÍMICOS</div>
-  </div>
-  <div class="info-pill">
-    <span id="clock-date">DATA: --/--/----</span>
-    <span id="clock-time">HORA: --:--:--</span>
-  </div>
-</header>
-
-<main>
-  <div class="section-title" id="current-section">Carregando...</div>
-  <div id="dashboard-content"></div>
-  <div class="nav-dots" id="nav-dots"></div>
-</main>
-
-<footer>
-  <div><span class="pulse"></span></div>
-  <div>Última atualização: <span id="last-sync">Agora</span></div>
-</footer>
-
+<header><div class="logo">WEG<span>BANHOS</span></div><div class="title-block"><h1>CONTROLE ANALÍTICO · BANHOS QUÍMICOS</h1></div><div class="info-pill"><span id="clock-date"></span> <span id="clock-time"></span></div></header>
+<main><div class="section-badge" id="current-section">Carregando...</div><div class="dashboard-scroll" id="dashboard-content"></div><div class="nav-dots" id="nav-dots"></div></main>
+<footer><div><span class="pulse"></span> ONLINE</div><div>Última sincronia: <span id="last-sync">--:--:--</span></div></footer>
 <script>
-const tabsConfig = [
-    {
-        section: "ESTANHAGEM ELETROLÍTICA",
-        items: [
-            { title: "Desengraxante Químico", fileBase: "graf-des", status: "OK" },
-            { title: "Ativação - Tanque 5", fileBase: "graf-ativacao-tanque-5", status: "Verificar" },
-            { title: "Ativação - Tanque 6", fileBase: "graf-ativacao-tanque-6", status: "OK" },
-            { title: "Níquel WATT", fileBase: "graf-niquel-watt", status: "Estável" },
-            { title: "Estanhagem A", fileBase: "graf-estanhagem-a", status: "Vencido" },
-            { title: "Selante Protetivo", fileBase: "graf-selante", status: "OK" },
-            { title: "Estanhagem B", fileBase: "graf-estanhagem-b", status: "OK" }
-        ]
-    },
-    {
-        section: "NANOCERÂMICO",
-        items: [
-            { title: "1º Desengraxante", fileBase: "graf-des1", status: "OK" },
-            { title: "2º Desengraxante", fileBase: "graf-des2", status: "OK" },
-            { title: "Decapante 1", fileBase: "graf-dec1", status: "Atenção" },
-            { title: "Decapante 2", fileBase: "graf-dec2", status: "OK" },
-            { title: "Nanocerâmico - Concentração", fileBase: "graf-nano", status: "Crítico" },
-            { title: "Nanocerâmico - Absorbância", fileBase: "graf-abso-nano", status: "OK" },
-            { title: "Nanocerâmico - pH", fileBase: "graf-ph-nano", status: "OK" },
-            { title: "Neutralizador", fileBase: "graf-neu", status: "OK" },
-            { title: "Selante Final", fileBase: "graf-sel", status: "OK" }
-        ]
-    }
-];
-
-const COLS_PER_ROW = 12;
-let currentTabIdx = 0;
-let currentItemIdx = 0;
-let rotationTimer;
-
-function getStatusClass(status) {
-    if (["OK", "Estável", "Em Conformidade"].includes(status)) return "ok";
-    if (["Atenção", "Verificar", "Vencido"].includes(status)) return "warn";
-    return "crit";
-}
-
-function generateTableHTML(labels, series1, series2) {
-    if (!labels || labels.length === 0) return '';
-    
-    const row1Labels = labels.slice(0, COLS_PER_ROW);
-    const row1Values = series1.slice(0, COLS_PER_ROW);
-    const row2Labels = labels.slice(COLS_PER_ROW, COLS_PER_ROW * 2);
-    const row2Values = series1.slice(COLS_PER_ROW, COLS_PER_ROW * 2);
-    
-    let html = `<div class="table-container"><table class="custom-table">`;
-    html += `<thead><tr><th class="table-main-title" colspan="${COLS_PER_ROW}">REGISTRO DAS ÚLTIMAS 24 ANÁLISES - VALORES REAIS</th></tr>`;
-    html += `<tr>${row1Labels.map(l => `<th>${l}</th>`).join('')}</tr>`;
-    html += `<tr>${row1Values.map(v => `<td>${v != null ? v : '---'}</td>`).join('')}</tr>`;
-    html += `<tr>${row2Labels.map(l => `<th>${l}</th>`).join('')}</tr>`;
-    html += `<tr>${row2Values.map(v => `<td>${v != null ? v : '---'}</td>`).join('')}</tr>`;
-    
-    if (series2) {
-        const row2S1 = series2.slice(0, COLS_PER_ROW);
-        const row2S2 = series2.slice(COLS_PER_ROW, COLS_PER_ROW * 2);
-        html += `<tr style="background:#EBF5FB;">${row2S1.map(v => `<td style="color:var(--weg-blue);font-weight:600;">${v != null ? v : '---'}</td>`).join('')}</tr>`;
-        html += `<tr style="background:#EBF5FB;">${row2S2.map(v => `<td style="color:var(--weg-blue);font-weight:600;">${v != null ? v : '---'}</td>`).join('')}</tr>`;
-    }
-    
-    html += `</tbody></table></div>`;
-    return html;
-}
-
-function loadCardData(fileBase) {
-    const wrapperElem = document.getElementById('charts-area');
-    if (!wrapperElem) return;
-    wrapperElem.innerHTML = `<div class="charts-grid"><div class="chart-block"><div class="loader-shimmer"></div></div></div>`;
-    
-    fetch(`dados/${fileBase}.json?t=${Date.now()}`)
-        .then(r => {
-            if (!r.ok) throw new Error('HTTP error');
-            return r.json();
-        })
-        .then(data => {
-            if (!wrapperElem) return;
-            wrapperElem.innerHTML = '';
-
-            const charts = (data.charts && Array.isArray(data.charts) && data.charts.length > 0) 
-                ? data.charts 
-                : [{ title: null, labels: data.labels, series1: data.series1, series2: data.series2 }];
-
-            // Grid para exibir 2 por linha
-            const gridDiv = document.createElement('div');
-            gridDiv.className = 'charts-grid';
-
-            charts.forEach((chartData, idx) => {
-                const chartDiv = document.createElement('div');
-                chartDiv.className = 'chart-block';
-                const titleHtml = chartData.title ? `<div class="chart-title">${chartData.title}</div>` : '';
-                const imgSrc = `graficos/${fileBase}-${idx+1}.png?t=${Date.now()}`;
-                const tableHtml = generateTableHTML(chartData.labels, chartData.series1, chartData.series2);
-                chartDiv.innerHTML = `${titleHtml}<img src="${imgSrc}" class="chart-img" alt="Gráfico" onerror="this.style.display='none'">${tableHtml}`;
-                gridDiv.appendChild(chartDiv);
-            });
-
-            wrapperElem.appendChild(gridDiv);
-        })
-        .catch(err => {
-            console.warn(`Erro ao carregar ${fileBase}:`, err);
-            if (wrapperElem) {
-                wrapperElem.innerHTML = `<div style="padding:40px;text-align:center;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:3px;">
-                    <div style="color:var(--text-secondary);font-size:1rem;">Dados não disponíveis</div>
-                </div>`;
-            }
-        });
-}
-
-function renderCard(item) {
-    const dashboard = document.getElementById('dashboard-content');
-    if (!dashboard) return;
-    dashboard.innerHTML = `
-        <div class="card">
-            <div class="card-header">
-                <div>
-                    <div class="card-title">${item.title}</div>
-                    <div class="card-subtitle">Parâmetros de controle</div>
-                </div>
-                <div class="status-badge status-${getStatusClass(item.status)}">${item.status}</div>
-            </div>
-            <div id="charts-area">
-                <div class="charts-grid"><div class="chart-block"><div class="loader-shimmer"></div></div></div>
-            </div>
-        </div>`;
-    loadCardData(item.fileBase);
-}
-
-function updateDisplay() {
-    const tab = tabsConfig[currentTabIdx];
-    const item = tab.items[currentItemIdx];
-    document.getElementById('current-section').textContent = tab.section;
-    renderCard(item);
-    
-    const dotsContainer = document.getElementById('nav-dots');
-    if (dotsContainer) {
-        dotsContainer.innerHTML = '';
-        tab.items.forEach((it, idx) => {
-            const dot = document.createElement('div');
-            dot.className = `dot ${idx === currentItemIdx ? 'active' : ''}`;
-            dot.onclick = (e) => {
-                e.stopPropagation();
-                currentItemIdx = idx;
-                resetRotation();
-                updateDisplay();
-            };
-            dotsContainer.appendChild(dot);
-        });
-    }
-}
-
-function nextItem() {
-    const tab = tabsConfig[currentTabIdx];
-    if (!tab) return;
-    if (currentItemIdx + 1 < tab.items.length) {
-        currentItemIdx++;
-    } else {
-        currentItemIdx = 0;
-        currentTabIdx = (currentTabIdx + 1) % tabsConfig.length;
-    }
-    updateDisplay();
-}
-
-function resetRotation() {
-    if (rotationTimer) clearInterval(rotationTimer);
-    rotationTimer = setInterval(nextItem, 15000);
-}
-
-function initClock() {
-    function tick() {
-        const now = new Date();
-        const optionsDate = { year: 'numeric', month: '2-digit', day: '2-digit' };
-        document.getElementById('clock-date').textContent = `DATA: ${now.toLocaleDateString('pt-BR', optionsDate)}`;
-        document.getElementById('clock-time').textContent = `HORA: ${now.toLocaleTimeString('pt-BR')}`;
-    }
-    tick();
-    setInterval(tick, 1000);
-}
-
-function startPeriodicSync() {
-    setInterval(() => {
-        const lastSyncSpan = document.getElementById('last-sync');
-        if (lastSyncSpan) {
-            lastSyncSpan.textContent = new Date().toLocaleTimeString('pt-BR');
-        }
-        const tab = tabsConfig[currentTabIdx];
-        if (tab && tab.items[currentItemIdx]) {
-            loadCardData(tab.items[currentItemIdx].fileBase);
-        }
-    }, 60000);
-}
-
-window.onload = () => {
-    initClock();
-    updateDisplay();
-    resetRotation();
-    startPeriodicSync();
-};
+const tabsConfig = [{section:"ESTANHAGEM ELETROLÍTICA",items:[{title:"Desengraxante Químico",fileBase:"graf-des",status:"OK"},{title:"Ativação - Tanque 5",fileBase:"graf-ativacao-tanque-5",status:"Verificar"},{title:"Ativação - Tanque 6",fileBase:"graf-ativacao-tanque-6",status:"OK"},{title:"Níquel WATT",fileBase:"graf-niquel-watt",status:"Estável"},{title:"Estanhagem A",fileBase:"graf-estanhagem-a",status:"Vencido"},{title:"Selante Protetivo",fileBase:"graf-selante",status:"OK"},{title:"Estanhagem B",fileBase:"graf-estanhagem-b",status:"OK"}]},{section:"NANOCERÂMICO",items:[{title:"1º Desengraxante",fileBase:"graf-des1",status:"OK"},{title:"2º Desengraxante",fileBase:"graf-des2",status:"OK"},{title:"Decapante 1",fileBase:"graf-dec1",status:"Atenção"},{title:"Decapante 2",fileBase:"graf-dec2",status:"OK"},{title:"Nanocerâmico - Concentração",fileBase:"graf-nano",status:"Crítico"},{title:"Nanocerâmico - Absorbância",fileBase:"graf-abso-nano",status:"OK"},{title:"Nanocerâmico - pH",fileBase:"graf-ph-nano",status:"OK"},{title:"Neutralizador",fileBase:"graf-neu",status:"OK"},{title:"Selante Final",fileBase:"graf-sel",status:"OK"}]}];
+const COLS_PER_ROW=12;let currentTabIdx=0,currentItemIdx=0,rotationTimer;
+function getStatusClass(s){if(["OK","Estável","Em Conformidade"].includes(s))return "ok";if(["Atenção","Verificar","Vencido"].includes(s))return "warn";return "crit";}
+function generateTableHTML(labels,s1,s2){if(!labels||!labels.length)return '';let r1l=labels.slice(0,COLS_PER_ROW),r1v=s1.slice(0,COLS_PER_ROW),r2l=labels.slice(COLS_PER_ROW,COLS_PER_ROW*2),r2v=s1.slice(COLS_PER_ROW,COLS_PER_ROW*2);let h=`<div class="table-wrap"><table class="custom-table"><thead><tr><th colspan="${COLS_PER_ROW}">REGISTRO ÚLTIMAS 24 ANÁLISES</th></tr><tr>${r1l.map(l=>`<th>${l}</th>`).join('')}</tr></thead><tbody><tr>${r1v.map(v=>`<td>${v??'---'}</td>`).join('')}</tr><tr>${r2l.map(l=>`<th>${l}</th>`).join('')}</tr><tr>${r2v.map(v=>`<td>${v??'---'}</td>`).join('')}</tr>`;if(s2){let r2s1=s2.slice(0,COLS_PER_ROW),r2s2=s2.slice(COLS_PER_ROW,COLS_PER_ROW*2);h+=`<tr style="background:#eef5ff;">${r2s1.map(v=>`<td><b>${v??'---'}</b></td>`).join('')}</tr><tr style="background:#eef5ff;">${r2s2.map(v=>`<td><b>${v??'---'}</b></td>`).join('')}</tr>`;}h+=`</tbody></table></div>`;return h;}
+function loadCardData(fileBase){let wrap=document.getElementById('charts-area');if(!wrap)return;wrap.innerHTML=`<div class="charts-grid"><div class="chart-card"><div class="loader" style="height:260px;"></div></div></div>`;
+fetch(`dados/${fileBase}.json?t=${Date.now()}`).then(r=>{if(!r.ok)throw new Error();return r.json();}).then(data=>{if(!wrap)return;wrap.innerHTML='';let charts=(data.charts&&Array.isArray(data.charts)&&data.charts.length>0)?data.charts:[{title:null,labels:data.labels,series1:data.series1,series2:data.series2}];let grid=document.createElement('div');grid.className='charts-grid';
+charts.forEach((c,idx)=>{let div=document.createElement('div');div.className='chart-card';let titleHtml=c.title?`<div class="chart-title">${c.title}</div>`:'';let imgSrc=`graficos/${fileBase}-${idx+1}.png?t=${Date.now()}`;let tableHtml=generateTableHTML(c.labels,c.series1,c.series2);div.innerHTML=`${titleHtml}<img src="${imgSrc}" class="chart-img" alt="gráfico" onerror="this.style.display='none'">${tableHtml}`;grid.appendChild(div);});wrap.appendChild(grid);}).catch(()=>{if(wrap)wrap.innerHTML='<div style="padding:40px;text-align:center;">Dados temporariamente indisponíveis</div>';});}
+function renderCard(item){let dash=document.getElementById('dashboard-content');if(!dash)return;dash.innerHTML=`<div class="card"><div class="card-header"><div class="card-title">${item.title}</div><div class="status status-${getStatusClass(item.status)}">${item.status}</div></div><div id="charts-area"><div class="charts-grid"><div class="chart-card"><div class="loader"></div></div></div></div></div>`;loadCardData(item.fileBase);}
+function updateDisplay(){let tab=tabsConfig[currentTabIdx];let item=tab.items[currentItemIdx];document.getElementById('current-section').innerHTML=tab.section;renderCard(item);let dots=document.getElementById('nav-dots');if(dots){dots.innerHTML='';tab.items.forEach((it,idx)=>{let d=document.createElement('div');d.className=`dot ${idx===currentItemIdx?'active':''}`;d.onclick=()=>{currentItemIdx=idx;resetRotation();updateDisplay();};dots.appendChild(d);});}}
+function nextItem(){let tab=tabsConfig[currentTabIdx];if(currentItemIdx+1<tab.items.length)currentItemIdx++;else{currentItemIdx=0;currentTabIdx=(currentTabIdx+1)%tabsConfig.length;}updateDisplay();}
+function resetRotation(){if(rotationTimer)clearInterval(rotationTimer);rotationTimer=setInterval(nextItem,15000);}
+function initClock(){function tick(){let d=new Date();document.getElementById('clock-date').innerHTML=d.toLocaleDateString('pt-BR');document.getElementById('clock-time').innerHTML=d.toLocaleTimeString('pt-BR');}tick();setInterval(tick,1000);}
+function startPeriodicSync(){setInterval(()=>{document.getElementById('last-sync').innerHTML=new Date().toLocaleTimeString('pt-BR');let tab=tabsConfig[currentTabIdx];if(tab&&tab.items[currentItemIdx])loadCardData(tab.items[currentItemIdx].fileBase);},60000);}
+window.onload=()=>{initClock();updateDisplay();resetRotation();startPeriodicSync();};
 </script>
 </body>
 </html>
