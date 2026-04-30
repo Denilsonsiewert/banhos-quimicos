@@ -15,13 +15,32 @@
             --success: #28a745;
             --warning: #ffc107;
             --danger: #dc3545;
-            --table-header-bg: #00a8e8; /* Azul claro para cabeçalho da tabela */
+            --table-header-bg: #00a8e8;
             --table-border: #ccc;
         }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-primary); height: 100vh; display: flex; flex-direction: column; overflow: hidden; margin: 0; }
-        
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            margin: 0;
+        }
+
         /* HEADER */
-        header { background-color: var(--weg-blue); color: white; padding: 10px 40px; display: flex; justify-content: space-between; align-items: center; height: 100px; }
+        header {
+            background-color: var(--weg-blue);
+            color: white;
+            padding: 10px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100px;
+            flex-shrink: 0;
+        }
         .brand { display: flex; flex-direction: column; align-items: center; flex: 1; }
         .brand-main { font-size: 2.5rem; font-weight: 800; text-transform: uppercase; }
         .brand-sub { font-size: 1.2rem; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px; }
@@ -31,255 +50,460 @@
         .date-value { color: #e0e0e0; font-weight: 400; }
 
         /* MAIN */
-        main { flex: 1; padding: 20px; display: flex; flex-direction: column; align-items: center; overflow-y: auto; }
-        .section-title { font-size: 2.5rem; color: var(--weg-blue); font-weight: 800; margin-bottom: 20px; width: 100%; max-width: 1400px; border-left: 8px solid var(--weg-blue); padding-left: 20px; text-transform: uppercase; }
-        
-        .dashboard-container { width: 100%; max-width: 1400px; display: flex; flex-direction: column; gap: 30px; }
-        
-        /* CARD STYLE */
-        .card { background: var(--card-bg); border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 25px; display: flex; flex-direction: column; gap: 20px; }
-        .card-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 15px; }
+        main {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+            min-height: 0;
+        }
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--weg-blue);
+            font-weight: 800;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 1400px;
+            border-left: 8px solid var(--weg-blue);
+            padding-left: 20px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .dashboard-container {
+            width: 100%;
+            max-width: 1400px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* CARD */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+        }
+        .card-header-left { display: flex; flex-direction: column; gap: 4px; }
         .card-title { font-size: 2rem; font-weight: 700; color: var(--weg-blue); }
-        .status-badge { padding: 8px 16px; border-radius: 6px; font-weight: 700; font-size: 1rem; text-transform: uppercase; }
-        .status-ok { background: #d4edda; color: #155724; }
+        .card-yaxis {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+        }
+        .status-ok   { background: #d4edda; color: #155724; }
         .status-warn { background: #fff3cd; color: #856404; }
         .status-crit { background: #f8d7da; color: #721c24; }
 
-        .chart-area { width: 100%; height: 450px; display: flex; justify-content: center; align-items: center; background: #fafafa; border-radius: 8px; overflow: hidden; position: relative; }
-        .chart-img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .y-axis-label {
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%) rotate(-90deg);
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #555;
-            white-space: nowrap;
-            pointer-events: none;
+        /* CHARTS — múltiplos gráficos empilhados */
+        .charts-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+        .chart-area {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #fafafa;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .chart-img {
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+        .chart-placeholder {
+            width: 100%;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #aaa;
+            font-size: 1rem;
         }
 
-        /* DATA TABLE - ESTILO EXATO DA IMAGEM */
-        .data-table-container { margin-top: 10px; }
-        .table-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 5px; color: #333; text-align: center; }
-        .custom-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; table-layout: fixed; }
-        .custom-table th, .custom-table td { 
-            border: 1px solid var(--table-border); 
-            padding: 6px 4px; 
-            text-align: center; 
+        /* TABELA — layout exato do Excel */
+        .data-table-container { margin-top: 4px; }
+
+        /*
+         * Tabela em blocos de 16 colunas, igual ao Excel.
+         * O título "ÚLTIMAS 24 MEDIÇÕES" aparece uma vez no topo.
+         * Os dados continuam em blocos subsequentes sem repetir o título.
+         */
+        .table-main-title {
+            background-color: var(--table-header-bg) !important;
+            color: white !important;
+            font-size: 1.05rem !important;
+            font-weight: 700 !important;
+            text-align: center !important;
+            padding: 8px 4px !important;
+            letter-spacing: 0.5px;
+        }
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            table-layout: fixed;
+            margin-bottom: 0;
+        }
+        .custom-table th, .custom-table td {
+            border: 1px solid var(--table-border);
+            padding: 5px 3px;
+            text-align: center;
             word-wrap: break-word;
         }
-        .custom-table th { 
-            background-color: var(--table-header-bg); 
-            color: white; 
-            font-weight: 700; 
-            font-size: 0.9rem;
+        .custom-table th {
+            background-color: var(--table-header-bg);
+            color: white;
+            font-weight: 700;
+            font-size: 0.85rem;
         }
-        .custom-table tr:nth-child(even) { background-color: #f9f9f9; }
-        .custom-table tr:hover { background-color: #f1f1f1; }
+        .custom-table tr:nth-child(even) td { background-color: #f9f9f9; }
+        .custom-table tr:hover td { background-color: #f1f1f1; }
+
+        /* Espaço entre blocos de tabela */
+        .table-block + .table-block { margin-top: 2px; }
 
         /* NAV DOTS */
-        .nav-dots { display: flex; gap: 12px; margin-top: 20px; }
+        .nav-dots { display: flex; gap: 12px; margin-top: 20px; flex-shrink: 0; }
         .dot { width: 16px; height: 16px; background: #ccc; border-radius: 50%; cursor: pointer; transition: 0.3s; }
         .dot.active { background: var(--weg-blue); transform: scale(1.2); }
 
-        footer { background: var(--weg-dark); color: #ccc; padding: 15px 40px; display: flex; justify-content: space-between; font-size: 1.1rem; }
-        .pulse { width: 12px; height: 12px; background: var(--success); border-radius: 50%; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(40, 167, 69, 0); } 100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); } }
+        footer {
+            background: var(--weg-dark);
+            color: #ccc;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        .pulse {
+            width: 12px; height: 12px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%   { box-shadow: 0 0 0 0 rgba(40,167,69,0.7); }
+            70%  { box-shadow: 0 0 0 15px rgba(40,167,69,0); }
+            100% { box-shadow: 0 0 0 0 rgba(40,167,69,0); }
+        }
+
+        /* Loading state */
+        .table-loading { text-align: center; color: #888; padding: 12px; font-size: 0.95rem; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="brand">
-            <div class="brand-main">WEG INDUSTRIAL</div>
-            <div class="brand-sub">CONTROLE ANALÍTICO DOS BANHOS QUÍMICOS</div>
+<header>
+    <div class="brand">
+        <div class="brand-main">WEG INDUSTRIAL</div>
+        <div class="brand-sub">CONTROLE ANALÍTICO DOS BANHOS QUÍMICOS</div>
+    </div>
+    <div class="clock-container">
+        <div class="clock-item">
+            <span class="clock-label">DATA:</span>
+            <span class="clock-value date-value" id="clock-date">--/--/----</span>
         </div>
-        <div class="clock-container">
-            <div class="clock-item"><span class="clock-label">DATA:</span><span class="clock-value date-value" id="clock-date">--/--/----</span></div>
-            <div class="clock-item"><span class="clock-label">HORA:</span><span class="clock-value" id="clock-time">--:--:--</span></div>
+        <div class="clock-item">
+            <span class="clock-label">HORA:</span>
+            <span class="clock-value" id="clock-time">--:--:--</span>
         </div>
-    </header>
+    </div>
+</header>
 
-    <main>
-        <div class="section-title" id="current-section">Carregando...</div>
-        
-        <div class="dashboard-container" id="dashboard-content">
-            <!-- Conteúdo injetado via JS -->
-        </div>
+<main>
+    <div class="section-title" id="current-section">Carregando...</div>
+    <div class="dashboard-container" id="dashboard-content"></div>
+    <div class="nav-dots" id="nav-dots"></div>
+</main>
 
-        <div class="nav-dots" id="nav-dots"></div>
-    </main>
+<footer>
+    <div style="display:flex;align-items:center;gap:10px;">
+        <div class="pulse"></div>
+        <span>Dados em tempo real | WEG Qualidade</span>
+    </div>
+    <div>Atualização: <span id="last-sync">Agora</span></div>
+</footer>
 
-    <footer>
-        <div style="display:flex; align-items:center; gap:10px;"><div class="pulse"></div><span>Dados SCADA em tempo real | WEG Qualidade</span></div>
-        <div>Atualização: <span id="last-sync">Agora</span></div>
-    </footer>
+<script>
+// =============================================================
+//  CONFIGURAÇÃO DAS ABAS
+//  fileBase deve coincidir exatamente com LimparNome() do VBA
+// =============================================================
+const tabsConfig = [
+    {
+        section: "Estanhagem",
+        items: [
+            { title: "Desengraxante",          fileBase: "graf-des",                  status: "OK" },
+            { title: "Ativação — Tanque 5",    fileBase: "graf-ativacao-tanque-5",    status: "Verificar" },
+            { title: "Ativação — Tanque 6",    fileBase: "graf-ativacao-tanque-6",    status: "OK" },
+            { title: "Níquel WATT",            fileBase: "graf-niquel-watt",          status: "Estável" },
+            { title: "Estanhagem A",           fileBase: "graf-estanhagem-a",         status: "Vencido" },
+            { title: "Selante",                fileBase: "graf-selante",              status: "OK" },
+            { title: "Estanhagem B",           fileBase: "graf-estanhagem-b",         status: "OK" }
+        ]
+    },
+    {
+        section: "Nanocerâmico",
+        items: [
+            { title: "1º Desengraxante",       fileBase: "graf-des1",                 status: "OK" },
+            { title: "2º Desengraxante",       fileBase: "graf-des2",                 status: "OK" },
+            { title: "Decapante 1",            fileBase: "graf-dec1",                 status: "Atenção" },
+            { title: "Decapante 2",            fileBase: "graf-dec2",                 status: "OK" },
+            { title: "Nanocerâmico — Conc.",   fileBase: "graf-nano",                 status: "Crítico" },
+            { title: "Nanocerâmico — Abs.",    fileBase: "graf-abso-nano",            status: "OK" },
+            { title: "Nanocerâmico — pH",      fileBase: "graf-ph-nano",              status: "OK" },
+            { title: "Neutralizador",          fileBase: "graf-neu",                  status: "OK" },
+            { title: "Selante",                fileBase: "graf-sel",                  status: "OK" }
+        ]
+    }
+];
 
-    <script>
-        // Configuração das Abas e Arquivos
-        const tabsConfig = [
-            {
-                section: "Estanhagem",
-                items: [
-                    { title: "Desengraxante", fileBase: "graf-des", status: "OK" },
-                    { title: "Ativação — Tanque 5", fileBase: "graf-ativacao-tanque-5", status: "Verificar" },
-                    { title: "Ativação — Tanque 6", fileBase: "graf-ativacao-tanque-6", status: "OK" },
-                    { title: "Níquel WATT", fileBase: "graf-niquel-watt", status: "Estável" },
-                    { title: "Estanhagem A", fileBase: "graf-estanhagem-a", status: "Vencido" },
-                    { title: "Selante", fileBase: "graf-selante", status: "OK" },
-                    { title: "Estanhagem B", fileBase: "graf-estanhagem-b", status: "OK" }
-                ]
-            },
-            {
-                section: "Nanocerâmico",
-                items: [
-                    { title: "1º Desengraxante", fileBase: "graf-des1", status: "OK" },
-                    { title: "2º Desengraxante", fileBase: "graf-des2", status: "OK" },
-                    { title: "Decapante 1", fileBase: "graf-dec1", status: "Atenção" },
-                    { title: "Decapante 2", fileBase: "graf-dec2", status: "OK" },
-                    { title: "Nanocerâmico — Conc.", fileBase: "graf-nano", status: "Crítico" },
-                    { title: "Nanocerâmico — Abs.", fileBase: "graf-abso-nano", status: "OK" },
-                    { title: "Nanocerâmico — pH", fileBase: "graf-ph-nano", status: "OK" },
-                    { title: "Neutralizador", fileBase: "graf-neu", status: "OK" },
-                    { title: "Selante", fileBase: "graf-sel", status: "OK" }
-                ]
-            }
-        ];
+// Quantas colunas de data por bloco (igual ao Excel)
+const COLS_POR_BLOCO = 16;
 
-        let currentTabIdx = 0;
-        let currentItemIdx = 0;
-        let rotationTimer;
+let currentTabIdx  = 0;
+let currentItemIdx = 0;
+let rotationTimer;
 
-        function renderCard(item) {
-            const container = document.getElementById('dashboard-content');
-            container.innerHTML = `
-                <div class="card">
-                    <div class="card-header">
-                        <span class="card-title">${item.title}</span>
-                        <span class="status-badge status-${getStatusClass(item.status)}">${item.status}</span>
-                    </div>
-                    
-                    <div class="chart-area">
-                        <div class="y-axis-label" id="y-axis-label">Carregando...</div>
-                        <img src="graficos/${item.fileBase}.png" class="chart-img" alt="Gráfico" onerror="this.src='https://via.placeholder.com/800x450?text=Aguardando+Imagem...'">
-                    </div>
+// =============================================================
+//  STATUS → CLASSE CSS
+// =============================================================
+function getStatusClass(status) {
+    if (["OK", "Estável", "Em Conformidade"].includes(status)) return "ok";
+    if (["Atenção", "Verificar"].includes(status)) return "warn";
+    return "crit";
+}
 
-                    <div class="data-table-container">
-                        <div class="table-title">ÚLTIMAS 24 MEDIÇÕES</div>
-                        <div id="table-loading" style="text-align:center; color:#888;">Carregando dados...</div>
-                        <table class="custom-table" id="data-table" style="display:none;">
-                            <thead><tr id="table-headers"></tr></thead>
-                            <tbody>
-                                <tr id="table-row1"></tr>
-                                <tr id="table-row2"></tr>
-                            </tbody>
-                        </table>
-                    </div>
+// =============================================================
+//  RENDERIZA CARD
+// =============================================================
+function renderCard(item) {
+    const container = document.getElementById('dashboard-content');
+
+    container.innerHTML = `
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <span class="card-title">${item.title}</span>
+                    <span class="card-yaxis" id="y-axis-label"></span>
                 </div>
-            `;
-            
-            loadDataTable(item.fileBase);
-        }
+                <span class="status-badge status-${getStatusClass(item.status)}">${item.status}</span>
+            </div>
 
-        function getStatusClass(status) {
-            if (status === "OK" || status === "Estável" || status === "Em Conformidade") return "ok";
-            if (status === "Atenção" || status === "Verificar") return "warn";
-            return "crit";
-        }
+            <div class="charts-wrapper" id="charts-wrapper">
+                <div class="chart-placeholder">Carregando gráficos...</div>
+            </div>
 
-        function loadDataTable(fileBase) {
-            fetch(`dados/${fileBase}.json`)
-                .then(response => {
-                    if (!response.ok) throw new Error("Dados não encontrados");
-                    return response.json();
-                })
-                .then(data => {
-                    document.getElementById('table-loading').style.display = 'none';
-                    const table = document.getElementById('data-table');
-                    table.style.display = 'table';
-                    
-                    // Exibir Rótulo do Eixo Y
-                    document.getElementById('y-axis-label').innerText = data.yAxisLabel || "";
-                    
-                    // Preencher Cabeçalhos (Datas)
-                    const headersRow = document.getElementById('table-headers');
-                    headersRow.innerHTML = data.labels.map(l => `<th>${l}</th>`).join('');
-                    
-                    // Preencher Linha 1 de Valores
-                    const row1 = document.getElementById('table-row1');
-                    row1.innerHTML = data.series1.map(v => `<td>${v}</td>`).join('');
-                    
-                    // Preencher Linha 2 de Valores (se existir)
-                    if (data.series2) {
-                        const row2 = document.getElementById('table-row2');
-                        row2.style.display = 'table-row';
-                        row2.innerHTML = data.series2.map(v => `<td>${v}</td>`).join('');
-                    } else {
-                        document.getElementById('table-row2').style.display = 'none';
-                    }
-                })
-                .catch(err => {
-                    console.error(err);
-                    document.getElementById('table-loading').innerText = "Dados indisponíveis no momento.";
-                    document.getElementById('y-axis-label').innerText = "";
-                });
-        }
+            <div class="data-table-container" id="table-container">
+                <div class="table-loading">Carregando dados...</div>
+            </div>
+        </div>
+    `;
 
-        function nextItem() {
-            const tab = tabsConfig[currentTabIdx];
-            currentItemIdx++;
-            if (currentItemIdx >= tab.items.length) {
-                currentItemIdx = 0;
-                currentTabIdx++;
-                if (currentTabIdx >= tabsConfig.length) currentTabIdx = 0;
+    loadCardData(item.fileBase);
+}
+
+// =============================================================
+//  CARREGA JSON → GRÁFICOS + TABELA
+// =============================================================
+function loadCardData(fileBase) {
+    fetch(`dados/${fileBase}.json?t=${Date.now()}`)
+        .then(r => {
+            if (!r.ok) throw new Error('JSON não encontrado');
+            return r.json();
+        })
+        .then(data => {
+            // --- yAxisLabel ---
+            const yLabel = document.getElementById('y-axis-label');
+            if (yLabel && data.yAxisLabel) {
+                yLabel.textContent = data.yAxisLabel;
             }
-            updateDisplay();
+
+            // --- Gráficos ---
+            renderCharts(fileBase, data.chartCount || 1);
+
+            // --- Tabela ---
+            renderTable(data);
+        })
+        .catch(() => {
+            // Sem JSON: tenta carregar pelo menos a imagem -1
+            renderCharts(fileBase, 1);
+            const tc = document.getElementById('table-container');
+            if (tc) tc.innerHTML = '<div class="table-loading">Dados indisponíveis.</div>';
+        });
+}
+
+// =============================================================
+//  RENDERIZA N GRÁFICOS (stacked)
+// =============================================================
+function renderCharts(fileBase, count) {
+    const wrapper = document.getElementById('charts-wrapper');
+    if (!wrapper) return;
+
+    let html = '';
+    for (let k = 1; k <= count; k++) {
+        const src = `graficos/${fileBase}-${k}.png`;
+        html += `
+            <div class="chart-area">
+                <img
+                    src="${src}?t=${Date.now()}"
+                    class="chart-img"
+                    alt="Gráfico ${k}"
+                    onerror="this.parentElement.style.display='none'"
+                >
+            </div>`;
+    }
+    wrapper.innerHTML = html || '<div class="chart-placeholder">Sem gráfico disponível.</div>';
+}
+
+// =============================================================
+//  RENDERIZA TABELA — blocos de COLS_POR_BLOCO colunas
+//  Replica exatamente o layout do Excel (datas + valores, wrap)
+// =============================================================
+function renderTable(data) {
+    const tc = document.getElementById('table-container');
+    if (!tc) return;
+
+    const labels = data.labels  || [];
+    const s1     = data.series1 || [];
+    const s2     = data.series2 || null;
+
+    if (labels.length === 0) {
+        tc.innerHTML = '<div class="table-loading">Sem medições registradas.</div>';
+        return;
+    }
+
+    let html = '';
+    const totalBlocos = Math.ceil(labels.length / COLS_POR_BLOCO);
+
+    for (let b = 0; b < totalBlocos; b++) {
+        const inicio = b * COLS_POR_BLOCO;
+        const fim    = Math.min(inicio + COLS_POR_BLOCO, labels.length);
+
+        const chunkLabels = labels.slice(inicio, fim);
+        const chunkS1     = s1.slice(inicio, fim);
+        const chunkS2     = s2 ? s2.slice(inicio, fim) : null;
+
+        html += `<table class="custom-table table-block">`;
+        html += `<thead>`;
+
+        // Linha de título apenas no primeiro bloco
+        if (b === 0) {
+            html += `<tr><th class="table-main-title" colspan="${chunkLabels.length}">ÚLTIMAS 24 MEDIÇÕES</th></tr>`;
         }
 
-        function updateDisplay() {
-            const tab = tabsConfig[currentTabIdx];
-            const item = tab.items[currentItemIdx];
-            
-            document.getElementById('current-section').innerHTML = `<i class="fa-solid fa-microchip"></i> ${tab.section}`;
-            renderCard(item);
-            
-            // Update dots
-            const dotsContainer = document.getElementById('nav-dots');
-            dotsContainer.innerHTML = '';
-            tab.items.forEach((_, idx) => {
-                const dot = document.createElement('div');
-                dot.className = `dot ${idx === currentItemIdx ? 'active' : ''}`;
-                dot.onclick = () => { currentItemIdx = idx; resetRotation(); updateDisplay(); };
-                dotsContainer.appendChild(dot);
-            });
+        // Linha de datas (cabeçalhos)
+        html += '<tr>' + chunkLabels.map(l => `<th>${l}</th>`).join('') + '</tr>';
+        html += `</thead><tbody>`;
+
+        // Linha de valores série 1
+        html += '<tr>' + chunkS1.map(v => `<td>${v ?? ''}</td>`).join('') + '</tr>';
+
+        // Linha de valores série 2 (se existir)
+        if (chunkS2 && chunkS2.some(v => v !== null && v !== '')) {
+            html += '<tr>' + chunkS2.map(v => `<td>${v ?? ''}</td>`).join('') + '</tr>';
         }
 
-        function resetRotation() {
-            clearInterval(rotationTimer);
-            rotationTimer = setInterval(nextItem, 10000); // 10 segundos por card
-        }
+        html += `</tbody></table>`;
+    }
 
-        function initClock() {
-            setInterval(() => {
-                const now = new Date();
-                document.getElementById('clock-date').innerText = now.toLocaleDateString('pt-BR');
-                document.getElementById('clock-time').innerText = now.toLocaleTimeString('pt-BR');
-            }, 1000);
-        }
+    tc.innerHTML = html;
+}
 
-        // Inicialização
-        window.onload = () => {
-            initClock();
-            updateDisplay();
-            resetRotation();
-            
-            // Auto-refresh de dados a cada 60s
-            setInterval(() => {
-                document.getElementById('last-sync').innerText = 'Agora';
-                updateDisplay(); // Recarrega o card atual para buscar novos JSONs
-            }, 60000);
-        };
-    </script>
+// =============================================================
+//  ROTAÇÃO AUTOMÁTICA
+// =============================================================
+function nextItem() {
+    const tab = tabsConfig[currentTabIdx];
+    currentItemIdx++;
+    if (currentItemIdx >= tab.items.length) {
+        currentItemIdx = 0;
+        currentTabIdx++;
+        if (currentTabIdx >= tabsConfig.length) currentTabIdx = 0;
+    }
+    updateDisplay();
+}
+
+function updateDisplay() {
+    const tab  = tabsConfig[currentTabIdx];
+    const item = tab.items[currentItemIdx];
+
+    document.getElementById('current-section').textContent = tab.section;
+    renderCard(item);
+
+    // Nav dots
+    const dotsContainer = document.getElementById('nav-dots');
+    dotsContainer.innerHTML = '';
+    tab.items.forEach((_, idx) => {
+        const dot = document.createElement('div');
+        dot.className = `dot${idx === currentItemIdx ? ' active' : ''}`;
+        dot.onclick = () => { currentItemIdx = idx; resetRotation(); updateDisplay(); };
+        dotsContainer.appendChild(dot);
+    });
+}
+
+function resetRotation() {
+    clearInterval(rotationTimer);
+    rotationTimer = setInterval(nextItem, 10000); // 10s por card
+}
+
+// =============================================================
+//  RELÓGIO
+// =============================================================
+function initClock() {
+    function tick() {
+        const now = new Date();
+        document.getElementById('clock-date').textContent = now.toLocaleDateString('pt-BR');
+        document.getElementById('clock-time').textContent = now.toLocaleTimeString('pt-BR');
+    }
+    tick();
+    setInterval(tick, 1000);
+}
+
+// =============================================================
+//  INICIALIZAÇÃO
+// =============================================================
+window.onload = () => {
+    initClock();
+    updateDisplay();
+    resetRotation();
+
+    // Recarrega o card atual a cada 60s para pegar novos dados
+    setInterval(() => {
+        document.getElementById('last-sync').textContent = new Date().toLocaleTimeString('pt-BR');
+        updateDisplay();
+    }, 60000);
+};
+</script>
 </body>
 </html>
