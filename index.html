@@ -3,277 +3,726 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="refresh" content="300">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <title>Controle de Banhos Químicos - JGS | WEG</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --weg-blue: #00458F; --weg-blue-dark: #003366; --weg-blue-light: #E6F0FA;
-      --weg-orange: #E67E22; --weg-gray-50: #F9FAFB; --weg-gray-100: #F3F4F6;
-      --weg-gray-200: #E5E7EB; --weg-gray-300: #D1D5DB; --weg-gray-500: #6B7280;
-      --weg-gray-700: #374151; --weg-gray-900: #111827;
-      --success: #059669; --success-light: #D1FAE5; --success-dark: #065F46;
-      --warning: #D97706; --warning-light: #FEF3C7; --warning-dark: #92400E;
-      --danger: #DC2626; --danger-light: #FEE2E2; --danger-dark: #991B1B;
-      --shadow: 0 4px 12px rgba(0,69,143,0.08);
-      --shadow-lg: 0 12px 32px rgba(0,69,143,0.15);
-      --radius: 12px; --radius-sm: 8px;
+      /* Paleta WEG - Alto Contraste para TV */
+      --weg-blue: #00458F;
+      --weg-blue-dark: #002A55;
+      --weg-blue-light: #B3D1F0;
+      --weg-orange: #E67E22;
+      --weg-gray-50: #FAFAFA;
+      --weg-gray-100: #F5F5F5;
+      --weg-gray-200: #E0E0E0;
+      --weg-gray-400: #9E9E9E;
+      --weg-gray-700: #212121;
+      --weg-gray-900: #000000;
+      --success: #1B5E20;
+      --success-light: #C8E6C9;
+      --warning: #E65100;
+      --warning-light: #FFE0B2;
+      --danger: #B71C1C;
+      --danger-light: #FFCDD2;
+      --shadow: 0 6px 20px rgba(0,42,85,0.15);
+      --shadow-lg: 0 16px 48px rgba(0,42,85,0.25);
+      --radius: 16px;
+      --radius-sm: 10px;
+      
+      /* 📺 Configurações TV */
+      --font-base: 1.15rem;
+      --font-large: 1.4rem;
+      --font-xlarge: 2rem;
+      --spacing-unit: 1.2rem;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* 🚫 KIOSK MODE: Remove TODA interatividade */
+    * { 
+      margin: 0; padding: 0; box-sizing: border-box;
+      cursor: none !important;
+      user-select: none !important;
+      -webkit-user-select: none !important;
+      -webkit-touch-callout: none !important;
+      -webkit-tap-highlight-color: transparent !important;
+    }
+    
+    html, body {
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      font-feature-settings: "pnum" 1, "tnum" 1;
+    }
+
     body {
-      background: var(--weg-gray-50); color: var(--weg-gray-900);
+      background: var(--weg-gray-50);
+      color: var(--weg-gray-900);
       font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-      min-height: 100vh; line-height: 1.5; overflow-x: hidden;
+      font-size: var(--font-base);
+      line-height: 1.5;
+      /* 🔄 Anti burn-in: leve variação de fundo */
+      animation: bgShift 120s ease-in-out infinite alternate;
     }
+
+    @keyframes bgShift {
+      0% { background: linear-gradient(135deg, #FAFAFA 0%, #F5F7FA 100%); }
+      50% { background: linear-gradient(135deg, #F5F7FA 0%, #FAFAFA 100%); }
+      100% { background: linear-gradient(135deg, #FAFAFA 0%, #F5F7FA 100%); }
+    }
+
+    /* Header - Fixo e legível à distância */
     header {
-      background: white; border-bottom: 4px solid var(--weg-blue);
-      padding: 16px 32px; display: flex; align-items: center; justify-content: space-between;
-      box-shadow: var(--shadow); position: sticky; top: 0; z-index: 100;
+      background: white;
+      border-bottom: 5px solid var(--weg-blue);
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 100px;
     }
-    .header-brand { display: flex; align-items: center; gap: 16px; }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
     .logo-badge {
       background: linear-gradient(135deg, var(--weg-blue), var(--weg-blue-dark));
-      color: white; padding: 8px 16px; border-radius: var(--radius-sm);
-      font-weight: 700; font-size: 1.1rem; letter-spacing: 0.5px;
+      color: white;
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+      font-weight: 800;
+      font-size: var(--font-large);
+      letter-spacing: 1px;
+      box-shadow: 0 4px 12px rgba(0,42,85,0.2);
     }
-    header h1 { font-size: 1.25rem; font-weight: 600; color: var(--weg-gray-900); letter-spacing: 0.3px; }
-    header h1 span { color: var(--weg-blue); font-weight: 700; }
-    .clock-block { text-align: right; }
+
+    header h1 {
+      font-size: var(--font-large);
+      font-weight: 700;
+      color: var(--weg-gray-900);
+      letter-spacing: 0.5px;
+      line-height: 1.3;
+    }
+
+    header h1 span {
+      color: var(--weg-blue);
+      font-weight: 800;
+    }
+
+    .clock-block {
+      text-align: right;
+      min-width: 200px;
+    }
+
     #relogio {
-      font-size: 1.6rem; font-weight: 700; color: var(--weg-blue-dark);
-      font-variant-numeric: tabular-nums; font-family: 'Inter', monospace;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--weg-blue-dark);
+      font-variant-numeric: tabular-nums;
+      font-family: 'Inter', monospace;
+      letter-spacing: -1px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
-    #contador { font-size: 0.8rem; color: var(--weg-gray-500); margin-top: 2px; font-weight: 500; }
-    #contador span { color: var(--weg-blue); font-weight: 700; }
-    
-    .secao { padding: 24px 32px 16px; }
+
+    #contador {
+      font-size: 1rem;
+      color: var(--weg-gray-400);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    #contador span {
+      color: var(--weg-blue);
+      font-weight: 800;
+    }
+
+    /* Seções */
+    .secao {
+      padding: 28px 40px 20px;
+    }
+
     .secao-header {
-      display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
-      padding-bottom: 12px; border-bottom: 2px solid var(--weg-gray-200);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 3px solid var(--weg-gray-200);
     }
+
     .secao-icon {
-      width: 32px; height: 32px; background: var(--weg-blue); border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      color: white; font-weight: 700; font-size: 0.9rem; flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      background: var(--weg-blue);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(0,69,143,0.2);
     }
+
     .secao-titulo {
-      font-size: 1.1rem; font-weight: 700; color: var(--weg-blue-dark);
-      text-transform: uppercase; letter-spacing: 0.8px;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--weg-blue-dark);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
     }
+
     .secao-subtitulo {
-      font-size: 0.85rem; color: var(--weg-gray-500); font-weight: 500;
-      margin-left: 44px; margin-top: 4px;
+      font-size: 1rem;
+      color: var(--weg-gray-400);
+      font-weight: 600;
+      margin-left: 60px;
+      margin-top: 6px;
     }
-    
-    /* Carousel 2 cards */
-    .carousel-wrapper { position: relative; overflow: hidden; padding: 0 8px; }
-    .carousel-track { display: flex; transition: transform 0.5s ease-in-out; width: 100%; }
+
+    /* 🎠 CAROUSEL AUTOMÁTICO - 2 cards por slide */
+    .carousel-wrapper {
+      position: relative;
+      overflow: hidden;
+      padding: 0 12px;
+      /* 🔄 Micro-shift anti burn-in */
+      animation: microShift 300s ease-in-out infinite alternate;
+    }
+
+    @keyframes microShift {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(1px); }
+      50% { transform: translateX(0); }
+      75% { transform: translateX(-1px); }
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 100%;
+      will-change: transform;
+    }
+
     .carousel-slide {
-      min-width: 100%; display: grid; grid-template-columns: repeat(2, 1fr);
-      gap: 20px; padding: 0 4px;
+      min-width: 100%;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      padding: 0 8px;
     }
-    
-    /* Card */
+
+    /* Card - Otimizado para TV */
     .card {
-      background: white; border: 1px solid var(--weg-gray-200); border-radius: var(--radius);
-      overflow: hidden; transition: all 0.25s ease; box-shadow: var(--shadow);
-      display: flex; flex-direction: column; height: 100%;
+      background: white;
+      border: 2px solid var(--weg-gray-200);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      /* 🔄 Fade suave entre slides */
+      animation: cardFade 0.6s ease-out forwards;
     }
-    .card:hover { border-color: var(--weg-blue); box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+
+    @keyframes cardFade {
+      from { opacity: 0.8; transform: scale(0.99); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
     .card-header {
-      background: var(--weg-gray-100); padding: 12px 16px; font-size: 0.85rem;
-      font-weight: 600; color: var(--weg-gray-700); letter-spacing: 0.3px;
-      display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--weg-gray-200);
+      background: var(--weg-gray-100);
+      padding: 16px 20px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--weg-gray-700);
+      letter-spacing: 0.4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 2px solid var(--weg-gray-200);
       flex-shrink: 0;
     }
-    .card-header::before { content: ''; width: 4px; height: 16px; border-radius: 2px; flex-shrink: 0; }
+
+    .card-header::before {
+      content: '';
+      width: 5px;
+      height: 20px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
     .card-header.nano::before { background: var(--weg-blue); }
     .card-header.esta::before { background: var(--success); }
+
     .card-header .status-dot {
-      width: 8px; height: 8px; border-radius: 50%; background: var(--success); margin-left: auto;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--success);
+      margin-left: auto;
+      box-shadow: 0 0 0 3px rgba(27,94,32,0.2);
     }
-    .card-header.warn .status-dot { background: var(--warning); }
-    .card-header.crit .status-dot { background: var(--danger); }
-    
-    /* Gráfico */
+
+    .card-header.warn .status-dot { 
+      background: var(--warning); 
+      box-shadow: 0 0 0 3px rgba(230,81,0,0.2);
+    }
+    .card-header.crit .status-dot { 
+      background: var(--danger); 
+      box-shadow: 0 0 0 3px rgba(183,28,28,0.2);
+      animation: pulseCrit 1.5s infinite;
+    }
+
+    @keyframes pulseCrit {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    /* Área do gráfico - 55% do card */
     .card-graph {
-      flex: 0 0 55%; min-height: 0; padding: 12px; background: white;
-      display: flex; align-items: center; justify-content: center; position: relative;
+      flex: 0 0 55%;
+      min-height: 0;
+      padding: 16px;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
     }
+
     .card-graph img {
-      max-width: 100%; max-height: 100%; width: auto; height: auto;
-      object-fit: contain; display: block; border-radius: var(--radius-sm);
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      border-radius: var(--radius-sm);
+      /* 🔄 Fade-in suave */
+      animation: imgFadeIn 0.5s ease-out forwards;
+      opacity: 0;
     }
+    
+    .card-graph img.loaded { opacity: 1; }
+    
+    @keyframes imgFadeIn {
+      to { opacity: 1; }
+    }
+
     .card-graph .erro, .chart-placeholder {
-      padding: 20px 16px; text-align: center; color: var(--weg-gray-500);
-      font-size: 0.85rem; font-weight: 500; display: none; flex-direction: column;
-      align-items: center; gap: 12px; background: var(--weg-gray-50);
-      border-radius: var(--radius-sm); width: 100%; height: 100%;
+      padding: 24px 20px;
+      text-align: center;
+      color: var(--weg-gray-400);
+      font-size: 1rem;
+      font-weight: 600;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      background: var(--weg-gray-100);
+      border-radius: var(--radius-sm);
+      width: 100%;
+      height: 100%;
     }
+
     .chart-placeholder { display: flex; }
-    .chart-placeholder i { font-size: 2rem; color: var(--warning); }
+    .chart-placeholder i { 
+      font-size: 2.5rem; 
+      color: var(--warning);
+      animation: floatIcon 3s ease-in-out infinite;
+    }
     
-    /* Sparkline CSS-only para fallback */
+    @keyframes floatIcon {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* Sparkline CSS para fallback visual */
     .sparkline {
-      width: 100%; height: 60px; display: flex; align-items: flex-end;
-      gap: 2px; padding: 8px 0; justify-content: center;
+      width: 100%;
+      height: 80px;
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      padding: 12px 0;
+      justify-content: center;
     }
+
     .sparkline span {
-      flex: 1; background: linear-gradient(to top, var(--weg-blue-light), var(--weg-blue));
-      border-radius: 2px 2px 0 0; min-width: 4px; transition: height 0.3s ease;
+      flex: 1;
+      background: linear-gradient(to top, var(--weg-blue-light), var(--weg-blue));
+      border-radius: 3px 3px 0 0;
+      min-width: 6px;
+      transition: height 0.4s ease;
     }
-    .placeholder-text {
-      font-size: 0.8rem; color: var(--weg-gray-700); font-weight: 500;
-    }
-    .placeholder-text.trend-up { color: var(--success-dark); }
-    .placeholder-text.trend-down { color: var(--danger-dark); }
     
-    /* Tabela */
+    .sparkline span.ok { background: linear-gradient(to top, var(--success-light), var(--success)); }
+    .sparkline span.warn { background: linear-gradient(to top, var(--warning-light), var(--warning)); }
+    .sparkline span.crit { background: linear-gradient(to top, var(--danger-light), var(--danger)); }
+
+    .placeholder-text {
+      font-size: 1rem;
+      color: var(--weg-gray-700);
+      font-weight: 700;
+      text-align: center;
+    }
+    
+    .placeholder-text.trend-up { color: var(--success); }
+    .placeholder-text.trend-down { color: var(--danger); }
+    .placeholder-text.stable { color: var(--weg-blue); }
+
+    /* 📊 Tabela de análises - 45% do card - FONTES AMPLIADAS */
     .card-table {
-      flex: 0 0 45%; min-height: 0; border-top: 2px solid var(--weg-gray-200);
-      background: var(--weg-gray-50); display: flex; flex-direction: column;
+      flex: 0 0 45%;
+      min-height: 0;
+      border-top: 3px solid var(--weg-gray-200);
+      background: var(--weg-gray-50);
+      display: flex;
+      flex-direction: column;
     }
+
     .table-header {
-      padding: 8px 12px; background: var(--weg-blue); color: white;
-      font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.5px; text-align: center; flex-shrink: 0;
-      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 16px;
+      background: var(--weg-blue);
+      color: white;
+      font-size: 0.95rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      text-align: center;
+      flex-shrink: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,42,85,0.1);
     }
+
     .trend-indicator {
-      font-size: 0.7rem; font-weight: 500; padding: 2px 8px; border-radius: 99px;
-      background: rgba(255,255,255,0.2);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 99px;
+      background: rgba(255,255,255,0.25);
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
+    
     .trend-indicator.up { color: var(--success-light); }
     .trend-indicator.down { color: var(--warning-light); }
-    .trend-indicator.stable { color: var(--weg-blue-light); }
-    
+    .trend-indicator.stable { color: white; }
+
     .table-scroll {
-      flex: 1; min-height: 0; overflow: auto; padding: 4px;
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      padding: 6px;
+      /* Scroll suave e discreto */
+      scroll-behavior: smooth;
     }
-    .table-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
-    .table-scroll::-webkit-scrollbar-track { background: var(--weg-gray-200); border-radius: 3px; }
-    .table-scroll::-webkit-scrollbar-thumb { background: var(--weg-blue); border-radius: 3px; }
-    
+
+    .table-scroll::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    .table-scroll::-webkit-scrollbar-track { 
+      background: var(--weg-gray-200); 
+      border-radius: 4px; 
+    }
+    .table-scroll::-webkit-scrollbar-thumb { 
+      background: var(--weg-blue); 
+      border-radius: 4px;
+      border: 2px solid var(--weg-gray-50);
+    }
+
     .analise-table {
-      width: 100%; border-collapse: collapse; font-size: 0.8rem; table-layout: fixed;
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem; /* 📺 Fonte ampliada para TV */
+      table-layout: fixed;
     }
-    .analise-table th, .analise-table td {
-      border: 1px solid var(--weg-gray-200); padding: 5px 4px; text-align: center;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500;
+
+    .analise-table th,
+    .analise-table td {
+      border: 1px solid var(--weg-gray-200);
+      padding: 8px 6px; /* 📺 Padding maior para legibilidade */
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 600;
     }
+
     .analise-table th {
-      background: var(--weg-blue-light); color: var(--weg-blue-dark);
-      font-weight: 700; font-size: 0.72rem; position: sticky; top: 0; z-index: 5;
+      background: var(--weg-blue-light);
+      color: var(--weg-blue-dark);
+      font-weight: 800;
+      font-size: 0.85rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
     }
+
     .analise-table .label-row th {
-      background: var(--weg-gray-100); color: var(--weg-gray-700); font-weight: 600;
+      background: var(--weg-gray-100);
+      color: var(--weg-gray-700);
+      font-weight: 700;
     }
-    .analise-table .value-row td { background: white; color: var(--weg-gray-900); font-weight: 600; }
+
+    .analise-table .value-row td {
+      background: white;
+      color: var(--weg-gray-900);
+      font-weight: 700;
+      font-size: 1rem; /* 📺 Números maiores */
+    }
+
+    /* 🎯 Formatação condicional por valor - ALTO CONTRASTE */
+    .analise-table .value-row td.ok { 
+      color: var(--success); 
+      font-weight: 800; 
+      background: var(--success-light);
+    }
+    .analise-table .value-row td.warn { 
+      color: var(--warning); 
+      font-weight: 800; 
+      background: var(--warning-light);
+    }
+    .analise-table .value-row td.crit { 
+      color: var(--danger); 
+      font-weight: 800; 
+      background: var(--danger-light);
+      animation: highlightCrit 2s ease-in-out infinite;
+    }
     
-    /* 🎯 Formatação condicional por valor */
-    .analise-table .value-row td.ok { color: var(--success-dark); font-weight: 700; }
-    .analise-table .value-row td.warn { color: var(--warning-dark); font-weight: 700; background: var(--warning-light); }
-    .analise-table .value-row td.crit { color: var(--danger-dark); font-weight: 700; background: var(--danger-light); }
-    
+    @keyframes highlightCrit {
+      0%, 100% { box-shadow: inset 0 0 0 2px var(--danger); }
+      50% { box-shadow: inset 0 0 0 3px var(--danger-light); }
+    }
+
     .analise-table .ref-row td {
-      background: var(--success-light); color: var(--success-dark); font-weight: 700;
-      font-size: 0.75rem;
+      background: var(--success-light);
+      color: var(--success);
+      font-weight: 800;
+      font-size: 0.9rem;
     }
+    
     .analise-table .ref-header {
-      background: var(--success); color: white; font-weight: 700; font-size: 0.7rem;
+      background: var(--success);
+      color: white;
+      font-weight: 800;
+      font-size: 0.9rem;
     }
-    
-    /* Navegação */
+
+    /* 🎯 Indicador visual de slides (apenas visual, não clicável) */
     .carousel-nav {
-      display: flex; justify-content: center; gap: 12px; padding: 20px 0 32px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      padding: 24px 0 36px;
+      pointer-events: none; /* 🚫 Desabilita cliques */
     }
+
     .nav-dot {
-      width: 14px; height: 14px; border-radius: 50%; background: var(--weg-gray-300);
-      cursor: pointer; transition: all 0.3s ease; border: 2px solid white;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--weg-gray-300);
+      transition: all 0.4s ease;
+      border: 3px solid white;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+      pointer-events: none; /* 🚫 Sem interação */
     }
-    .nav-dot:hover { background: var(--weg-blue); transform: scale(1.15); }
+
     .nav-dot.active {
-      background: var(--weg-blue); border-color: var(--weg-orange);
-      transform: scale(1.25); box-shadow: 0 0 0 3px var(--weg-blue-light);
+      background: var(--weg-blue);
+      border-color: var(--weg-orange);
+      transform: scale(1.4);
+      box-shadow: 0 0 0 4px var(--weg-blue-light), 0 6px 20px rgba(0,69,143,0.3);
     }
-    
-    /* Footer */
+
+    /* Footer - Fixo e informativo */
     footer {
-      text-align: center; padding: 20px 32px; font-size: 0.85rem;
-      color: var(--weg-gray-500); border-top: 1px solid var(--weg-gray-200);
-      margin-top: 8px; background: white; font-weight: 500;
+      text-align: center;
+      padding: 24px 40px;
+      font-size: 1rem;
+      color: var(--weg-gray-400);
+      border-top: 2px solid var(--weg-gray-200);
+      background: white;
+      font-weight: 600;
+      position: sticky;
+      bottom: 0;
+      z-index: 100;
+      box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
     }
-    footer span { color: var(--weg-blue); font-weight: 600; }
-    
-    /* Barra de progresso */
+
+    footer span {
+      color: var(--weg-blue);
+      font-weight: 800;
+    }
+
+    /* 🔄 Barra de progresso de atualização */
     .refresh-bar {
-      position: fixed; top: 0; left: 0; height: 3px;
-      background: linear-gradient(90deg, var(--weg-blue), var(--weg-orange));
-      animation: refreshProgress 60s linear infinite; z-index: 1000; opacity: 0.8;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--weg-blue), var(--weg-orange), var(--weg-blue));
+      background-size: 200% 100%;
+      animation: refreshProgress 60s linear infinite, gradientShift 3s ease-in-out infinite;
+      z-index: 1000;
+      opacity: 0.9;
     }
-    @keyframes refreshProgress { 0% { width: 0%; } 100% { width: 100%; } }
-    
-    /* Online indicator */
-    .online-indicator {
-      display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem;
-      color: var(--success); font-weight: 600; margin-left: 12px;
+
+    @keyframes refreshProgress {
+      0% { width: 0%; }
+      100% { width: 100%; }
     }
-    .online-indicator::before {
-      content: ''; width: 8px; height: 8px; background: var(--success);
-      border-radius: 50%; animation: pulse 2s infinite;
+    
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
     }
-    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.9); } }
-    
-    /* Animações */
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-    .card { animation: fadeIn 0.4s ease-out forwards; }
-    .card:nth-child(1) { animation-delay: 0.05s; }
-    .card:nth-child(2) { animation-delay: 0.1s; }
-    
-    /* Responsive */
-    @media (max-width: 1400px) {
+
+    /* 💓 Indicador "Sistema Vivo" - heartbeat visual */
+    .heartbeat {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+      color: var(--success);
+      font-weight: 700;
+      margin-left: 16px;
+    }
+
+    .heartbeat::before {
+      content: '';
+      width: 12px;
+      height: 12px;
+      background: var(--success);
+      border-radius: 50%;
+      animation: heartbeat 1.5s ease-in-out infinite;
+      box-shadow: 0 0 0 0 rgba(27,94,32,0.6);
+    }
+
+    @keyframes heartbeat {
+      0% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(27,94,32,0.6); }
+      30% { transform: scale(1.2); opacity: 0.9; box-shadow: 0 0 0 8px rgba(27,94,32,0); }
+      60% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* 🔄 Loader para carregamento inicial */
+    .initial-loader {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      z-index: 1000;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .initial-loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loader-spinner {
+      width: 60px;
+      height: 60px;
+      border: 5px solid var(--weg-gray-200);
+      border-top-color: var(--weg-blue);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loader-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--weg-gray-700);
+    }
+
+    /* 📺 Responsive para diferentes tamanhos de TV */
+    @media screen and (min-width: 1920px) {
+      :root {
+        --font-base: 1.25rem;
+        --font-large: 1.6rem;
+        --font-xlarge: 2.4rem;
+      }
+      .analise-table { font-size: 1.05rem; }
+      .analise-table .value-row td { font-size: 1.1rem; }
+    }
+
+    @media screen and (max-width: 1600px) {
       .carousel-slide { grid-template-columns: 1fr; }
       .card-graph, .card-table { flex: 0 0 50%; }
-      .analise-table { font-size: 0.75rem; }
+      header { padding: 16px 28px; height: 90px; }
+      .secao { padding: 20px 28px 16px; }
     }
-    @media (max-width: 900px) {
-      header { padding: 14px 20px; flex-direction: column; gap: 12px; text-align: center; }
-      .clock-block { text-align: center; }
-      .secao { padding: 16px 20px 8px; }
-      .secao-subtitulo { margin-left: 0; }
-      .analise-table { font-size: 0.7rem; }
-      .analise-table th, .analise-table td { padding: 4px 2px; }
+
+    @media screen and (max-height: 900px) {
+      :root { --font-base: 1rem; --font-large: 1.3rem; }
+      .card-graph { flex: 0 0 52%; }
+      .card-table { flex: 0 0 48%; }
+      .analise-table th, .analise-table td { padding: 6px 4px; }
     }
-    
-    /* Utilitários */
+
+    /* 🖨️ Otimização para captura de tela / print */
+    @media print {
+      .refresh-bar, .carousel-nav, .heartbeat::before { display: none; }
+      .card { break-inside: avoid; box-shadow: none; border: 2px solid #ccc; }
+      body { animation: none !important; }
+    }
+
+    /* 🎨 Utilitários de cor e visibilidade */
     .text-blue { color: var(--weg-blue); }
     .text-success { color: var(--success); }
+    .text-warning { color: var(--warning); }
+    .text-danger { color: var(--danger); }
     .hidden { display: none !important; }
-    
-    /* Acessibilidade: foco visível */
-    .nav-dot:focus { outline: 3px solid var(--weg-orange); outline-offset: 2px; }
-    
-    /* Print: otimizado para captura de tela */
-    @media print {
-      .refresh-bar, .carousel-nav, #contador { display: none; }
-      .card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
-    }
+    .visible { display: flex !important; }
   </style>
 </head>
 <body>
 
-<div class="refresh-bar" title="Próxima atualização em 60s"></div>
+<!-- 🔄 Barra de progresso de atualização (sempre visível) -->
+<div class="refresh-bar" aria-hidden="true"></div>
 
+<!-- 🔄 Loader inicial -->
+<div class="initial-loader" id="initial-loader">
+  <div class="loader-spinner"></div>
+  <div class="loader-text">Inicializando sistema...</div>
+  <div style="font-size:0.9rem;color:var(--weg-gray-400);font-weight:500">JGS • Controle de Banhos Químicos</div>
+</div>
+
+<!-- Header Fixo -->
 <header>
   <div class="header-brand">
     <div class="logo-badge">WEG</div>
     <h1>Controle de Banhos Químicos &nbsp;<span>JGS</span></h1>
-    <div class="online-indicator">Online</div>
+    <div class="heartbeat">Sistema Online</div>
   </div>
   <div class="clock-block">
     <div id="relogio">--:--:--</div>
-    <div id="contador">Atualiza em <span id="seg">60</span>s</div>
+    <div id="contador">Próxima atualização em <span id="seg">60</span>s</div>
   </div>
 </header>
 
@@ -284,11 +733,11 @@
       <div class="secao-icon">N</div>
       <div>
         <div class="secao-titulo">Nanocerâmico</div>
-        <div class="secao-subtitulo">Processo de conversão química • Controle de concentração (ml/L)</div>
+        <div class="secao-subtitulo">Processo de conversão química • Concentração em ml/L</div>
       </div>
     </div>
     <div class="carousel-wrapper">
-      <div class="carousel-track" id="track-nano"></div>
+      <div class="carousel-track" id="track-nano" role="region" aria-label="Gráficos Nanocerâmico"></div>
     </div>
   </div>
 
@@ -298,208 +747,267 @@
       <div class="secao-icon" style="background:var(--success)">E</div>
       <div>
         <div class="secao-titulo">Estanhagem Eletrolítica</div>
-        <div class="secao-subtitulo">Processo de deposição • Controle de parâmetros do banho (ml/L)</div>
+        <div class="secao-subtitulo">Processo de deposição • Parâmetros do banho em ml/L</div>
       </div>
     </div>
     <div class="carousel-wrapper">
-      <div class="carousel-track" id="track-esta"></div>
+      <div class="carousel-track" id="track-esta" role="region" aria-label="Gráficos Estanhagem"></div>
     </div>
   </div>
 
-  <div class="carousel-nav" id="carousel-nav"></div>
+  <!-- Indicador visual de slides (não interativo) -->
+  <div class="carousel-nav" id="carousel-nav" aria-hidden="true"></div>
 </main>
 
 <footer>
-  <i class="text-success">●</i> Sistema operacional &nbsp;|&nbsp; 
-  Auto-refresh: 60s &nbsp;|&nbsp; 
-  JGS - Controle de Processos &nbsp;|&nbsp; 
-  Última carga: <span id="ultima">--:--:--</span>
+  <span>🔄 Auto-refresh: 60s</span> &nbsp;|&nbsp; 
+  <span>JGS - Controle de Processos</span> &nbsp;|&nbsp; 
+  Última sincronia: <span id="ultima">--:--:--</span>
 </footer>
 
 <script>
   // ============================================
-  // CONFIGURAÇÃO
+  // ⚙️ CONFIGURAÇÃO PARA TV AUTÔNOMA
+  // ============================================
+  const CONFIG = {
+    autoRotateInterval: 25000,    // 25s entre slides (tempo suficiente para leitura)
+    imageRefreshInterval: 60000,   // 60s para recarregar imagens
+    dataRetryAttempts: 3,          // Tentativas de reconexão em caso de falha
+    dataRetryDelay: 5000,          // 5s entre tentativas
+    wakeLockEnabled: true,         // Previne sleep da TV
+    burnInProtection: true         // Micro-animações para evitar burn-in
+  };
+
+  // ============================================
+  // 📋 DADOS DOS PROCESSOS
   // ============================================
   const processos = {
     nano: {
       prefix: 'graficos/graf-',
       items: [
-        { id: 'des1', nome: '1º Desengraxante', file: 'des1', status: 'ok', ref: 29.0 },
-        { id: 'des2', nome: '2º Desengraxante', file: 'des2', status: 'ok', ref: 28.5 },
-        { id: 'dec1', nome: 'Decapante 1', file: 'dec1', status: 'warn', ref: 12.0 },
-        { id: 'dec2', nome: 'Decapante 2', file: 'dec2', status: 'ok', ref: 11.5 },
-        { id: 'nano', nome: 'Nanocerâmico — Concentração', file: 'nano', status: 'crit', ref: 35.0 },
-        { id: 'abso', nome: 'Nanocerâmico — Absorção', file: 'abso-nano', status: 'ok', ref: 1.2 },
-        { id: 'ph', nome: 'Nanocerâmico — pH', file: 'ph-nano', status: 'ok', ref: 4.5 },
-        { id: 'neu', nome: 'Neutralizador', file: 'neu', status: 'ok', ref: 7.0 },
-        { id: 'sel', nome: 'Selante Final', file: 'sel', status: 'ok', ref: 22.0 }
+        { id: 'des1', nome: '1º Desengraxante', file: 'des1', status: 'ok', ref: 29.0, tolerance: 4.35 },
+        { id: 'des2', nome: '2º Desengraxante', file: 'des2', status: 'ok', ref: 28.5, tolerance: 4.28 },
+        { id: 'dec1', nome: 'Decapante 1', file: 'dec1', status: 'warn', ref: 12.0, tolerance: 1.8 },
+        { id: 'dec2', nome: 'Decapante 2', file: 'dec2', status: 'ok', ref: 11.5, tolerance: 1.73 },
+        { id: 'nano', nome: 'Nanocerâmico — Concentração', file: 'nano', status: 'crit', ref: 35.0, tolerance: 5.25 },
+        { id: 'abso', nome: 'Nanocerâmico — Absorção', file: 'abso-nano', status: 'ok', ref: 1.2, tolerance: 0.18 },
+        { id: 'ph', nome: 'Nanocerâmico — pH', file: 'ph-nano', status: 'ok', ref: 4.5, tolerance: 0.68 },
+        { id: 'neu', nome: 'Neutralizador', file: 'neu', status: 'ok', ref: 7.0, tolerance: 1.05 },
+        { id: 'sel', nome: 'Selante Final', file: 'sel', status: 'ok', ref: 22.0, tolerance: 3.3 }
       ]
     },
     esta: {
       prefix: 'graficos/graf-',
       items: [
-        { id: 'des', nome: 'Desengraxante Químico', file: 'des', status: 'ok', ref: 26.0 },
-        { id: 'ativ5', nome: 'Ativação — Tanque 5', file: 'ativacao-tanque-5', status: 'warn', ref: 8.5 },
-        { id: 'ativ6', nome: 'Ativação — Tanque 6', file: 'ativacao-tanque-6', status: 'ok', ref: 8.5 },
-        { id: 'niquel', nome: 'Níquel WATT', file: 'niquel-watt', status: 'ok', ref: 45.0 },
-        { id: 'estaA', nome: 'Estanhagem A', file: 'estanhagem-a', status: 'crit', ref: 32.0 },
-        { id: 'estaB', nome: 'Estanhagem B', file: 'estanhagem-b', status: 'ok', ref: 31.5 },
-        { id: 'selante', nome: 'Selante Protetivo', file: 'selante', status: 'ok', ref: 18.0 }
+        { id: 'des', nome: 'Desengraxante Químico', file: 'des', status: 'ok', ref: 26.0, tolerance: 3.9 },
+        { id: 'ativ5', nome: 'Ativação — Tanque 5', file: 'ativacao-tanque-5', status: 'warn', ref: 8.5, tolerance: 1.28 },
+        { id: 'ativ6', nome: 'Ativação — Tanque 6', file: 'ativacao-tanque-6', status: 'ok', ref: 8.5, tolerance: 1.28 },
+        { id: 'niquel', nome: 'Níquel WATT', file: 'niquel-watt', status: 'ok', ref: 45.0, tolerance: 6.75 },
+        { id: 'estaA', nome: 'Estanhagem A', file: 'estanhagem-a', status: 'crit', ref: 32.0, tolerance: 4.8 },
+        { id: 'estaB', nome: 'Estanhagem B', file: 'estanhagem-b', status: 'ok', ref: 31.5, tolerance: 4.73 },
+        { id: 'selante', nome: 'Selante Protetivo', file: 'selante', status: 'ok', ref: 18.0, tolerance: 2.7 }
       ]
     }
   };
 
   // ============================================
-  // GERAR DADOS COM LÓGICA DE REFERÊNCIA
+  // 🎲 GERADOR DE DADOS REALISTAS (substituir por fetch real)
   // ============================================
   function gerarDadosAnalise(item) {
     const labels = [], values = [], refs = [];
-    const ref = item.ref || 25;
-    const tolerance = ref * 0.15; // ±15% da referência
+    const { ref, tolerance } = item;
     
     for (let i = 1; i <= 24; i++) {
       labels.push(`${String(i).padStart(2,'0')}h`);
-      // Simula variação realista em torno da referência
-      const noise = (Math.random() - 0.5) * tolerance * 0.8;
-      const trend = Math.sin(i * 0.4) * (tolerance * 0.3);
-      const val = (ref + noise + trend).toFixed(1);
-      values.push(parseFloat(val));
-      refs.push(ref.toFixed(1));
+      // Variação realista: tendência suave + ruído controlado
+      const trend = Math.sin(i * 0.35 + item.id.length) * (tolerance * 0.4);
+      const noise = (Math.random() - 0.5) * tolerance * 0.6;
+      const drift = (i > 18) ? (Math.random() - 0.3) * 0.8 : 0; // Leve deriva no final do turno
+      const val = ref + trend + noise + drift;
+      
+      values.push(parseFloat(val.toFixed(1)));
+      refs.push(parseFloat(ref.toFixed(1)));
     }
     return { labels, values, refs, ref, tolerance };
   }
 
   // ============================================
-  // CLASSIFICAR VALOR vs REFERÊNCIA
+  // 🎯 CLASSIFICAÇÃO DE VALOR vs REFERÊNCIA
   // ============================================
   function classificarValor(valor, ref, tolerance) {
+    if (valor === null || valor === undefined) return 'warn';
     const diff = Math.abs(valor - ref);
-    if (diff <= tolerance * 0.5) return 'ok';      // Dentro de ±7.5%
-    if (diff <= tolerance) return 'warn';           // Entre ±7.5% e ±15%
-    return 'crit';                                  // Fora de ±15%
+    const pctTolerance = tolerance / ref;
+    
+    if (diff <= tolerance * 0.5) return 'ok';      // Dentro de ±50% da tolerância
+    if (diff <= tolerance) return 'warn';           // Entre 50-100% da tolerância
+    return 'crit';                                  // Fora da tolerância
   }
 
   // ============================================
-  // GERAR SPARKLINE CSS PARA FALLBACK
+  // 📈 SPARKLINE CSS PARA FALLBACK VISUAL
   // ============================================
-  function gerarSparkline(values, ref) {
-    const max = Math.max(...values, ref) * 1.1;
-    const min = Math.min(...values, ref) * 0.9;
+  function gerarSparkline(values, ref, tolerance) {
+    const validValues = values.filter(v => v != null);
+    if (validValues.length === 0) return '';
+    
+    const max = Math.max(...validValues, ref) * 1.15;
+    const min = Math.min(...validValues, ref) * 0.85;
     const range = max - min || 1;
     
     return values.map(v => {
-      const h = ((v - min) / range) * 100;
-      const cls = classificarValor(v, ref, ref * 0.15);
-      return `<span style="height:${Math.max(h, 5)}%" class="${cls}"></span>`;
+      if (v == null) return '<span style="height:10%;background:var(--weg-gray-300)"></span>';
+      const h = Math.max(5, ((v - min) / range) * 100);
+      const cls = classificarValor(v, ref, tolerance);
+      return `<span style="height:${h}%" class="${cls}" title="${v} ml/L"></span>`;
     }).join('');
   }
 
   // ============================================
-  // CALCULAR TENDÊNCIA
+  // 📊 CALCULAR TENDÊNCIA (média inicial vs final)
   // ============================================
   function calcularTendencia(values) {
-    const first = values.slice(0, 6).reduce((a,b) => a+b, 0) / 6;
-    const last = values.slice(-6).reduce((a,b) => a+b, 0) / 6;
+    const valid = values.filter(v => v != null);
+    if (valid.length < 12) return { txt: '➡️ Dados insuficientes', cls: 'stable' };
+    
+    const first = valid.slice(0, 6).reduce((a,b) => a+b, 0) / 6;
+    const last = valid.slice(-6).reduce((a,b) => a+b, 0) / 6;
+    
+    if (first === 0) return { txt: '➡️ Estável', cls: 'stable' };
+    
     const diff = ((last - first) / first) * 100;
     
-    if (diff > 2) return { txt: `▲ ${diff.toFixed(1)}%`, cls: 'up' };
-    if (diff < -2) return { txt: `▼ ${Math.abs(diff).toFixed(1)}%`, cls: 'down' };
+    if (diff > 3) return { txt: `▲ +${diff.toFixed(1)}%`, cls: 'up' };
+    if (diff < -3) return { txt: `▼ ${diff.toFixed(1)}%`, cls: 'down' };
     return { txt: '➡️ Estável', cls: 'stable' };
   }
 
   // ============================================
-  // GERAR TABELA HTML COM FORMATAÇÃO CONDICIONAL
+  // 📋 GERAR TABELA HTML COM FORMATAÇÃO CONDICIONAL
   // ============================================
   function gerarTabelaHTML(dados) {
     const { labels, values, refs, ref, tolerance } = dados;
     const COLS = 12;
     const trend = calcularTendencia(values);
     
-    let html = `<table class="analise-table">`;
+    let html = `<table class="analise-table" role="table" aria-label="Últimas 24 análises">`;
     
-    // Labels linha 1
-    html += `<tr class="label-row">`;
-    for (let i = 0; i < COLS; i++) html += `<th>${labels[i]||''}</th>`;
+    // Cabeçalho: horários (linha 1)
+    html += `<tr class="label-row" role="row">`;
+    for (let i = 0; i < COLS; i++) {
+      html += `<th scope="col" role="columnheader">${labels[i] || ''}</th>`;
+    }
     html += `</tr>`;
     
-    // Valores linha 1 com classe condicional
-    html += `<tr class="value-row">`;
+    // Valores (linha 1) com classificação visual
+    html += `<tr class="value-row" role="row">`;
     for (let i = 0; i < COLS; i++) {
       const cls = classificarValor(values[i], ref, tolerance);
-      html += `<td class="${cls}">${values[i]??'---'}</td>`;
+      const ariaLabel = `${labels[i]}: ${values[i] ?? '---'} ml/L - Status: ${cls}`;
+      html += `<td role="cell" class="${cls}" aria-label="${ariaLabel}">${values[i] ?? '---'}</td>`;
     }
     html += `</tr>`;
     
-    // Labels linha 2
-    html += `<tr class="label-row">`;
-    for (let i = COLS; i < 24; i++) html += `<th>${labels[i]||''}</th>`;
+    // Cabeçalho: horários (linha 2)
+    html += `<tr class="label-row" role="row">`;
+    for (let i = COLS; i < 24; i++) {
+      html += `<th scope="col" role="columnheader">${labels[i] || ''}</th>`;
+    }
     html += `</tr>`;
     
-    // Valores linha 2
-    html += `<tr class="value-row">`;
+    // Valores (linha 2)
+    html += `<tr class="value-row" role="row">`;
     for (let i = COLS; i < 24; i++) {
       const cls = classificarValor(values[i], ref, tolerance);
-      html += `<td class="${cls}">${values[i]??'---'}</td>`;
+      const ariaLabel = `${labels[i]}: ${values[i] ?? '---'} ml/L - Status: ${cls}`;
+      html += `<td role="cell" class="${cls}" aria-label="${ariaLabel}">${values[i] ?? '---'}</td>`;
     }
     html += `</tr>`;
     
-    // Referência
-    html += `<tr class="ref-row ref-header"><th colspan="${COLS}">📈 Referência: ${ref.toFixed(1)} ml/L (±${(tolerance/ref*100).toFixed(0)}%)</th></tr>`;
-    html += `<tr class="ref-row">`;
-    for (let i = 0; i < COLS; i++) html += `<td>${refs[i]??'---'}</td>`;
-    html += `</tr><tr class="ref-row">`;
-    for (let i = COLS; i < 24; i++) html += `<td>${refs[i]??'---'}</td>`;
+    // Linha de referência destacada
+    html += `<tr class="ref-row ref-header" role="row">
+      <th scope="col" colspan="${COLS}" role="columnheader">
+        📈 Referência: ${ref.toFixed(1)} ml/L (±${((tolerance/ref)*100).toFixed(0)}%)
+      </th>
+    </tr>`;
+    
+    html += `<tr class="ref-row" role="row">`;
+    for (let i = 0; i < COLS; i++) html += `<td role="cell">${refs[i]?.toFixed(1) ?? '---'}</td>`;
+    html += `</tr><tr class="ref-row" role="row">`;
+    for (let i = COLS; i < 24; i++) html += `<td role="cell">${refs[i]?.toFixed(1) ?? '---'}</td>`;
     html += `</tr></table>`;
     
     return { html, trend };
   }
 
   // ============================================
-  // CRIAR CARD COMPLETO
+  // 🃏 CRIAR CARD COMPLETO (gráfico + tabela)
   // ============================================
   function criarCard(item, processo) {
     const dados = gerarDadosAnalise(item);
     const { html: tabelaHtml, trend } = gerarTabelaHTML(dados);
     const statusClass = item.status === 'ok' ? '' : item.status === 'warn' ? 'warn' : 'crit';
     const classeHeader = processo === 'nano' ? 'nano' : 'esta';
-    const sparkline = gerarSparkline(dados.values, dados.ref);
+    const sparkline = gerarSparkline(dados.values, dados.ref, dados.tolerance);
+    const imgSrc = `${processos[processo].prefix}${item.file}.png`;
     
     return `
-      <div class="card" role="region" aria-label="${item.nome}">
-        <div class="card-header ${classeHeader} ${statusClass}">
-          ${item.nome}
-          <span class="status-dot" aria-hidden="true"></span>
-        </div>
+      <article class="card" role="article" aria-labelledby="card-title-${item.id}">
+        <header class="card-header ${classeHeader} ${statusClass}">
+          <span id="card-title-${item.id}">${item.nome}</span>
+          <span class="status-dot" aria-label="Status: ${item.status}" aria-hidden="true"></span>
+        </header>
         
-        <div class="card-graph">
-          <img src="${processos[processo].prefix}${item.file}.png?t=${Date.now()}" 
-               alt="Gráfico de tendência: ${item.nome}"
-               onerror="this.closest('.card-graph').querySelector('.chart-placeholder').style.display='flex';this.style.display='none'">
+        <section class="card-graph" aria-label="Gráfico de tendência">
+          <img 
+            src="${imgSrc}?t=${Date.now()}" 
+            alt="Gráfico de concentração: ${item.nome}"
+            class="chart-img"
+            onload="this.classList.add('loaded')"
+            onerror="handleImageError(this)">
           
-          <div class="chart-placeholder" role="img" aria-label="Gráfico indisponível - exibindo tendência simplificada">
+          <div class="chart-placeholder" role="img" aria-label="Visualização alternativa do gráfico">
             <i aria-hidden="true">📊</i>
             <div class="sparkline" aria-hidden="true">${sparkline}</div>
             <span class="placeholder-text trend-${trend.cls}">
               ${trend.txt} • Ref: ${dados.ref.toFixed(1)} ml/L
             </span>
           </div>
-        </div>
+        </section>
         
-        <div class="card-table">
+        <section class="card-table" aria-label="Dados numéricos">
           <div class="table-header">
             <span>📊 Últimas 24 Análises</span>
-            <span class="trend-indicator ${trend.cls}">${trend.txt}</span>
+            <span class="trend-indicator ${trend.cls}" aria-label="Tendência: ${trend.txt}">
+              ${trend.txt}
+            </span>
           </div>
-          <div class="table-scroll" tabindex="0" aria-label="Tabela com valores horários">
+          <div class="table-scroll" role="region" aria-label="Tabela com valores horários em ml/L">
             ${tabelaHtml}
           </div>
-        </div>
-      </div>
+        </section>
+      </article>
     `;
   }
 
   // ============================================
-  // MONTAR CAROUSEL
+  // 🖼️ HANDLER DE ERRO DE IMAGEM (fallback automático)
+  // ============================================
+  window.handleImageError = function(img) {
+    img.style.display = 'none';
+    const placeholder = img.closest('.card-graph')?.querySelector('.chart-placeholder');
+    if (placeholder) {
+      placeholder.style.display = 'flex';
+      // 🔄 Tentar recarregar após delay (recuperação automática)
+      setTimeout(() => {
+        const src = img.src.split('?')[0];
+        img.src = `${src}?retry=${Date.now()}`;
+      }, CONFIG.dataRetryDelay);
+    }
+  };
+
+  // ============================================
+  // 🎠 MONTAR CAROUSEL AUTOMÁTICO
   // ============================================
   function montarCarousel(processo, trackId) {
     const track = document.getElementById(trackId);
@@ -508,11 +1016,13 @@
     const items = processos[processo].items;
     let slideCount = 0;
     
+    // Agrupa em pares (2 cards por slide)
     for (let i = 0; i < items.length; i += 2) {
       const slide = document.createElement('div');
       slide.className = 'carousel-slide';
       slide.setAttribute('role', 'group');
-      slide.setAttribute('aria-label', `Slide ${Math.floor(i/2)+1} de ${processo}`);
+      slide.setAttribute('aria-roledescription', 'slide');
+      slide.setAttribute('aria-label', `Grupo ${Math.floor(i/2)+1} de ${processo}`);
       
       slide.innerHTML = criarCard(items[i], processo);
       if (items[i+1]) slide.innerHTML += criarCard(items[i+1], processo);
@@ -524,107 +1034,276 @@
   }
 
   // ============================================
-  // CONTROLE DO CAROUSEL
+  // 🔄 CONTROLE DO CAROUSEL (100% AUTOMÁTICO)
   // ============================================
-  let currentSlide = 0, totalSlides = 0, autoRotateTimer;
+  let currentSlide = 0;
+  let totalSlides = 0;
+  let autoRotateTimer = null;
+  let isTransitioning = false;
 
-  function goToSlide(index) {
+  function goToSlide(index, force = false) {
+    if (isTransitioning && !force) return;
     if (index < 0 || index >= totalSlides) return;
+    
+    isTransitioning = true;
     currentSlide = index;
-    document.querySelectorAll('.carousel-track').forEach(t => {
-      t.style.transform = `translateX(-${index * 100}%)`;
+    
+    // Move ambas as tracks simultaneamente
+    document.querySelectorAll('.carousel-track').forEach(track => {
+      track.style.transform = `translateX(-${index * 100}%)`;
     });
+    
+    // Atualiza dots (apenas visual)
     document.querySelectorAll('.nav-dot').forEach((dot, i) => {
       dot.classList.toggle('active', i === index);
-      dot.setAttribute('aria-current', i === index ? 'true' : 'false');
     });
+    
+    // Reset flag após transição
+    setTimeout(() => { isTransitioning = false; }, 900);
   }
 
-  function nextSlide() { goToSlide((currentSlide + 1) % totalSlides); }
+  function nextSlide() {
+    goToSlide((currentSlide + 1) % totalSlides);
+  }
 
   function criarDots(count) {
     const nav = document.getElementById('carousel-nav');
     if (!nav) return;
-    nav.innerHTML = '';
-    nav.setAttribute('role', 'tablist');
-    nav.setAttribute('aria-label', 'Navegação entre grupos de análise');
     
+    nav.innerHTML = '';
     for (let i = 0; i < count; i++) {
-      const dot = document.createElement('button');
-      dot.className = `nav-dot ${i===0?'active':''}`;
-      dot.setAttribute('role', 'tab');
-      dot.setAttribute('aria-label', `Ir para grupo ${i+1}`);
-      dot.setAttribute('aria-current', i===0 ? 'true' : 'false');
-      dot.onclick = () => { goToSlide(i); resetAutoRotate(); };
-      dot.onkeydown = (e) => { if(e.key==='Enter'||e.key===' ') { e.preventDefault(); goToSlide(i); } };
+      const dot = document.createElement('div');
+      dot.className = `nav-dot ${i === 0 ? 'active' : ''}`;
+      dot.setAttribute('aria-hidden', 'true');
       nav.appendChild(dot);
     }
   }
 
-  function resetAutoRotate() {
+  function startAutoRotation() {
     if (autoRotateTimer) clearInterval(autoRotateTimer);
-    autoRotateTimer = setInterval(nextSlide, 20000);
+    autoRotateTimer = setInterval(nextSlide, CONFIG.autoRotateInterval);
+  }
+
+  function resetAutoRotation() {
+    startAutoRotation();
   }
 
   // ============================================
-  // RELÓGIO / CONTADOR / REFRESH
+  # ⏰ RELÓGIO / CONTADOR / SYNC
   // ============================================
   function atualizarRelogio() {
     const agora = new Date();
     const h = String(agora.getHours()).padStart(2,'0');
     const m = String(agora.getMinutes()).padStart(2,'0');
     const s = String(agora.getSeconds()).padStart(2,'0');
+    
     document.getElementById('relogio').textContent = `${h}:${m}:${s}`;
     document.getElementById('ultima').textContent = `${h}:${m}:${s}`;
   }
-  setInterval(atualizarRelogio, 1000); atualizarRelogio();
 
-  let seg = 60;
-  setInterval(() => {
-    seg = (seg - 1 + 60) % 60;
-    document.getElementById('seg').textContent = seg;
-    const el = document.getElementById('seg');
-    el.style.color = seg <= 5 ? 'var(--weg-orange)' : 'var(--weg-blue)';
-  }, 1000);
+  function iniciarRelogio() {
+    atualizarRelogio();
+    setInterval(atualizarRelogio, 1000);
+  }
+
+  function iniciarContador() {
+    let seg = 60;
+    setInterval(() => {
+      seg = (seg - 1 + 60) % 60;
+      document.getElementById('seg').textContent = seg;
+      
+      // Destaque visual nos últimos segundos
+      const el = document.getElementById('seg');
+      if (seg <= 10) {
+        el.style.color = 'var(--weg-orange)';
+        el.style.fontWeight = '800';
+      } else {
+        el.style.color = 'var(--weg-blue)';
+        el.style.fontWeight = '700';
+      }
+    }, 1000);
+  }
 
   function recarregarImagens() {
-    document.querySelectorAll('.card-graph img').forEach(img => {
-      const src = img.src.split('?')[0];
-      img.src = `${src}?t=${Date.now()}`;
+    document.querySelectorAll('.chart-img').forEach(img => {
+      if (img.style.display !== 'none') {
+        const src = img.src.split('?')[0];
+        img.src = `${src}?t=${Date.now()}`;
+        img.classList.remove('loaded');
+      }
     });
     atualizarRelogio();
   }
-  setTimeout(recarregarImagens, 5000);
-  setInterval(recarregarImagens, 60000);
+
+  function iniciarRefresh() {
+    // Primeira recarga após carregamento inicial
+    setTimeout(() => {
+      recarregarImagens();
+      // Recargas periódicas
+      setInterval(recarregarImagens, CONFIG.imageRefreshInterval);
+    }, 10000);
+  }
 
   // ============================================
-  // INICIALIZAÇÃO + WAKE LOCK
+  // 🔒 PREVENÇÃO DE SLEEP / SCREENSAVER
   // ============================================
-  window.addEventListener('load', () => {
-    const s1 = montarCarousel('nano', 'track-nano');
-    const s2 = montarCarousel('esta', 'track-esta');
-    totalSlides = Math.max(s1, s2);
-    criarDots(totalSlides);
-    resetAutoRotate();
-    
-    // Wake Lock para TV
-    if ('wakeLock' in navigator) {
-      let lock = null;
-      const request = async () => {
-        try { lock = await navigator.wakeLock.request('screen'); } 
-        catch(e) { console.log('WakeLock:', e.message); }
-      };
-      request();
-      document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'visible' && !lock) request();
-      });
+  async function ativarWakeLock() {
+    if (!CONFIG.wakeLockEnabled || !('wakeLock' in navigator)) {
+      console.log('ℹ️ Wake Lock não disponível - usando fallback');
+      return;
     }
-    console.log('✅ Dashboard JGS otimizado • White WEG • Acessível • 2 cards');
-  });
+    
+    let wakeLock = null;
+    
+    const solicitarWakeLock = async () => {
+      try {
+        wakeLock = await navigator.wakeLock.request('screen');
+        console.log('✅ Wake Lock ativado');
+        
+        wakeLock.addEventListener('release', () => {
+          console.log('🔓 Wake Lock liberado');
+          // Tenta reativar se a página voltar a ficar visível
+          if (document.visibilityState === 'visible') {
+            solicitarWakeLock();
+          }
+        });
+      } catch (err) {
+        console.warn('⚠️ Falha ao ativar Wake Lock:', err.message);
+      }
+    };
+    
+    // Ativa inicialmente
+    await solicitarWakeLock();
+    
+    // Reativa quando a página voltar do background
+    document.addEventListener('visibilitychange', async () => {
+      if (document.visibilityState === 'visible' && wakeLock === null) {
+        await solicitarWakeLock();
+      }
+    });
+  }
 
-  document.addEventListener('keydown', e => {
-    if (['F5','F11','F12'].includes(e.key)) e.preventDefault();
-  });
+  // Fallback para navegadores sem Wake Lock: simula atividade
+  function fallbackPreventSleep() {
+    // Envia eventos de mouse/tecla falsos periodicamente
+    setInterval(() => {
+      // Apenas para navegadores que respeitam eventos sintéticos
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true }));
+    }, 30000);
+  }
+
+  // ============================================
+  // 🔄 RECUPERAÇÃO AUTOMÁTICA DE FALHAS
+  // ============================================
+  let retryCount = 0;
+  
+  async function fetchComRetry(url, options = {}) {
+    for (let attempt = 1; attempt <= CONFIG.dataRetryAttempts; attempt++) {
+      try {
+        const response = await fetch(url, { 
+          ...options, 
+          cache: 'no-store',
+          headers: { ...options.headers, 'Cache-Control': 'no-cache' }
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return await response.json();
+      } catch (err) {
+        console.warn(`⚠️ Tentativa ${attempt}/${CONFIG.dataRetryAttempts} falhou:`, err.message);
+        if (attempt < CONFIG.dataRetryAttempts) {
+          await new Promise(res => setTimeout(res, CONFIG.dataRetryDelay * attempt));
+        } else {
+          console.error('❌ Todas as tentativas falharam');
+          throw err;
+        }
+      }
+    }
+  }
+
+  // ============================================
+  // 🚀 INICIALIZAÇÃO COMPLETA
+  // ============================================
+  async function inicializarSistema() {
+    try {
+      // 1. Ativa prevenção de sleep
+      await ativarWakeLock();
+      fallbackPreventSleep();
+      
+      // 2. Inicia relógio e contador
+      iniciarRelogio();
+      iniciarContador();
+      
+      // 3. Monta os carousels
+      const slidesNano = montarCarousel('nano', 'track-nano');
+      const slidesEsta = montarCarousel('esta', 'track-esta');
+      
+      // 4. Configura navegação visual
+      totalSlides = Math.max(slidesNano, slidesEsta);
+      criarDots(totalSlides);
+      
+      // 5. Inicia rotação automática
+      startAutoRotation();
+      
+      // 6. Inicia refresh de imagens
+      iniciarRefresh();
+      
+      // 7. Esconde loader inicial com delay suave
+      setTimeout(() => {
+        document.getElementById('initial-loader')?.classList.add('hidden');
+        console.log('✅ Dashboard JGS inicializado • Modo TV Autônomo');
+        console.log(`📊 ${document.querySelectorAll('.card').length} cards carregados`);
+        console.log(`🔄 Rotação: ${CONFIG.autoRotateInterval/1000}s • Refresh: ${CONFIG.imageRefreshInterval/1000}s`);
+      }, 1500);
+      
+      // 8. Monitora visibilidade para recuperação
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          console.log('🔄 Página visível - reativando rotação');
+          resetAutoRotation();
+          atualizarRelogio();
+        }
+      });
+      
+    } catch (err) {
+      console.error('❌ Erro na inicialização:', err);
+      // Fallback: tenta recarregar após delay
+      setTimeout(() => window.location.reload(), 10000);
+    }
+  }
+
+  // ============================================
+  // 🎯 EVENTOS GLOBAIS (proteção para TV)
+  // ============================================
+  
+  // Previne teclas de sistema em modo kiosk
+  document.addEventListener('keydown', (e) => {
+    // Permite apenas F11 para sair do fullscreen (se necessário)
+    if (['F5', 'F12', 'Ctrl+R', 'Meta+R'].includes(e.key) || 
+        (e.ctrlKey && e.key === 'r')) {
+      e.preventDefault();
+      return false;
+    }
+  }, { capture: true });
+  
+  // Previne menu de contexto (clique direito)
+  document.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    return false;
+  }, { capture: true });
+  
+  // Previne seleção de texto (acidental)
+  document.addEventListener('selectstart', (e) => {
+    e.preventDefault();
+    return false;
+  }, { capture: true });
+
+  // ============================================
+  // 🏁 INICIA QUANDO O DOM ESTIVER PRONTO
+  // ============================================
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', inicializarSistema);
+  } else {
+    inicializarSistema();
+  }
 </script>
 </body>
 </html>
