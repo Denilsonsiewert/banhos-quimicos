@@ -37,7 +37,7 @@
       flex-direction: column;
     }
 
-    /* Header - Layout Grid para Centralização Perfeita */
+    /* Header */
     header {
       background: white;
       border-bottom: 3px solid var(--weg-blue);
@@ -54,15 +54,8 @@
       width: 100%;
     }
 
-    .header-logo {
-      justify-self: start;
-    }
-
-    .logo-weg {
-      height: 50px;
-      width: auto;
-      object-fit: contain;
-    }
+    .header-logo { justify-self: start; }
+    .logo-weg { height: 50px; width: auto; object-fit: contain; }
 
     header h1 {
       font-size: 2rem;
@@ -71,11 +64,7 @@
       text-align: center;
       justify-self: center;
     }
-
-    header h1 span {
-      color: var(--weg-blue);
-      font-weight: 900;
-    }
+    header h1 span { color: var(--weg-blue); font-weight: 900; }
 
     .header-clock {
       justify-self: end;
@@ -84,14 +73,7 @@
       gap: 15px;
     }
 
-    #relogio {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: var(--weg-blue-dark);
-      font-family: 'Courier New', monospace;
-    }
-
-    #data {
+    #relogio, #data {
       font-size: 1.6rem;
       font-weight: 800;
       color: var(--weg-blue-dark);
@@ -126,6 +108,7 @@
       position: relative;
       overflow: hidden;
       border-radius: var(--radius);
+      min-height: 400px; /* Evita colapso se vazio inicialmente */
     }
 
     .carousel-track {
@@ -136,9 +119,10 @@
     .carousel-slide {
       min-width: 100%;
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, 1fr); /* 2 Cards por linha */
       gap: 25px;
       padding: 15px;
+      align-content: start;
     }
 
     /* Card */
@@ -150,6 +134,7 @@
       flex-direction: column;
       overflow: hidden;
       border: 1px solid var(--weg-gray-200);
+      height: 100%;
     }
 
     .card-header {
@@ -160,7 +145,7 @@
       background: var(--weg-blue);
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      text-align: center; /* Centralizado conforme solicitado */
+      text-align: center;
       line-height: 1.4;
     }
 
@@ -172,7 +157,7 @@
       flex: 1;
     }
 
-    /* Gráfico - Maior Destaque */
+    /* Gráfico */
     .graph-container {
       width: 100%;
       height: 300px;
@@ -208,7 +193,7 @@
       font-weight: 600;
     }
 
-    /* Tabela de Medições - Menor Destaque */
+    /* Tabela */
     .measurements-container {
       background: white;
       border-radius: var(--radius-sm);
@@ -256,26 +241,11 @@
       border: 1px solid var(--weg-gray-200);
     }
 
-    /* Status Colors - Cores Neutras */
-    .val-ok {
-      background: #E8F5E9 !important;
-      color: var(--status-ok) !important;
-    }
-
-    .val-warn {
-      background: #FFF3E0 !important;
-      color: var(--status-warn) !important;
-    }
-
-    .val-crit {
-      background: #ECEFF1 !important;
-      color: var(--status-crit) !important;
-    }
-
-    .val-nodata {
-      background: #F5F5F5 !important;
-      color: #999999 !important;
-    }
+    /* Status Colors */
+    .val-ok { background: #E8F5E9 !important; color: var(--status-ok) !important; }
+    .val-warn { background: #FFF3E0 !important; color: var(--status-warn) !important; }
+    .val-crit { background: #ECEFF1 !important; color: var(--status-crit) !important; }
+    .val-nodata { background: #F5F5F5 !important; color: #999999 !important; }
 
     /* Footer */
     footer {
@@ -289,11 +259,7 @@
       margin: 0 auto;
       width: 100%;
     }
-
-    footer span {
-      color: var(--weg-blue);
-      font-weight: 700;
-    }
+    footer span { color: var(--weg-blue); font-weight: 700; }
 
     /* Navegação */
     .carousel-nav {
@@ -302,7 +268,6 @@
       gap: 10px;
       margin-top: 20px;
     }
-
     .nav-dot {
       width: 12px;
       height: 12px;
@@ -313,19 +278,12 @@
       border: 2px solid white;
       box-shadow: var(--shadow);
     }
-
-    .nav-dot.active {
-      background: var(--weg-blue);
-      transform: scale(1.3);
-    }
+    .nav-dot.active { background: var(--weg-blue); transform: scale(1.3); }
 
     /* Loader */
     .loader-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0; width: 100%; height: 100%;
       background: white;
       z-index: 2000;
       display: flex;
@@ -335,58 +293,25 @@
       gap: 16px;
       transition: opacity 0.5s ease;
     }
-
-    .loader-overlay.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-
+    .loader-overlay.hidden { opacity: 0; pointer-events: none; }
     .spinner {
-      width: 40px;
-      height: 40px;
+      width: 40px; height: 40px;
       border: 4px solid var(--weg-gray-200);
       border-top-color: var(--weg-blue);
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     /* Responsividade */
     @media (max-width: 1200px) {
-      .carousel-slide {
-        grid-template-columns: 1fr;
-      }
-      
-      header {
-        padding: 10px 20px;
-        grid-template-columns: 1fr;
-        gap: 10px;
-      }
-      
-      .header-logo, .header-clock {
-        justify-self: center;
-      }
-      
-      .logo-weg {
-        height: 40px;
-      }
-      
-      header h1 {
-        font-size: 1.5rem;
-      }
-      
-      #relogio, #data {
-        font-size: 1.3rem;
-      }
-      
-      main {
-        padding: 20px 20px;
-      }
+      .carousel-slide { grid-template-columns: 1fr; }
+      header { padding: 10px 20px; grid-template-columns: 1fr; gap: 10px; }
+      .header-logo, .header-clock { justify-self: center; }
+      .logo-weg { height: 40px; }
+      header h1 { font-size: 1.5rem; }
+      #relogio, #data { font-size: 1.3rem; }
+      main { padding: 20px 20px; }
     }
   </style>
 </head>
@@ -421,23 +346,22 @@
 
 <script>
   const CONFIG = {
-    rotateInterval: 20000,
-    refreshInterval: 60000,
-    itemsPerSlide: 2
+    rotateInterval: 20000, // Tempo para trocar de aba (slide)
+    refreshInterval: 60000, // Tempo para atualizar dados
+    itemsPerSlide: 2 // Quantos cards cabem na tela ao mesmo tempo (Grid de 2 colunas)
   };
 
-  // Configuração dos processos e seus gráficos
+  // Configuração dos processos
+  // AQUI VOCÊ DEFINE QUAIS CARDS DEVEM APARECER. 
+  // Se o arquivo JSON não existir ou falhar, o card simplesmente não será criado.
   const processosConfig = {
     'estanhagem-eletrolitica': {
       nome: 'Estanhagem Eletrolítica',
       graficos: [
-        // Desengraxante: Nome original + Concentração
         { file: 'des', nome: 'Desengraxante Químico<br><span style="font-size:0.8em; font-weight:400;">CONCENTRAÇÃO DO BANHO EM ML/L</span>', ref: 26.0, tol: 3.9 },
         
-        // Ativação Tanque 5: Mantido pH
         { file: 'ativacao-tanque-5', nome: 'Ativação — Tanque 5<br><span style="font-size:0.8em; font-weight:400;">pH DO BANHO</span>', ref: 8.5, tol: 1.28 },
         
-        // Ativação Tanque 6: Nome original + Concentração ML/L
         { file: 'ativacao-tanque-6', nome: 'Ativação — Tanque 6<br><span style="font-size:0.8em; font-weight:400;">CONCENTRAÇÃO DO BANHO EM ML/L</span>', ref: 8.5, tol: 1.28 },
         
         { file: 'niquel-watt', nome: 'Níquel WATT', ref: 45.0, tol: 6.75 },
@@ -480,14 +404,10 @@
     }
   };
 
-  // Cache dos dados carregados
   let dadosCache = {};
 
-  // Formatar data para mostrar apenas dia/mês
   function formatarData(dataStr) {
     if (!dataStr || dataStr.trim() === '' || dataStr.trim() === '#N/D') return '--/--';
-    
-    // Limpar espaços extras que podem vir do JSON
     const cleanStr = dataStr.trim();
     let dataObj = null;
     
@@ -497,9 +417,7 @@
         const dia = parseInt(partes[0]);
         const mes = parseInt(partes[1]) - 1;
         let ano = parseInt(partes[2]);
-        
         if (ano < 100) ano += 2000;
-        
         dataObj = new Date(ano, mes, dia);
       }
     }
@@ -508,52 +426,42 @@
       dataObj = new Date(cleanStr);
     }
     
-    if (isNaN(dataObj.getTime())) {
-      return cleanStr;
-    }
+    if (isNaN(dataObj.getTime())) return cleanStr;
     
     const dia = dataObj.getDate().toString().padStart(2, '0');
     const mes = (dataObj.getMonth() + 1).toString().padStart(2, '0');
     return `${dia}/${mes}`;
   }
 
-  // Carregar dados JSON com tratamento robusto para chaves com espaços
   async function carregarDadosJSON(fileName) {
     try {
       const response = await fetch(`dados/graf-${fileName}.json?t=${Date.now()}`);
-      if (!response.ok) {
-        return null;
-      }
+      if (!response.ok) return null;
       const data = await response.json();
       return data;
     } catch (error) {
-      console.warn(`Erro ao carregar graf-${fileName}.json:`, error);
       return null;
     }
   }
 
-  // Obter medições reais do JSON
   async function getMedicoesReal(fileName) {
     const dados = await carregarDadosJSON(fileName);
-    if (!dados) return [];
+    if (!dados) return null; // Retorna null se falhar
 
-    // Tratamento robusto para chaves com espaços no final (ex: "charts ")
     const rawCharts = dados["charts"] || dados["charts "] || dados["charts  "];
-    if (!rawCharts || !rawCharts[0]) return [];
+    if (!rawCharts || !rawCharts[0]) return null;
 
     const chart = rawCharts[0];
-    // Tratamento robusto para chaves internas com espaços
     const labels = chart["labels"] || chart["labels "] || [];
     const series1 = chart["series1"] || chart["series1 "] || [];
     
     const medicoes = [];
+    // Pegar as últimas 24 medições
     const startIndex = Math.max(0, labels.length - 24);
     
     for (let i = startIndex; i < labels.length; i++) {
       const label = labels[i];
       let valorStr = series1[i] || '0';
-      
-      // Limpar espaços nos valores (ex: "#N/D ")
       valorStr = valorStr.trim();
       
       let valor = 0;
@@ -564,9 +472,7 @@
         valor = NaN;
       } else {
         valor = parseFloat(valorStr.replace(',', '.'));
-        if (isNaN(valor)) {
-          hasData = false;
-        }
+        if (isNaN(valor)) hasData = false;
       }
       
       medicoes.push({
@@ -580,7 +486,6 @@
     return medicoes;
   }
 
-  // Classificar status
   function getStatusClass(valor, ref, tol, hasData) {
     if (!hasData || isNaN(valor)) return 'val-nodata';
     const diff = Math.abs(valor - ref);
@@ -589,14 +494,14 @@
     return 'val-crit';
   }
 
-  // Renderizar tabela de medições
   async function renderTabela(graficoConfig) {
-    let medicoes;
+    let medicoes = dadosCache[graficoConfig.file];
     
-    if (dadosCache[graficoConfig.file]) {
-      medicoes = dadosCache[graficoConfig.file];
-    } else {
+    // Se não tem em cache, busca
+    if (!medicoes) {
       medicoes = await getMedicoesReal(graficoConfig.file);
+      // Se ainda assim for null (falha no fetch ou dados vazios), retorna null para indicar erro
+      if (!medicoes) return null;
       dadosCache[graficoConfig.file] = medicoes;
     }
     
@@ -622,16 +527,22 @@
       });
       html += '</tr>';
     }
-
     html += '</table>';
     return html;
   }
 
-  // Criar card individual
-  async function criarCard(graficoConfig, processoNome) {
+  // Cria o HTML do card. Retorna null se os dados falharem.
+  async function criarCard(graficoConfig) {
+    // Tenta renderizar a tabela (isso força o check de existência dos dados)
+    const tabelaHtml = await renderTabela(graficoConfig);
+    
+    // SE A TABELA FALHOU (null), NÃO CRIA O CARD
+    if (tabelaHtml === null) {
+      return null;
+    }
+
     const displayName = graficoConfig.nome;
     const fileName = graficoConfig.file;
-    const tabelaHtml = await renderTabela(graficoConfig);
 
     return `
       <div class="card">
@@ -652,91 +563,172 @@
     `;
   }
 
-  // Inicializar carrossel unificado
   async function initCarousel() {
     const track = document.getElementById('track-main');
     const nav = document.getElementById('nav-main');
+    
+    // Limpa tudo antes de começar
+    track.innerHTML = '';
+    nav.innerHTML = '';
 
-    let allSlides = [];
-    let slideIndex = 0;
+    let allValidCards = []; // Lista plana de todos os cards válidos
+    let currentProcessoName = '';
 
-    // Processar cada processo
+    // 1. Coletar todos os cards válidos de todos os processos
     for (const processoKey in processosConfig) {
       const processo = processosConfig[processoKey];
       const processoNome = processo.nome;
       const graficos = processo.graficos;
 
-      const slidesCount = Math.ceil(graficos.length / CONFIG.itemsPerSlide);
+      // Adiciona um marcador de novo processo na lista de cards
+      // Usamos um objeto especial para representar o título da seção
+      allValidCards.push({ type: 'header', name: processoNome });
 
-      for (let i = 0; i < slidesCount; i++) {
-        const slide = document.createElement('div');
-        slide.className = 'carousel-slide';
-
-        // ADICIONAR título do processo em TODOS os slides
-        const titleDiv = document.createElement('div');
-        titleDiv.style.gridColumn = '1 / -1';
-        titleDiv.style.marginBottom = '5px';
-        titleDiv.innerHTML = `<div class="secao-titulo">${processoNome}</div>`;
-        slide.appendChild(titleDiv);
-
-        const start = i * CONFIG.itemsPerSlide;
-        const slideGraficos = graficos.slice(start, start + CONFIG.itemsPerSlide);
-
-        for (const graficoConfig of slideGraficos) {
-          const cardHtml = await criarCard(graficoConfig, processoNome);
-          const cardDiv = document.createElement('div');
-          cardDiv.innerHTML = cardHtml;
-          slide.appendChild(cardDiv.firstElementChild);
+      for (const graficoConfig of graficos) {
+        const cardHtml = await criarCard(graficoConfig);
+        
+        // SÓ ADICIONA SE O CARD FOI CRIADO COM SUCESSO (não é null)
+        if (cardHtml) {
+          allValidCards.push({ type: 'card', html: cardHtml });
         }
-
-        track.appendChild(slide);
-        allSlides.push(slide);
-
-        const dot = document.createElement('div');
-        dot.className = `nav-dot ${slideIndex === 0 ? 'active' : ''}`;
-        dot.onclick = () => goToSlide(slideIndex);
-        nav.appendChild(dot);
-
-        slideIndex++;
       }
     }
 
-    let currentSlide = 0;
-    setInterval(() => {
-      currentSlide = (currentSlide + 1) % allSlides.length;
-      goToSlide(currentSlide);
-    }, CONFIG.rotateInterval);
+    // 2. Distribuir os cards válidos em Slides
+    // Cada slide comporta CONFIG.itemsPerSlide (2) cards.
+    // Se encontrar um 'header', ele ocupa a largura total e conta como parte do slide.
+    
+    let slideContent = [];
+    let slideCount = 0;
+    
+    // Função auxiliar para fechar o slide atual e criar o DOM
+    const closeCurrentSlide = () => {
+      if (slideContent.length > 0) {
+        const slideDiv = document.createElement('div');
+        slideDiv.className = 'carousel-slide';
+        
+        // Define o grid do slide. Se tiver header, ajusta.
+        // Mas o CSS já trata grid-template-columns: repeat(2, 1fr).
+        // O header terá style="grid-column: 1 / -1"
+        
+        slideContent.forEach(item => slideDiv.appendChild(item));
+        track.appendChild(slideDiv);
 
-    setInterval(async () => {
-      dadosCache = {};
-      await refreshAllCards();
-    }, CONFIG.refreshInterval);
+        // Criar bolinha de navegação
+        const dot = document.createElement('div');
+        dot.className = `nav-dot ${slideCount === 0 ? 'active' : ''}`;
+        dot.onclick = () => goToSlide(slideCount);
+        nav.appendChild(dot);
+        
+        slideCount++;
+        slideContent = [];
+      }
+    };
+
+    // Itera sobre a lista plana de cards válidos
+    // Precisamos agrupar em pares (ou pares + header)
+    
+    // Vamos simplificar: Vamos encher os slides com 2 items cada.
+    // Se um item for HEADER, ele vai sozinho no topo do slide? 
+    // Melhor estratégia: O Header é um item do grid que ocupa 100%.
+    // Então, se temos Header + Card 1, isso preenche um slide?
+    // Não, o Grid é 2 colunas. Header ocupa as 2. Card 1 ocupa 1. Sobra espaço.
+    // Para ficar bonito, vamos tentar colocar Header sempre no início de um novo Slide.
+    
+    let bufferItems = [];
+    
+    for (let i = 0; i < allValidCards.length; i++) {
+      const item = allValidCards[i];
+      
+      if (item.type === 'header') {
+        // Se já tem coisas no buffer, fecha o slide anterior
+        if (bufferItems.length > 0) closeCurrentSlide();
+        
+        // Cria o elemento de título
+        const titleDiv = document.createElement('div');
+        titleDiv.style.gridColumn = '1 / -1';
+        titleDiv.style.marginBottom = '10px';
+        titleDiv.innerHTML = `<div class="secao-titulo">${item.name}</div>`;
+        bufferItems.push(titleDiv);
+        
+        // Força o fechamento do slide após o header? 
+        // Não, vamos deixar o próximo card entrar junto.
+        // Mas para garantir layout limpo, muitas vezes Header + 2 Cards é um slide.
+        // Ou Header + 1 Card.
+        // Vamos fechar o slide SO com o header se quisermos destaque total, 
+        // mas o usuário quer 2 por aba.
+        // Vamos deixar o buffer continuar.
+      } else {
+        // É um card
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = item.html;
+        bufferItems.push(tempDiv.firstElementChild);
+      }
+      
+      // Lógica de Fechamento do Slide:
+      // Se temos 2 items REAIS (cards) no buffer (ignorando header na contagem de slots de grid?),
+      // Na verdade, o grid é simples.
+      // Se o buffer tem 3 elementos (1 Header + 2 Cards), fechamos.
+      // Se o buffer tem 2 elementos (2 Cards), fechamos.
+      // Se o buffer tem 1 Header e acabou a lista, fechamos.
+      
+      // Contar quantos CARDS reais estão no buffer
+      const realCardsInBuffer = bufferItems.filter(el => !el.querySelector('.secao-titulo')).length;
+      
+      // Se tivermos 2 cards reais, fechamos o slide (independente se tem header ou não)
+      if (realCardsInBuffer >= CONFIG.itemsPerSlide) {
+        closeCurrentSlide(); // Isso limpa o buffer
+      }
+    }
+    
+    // Fecha o último slide restante
+    if (bufferItems.length > 0) closeCurrentSlide();
+
+    // Iniciar Rotação
+    let currentSlideIndex = 0;
+    const totalSlides = slideCount;
+    
+    if (totalSlides > 0) {
+      setInterval(() => {
+        currentSlideIndex = (currentSlideIndex + 1) % totalSlides;
+        goToSlide(currentSlideIndex);
+      }, CONFIG.rotateInterval);
+    }
+
+    // Remover loader
+    setTimeout(() => {
+      document.getElementById('loader').classList.add('hidden');
+    }, 1500);
   }
 
-  // Função para atualizar todos os cards
   async function refreshAllCards() {
+    dadosCache = {}; // Limpa cache para forçar nova leitura
+    
+    // Re-executa a lógica de criação para atualizar dados
+    // Nota: Em produção, seria mais eficiente apenas atualizar os valores da tabela,
+    // mas reconstruir garante consistência se um arquivo parou de responder.
+    // Para evitar flicker, podemos apenas atualizar o innerHTML das tabelas existentes.
+    
     const cards = document.querySelectorAll('.card');
     for (const card of cards) {
       const fileName = card.querySelector('.graph-placeholder')?.textContent.match(/Gráfico: (.*)/)?.[1]?.trim();
       if (fileName) {
-        // Encontrar a configuração do gráfico
         let graficoConfig = null;
-        for (const processoKey in processosConfig) {
-          const found = processosConfig[processoKey].graficos.find(g => g.file === fileName);
-          if (found) {
-            graficoConfig = found;
-            break;
-          }
+        for (const pk in processosConfig) {
+          const found = processosConfig[pk].graficos.find(g => g.file === fileName);
+          if (found) { graficoConfig = found; break; }
         }
         
         if (graficoConfig) {
           const tabelaHtml = await renderTabela(graficoConfig);
-          const container = card.querySelector('.measurements-container');
-          if (container) {
-            container.innerHTML = `
-              <div class="table-title">Últimas 24 Medições</div>
-              ${tabelaHtml}
-            `;
+          if (tabelaHtml) {
+            const container = card.querySelector('.measurements-container');
+            if (container) {
+              container.innerHTML = `
+                <div class="table-title">Últimas 24 Medições</div>
+                ${tabelaHtml}
+              `;
+            }
           }
         }
       }
@@ -746,7 +738,6 @@
     document.getElementById('ultima').innerText = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   }
 
-  // Navegar para slide
   function goToSlide(index) {
     const track = document.getElementById('track-main');
     const dots = document.querySelectorAll('#nav-main .nav-dot');
@@ -754,7 +745,6 @@
     dots.forEach((d, i) => d.classList.toggle('active', i === index));
   }
 
-  // Atualizar relógio e data
   function updateClock() {
     const agora = new Date();
     document.getElementById('relogio').innerText = agora.toLocaleTimeString('pt-BR');
@@ -762,15 +752,11 @@
     document.getElementById('ultima').innerText = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   }
 
-  // Inicializar
   async function init() {
     await initCarousel();
     updateClock();
     setInterval(updateClock, 1000);
-
-    setTimeout(() => {
-      document.getElementById('loader').classList.add('hidden');
-    }, 2000);
+    setInterval(refreshAllCards, CONFIG.refreshInterval);
   }
 
   window.onload = init;
