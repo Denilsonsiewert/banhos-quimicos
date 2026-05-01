@@ -108,12 +108,13 @@
       position: relative;
       overflow: hidden;
       border-radius: var(--radius);
-      min-height: 400px; /* Evita colapso se vazio inicialmente */
+      min-height: 500px; 
     }
 
     .carousel-track {
       display: flex;
       transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      height: 100%;
     }
 
     .carousel-slide {
@@ -191,6 +192,7 @@
       color: var(--weg-gray-400);
       font-size: 0.9rem;
       font-weight: 600;
+      z-index: 1;
     }
 
     /* Tabela */
@@ -324,7 +326,8 @@
 
 <header>
   <div class="header-logo">
-    <img src="logo-weg.png" alt="WEG" class="logo-weg">
+    <!-- Certifique-se que logo-weg.png existe na mesma pasta -->
+    <img src="logo-weg.png" alt="WEG" class="logo-weg" onerror="this.style.display='none'">
   </div>
   <h1>Controle de Banhos Químicos <span>JGS</span></h1>
   <div class="header-clock">
@@ -346,14 +349,12 @@
 
 <script>
   const CONFIG = {
-    rotateInterval: 20000, // Tempo para trocar de aba (slide)
-    refreshInterval: 60000, // Tempo para atualizar dados
-    itemsPerSlide: 2 // Quantos cards cabem na tela ao mesmo tempo (Grid de 2 colunas)
+    rotateInterval: 20000, // 20 segundos por aba
+    refreshInterval: 60000, // Atualiza dados a cada 60s
+    itemsPerSlide: 2 // Quantos cards cabem na tela (Grid de 2 colunas)
   };
 
   // Configuração dos processos
-  // AQUI VOCÊ DEFINE QUAIS CARDS DEVEM APARECER. 
-  // Se o arquivo JSON não existir ou falhar, o card simplesmente não será criado.
   const processosConfig = {
     'estanhagem-eletrolitica': {
       nome: 'Estanhagem Eletrolítica',
@@ -435,11 +436,13 @@
 
   async function carregarDadosJSON(fileName) {
     try {
+      // Adiciona timestamp para evitar cache do navegador
       const response = await fetch(`dados/graf-${fileName}.json?t=${Date.now()}`);
       if (!response.ok) return null;
       const data = await response.json();
       return data;
     } catch (error) {
+      console.warn(`Falha ao carregar JSON: ${fileName}`, error);
       return null;
     }
   }
@@ -456,7 +459,6 @@
     const series1 = chart["series1"] || chart["series1 "] || [];
     
     const medicoes = [];
-    // Pegar as últimas 24 medições
     const startIndex = Math.max(0, labels.length - 24);
     
     for (let i = startIndex; i < labels.length; i++) {
@@ -497,11 +499,9 @@
   async function renderTabela(graficoConfig) {
     let medicoes = dadosCache[graficoConfig.file];
     
-    // Se não tem em cache, busca
     if (!medicoes) {
       medicoes = await getMedicoesReal(graficoConfig.file);
-      // Se ainda assim for null (falha no fetch ou dados vazios), retorna null para indicar erro
-      if (!medicoes) return null;
+      if (!medicoes) return null; // Falha crítica nos dados
       dadosCache[graficoConfig.file] = medicoes;
     }
     
@@ -531,25 +531,27 @@
     return html;
   }
 
-  // Cria o HTML do card. Retorna null se os dados falharem.
-  async function criarCard(graficoConfig) {
-    // Tenta renderizar a tabela (isso força o check de existência dos dados)
-    const tabelaHtml = await renderTabela(graficoConfig);
-    
-    // SE A TABELA FALHOU (null), NÃO CRIA O CARD
-    if (tabelaHtml === null) {
-      return null;
-    }
+  // Cria o DOM do card. Retorna NULL se os dados forem inválidos.
+  async function criarCardDOM(graficoConfig) {
+    try {
+      const tabelaHtml = await renderTabela(graficoConfig);
+      
+      // REGRA: Se não conseguiu gerar a tabela (dados nulos), não cria o card.
+      if (tabelaHtml === null) {
+        return null;
+      }
 
-    const displayName = graficoConfig.nome;
-    const fileName = graficoConfig.file;
+      const card = document.createElement('div');
+      card.className = 'card';
+      
+      const displayName = graficoConfig.nome;
+      const fileName = graficoConfig.file;
 
-    return `
-      <div class="card">
+      card.innerHTML = `
         <div class="card-header">${displayName}</div>
         <div class="card-body">
           <div class="graph-container">
-            <div class="graph-placeholder">📊 Gráfico: ${fileName}</div>
+            <div class="graph-placeholder">📊 Carregando Gráfico...</div>
             <img src="graficos/graf-${fileName}-1.png?t=${Date.now()}"
                  onerror="this.style.display='none'"
                  onload="this.previousElementSibling.style.display='none'">
@@ -559,178 +561,127 @@
             ${tabelaHtml}
           </div>
         </div>
-      </div>
-    `;
+      `;
+      return card;
+    } catch (e) {
+      console.error("Erro ao criar card:", e);
+      return null;
+    }
   }
 
   async function initCarousel() {
     const track = document.getElementById('track-main');
     const nav = document.getElementById('nav-main');
     
-    // Limpa tudo antes de começar
     track.innerHTML = '';
     nav.innerHTML = '';
 
-    let allValidCards = []; // Lista plana de todos os cards válidos
-    let currentProcessoName = '';
+    let allCardsDOM = []; // Array plano de todos os elementos de card válidos
+    let processHeaders = []; // Para saber onde inserir títulos de seção
 
-    // 1. Coletar todos os cards válidos de todos os processos
+    // 1. Coletar todos os cards válidos
     for (const processoKey in processosConfig) {
       const processo = processosConfig[processoKey];
-      const processoNome = processo.nome;
-      const graficos = processo.graficos;
-
-      // Adiciona um marcador de novo processo na lista de cards
-      // Usamos um objeto especial para representar o título da seção
-      allValidCards.push({ type: 'header', name: processoNome });
-
-      for (const graficoConfig of graficos) {
-        const cardHtml = await criarCard(graficoConfig);
-        
-        // SÓ ADICIONA SE O CARD FOI CRIADO COM SUCESSO (não é null)
-        if (cardHtml) {
-          allValidCards.push({ type: 'card', html: cardHtml });
+      
+      // Adicionamos um marcador de cabeçalho no array lógico
+      // Mas vamos tratar a inserção visual no passo seguinte
+      
+      for (const graficoConfig of processo.graficos) {
+        const cardElement = await criarCardDOM(graficoConfig);
+        if (cardElement) {
+          allCardsDOM.push(cardElement);
         }
       }
     }
 
-    // 2. Distribuir os cards válidos em Slides
-    // Cada slide comporta CONFIG.itemsPerSlide (2) cards.
-    // Se encontrar um 'header', ele ocupa a largura total e conta como parte do slide.
-    
-    let slideContent = [];
-    let slideCount = 0;
-    
-    // Função auxiliar para fechar o slide atual e criar o DOM
-    const closeCurrentSlide = () => {
-      if (slideContent.length > 0) {
-        const slideDiv = document.createElement('div');
-        slideDiv.className = 'carousel-slide';
-        
-        // Define o grid do slide. Se tiver header, ajusta.
-        // Mas o CSS já trata grid-template-columns: repeat(2, 1fr).
-        // O header terá style="grid-column: 1 / -1"
-        
-        slideContent.forEach(item => slideDiv.appendChild(item));
-        track.appendChild(slideDiv);
-
-        // Criar bolinha de navegação
-        const dot = document.createElement('div');
-        dot.className = `nav-dot ${slideCount === 0 ? 'active' : ''}`;
-        dot.onclick = () => goToSlide(slideCount);
-        nav.appendChild(dot);
-        
-        slideCount++;
-        slideContent = [];
-      }
-    };
-
-    // Itera sobre a lista plana de cards válidos
-    // Precisamos agrupar em pares (ou pares + header)
-    
-    // Vamos simplificar: Vamos encher os slides com 2 items cada.
-    // Se um item for HEADER, ele vai sozinho no topo do slide? 
-    // Melhor estratégia: O Header é um item do grid que ocupa 100%.
-    // Então, se temos Header + Card 1, isso preenche um slide?
-    // Não, o Grid é 2 colunas. Header ocupa as 2. Card 1 ocupa 1. Sobra espaço.
-    // Para ficar bonito, vamos tentar colocar Header sempre no início de um novo Slide.
-    
-    let bufferItems = [];
-    
-    for (let i = 0; i < allValidCards.length; i++) {
-      const item = allValidCards[i];
-      
-      if (item.type === 'header') {
-        // Se já tem coisas no buffer, fecha o slide anterior
-        if (bufferItems.length > 0) closeCurrentSlide();
-        
-        // Cria o elemento de título
-        const titleDiv = document.createElement('div');
-        titleDiv.style.gridColumn = '1 / -1';
-        titleDiv.style.marginBottom = '10px';
-        titleDiv.innerHTML = `<div class="secao-titulo">${item.name}</div>`;
-        bufferItems.push(titleDiv);
-        
-        // Força o fechamento do slide após o header? 
-        // Não, vamos deixar o próximo card entrar junto.
-        // Mas para garantir layout limpo, muitas vezes Header + 2 Cards é um slide.
-        // Ou Header + 1 Card.
-        // Vamos fechar o slide SO com o header se quisermos destaque total, 
-        // mas o usuário quer 2 por aba.
-        // Vamos deixar o buffer continuar.
-      } else {
-        // É um card
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = item.html;
-        bufferItems.push(tempDiv.firstElementChild);
-      }
-      
-      // Lógica de Fechamento do Slide:
-      // Se temos 2 items REAIS (cards) no buffer (ignorando header na contagem de slots de grid?),
-      // Na verdade, o grid é simples.
-      // Se o buffer tem 3 elementos (1 Header + 2 Cards), fechamos.
-      // Se o buffer tem 2 elementos (2 Cards), fechamos.
-      // Se o buffer tem 1 Header e acabou a lista, fechamos.
-      
-      // Contar quantos CARDS reais estão no buffer
-      const realCardsInBuffer = bufferItems.filter(el => !el.querySelector('.secao-titulo')).length;
-      
-      // Se tivermos 2 cards reais, fechamos o slide (independente se tem header ou não)
-      if (realCardsInBuffer >= CONFIG.itemsPerSlide) {
-        closeCurrentSlide(); // Isso limpa o buffer
-      }
+    if (allCardsDOM.length === 0) {
+      track.innerHTML = '<div style="padding:50px; text-align:center; width:100%;">Nenhum dado disponível ou erro de conexão com os arquivos JSON.</div>';
+      document.getElementById('loader').classList.add('hidden');
+      return;
     }
-    
-    // Fecha o último slide restante
-    if (bufferItems.length > 0) closeCurrentSlide();
 
-    // Iniciar Rotação
-    let currentSlideIndex = 0;
-    const totalSlides = slideCount;
+    // 2. Montar os Slides (Paginação)
+    // Vamos agrupar os cards em grupos de CONFIG.itemsPerSlide (2)
+    // Nota: Para simplificar e garantir que não fique branco, vamos colocar apenas os cards.
+    // Os títulos das seções podem ser colocados dentro dos cards ou como um item full-width.
+    // Para manter o layout limpo de 2 colunas, vamos intercalar.
     
-    if (totalSlides > 0) {
+    // Estratégia Simplificada Robusta:
+    // Criar slides contendo exatamente 2 cards cada.
+    // Se sobrar 1 card, ele ocupa o slide sozinho (ou esticado, dependendo do CSS).
+    
+    const totalSlides = Math.ceil(allCardsDOM.length / CONFIG.itemsPerSlide);
+    
+    for (let i = 0; i < totalSlides; i++) {
+      const slide = document.createElement('div');
+      slide.className = 'carousel-slide';
+      
+      const start = i * CONFIG.itemsPerSlide;
+      const end = start + CONFIG.itemsPerSlide;
+      const slideCards = allCardsDOM.slice(start, end);
+      
+      slideCards.forEach(card => slide.appendChild(card));
+      
+      track.appendChild(slide);
+      
+      // Criar navegação
+      const dot = document.createElement('div');
+      dot.className = `nav-dot ${i === 0 ? 'active' : ''}`;
+      dot.onclick = () => goToSlide(i);
+      nav.appendChild(dot);
+    }
+
+    // Iniciar Rotação Automática
+    let currentSlideIndex = 0;
+    if (totalSlides > 1) {
       setInterval(() => {
         currentSlideIndex = (currentSlideIndex + 1) % totalSlides;
         goToSlide(currentSlideIndex);
       }, CONFIG.rotateInterval);
     }
 
-    // Remover loader
+    // Esconder Loader
     setTimeout(() => {
       document.getElementById('loader').classList.add('hidden');
-    }, 1500);
+    }, 1000);
   }
 
   async function refreshAllCards() {
-    dadosCache = {}; // Limpa cache para forçar nova leitura
+    dadosCache = {}; // Limpa cache
     
-    // Re-executa a lógica de criação para atualizar dados
-    // Nota: Em produção, seria mais eficiente apenas atualizar os valores da tabela,
-    // mas reconstruir garante consistência se um arquivo parou de responder.
-    // Para evitar flicker, podemos apenas atualizar o innerHTML das tabelas existentes.
-    
+    // Recarrega apenas as tabelas para não piscar a tela toda
     const cards = document.querySelectorAll('.card');
     for (const card of cards) {
-      const fileName = card.querySelector('.graph-placeholder')?.textContent.match(/Gráfico: (.*)/)?.[1]?.trim();
-      if (fileName) {
-        let graficoConfig = null;
-        for (const pk in processosConfig) {
-          const found = processosConfig[pk].graficos.find(g => g.file === fileName);
-          if (found) { graficoConfig = found; break; }
-        }
-        
-        if (graficoConfig) {
-          const tabelaHtml = await renderTabela(graficoConfig);
-          if (tabelaHtml) {
-            const container = card.querySelector('.measurements-container');
-            if (container) {
-              container.innerHTML = `
-                <div class="table-title">Últimas 24 Medições</div>
-                ${tabelaHtml}
-              `;
-            }
-          }
-        }
+      // Extrai o nome do arquivo do placeholder ou do título se necessário
+      // Aqui vamos confiar que o gráfico ainda está lá
+      const placeholder = card.querySelector('.graph-placeholder');
+      if(placeholder && placeholder.textContent.includes('Gráfico')) {
+         // Tenta extrair o filename do texto "📊 Gráfico: xyz" ou similar
+         // Mas como simplificamos o placeholder para "Carregando...", vamos precisar de outra forma
+         // Vamos usar o src da imagem
+         const img = card.querySelector('img');
+         if(img) {
+             const src = img.getAttribute('src');
+             const match = src.match(/graf-(.*)-1\.png/);
+             if(match && match[1]) {
+                 const fileName = match[1];
+                 // Encontrar config
+                 let config = null;
+                 for(const pk in processosConfig) {
+                     const found = processosConfig[pk].graficos.find(g => g.file === fileName);
+                     if(found) { config = found; break; }
+                 }
+                 if(config) {
+                     const tabelaHtml = await renderTabela(config);
+                     if(tabelaHtml) {
+                         const container = card.querySelector('.measurements-container');
+                         if(container) {
+                             container.innerHTML = `<div class="table-title">Últimas 24 Medições</div>${tabelaHtml}`;
+                         }
+                     }
+                 }
+             }
+         }
       }
     }
     
@@ -753,10 +704,15 @@
   }
 
   async function init() {
-    await initCarousel();
-    updateClock();
-    setInterval(updateClock, 1000);
-    setInterval(refreshAllCards, CONFIG.refreshInterval);
+    try {
+      await initCarousel();
+      updateClock();
+      setInterval(updateClock, 1000);
+      setInterval(refreshAllCards, CONFIG.refreshInterval);
+    } catch (error) {
+      console.error("Erro fatal na inicialização:", error);
+      document.getElementById('loader').innerHTML = `<div style="color:red; text-align:center">Erro ao carregar dashboard.<br>Verifique o Console (F12).</div>`;
+    }
   }
 
   window.onload = init;
