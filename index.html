@@ -2,8 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="refresh" content="1800">
   <title>Controle de Banhos Químicos - JGS | WEG</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -22,10 +21,8 @@
       --status-warn: #F57C00;
       --status-crit: #C62828;
       --shadow: 0 4px 12px rgba(0,0,0,0.1);
-      --shadow-hover: 0 8px 24px rgba(0,0,0,0.15);
       --radius: 16px;
       --radius-sm: 10px;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -33,12 +30,11 @@
     body {
       background: var(--weg-gray-50);
       color: var(--weg-gray-900);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Inter', sans-serif;
       line-height: 1.5;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      overflow-x: hidden;
     }
 
     /* ========== HEADER ========== */
@@ -56,15 +52,13 @@
       z-index: 100;
     }
 
-    .logo-container { display: flex; align-items: center; gap: 12px; }
-    .logo-weg { height: 48px; width: auto; object-fit: contain; }
+    .logo-weg { height: 48px; width: auto; }
     
     header h1 {
       font-size: 1.75rem;
       font-weight: 800;
       color: var(--weg-gray-900);
       text-align: center;
-      letter-spacing: -0.5px;
     }
     header h1 span { color: var(--weg-blue); }
 
@@ -72,28 +66,23 @@
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 2px;
     }
     #relogio {
       font-size: 1.8rem;
       font-weight: 800;
       color: var(--weg-blue-dark);
-      font-family: 'SF Mono', 'Courier New', monospace;
-      letter-spacing: 1px;
+      font-family: 'Courier New', monospace;
     }
     #data {
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 600;
       color: var(--weg-gray-700);
     }
 
-    /* ========== MAIN CONTENT ========== */
+    /* ========== MAIN ========== */
     main {
       flex: 1;
       padding: 20px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
     }
 
     .status-bar {
@@ -103,17 +92,21 @@
       padding: 10px 16px;
       background: var(--weg-blue-light);
       border-radius: var(--radius-sm);
+      margin-bottom: 20px;
       font-size: 0.9rem;
       font-weight: 500;
       color: var(--weg-blue-dark);
+    }
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     .status-dot {
       width: 10px;
       height: 10px;
       border-radius: 50%;
       background: var(--status-ok);
-      display: inline-block;
-      margin-right: 8px;
       animation: pulse 2s infinite;
     }
     @keyframes pulse {
@@ -128,13 +121,12 @@
       background: white;
       box-shadow: var(--shadow);
       overflow: hidden;
-      min-height: 520px;
+      min-height: 550px;
     }
 
     .carousel-track {
       display: flex;
-      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      will-change: transform;
+      transition: transform 0.5s ease;
     }
 
     .carousel-slide {
@@ -156,7 +148,6 @@
       border-radius: var(--radius-sm);
       text-align: center;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
       margin-bottom: 8px;
     }
 
@@ -169,21 +160,20 @@
       flex-direction: column;
       overflow: hidden;
       border: 1px solid var(--weg-gray-200);
-      transition: var(--transition);
+      transition: all 0.3s ease;
       height: 100%;
     }
     .card:hover {
-      box-shadow: var(--shadow-hover);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
       transform: translateY(-2px);
     }
     .card.new {
-      animation: highlight 2s ease-out;
+      animation: highlight 2s ease;
       border: 2px solid var(--weg-blue);
     }
     @keyframes highlight {
-      0% { box-shadow: 0 0 0 0 rgba(0, 69, 143, 0.4); }
-      70% { box-shadow: 0 0 0 10px rgba(0, 69, 143, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(0, 69, 143, 0); }
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0, 69, 143, 0.4); }
+      50% { box-shadow: 0 0 0 8px rgba(0, 69, 143, 0); }
     }
 
     .card-header {
@@ -199,14 +189,14 @@
       display: block;
       font-size: 0.85em;
       font-weight: 400;
-      opacity: 0.95;
-      margin-top: 2px;
+      opacity: 0.9;
+      margin-top: 3px;
     }
 
     .card-body {
+      padding: 16px;
       display: flex;
       flex-direction: column;
-      padding: 16px;
       gap: 14px;
       flex: 1;
     }
@@ -222,29 +212,25 @@
       justify-content: center;
       overflow: hidden;
       position: relative;
-      flex-shrink: 0;
       border: 1px dashed var(--weg-gray-200);
     }
     .graph-container img {
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
-      transition: opacity 0.3s ease;
     }
     .graph-placeholder {
       position: absolute;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      gap: 8px;
       color: var(--weg-gray-400);
       font-size: 0.9rem;
-      font-weight: 500;
-      gap: 8px;
     }
-    .graph-placeholder .spinner {
-      width: 28px;
-      height: 28px;
+    .spinner {
+      width: 32px;
+      height: 32px;
       border: 3px solid var(--weg-gray-200);
       border-top-color: var(--weg-blue);
       border-radius: 50%;
@@ -258,7 +244,6 @@
       border-radius: var(--radius-sm);
       border: 1px solid var(--weg-gray-200);
       padding: 12px;
-      flex-shrink: 0;
     }
     .table-title {
       font-weight: 700;
@@ -267,7 +252,6 @@
       margin-bottom: 10px;
       text-align: center;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
     .analise-table {
@@ -284,9 +268,6 @@
       padding: 7px 3px;
       border-radius: 5px;
       text-align: center;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
     .analise-table td {
       background: var(--weg-gray-100);
@@ -297,20 +278,20 @@
       text-align: center;
       border-radius: 5px;
       border: 1px solid var(--weg-gray-200);
-      font-family: 'SF Mono', 'Courier New', monospace;
+      font-family: 'Courier New', monospace;
     }
 
-    .val-ok { background: #E8F5E9 !important; color: var(--status-ok) !important; font-weight: 700; }
-    .val-warn { background: #FFF3E0 !important; color: var(--status-warn) !important; font-weight: 700; }
-    .val-crit { background: #FFEBEE !important; color: var(--status-crit) !important; font-weight: 700; }
-    .val-nodata { background: #F5F5F5 !important; color: #BDBDBD !important; font-style: italic; }
+    .val-ok { background: #E8F5E9 !important; color: var(--status-ok) !important; }
+    .val-warn { background: #FFF3E0 !important; color: var(--status-warn) !important; }
+    .val-crit { background: #FFEBEE !important; color: var(--status-crit) !important; }
+    .val-nodata { background: #F5F5F5 !important; color: #BDBDBD !important; }
 
-    /* ========== NAVIGATION ========== */
+    /* ========== NAV ========== */
     .carousel-nav {
       display: flex;
       justify-content: center;
       gap: 10px;
-      padding: 12px 0;
+      padding: 12px;
       background: white;
       border-top: 1px solid var(--weg-gray-200);
     }
@@ -320,15 +301,11 @@
       border-radius: 50%;
       background: var(--weg-gray-300);
       cursor: pointer;
-      transition: var(--transition);
-      border: 2px solid white;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: all 0.3s;
     }
-    .nav-dot:hover { transform: scale(1.2); }
     .nav-dot.active {
       background: var(--weg-blue);
       transform: scale(1.3);
-      box-shadow: 0 0 0 3px var(--weg-blue-light);
     }
 
     /* ========== FOOTER ========== */
@@ -339,12 +316,12 @@
       font-size: 0.85rem;
       color: var(--weg-gray-400);
       border-top: 1px solid var(--weg-gray-200);
+      margin-top: auto;
     }
     footer span { color: var(--weg-blue); font-weight: 700; }
-    #ultima { color: var(--weg-blue-dark); font-weight: 600; }
 
     /* ========== LOADER ========== */
-    .loader-overlay {
+    .loader {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
       background: white;
@@ -353,76 +330,36 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 20px;
-      transition: opacity 0.4s ease, visibility 0.4s ease;
+      gap: 16px;
+      transition: opacity 0.4s;
     }
-    .loader-overlay.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-    .loader-spinner {
-      width: 50px;
-      height: 50px;
-      border: 4px solid var(--weg-gray-200);
-      border-top-color: var(--weg-blue);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
+    .loader.hidden { opacity: 0; pointer-events: none; }
     .loader-text {
       font-weight: 600;
       color: var(--weg-blue-dark);
-      font-size: 1.1rem;
     }
 
     /* ========== RESPONSIVE ========== */
-    @media (max-width: 1400px) {
+    @media (max-width: 1200px) {
       .carousel-slide { grid-template-columns: 1fr; }
-      .graph-container { height: 240px; }
     }
-    @media (max-width: 900px) {
-      header {
-        grid-template-columns: 1fr;
-        text-align: center;
-        padding: 12px 16px;
-      }
-      .logo-container, .header-clock { justify-self: center; }
-      .header-clock { align-items: center; }
+    @media (max-width: 768px) {
+      header { grid-template-columns: 1fr; text-align: center; }
+      .logo-weg, .header-clock { justify-self: center; }
       header h1 { font-size: 1.4rem; }
-      #relogio { font-size: 1.5rem; }
-      main { padding: 16px; }
-      .graph-container { height: 200px; }
-      .analise-table td, .analise-table th { font-size: 0.7rem; padding: 5px 2px; }
-    }
-
-    /* ========== UTILS ========== */
-    .hidden { display: none !important; }
-    .text-center { text-align: center; }
-    .mt-1 { margin-top: 8px; }
-    .error-msg {
-      color: var(--status-crit);
-      font-size: 0.85rem;
-      text-align: center;
-      padding: 10px;
-      background: #FFEBEE;
-      border-radius: var(--radius-sm);
-      margin: 10px 0;
+      .graph-container { height: 220px; }
     }
   </style>
 </head>
 <body>
 
-<!-- Loader Inicial -->
-<div class="loader-overlay" id="loader">
-  <div class="loader-spinner"></div>
+<div class="loader" id="loader">
+  <div class="spinner"></div>
   <div class="loader-text">Carregando Dashboard...</div>
 </div>
 
-<!-- Header -->
 <header>
-  <div class="logo-container">
-    <img src="logo-weg.png" alt="WEG" class="logo-weg" onerror="this.style.display='none'">
-  </div>
+  <img src="logo-weg.png" alt="WEG" class="logo-weg" onerror="this.style.display='none'">
   <h1>Controle de Banhos Químicos <span>JGS</span></h1>
   <div class="header-clock">
     <div id="relogio">--:--:--</div>
@@ -430,206 +367,157 @@
   </div>
 </header>
 
-<!-- Main Content -->
 <main>
-  <!-- Barra de Status -->
   <div class="status-bar">
-    <div><span class="status-dot"></span> Sistema Online</div>
-    <div>Atualização: <span id="ultima-sync">--:--</span></div>
+    <div class="status-indicator">
+      <span class="status-dot"></span>
+      <span>Gráficos Detectados: <strong id="total-graficos">0</strong></span>
+    </div>
+    <div>Última Atualização: <span id="ultima-sync">--:--</span></div>
   </div>
 
-  <!-- Carousel -->
   <div class="carousel-wrapper">
     <div class="carousel-track" id="track"></div>
   </div>
   <div class="carousel-nav" id="nav"></div>
 </main>
 
-<!-- Footer -->
 <footer>
-  JGS - Controle de Qualidade & Processos | <span>WEG S.A.</span> | 
-  Última Sincronização: <span id="ultima">--:--</span>
+  JGS - Controle de Qualidade | <span>WEG S.A.</span> | 
+  Atualização: <span id="ultima">--:--</span>
 </footer>
 
-<!-- Script Principal -->
 <script>
   // ===========================================================
   //  CONFIGURAÇÕES
   // ===========================================================
   const CONFIG = {
-    // Intervalos em milissegundos
-    rotateInterval: 25000,        // Troca de slide no carousel
-    dataRefreshInterval: 90000,   // Atualiza dados dos cards (1.5min)
-    manifestCheckInterval: 180000, // Verifica novos gráficos (3min)
+    // GitHub Repository
+    repoOwner: 'Denilsonsiewert',
+    repoName: 'banhos-quimicos',
+    branch: 'main',
+    
+    // Pastas
+    graficosFolder: 'graficos',
+    dadosFolder: 'dados',
+    
+    // Intervalos (ms)
+    scanInterval: 120000,        // Verifica novos arquivos a cada 2 min
+    dataRefreshInterval: 90000,  // Atualiza dados a cada 1.5 min
+    rotateInterval: 25000,       // Rotação do carousel
     
     // Layout
-    itemsPerSlide: 2,             // Cards por slide (desktop)
-    maxMeasurements: 24,          // Últimas medições a exibir
-    
-    // URLs base (ajuste conforme seu repositório)
-    baseUrl: '',                  // Ex: 'https://raw.githubusercontent.com/Denilsonsiewert/banhos-quimicos/main/'
-    manifestFile: 'index-config.json',
-    
-    // Configuração padrão (fallback se manifesto não existir)
-    defaultConfig: {
-      version: '1.0',
-      lastUpdate: null,
-      processos: {
-        'estanhagem': {
-          nome: 'Estanhagem Eletrolítica',
-          graficos: [
-            { id: 'des', nome: 'Desengraxante Químico', subtitulo: 'CONCENTRAÇÃO DO BANHO EM ML/L', ref: 26.0, tol: 3.9, ativo: true },
-            { id: 'ativacao-5', nome: 'Ativação — Tanque 5', subtitulo: 'pH DO BANHO', ref: 8.5, tol: 1.28, ativo: true },
-            { id: 'ativacao-6', nome: 'Ativação — Tanque 6', subtitulo: 'CONCENTRAÇÃO EM ML/L', ref: 8.5, tol: 1.28, ativo: true },
-            { id: 'estanhagem-a', nome: 'Estanhagem A', subtitulo: 'CONCENTRAÇÃO DE Sn° (g/L)', ref: 32.0, tol: 4.8, ativo: true },
-            { id: 'estanhagem-b', nome: 'Estanhagem B', subtitulo: 'CONCENTRAÇÃO DE Sn° (g/L)', ref: 31.5, tol: 4.73, ativo: true },
-            { id: 'sel', nome: 'Selante Protetivo', subtitulo: 'CONCENTRAÇÃO EM ML/L', ref: 18.0, tol: 2.7, ativo: true }
-          ]
-        },
-        'nanoceramico': {
-          nome: 'Processo Nanocerâmico',
-          graficos: [
-            { id: 'des1', nome: '1º Desengraxante', ref: 29.0, tol: 4.35, ativo: true },
-            { id: 'des2', nome: '2º Desengraxante', ref: 28.5, tol: 4.28, ativo: true },
-            { id: 'dec1', nome: 'Decapante 1', ref: 12.0, tol: 1.8, ativo: true },
-            { id: 'dec2', nome: 'Decapante 2', ref: 11.5, tol: 1.73, ativo: true },
-            { id: 'nano', nome: 'Nanocerâmico — Conc.', ref: 35.0, tol: 5.25, ativo: true },
-            { id: 'abso-nano', nome: 'Nanocerâmico — Abs.', ref: 1.2, tol: 0.18, ativo: true },
-            { id: 'ph-nano', nome: 'Nanocerâmico — pH', ref: 4.5, tol: 0.68, ativo: true },
-            { id: 'neu', nome: 'Neutralizador', ref: 7.0, tol: 1.05, ativo: true }
-          ]
-        }
-      }
-    }
+    itemsPerSlide: 2,
+    maxMeasurements: 24
   };
 
   // Estado global
   const state = {
-    config: null,
+    graficos: [],           // Lista de gráficos detectados
     dadosCache: {},
-    renderedCards: new Set(),
     currentSlide: 0,
     totalSlides: 0,
-    rotationTimer: null,
-    refreshTimer: null,
-    manifestTimer: null
+    timers: {}
   };
 
   // ===========================================================
-  //  FUNÇÕES UTILITÁRIAS
+  //  API GITHUB - Listar Arquivos da Pasta
   // ===========================================================
   
-  function formatarDataBr(dataStr) {
-    if (!dataStr || typeof dataStr !== 'string') return '--/--';
-    const s = dataStr.trim();
-    if (s === '' || s === '#N/D' || s === 'null') return '--/--';
+  async function listarArquivosPasta(pasta) {
+    const url = `https://api.github.com/repos/${CONFIG.repoOwner}/${CONFIG.repoName}/contents/${pasta}?ref=${CONFIG.branch}`;
     
-    // Tenta parsear DD/MM/AAAA
-    if (s.includes('/')) {
-      const [d, m, a] = s.split('/');
-      if (d && m && a) {
-        const ano = a.length === 2 ? '20' + a : a;
-        return `${d.padStart(2,'0')}/${m.padStart(2,'0')}`;
-      }
-    }
-    
-    // Tenta parsear como Date
-    const date = new Date(s);
-    if (!isNaN(date)) {
-      return date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
-    }
-    
-    return s.substring(0, 5); // Fallback
-  }
-
-  function formatarHoraBr(date = new Date()) {
-    return date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-  }
-
-  function getStatusClass(valor, ref, tol, hasData) {
-    if (!hasData || valor === null || isNaN(valor)) return 'val-nodata';
-    const diff = Math.abs(valor - ref);
-    if (diff <= tol * 0.5) return 'val-ok';
-    if (diff <= tol) return 'val-warn';
-    return 'val-crit';
-  }
-
-  function parseValor(valorStr) {
-    if (!valorStr) return { valor: null, hasData: false };
-    const s = String(valorStr).trim();
-    if (s === '' || s === '#N/D' || s === '#N/A' || s === 'null') {
-      return { valor: null, hasData: false };
-    }
-    const num = parseFloat(s.replace(',', '.'));
-    return { valor: isNaN(num) ? null : num, hasData: !isNaN(num) };
-  }
-
-  // ===========================================================
-  //  FETCH E CACHE
-  // ===========================================================
-  
-  async function fetchJSON(url, cacheBust = true) {
     try {
-      const fullUrl = CONFIG.baseUrl + url + (cacheBust ? `?t=${Date.now()}` : '');
-      const response = await fetch(fullUrl, { cache: 'no-store' });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      return await response.json();
+      const response = await fetch(url, {
+        headers: {
+          'Accept': 'application/vnd.github.v3+json'
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      
+      const files = await response.json();
+      
+      // Filtra apenas PNGs e extrai informações
+      return files
+        .filter(f => f.type === 'file' && f.name.endsWith('.png'))
+        .map(f => {
+          // Extrai ID do nome do arquivo
+          // Ex: "graf-des-1.png" → { id: "des", numero: 1, nomeArquivo: "graf-des-1.png" }
+          const match = f.name.match(/graf-(.+?)(?:-(\d+))?\.png/i);
+          const id = match ? match[1] : f.name.replace('.png', '');
+          const numero = match && match[2] ? parseInt(match[2]) : 1;
+          
+          return {
+            id: id.toLowerCase(),
+            numero: numero,
+            nomeArquivo: f.name,
+            path: f.path,
+            downloadUrl: f.download_url,
+            updated: f.sha // Usamos SHA como indicador de versão
+          };
+        });
     } catch (error) {
-      console.warn(`❌ Falha ao carregar ${url}:`, error.message);
-      return null;
+      console.error('❌ Erro ao listar pasta:', error);
+      return [];
     }
   }
 
-  async function fetchManifest() {
-    try {
-      const manifest = await fetchJSON(CONFIG.manifestFile);
-      if (manifest && manifest.processos) {
-        console.log('✅ Manifesto carregado:', Object.keys(manifest.processos).length, 'processos');
-        return manifest;
-      }
-      console.log('⚠️ Manifesto inválido, usando configuração padrão');
-      return null;
-    } catch {
-      console.log('⚠️ Manifesto não encontrado, usando configuração padrão');
-      return null;
+  // ===========================================================
+  //  CARREGAR DADOS JSON
+  // ===========================================================
+  
+  async function carregarJSON(graficoId) {
+    const cacheKey = `${graficoId}_${Math.floor(Date.now() / 60000)}`;
+    
+    if (state.dadosCache[cacheKey]) {
+      return state.dadosCache[cacheKey];
     }
-  }
-
-  async function fetchGraficoData(jsonFileName) {
+    
+    // Tenta carregar JSON correspondente
+    const jsonPath = `${CONFIG.dadosFolder}/graf-${graficoId}.json`;
+    const url = `https://raw.githubusercontent.com/${CONFIG.repoOwner}/${CONFIG.repoName}/${CONFIG.branch}/${jsonPath}?t=${Date.now()}`;
+    
     try {
-      const data = await fetchJSON(`dados/${jsonFileName}.json`);
+      const response = await fetch(url);
+      if (!response.ok) return null;
+      
+      const data = await response.json();
+      state.dadosCache[cacheKey] = data;
       return data;
     } catch {
       return null;
     }
   }
 
-  // ===========================================================
-  //  PROCESSAMENTO DE DADOS
-  // ===========================================================
-  
-  function extrairMedicoes(dadosJson, maxItems = CONFIG.maxMeasurements) {
-    if (!dadosJson) return [];
+  function extrairMedicoes(dados) {
+    if (!dados) return [];
     
-    // Suporta variações de chave
-    const charts = dadosJson.charts || dadosJson['charts '] || dadosJson['charts  '];
-    if (!charts || !Array.isArray(charts) || !charts[0]) return [];
+    const charts = dados.charts || dados['charts '] || [];
+    if (!charts || !charts[0]) return [];
     
     const chart = charts[0];
     const labels = chart.labels || chart['labels '] || [];
     const series1 = chart.series1 || chart['series1 '] || [];
     
-    if (!labels.length || !series1.length) return [];
-    
-    // Pega as últimas N medições
-    const start = Math.max(0, labels.length - maxItems);
     const medicoes = [];
+    const start = Math.max(0, labels.length - CONFIG.maxMeasurements);
     
     for (let i = start; i < labels.length; i++) {
-      const { valor, hasData } = parseValor(series1[i]);
+      let valorStr = String(series1[i] || '').trim();
+      let valor = null;
+      let hasData = false;
+      
+      if (valorStr && valorStr !== '#N/D' && valorStr !== 'null') {
+        valor = parseFloat(valorStr.replace(',', '.'));
+        hasData = !isNaN(valor);
+      }
+      
       medicoes.push({
         label: labels[i] || '',
-        dataFormatada: formatarDataBr(labels[i]),
+        dataFormatada: formatarData(labels[i]),
         valor: valor,
         hasData: hasData
       });
@@ -638,54 +526,84 @@
     return medicoes;
   }
 
-  async function getMedicoesAtualizadas(jsonFileName) {
-    // Retorna do cache se tiver menos de 1 minuto
-    const cacheKey = `${jsonFileName}_${Math.floor(Date.now() / 60000)}`;
-    if (state.dadosCache[cacheKey]) {
-      return state.dadosCache[cacheKey];
+  // ===========================================================
+  //  UTILITÁRIOS
+  // ===========================================================
+  
+  function formatarData(dataStr) {
+    if (!dataStr) return '--/--';
+    const s = String(dataStr).trim();
+    if (s.includes('/')) {
+      const [d, m] = s.split('/');
+      return `${d.padStart(2,'0')}/${m.padStart(2,'0')}`;
+    }
+    try {
+      const date = new Date(s);
+      return date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+    } catch {
+      return s.substring(0, 5);
+    }
+  }
+
+  function getStatusClass(valor, ref, tol, hasData) {
+    if (!hasData || valor === null) return 'val-nodata';
+    const diff = Math.abs(valor - ref);
+    if (diff <= tol * 0.5) return 'val-ok';
+    if (diff <= tol) return 'val-warn';
+    return 'val-crit';
+  }
+
+  function getReferencias(id) {
+    // Tenta extrair referências do ID ou usa defaults
+    const refs = {
+      'des': { ref: 26.0, tol: 3.9, nome: 'Desengraxante', sub: 'CONCENTRAÇÃO (ML/L)' },
+      'ativacao': { ref: 8.5, tol: 1.28, nome: 'Ativação', sub: 'pH DO BANHO' },
+      'estanhagem': { ref: 32.0, tol: 4.8, nome: 'Estanhagem', sub: 'Sn° (g/L)' },
+      'nano': { ref: 35.0, tol: 5.25, nome: 'Nanocerâmico', sub: 'Concentração' },
+      'dec': { ref: 12.0, tol: 1.8, nome: 'Decapante', sub: 'Concentração' },
+      'sel': { ref: 18.0, tol: 2.7, nome: 'Selante', sub: 'Concentração' },
+      'neu': { ref: 7.0, tol: 1.05, nome: 'Neutralizador', sub: 'pH' }
+    };
+    
+    // Busca correspondência parcial
+    for (const [key, config] of Object.entries(refs)) {
+      if (id.toLowerCase().includes(key)) {
+        return config;
+      }
     }
     
-    const dados = await fetchGraficoData(jsonFileName);
-    const medicoes = extrairMedicoes(dados);
-    
-    if (medicoes.length > 0) {
-      state.dadosCache[cacheKey] = medicoes;
-    }
-    
-    return medicoes;
+    // Default
+    return { ref: 0, tol: 1, nome: id.toUpperCase(), sub: '' };
   }
 
   // ===========================================================
-  //  RENDERIZAÇÃO DE CARDS
+  //  RENDERIZAÇÃO
   // ===========================================================
   
-  function renderTabelaHtml(medicoes, ref, tol) {
+  function renderTabela(medicoes, ref, tol) {
     if (!medicoes || medicoes.length === 0) {
-      return '<div class="error-msg">⚠️ Sem dados disponíveis</div>';
+      return '<div style="text-align:center;padding:20px;color:#999">Sem dados</div>';
     }
     
-    const colsPerRow = 12;
     let html = '<table class="analise-table">';
+    const cols = 12;
     
-    // Renderiza até 2 linhas de 12 colunas
     for (let row = 0; row < 2; row++) {
-      const start = row * colsPerRow;
-      const chunk = medicoes.slice(start, start + colsPerRow);
+      const start = row * cols;
+      const chunk = medicoes.slice(start, start + cols);
       if (chunk.length === 0) continue;
       
-      // Cabeçalho com datas
+      // Datas
       html += '<tr>';
-      chunk.forEach(m => {
-        html += `<th title="${m.label}">${m.dataFormatada}</th>`;
-      });
+      chunk.forEach(m => html += `<th>${m.dataFormatada}</th>`);
       html += '</tr>';
       
-      // Valores com status
+      // Valores
       html += '<tr>';
       chunk.forEach(m => {
         const cls = getStatusClass(m.valor, ref, tol, m.hasData);
-        const displayValue = m.hasData ? m.valor.toFixed(2).replace('.', ',') : '---';
-        html += `<td class="${cls}" title="${m.hasData ? m.valor : 'Sem dado'}">${displayValue}</td>`;
+        const val = m.hasData ? m.valor.toFixed(2).replace('.', ',') : '---';
+        html += `<td class="${cls}">${val}</td>`;
       });
       html += '</tr>';
     }
@@ -694,103 +612,138 @@
     return html;
   }
 
-  async function criarCardElement(graficoConfig, processoNome) {
-    try {
-      const { id, nome, subtitulo, ref, tol, jsonFile } = graficoConfig;
-      
-      // Carrega dados
-      const medicoes = await getMedicoesAtualizadas(jsonFile || `graf-${id}`);
-      
-      // Cria elemento do card
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.dataset.graficoId = id;
-      
-      // Título com subtítulo opcional
-      const headerHtml = subtitulo 
-        ? `${nome}<br><small>${subtitulo}</small>`
-        : nome;
-      
-      // HTML do gráfico com fallback
-      const imageSrc = `${CONFIG.baseUrl}graficos/graf-${id}-1.png`;
-      
-      card.innerHTML = `
-        <div class="card-header">${headerHtml}</div>
-        <div class="card-body">
-          <div class="graph-container">
-            <div class="graph-placeholder">
-              <div class="spinner"></div>
-              <span>Carregando...</span>
-            </div>
-            <img src="${imageSrc}?t=${Date.now()}" 
-                 alt="${nome}"
-                 onload="this.previousElementSibling.style.display='none'; this.style.opacity='1'"
-                 onerror="this.style.display='none'; this.previousElementSibling.innerHTML='<span>📷 Gráfico indisponível</span>'">
+  async function criarCard(grafico) {
+    const { id, downloadUrl, numero } = grafico;
+    const refs = getReferencias(id);
+    
+    // Carrega dados JSON
+    const dados = await carregarJSON(id);
+    const medicoes = extrairMedicoes(dados);
+    
+    // Cria elemento
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.graficoId = id;
+    
+    const nomeDisplay = refs.nome + (numero > 1 ? ` ${numero}` : '');
+    
+    card.innerHTML = `
+      <div class="card-header">
+        ${nomeDisplay}
+        ${refs.sub ? `<small>${refs.sub}</small>` : ''}
+      </div>
+      <div class="card-body">
+        <div class="graph-container">
+          <div class="graph-placeholder">
+            <div class="spinner"></div>
+            <span>Carregando...</span>
           </div>
-          <div class="measurements-container">
-            <div class="table-title">Últimas ${CONFIG.maxMeasurements} Medições</div>
-            ${renderTabelaHtml(medicoes, ref, tol)}
-          </div>
+          <img src="${downloadUrl}?t=${Date.now()}"
+               alt="${nomeDisplay}"
+               onload="this.previousElementSibling.style.display='none'"
+               onerror="this.style.display='none';this.previousElementSibling.innerHTML='<span>📷 Indisponível</span>'">
         </div>
-      `;
+        <div class="measurements-container">
+          <div class="table-title">Últimas ${CONFIG.maxMeasurements} Medições</div>
+          ${renderTabela(medicoes, refs.ref, refs.tol)}
+        </div>
+      </div>
+    `;
+    
+    return card;
+  }
+
+  function agruparPorProcesso(graficos) {
+    // Agrupa gráficos por tipo de processo
+    const grupos = {};
+    
+    graficos.forEach(g => {
+      const refs = getReferencias(g.id);
+      const processo = refs.nome.split(' ')[0].toLowerCase();
       
-      return card;
-    } catch (error) {
-      console.error(`❌ Erro ao criar card ${graficoConfig.id}:`, error);
-      return null;
-    }
+      if (!grupos[processo]) {
+        grupos[processo] = {
+          nome: refs.nome.split(' ')[0],
+          graficos: []
+        };
+      }
+      grupos[processo].graficos.push(g);
+    });
+    
+    return grupos;
   }
 
-  // ===========================================================
-  //  CAROUSEL E NAVEGAÇÃO
-  // ===========================================================
-  
-  function criarSlide(processoKey, processoConfig, graficosSlice) {
-    const slide = document.createElement('div');
-    slide.className = 'carousel-slide';
-    slide.dataset.processo = processoKey;
-    
-    // Cabeçalho da seção
-    const header = document.createElement('div');
-    header.className = 'section-header';
-    header.textContent = processoConfig.nome;
-    slide.appendChild(header);
-    
-    // Cards
-    graficosSlice.forEach(card => slide.appendChild(card));
-    
-    return slide;
-  }
-
-  function atualizarNavegacao() {
+  async function renderizarDashboard() {
+    const track = document.getElementById('track');
     const nav = document.getElementById('nav');
+    
+    track.innerHTML = '';
     nav.innerHTML = '';
     
+    // Agrupa por processo
+    const grupos = agruparPorProcesso(state.graficos);
+    
+    let slides = [];
+    
+    // Cria slides para cada grupo
+    for (const [processoKey, grupo] of Object.entries(grupos)) {
+      // Cria cards
+      const cardsPromises = grupo.graficos.map(g => criarCard(g));
+      const cards = await Promise.all(cardsPromises);
+      
+      // Agrupa em slides de N itens
+      for (let i = 0; i < cards.length; i += CONFIG.itemsPerSlide) {
+        const slide = document.createElement('div');
+        slide.className = 'carousel-slide';
+        
+        // Header do processo
+        const header = document.createElement('div');
+        header.className = 'section-header';
+        header.textContent = grupo.nome;
+        slide.appendChild(header);
+        
+        // Cards
+        const slice = cards.slice(i, i + CONFIG.itemsPerSlide);
+        slice.forEach(card => slide.appendChild(card));
+        
+        slides.push(slide);
+      }
+    }
+    
+    // Adiciona slides
+    slides.forEach(s => track.appendChild(s));
+    
+    // Navegação
+    state.totalSlides = slides.length;
     for (let i = 0; i < state.totalSlides; i++) {
       const dot = document.createElement('div');
-      dot.className = `nav-dot${i === state.currentSlide ? ' active' : ''}`;
-      dot.addEventListener('click', () => goToSlide(i));
+      dot.className = `nav-dot${i === 0 ? ' active' : ''}`;
+      dot.onclick = () => goToSlide(i);
       nav.appendChild(dot);
     }
+    
+    // Atualiza contador
+    document.getElementById('total-graficos').textContent = state.graficos.length;
+    
+    console.log(`✅ Dashboard: ${slides.length} slides, ${state.graficos.length} gráficos`);
   }
 
   function goToSlide(index) {
     const track = document.getElementById('track');
     track.style.transform = `translateX(-${index * 100}%)`;
     
-    // Atualiza dots
-    document.querySelectorAll('.nav-dot').forEach((dot, i) => {
-      dot.classList.toggle('active', i === index);
+    document.querySelectorAll('.nav-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === index);
     });
     
     state.currentSlide = index;
   }
 
   function iniciarRotacao() {
-    if (state.rotationTimer) clearInterval(state.rotationTimer);
+    if (state.timers.rotation) clearInterval(state.timers.rotation);
     
     if (state.totalSlides > 1) {
-      state.rotationTimer = setInterval(() => {
+      state.timers.rotation = setInterval(() => {
         const next = (state.currentSlide + 1) % state.totalSlides;
         goToSlide(next);
       }, CONFIG.rotateInterval);
@@ -798,206 +751,111 @@
   }
 
   // ===========================================================
-  //  INICIALIZAÇÃO E ATUALIZAÇÃO DINÂMICA
+  //  SCAN E ATUALIZAÇÃO
   // ===========================================================
   
-  async function renderizarTodosCards() {
-    const track = document.getElementById('track');
-    track.innerHTML = '';
-    state.renderedCards.clear();
+  async function scanGraficos() {
+    console.log('🔍 Escaneando pasta graficos...');
     
-    let slides = [];
+    const arquivos = await listarArquivosPasta(CONFIG.graficosFolder);
     
-    // Processa cada processo
-    for (const [processoKey, processo] of Object.entries(state.config.processos)) {
-      const cardsPromises = processo.graficos
-        .filter(g => g.ativo !== false)
-        .map(g => criarCardElement(g, processo.nome));
-      
-      const cards = (await Promise.all(cardsPromises)).filter(Boolean);
-      
-      if (cards.length === 0) continue;
-      
-      // Agrupa cards em slides de N itens
-      for (let i = 0; i < cards.length; i += CONFIG.itemsPerSlide) {
-        const slice = cards.slice(i, i + CONFIG.itemsPerSlide);
-        const slide = criarSlide(processoKey, processo, slice);
-        slides.push(slide);
-        
-        // Marca cards como renderizados
-        slice.forEach(card => {
-          if (card.dataset.graficoId) {
-            state.renderedCards.add(card.dataset.graficoId);
-          }
-        });
-      }
+    if (arquivos.length === 0) {
+      console.warn('⚠️ Nenhum gráfico encontrado');
+      return;
     }
     
-    // Adiciona slides ao track
-    slides.forEach(slide => track.appendChild(slide));
+    // Verifica se há novos gráficos
+    const idsAtuais = state.graficos.map(g => `${g.id}-${g.numero}`).sort().join(',');
+    const idsNovos = arquivos.map(g => `${g.id}-${g.numero}`).sort().join(',');
     
-    // Atualiza estado
-    state.totalSlides = slides.length;
-    state.currentSlide = 0;
+    const temMudanca = idsAtuais !== idsNovos;
     
-    // Atualiza UI
-    atualizarNavegacao();
-    goToSlide(0);
-    iniciarRotacao();
+    state.graficos = arquivos;
     
-    console.log(`✅ Dashboard renderizado: ${slides.length} slides, ${state.renderedCards.size} cards`);
-  }
-
-  async function verificarNovosGraficos() {
-    // Recarrega manifesto
-    const novoManifest = await fetchManifest();
-    if (!novoManifest) return;
-    
-    // Compara com config atual
-    const novosProcessos = Object.keys(novoManifest.processos)
-      .filter(key => !state.config.processos[key]);
-    
-    const novosGraficos = [];
-    for (const [key, processo] of Object.entries(novoManifest.processos)) {
-      const existentes = state.config.processos[key]?.graficos.map(g => g.id) || [];
-      const novos = processo.graficos.filter(g => 
-        !existentes.includes(g.id) && g.ativo !== false
-      );
-      novosGraficos.push(...novos);
-    }
-    
-    if (novosGraficos.length > 0) {
-      console.log(`🆕 Detectados ${novosGraficos.length} novos gráficos`);
-      state.config = novoManifest;
-      await renderizarTodosCards();
+    if (temMudanca) {
+      console.log(`🆕 Mudança detectada! ${arquivos.length} gráficos encontrados`);
+      await renderizarDashboard();
+      iniciarRotacao();
       
-      // Efeito visual nos novos cards
-      document.querySelectorAll('.card.new').forEach(card => {
-        setTimeout(() => card.classList.remove('new'), 2000);
+      // Efeito "novo"
+      document.querySelectorAll('.card').forEach((c, i) => {
+        setTimeout(() => {
+          c.classList.add('new');
+          setTimeout(() => c.classList.remove('new'), 2000);
+        }, i * 100);
       });
     }
+    
+    atualizarTimestamp();
   }
 
-  async function atualizarDadosCards() {
-    // Atualiza apenas as tabelas, sem recriar cards
-    const cards = document.querySelectorAll('.card');
+  async function atualizarDados() {
+    console.log('🔄 Atualizando dados...');
+    state.dadosCache = {}; // Limpa cache
     
-    for (const card of cards) {
-      const graficoId = card.dataset.graficoId;
-      if (!graficoId) continue;
-      
-      // Encontra config do gráfico
-      let graficoConfig = null;
-      for (const processo of Object.values(state.config.processos)) {
-        const found = processo.graficos.find(g => g.id === graficoId);
-        if (found) { graficoConfig = found; break; }
-      }
-      if (!graficoConfig) continue;
-      
-      // Recarrega dados e atualiza tabela
-      const medicoes = await getMedicoesAtualizadas(graficoConfig.jsonFile || `graf-${graficoId}`);
-      const tabelaContainer = card.querySelector('.measurements-container');
-      
-      if (tabelaContainer && medicoes.length > 0) {
-        const novaTabela = renderTabelaHtml(medicoes, graficoConfig.ref, graficoConfig.tol);
-        // Mantém o título, substitui apenas a tabela
-        const titulo = tabelaContainer.querySelector('.table-title')?.outerHTML || '';
-        tabelaContainer.innerHTML = titulo + novaTabela;
-      }
-    }
-    
-    // Atualiza timestamp
-    document.getElementById('ultima-sync').textContent = formatarHoraBr();
-    document.getElementById('ultima').textContent = formatarHoraBr();
+    // Re-renderiza mantendo mesma estrutura
+    await renderizarDashboard();
+    atualizarTimestamp();
   }
 
-  // ===========================================================
-  //  RELÓGIO E EVENTOS
-  // ===========================================================
-  
+  function atualizarTimestamp() {
+    const agora = new Date().toLocaleTimeString('pt-BR', { 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    });
+    document.getElementById('ultima-sync').textContent = agora;
+    document.getElementById('ultima').textContent = agora;
+  }
+
   function iniciarRelogio() {
     function update() {
       const now = new Date();
       document.getElementById('relogio').textContent = now.toLocaleTimeString('pt-BR');
-      document.getElementById('data').textContent = now.toLocaleDateString('pt-BR', {
-        weekday: 'short', day: '2-digit', month: '2-digit'
-      }).replace('.', '').replace(',', '');
+      document.getElementById('data').textContent = now.toLocaleDateString('pt-BR');
     }
     update();
     setInterval(update, 1000);
   }
 
   function iniciarTimers() {
-    // Refresh de dados
-    state.refreshTimer = setInterval(atualizarDadosCards, CONFIG.dataRefreshInterval);
+    // Scan de novos arquivos
+    state.timers.scan = setInterval(scanGraficos, CONFIG.scanInterval);
     
-    // Verificação de novos gráficos
-    state.manifestTimer = setInterval(verificarNovosGraficos, CONFIG.manifestCheckInterval);
+    // Atualização de dados
+    state.timers.data = setInterval(atualizarDados, CONFIG.dataRefreshInterval);
   }
 
   // ===========================================================
-  //  INICIALIZAÇÃO PRINCIPAL
+  //  INICIALIZAÇÃO
   // ===========================================================
   
   async function init() {
     try {
-      // 1. Carrega configuração (manifesto ou fallback)
-      const manifest = await fetchManifest();
-      state.config = manifest || CONFIG.defaultConfig;
+      console.log('🚀 Iniciando dashboard...');
       
-      // 2. Renderiza dashboard
-      await renderizarTodosCards();
-      
-      // 3. Inicia relógio e timers
       iniciarRelogio();
+      await scanGraficos();
       iniciarTimers();
       
-      // 4. Esconde loader
+      // Esconde loader
       setTimeout(() => {
         document.getElementById('loader').classList.add('hidden');
-      }, 800);
-      
-      console.log('🚀 Dashboard inicializado com sucesso');
+      }, 1000);
       
     } catch (error) {
-      console.error('❌ Erro fatal na inicialização:', error);
+      console.error('❌ Erro fatal:', error);
       document.getElementById('loader').innerHTML = `
-        <div style="color: var(--status-crit); text-align: center; padding: 20px;">
-          <h3>⚠️ Erro ao carregar dashboard</h3>
-          <p class="mt-1">${error.message}</p>
-          <p class="mt-1" style="font-size: 0.9rem; color: var(--weg-gray-400)">
-            Verifique a conexão e recarregue a página (F5)
-          </p>
+        <div style="color:#C62828;text-align:center;padding:20px">
+          <h3>⚠️ Erro ao carregar</h3>
+          <p>${error.message}</p>
+          <p style="margin-top:10px;font-size:0.9rem">Recarregue a página (F5)</p>
         </div>
       `;
     }
   }
 
-  // Inicia quando DOM estiver pronto
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-
-  // Previne sleep da tela em TVs (opcional)
-  if ('wakeLock' in navigator) {
-    let wakeLock = null;
-    async function requestWakeLock() {
-      try {
-        wakeLock = await navigator.wakeLock.request('screen');
-        console.log('🔒 Wake Lock ativado');
-      } catch (err) {
-        console.warn('⚠️ Wake Lock não suportado:', err.message);
-      }
-    }
-    document.addEventListener('visibilitychange', () => {
-      if (wakeLock !== null && document.visibilityState === 'visible') {
-        requestWakeLock();
-      }
-    });
-    requestWakeLock();
-  }
+  // Inicia
+  window.addEventListener('DOMContentLoaded', init);
 </script>
 
 </body>
