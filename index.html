@@ -2,8 +2,8 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="300">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="refresh" content="1800">
   <title>Controle de Banhos Químicos - JGS | WEG</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -19,10 +19,10 @@
       --weg-gray-900: #1A1A1A;
       --status-ok: #2E7D32;
       --status-warn: #F57C00;
-      --status-crit: #C62828;
-      --shadow: 0 4px 12px rgba(0,0,0,0.1);
+      --status-crit: #1A1A1A;
+      --shadow: 0 2px 8px rgba(0,0,0,0.08);
       --radius: 16px;
-      --radius-sm: 10px;
+      --radius-sm: 8px;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -37,121 +37,111 @@
       flex-direction: column;
     }
 
-    /* ========== HEADER ========== */
+    /* Header - Layout Grid para Centralização Perfeita */
     header {
       background: white;
-      border-bottom: 4px solid var(--weg-blue);
-      padding: 10px 24px;
+      border-bottom: 3px solid var(--weg-blue);
+      padding: 12px 30px;
       display: grid;
-      grid-template-columns: auto 1fr auto;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      gap: 20px;
       box-shadow: var(--shadow);
       position: sticky;
       top: 0;
       z-index: 100;
+      max-width: 1600px;
+      margin: 0 auto;
+      width: 100%;
     }
 
-    .logo-weg { height: 48px; width: auto; }
-    
+    .header-logo {
+      justify-self: start;
+    }
+
+    .logo-weg {
+      height: 50px;
+      width: auto;
+      object-fit: contain;
+    }
+
     header h1 {
-      font-size: 1.75rem;
+      font-size: 2rem;
       font-weight: 800;
       color: var(--weg-gray-900);
       text-align: center;
+      justify-self: center;
     }
-    header h1 span { color: var(--weg-blue); }
+
+    header h1 span {
+      color: var(--weg-blue);
+      font-weight: 900;
+    }
 
     .header-clock {
+      justify-self: end;
       display: flex;
-      flex-direction: column;
-      align-items: flex-end;
+      align-items: center;
+      gap: 15px;
     }
+
     #relogio {
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       font-weight: 800;
       color: var(--weg-blue-dark);
       font-family: 'Courier New', monospace;
     }
+
     #data {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--weg-gray-700);
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--weg-blue-dark);
+      font-family: 'Courier New', monospace;
     }
 
-    /* ========== MAIN ========== */
+    /* Layout Principal */
     main {
       flex: 1;
-      padding: 20px 24px;
+      padding: 30px 30px;
+      max-width: 1600px;
+      margin: 0 auto;
+      width: 100%;
     }
 
-    .status-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 16px;
+    .secao-titulo {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--weg-blue-dark);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      padding: 12px 20px;
       background: var(--weg-blue-light);
       border-radius: var(--radius-sm);
-      margin-bottom: 20px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--weg-blue-dark);
-    }
-    .status-indicator {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .status-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--status-ok);
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
+      text-align: center;
+      width: 100%;
+      letter-spacing: 0.5px;
     }
 
-    /* ========== CAROUSEL ========== */
-    .carousel-wrapper {
+    /* Carousel */
+    .carousel-container {
       position: relative;
-      border-radius: var(--radius);
-      background: white;
-      box-shadow: var(--shadow);
       overflow: hidden;
-      min-height: 550px;
+      border-radius: var(--radius);
     }
 
     .carousel-track {
       display: flex;
-      transition: transform 0.5s ease;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .carousel-slide {
       min-width: 100%;
-      padding: 20px;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      align-content: start;
+      gap: 25px;
+      padding: 15px;
     }
 
-    .section-header {
-      grid-column: 1 / -1;
-      padding: 14px 20px;
-      background: linear-gradient(135deg, var(--weg-blue), var(--weg-blue-dark));
-      color: white;
-      font-size: 1.2rem;
-      font-weight: 700;
-      border-radius: var(--radius-sm);
-      text-align: center;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    /* ========== CARD ========== */
+    /* Card */
     .card {
       background: white;
       border-radius: var(--radius);
@@ -160,20 +150,6 @@
       flex-direction: column;
       overflow: hidden;
       border: 1px solid var(--weg-gray-200);
-      transition: all 0.3s ease;
-      height: 100%;
-    }
-    .card:hover {
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-      transform: translateY(-2px);
-    }
-    .card.new {
-      animation: highlight 2s ease;
-      border: 2px solid var(--weg-blue);
-    }
-    @keyframes highlight {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(0, 69, 143, 0.4); }
-      50% { box-shadow: 0 0 0 8px rgba(0, 69, 143, 0); }
     }
 
     .card-header {
@@ -182,29 +158,23 @@
       font-size: 1rem;
       color: white;
       background: var(--weg-blue);
-      text-align: center;
-      line-height: 1.4;
-    }
-    .card-header small {
-      display: block;
-      font-size: 0.85em;
-      font-weight: 400;
-      opacity: 0.9;
-      margin-top: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: center; /* Centralizado conforme solicitado */
     }
 
     .card-body {
-      padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      padding: 18px;
+      gap: 15px;
       flex: 1;
     }
 
-    /* ========== GRAPH ========== */
+    /* Gráfico - Maior Destaque */
     .graph-container {
       width: 100%;
-      height: 280px;
+      height: 300px;
       background: var(--weg-gray-100);
       border-radius: var(--radius-sm);
       display: flex;
@@ -212,118 +182,149 @@
       justify-content: center;
       overflow: hidden;
       position: relative;
-      border: 1px dashed var(--weg-gray-200);
+      flex-shrink: 0;
     }
+
     .graph-container img {
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
+      z-index: 2;
     }
+
     .graph-placeholder {
       position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
       color: var(--weg-gray-400);
       font-size: 0.9rem;
+      font-weight: 600;
     }
-    .spinner {
-      width: 32px;
-      height: 32px;
-      border: 3px solid var(--weg-gray-200);
-      border-top-color: var(--weg-blue);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ========== TABLE ========== */
+    /* Tabela de Medições - Menor Destaque */
     .measurements-container {
       background: white;
       border-radius: var(--radius-sm);
       border: 1px solid var(--weg-gray-200);
-      padding: 12px;
+      padding: 15px;
+      flex-shrink: 0;
     }
+
     .table-title {
       font-weight: 700;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       color: var(--weg-blue-dark);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       text-align: center;
       text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .analise-table {
       width: 100%;
       border-collapse: separate;
-      border-spacing: 3px;
+      border-spacing: 4px;
       table-layout: fixed;
     }
+
     .analise-table th {
       background: var(--weg-blue-light);
       color: var(--weg-blue-dark);
       font-weight: 700;
-      font-size: 0.75rem;
-      padding: 7px 3px;
-      border-radius: 5px;
+      font-size: 0.8rem;
+      padding: 8px 4px;
+      border-radius: 4px;
       text-align: center;
+      white-space: nowrap;
     }
+
     .analise-table td {
       background: var(--weg-gray-100);
       color: var(--weg-gray-900);
       font-weight: 600;
       font-size: 0.85rem;
-      padding: 7px 3px;
+      padding: 8px 4px;
       text-align: center;
-      border-radius: 5px;
+      border-radius: 4px;
       border: 1px solid var(--weg-gray-200);
-      font-family: 'Courier New', monospace;
     }
 
-    .val-ok { background: #E8F5E9 !important; color: var(--status-ok) !important; }
-    .val-warn { background: #FFF3E0 !important; color: var(--status-warn) !important; }
-    .val-crit { background: #FFEBEE !important; color: var(--status-crit) !important; }
-    .val-nodata { background: #F5F5F5 !important; color: #BDBDBD !important; }
+    /* Status Colors - Cores Neutras */
+    .val-ok {
+      background: #E8F5E9 !important;
+      color: var(--status-ok) !important;
+    }
 
-    /* ========== NAV ========== */
+    .val-warn {
+      background: #FFF3E0 !important;
+      color: var(--status-warn) !important;
+    }
+
+    .val-crit {
+      background: #ECEFF1 !important;
+      color: var(--status-crit) !important;
+    }
+
+    .val-nodata {
+      background: #F5F5F5 !important;
+      color: #999999 !important;
+    }
+
+    /* Footer */
+    footer {
+      background: white;
+      padding: 15px 30px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--weg-gray-400);
+      border-top: 1px solid var(--weg-gray-200);
+      max-width: 1600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    footer span {
+      color: var(--weg-blue);
+      font-weight: 700;
+    }
+
+    /* Navegação */
     .carousel-nav {
       display: flex;
       justify-content: center;
       gap: 10px;
-      padding: 12px;
-      background: white;
-      border-top: 1px solid var(--weg-gray-200);
+      margin-top: 20px;
     }
+
     .nav-dot {
-      width: 11px;
-      height: 11px;
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
       background: var(--weg-gray-300);
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.3s ease;
+      border: 2px solid white;
+      box-shadow: var(--shadow);
     }
+
     .nav-dot.active {
       background: var(--weg-blue);
       transform: scale(1.3);
     }
 
-    /* ========== FOOTER ========== */
-    footer {
-      background: white;
-      padding: 12px 24px;
-      text-align: center;
-      font-size: 0.85rem;
-      color: var(--weg-gray-400);
-      border-top: 1px solid var(--weg-gray-200);
-      margin-top: auto;
-    }
-    footer span { color: var(--weg-blue); font-weight: 700; }
-
-    /* ========== LOADER ========== */
-    .loader {
+    /* Loader */
+    .loader-overlay {
       position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       background: white;
       z-index: 2000;
       display: flex;
@@ -331,35 +332,74 @@
       align-items: center;
       justify-content: center;
       gap: 16px;
-      transition: opacity 0.4s;
-    }
-    .loader.hidden { opacity: 0; pointer-events: none; }
-    .loader-text {
-      font-weight: 600;
-      color: var(--weg-blue-dark);
+      transition: opacity 0.5s ease;
     }
 
-    /* ========== RESPONSIVE ========== */
-    @media (max-width: 1200px) {
-      .carousel-slide { grid-template-columns: 1fr; }
+    .loader-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
     }
-    @media (max-width: 768px) {
-      header { grid-template-columns: 1fr; text-align: center; }
-      .logo-weg, .header-clock { justify-self: center; }
-      header h1 { font-size: 1.4rem; }
-      .graph-container { height: 220px; }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--weg-gray-200);
+      border-top-color: var(--weg-blue);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Responsividade */
+    @media (max-width: 1200px) {
+      .carousel-slide {
+        grid-template-columns: 1fr;
+      }
+      
+      header {
+        padding: 10px 20px;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      
+      .header-logo, .header-clock {
+        justify-self: center;
+      }
+      
+      .logo-weg {
+        height: 40px;
+      }
+      
+      header h1 {
+        font-size: 1.5rem;
+      }
+      
+      #relogio, #data {
+        font-size: 1.3rem;
+      }
+      
+      main {
+        padding: 20px 20px;
+      }
     }
   </style>
 </head>
 <body>
 
-<div class="loader" id="loader">
+<div class="loader-overlay" id="loader">
   <div class="spinner"></div>
-  <div class="loader-text">Carregando Dashboard...</div>
+  <div style="font-weight: 700; color: var(--weg-blue-dark)">Carregando Dashboard...</div>
 </div>
 
 <header>
-  <img src="logo-weg.png" alt="WEG" class="logo-weg" onerror="this.style.display='none'">
+  <div class="header-logo">
+    <img src="logo-weg.png" alt="WEG" class="logo-weg">
+  </div>
   <h1>Controle de Banhos Químicos <span>JGS</span></h1>
   <div class="header-clock">
     <div id="relogio">--:--:--</div>
@@ -368,156 +408,153 @@
 </header>
 
 <main>
-  <div class="status-bar">
-    <div class="status-indicator">
-      <span class="status-dot"></span>
-      <span>Gráficos Detectados: <strong id="total-graficos">0</strong></span>
-    </div>
-    <div>Última Atualização: <span id="ultima-sync">--:--</span></div>
+  <div class="carousel-container">
+    <div class="carousel-track" id="track-main"></div>
   </div>
-
-  <div class="carousel-wrapper">
-    <div class="carousel-track" id="track"></div>
-  </div>
-  <div class="carousel-nav" id="nav"></div>
+  <div class="carousel-nav" id="nav-main"></div>
 </main>
 
 <footer>
-  JGS - Controle de Qualidade | <span>WEG S.A.</span> | 
-  Atualização: <span id="ultima">--:--</span>
+  JGS - Controle de Qualidade & Processos | <span>WEG S.A.</span> | Última Sincronização: <span id="ultima">--:--</span>
 </footer>
 
 <script>
-  // ===========================================================
-  //  CONFIGURAÇÕES
-  // ===========================================================
   const CONFIG = {
-    // GitHub Repository
-    repoOwner: 'Denilsonsiewert',
-    repoName: 'banhos-quimicos',
-    branch: 'main',
-    
-    // Pastas
-    graficosFolder: 'graficos',
-    dadosFolder: 'dados',
-    
-    // Intervalos (ms)
-    scanInterval: 120000,        // Verifica novos arquivos a cada 2 min
-    dataRefreshInterval: 90000,  // Atualiza dados a cada 1.5 min
-    rotateInterval: 25000,       // Rotação do carousel
-    
-    // Layout
-    itemsPerSlide: 2,
-    maxMeasurements: 24
+    rotateInterval: 20000,
+    refreshInterval: 60000,
+    itemsPerSlide: 2
   };
 
-  // Estado global
-  const state = {
-    graficos: [],           // Lista de gráficos detectados
-    dadosCache: {},
-    currentSlide: 0,
-    totalSlides: 0,
-    timers: {}
-  };
-
-  // ===========================================================
-  //  API GITHUB - Listar Arquivos da Pasta
-  // ===========================================================
-  
-  async function listarArquivosPasta(pasta) {
-    const url = `https://api.github.com/repos/${CONFIG.repoOwner}/${CONFIG.repoName}/contents/${pasta}?ref=${CONFIG.branch}`;
-    
-    try {
-      const response = await fetch(url, {
-        headers: {
-          'Accept': 'application/vnd.github.v3+json'
-        }
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-      
-      const files = await response.json();
-      
-      // Filtra apenas PNGs e extrai informações
-      return files
-        .filter(f => f.type === 'file' && f.name.endsWith('.png'))
-        .map(f => {
-          // Extrai ID do nome do arquivo
-          // Ex: "graf-des-1.png" → { id: "des", numero: 1, nomeArquivo: "graf-des-1.png" }
-          const match = f.name.match(/graf-(.+?)(?:-(\d+))?\.png/i);
-          const id = match ? match[1] : f.name.replace('.png', '');
-          const numero = match && match[2] ? parseInt(match[2]) : 1;
-          
-          return {
-            id: id.toLowerCase(),
-            numero: numero,
-            nomeArquivo: f.name,
-            path: f.path,
-            downloadUrl: f.download_url,
-            updated: f.sha // Usamos SHA como indicador de versão
-          };
-        });
-    } catch (error) {
-      console.error('❌ Erro ao listar pasta:', error);
-      return [];
+  // Configuração dos processos e seus gráficos
+  const processosConfig = {
+    'estanhagem-eletrolitica': {
+      nome: 'Estanhagem Eletrolítica',
+      graficos: [
+        { file: 'des', nome: 'Desengraxante Químico', ref: 26.0, tol: 3.9 },
+        { file: 'ativacao-tanque-5', nome: 'Ativação — Tanque 5', ref: 8.5, tol: 1.28 },
+        { file: 'ativacao-tanque-6', nome: 'Ativação — Tanque 6', ref: 8.5, tol: 1.28 },
+        { file: 'niquel-watt', nome: 'Níquel WATT', ref: 45.0, tol: 6.75 },
+        { file: 'niquel-watt-1', nome: 'Níquel WATT (2)', ref: 45.0, tol: 6.75 },
+        { file: 'niquel-watt-2', nome: 'Níquel WATT (3)', ref: 45.0, tol: 6.75 },
+        { file: 'niquel-watt-3', nome: 'Níquel WATT (4)', ref: 45.0, tol: 6.75 },
+        { file: 'niquel-watt-4', nome: 'Níquel WATT (5)', ref: 45.0, tol: 6.75 },
+        { file: 'estanhagem-a', nome: 'Estanhagem A', ref: 32.0, tol: 4.8 },
+        { file: 'estanhagem-a-1', nome: 'Estanhagem A (2)', ref: 32.0, tol: 4.8 },
+        { file: 'estanhagem-a-2', nome: 'Estanhagem A (3)', ref: 32.0, tol: 4.8 },
+        { file: 'estanhagem-b', nome: 'Estanhagem B', ref: 31.5, tol: 4.73 },
+        { file: 'estanhagem-b-1', nome: 'Estanhagem B (2)', ref: 31.5, tol: 4.73 },
+        { file: 'estanhagem-b-2', nome: 'Estanhagem B (3)', ref: 31.5, tol: 4.73 },
+        { file: 'selante', nome: 'Selante Protetivo', ref: 18.0, tol: 2.7 }
+      ]
+    },
+    'nanoceramico': {
+      nome: 'Processo Nanocerâmico',
+      graficos: [
+        { file: 'des1', nome: '1º Desengraxante', ref: 29.0, tol: 4.35 },
+        { file: 'des2', nome: '2º Desengraxante', ref: 28.5, tol: 4.28 },
+        { file: 'dec1', nome: 'Decapante 1', ref: 12.0, tol: 1.8 },
+        { file: 'dec2', nome: 'Decapante 2', ref: 11.5, tol: 1.73 },
+        { file: 'nano', nome: 'Nanocerâmico — Conc.', ref: 35.0, tol: 5.25 },
+        { file: 'abso-nano', nome: 'Nanocerâmico — Abs.', ref: 1.2, tol: 0.18 },
+        { file: 'ph-nano', nome: 'Nanocerâmico — pH', ref: 4.5, tol: 0.68 },
+        { file: 'neu', nome: 'Neutralizador', ref: 7.0, tol: 1.05 },
+        { file: 'sel', nome: 'Selante Final', ref: 22.0, tol: 3.3 }
+      ]
     }
+  };
+
+  // Cache dos dados carregados
+  let dadosCache = {};
+
+  // Formatar data para mostrar apenas dia/mês
+  function formatarData(dataStr) {
+    if (!dataStr || dataStr.trim() === '' || dataStr.trim() === '#N/D') return '--/--';
+    
+    // Limpar espaços extras que podem vir do JSON
+    const cleanStr = dataStr.trim();
+    let dataObj = null;
+    
+    if (cleanStr.includes('/')) {
+      const partes = cleanStr.split('/');
+      if (partes.length === 3) {
+        const dia = parseInt(partes[0]);
+        const mes = parseInt(partes[1]) - 1;
+        let ano = parseInt(partes[2]);
+        
+        if (ano < 100) ano += 2000;
+        
+        dataObj = new Date(ano, mes, dia);
+      }
+    }
+    
+    if (!dataObj || isNaN(dataObj.getTime())) {
+      dataObj = new Date(cleanStr);
+    }
+    
+    if (isNaN(dataObj.getTime())) {
+      return cleanStr;
+    }
+    
+    const dia = dataObj.getDate().toString().padStart(2, '0');
+    const mes = (dataObj.getMonth() + 1).toString().padStart(2, '0');
+    return `${dia}/${mes}`;
   }
 
-  // ===========================================================
-  //  CARREGAR DADOS JSON
-  // ===========================================================
-  
-  async function carregarJSON(graficoId) {
-    const cacheKey = `${graficoId}_${Math.floor(Date.now() / 60000)}`;
-    
-    if (state.dadosCache[cacheKey]) {
-      return state.dadosCache[cacheKey];
-    }
-    
-    // Tenta carregar JSON correspondente
-    const jsonPath = `${CONFIG.dadosFolder}/graf-${graficoId}.json`;
-    const url = `https://raw.githubusercontent.com/${CONFIG.repoOwner}/${CONFIG.repoName}/${CONFIG.branch}/${jsonPath}?t=${Date.now()}`;
-    
+  // Carregar dados JSON com tratamento robusto para chaves com espaços
+  async function carregarDadosJSON(fileName) {
     try {
-      const response = await fetch(url);
-      if (!response.ok) return null;
-      
+      const response = await fetch(`dados/graf-${fileName}.json?t=${Date.now()}`);
+      if (!response.ok) {
+        return null;
+      }
       const data = await response.json();
-      state.dadosCache[cacheKey] = data;
       return data;
-    } catch {
+    } catch (error) {
+      console.warn(`Erro ao carregar graf-${fileName}.json:`, error);
       return null;
     }
   }
 
-  function extrairMedicoes(dados) {
+  // Obter medições reais do JSON
+  async function getMedicoesReal(fileName) {
+    const dados = await carregarDadosJSON(fileName);
     if (!dados) return [];
-    
-    const charts = dados.charts || dados['charts '] || [];
-    if (!charts || !charts[0]) return [];
-    
-    const chart = charts[0];
-    const labels = chart.labels || chart['labels '] || [];
-    const series1 = chart.series1 || chart['series1 '] || [];
+
+    // Tratamento robusto para chaves com espaços no final (ex: "charts ")
+    const rawCharts = dados["charts"] || dados["charts "] || dados["charts  "];
+    if (!rawCharts || !rawCharts[0]) return [];
+
+    const chart = rawCharts[0];
+    // Tratamento robusto para chaves internas com espaços
+    const labels = chart["labels"] || chart["labels "] || [];
+    const series1 = chart["series1"] || chart["series1 "] || [];
     
     const medicoes = [];
-    const start = Math.max(0, labels.length - CONFIG.maxMeasurements);
+    const startIndex = Math.max(0, labels.length - 24);
     
-    for (let i = start; i < labels.length; i++) {
-      let valorStr = String(series1[i] || '').trim();
-      let valor = null;
-      let hasData = false;
+    for (let i = startIndex; i < labels.length; i++) {
+      const label = labels[i];
+      let valorStr = series1[i] || '0';
       
-      if (valorStr && valorStr !== '#N/D' && valorStr !== 'null') {
+      // Limpar espaços nos valores (ex: "#N/D ")
+      valorStr = valorStr.trim();
+      
+      let valor = 0;
+      let hasData = true;
+      
+      if (valorStr === '#N/D' || valorStr === '#N/A' || valorStr === '' || valorStr === null) {
+        hasData = false;
+        valor = NaN;
+      } else {
         valor = parseFloat(valorStr.replace(',', '.'));
-        hasData = !isNaN(valor);
+        if (isNaN(valor)) {
+          hasData = false;
+        }
       }
       
       medicoes.push({
-        label: labels[i] || '',
-        dataFormatada: formatarData(labels[i]),
+        label,
+        dataFormatada: formatarData(label),
         valor: valor,
         hasData: hasData
       });
@@ -526,336 +563,200 @@
     return medicoes;
   }
 
-  // ===========================================================
-  //  UTILITÁRIOS
-  // ===========================================================
-  
-  function formatarData(dataStr) {
-    if (!dataStr) return '--/--';
-    const s = String(dataStr).trim();
-    if (s.includes('/')) {
-      const [d, m] = s.split('/');
-      return `${d.padStart(2,'0')}/${m.padStart(2,'0')}`;
-    }
-    try {
-      const date = new Date(s);
-      return date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
-    } catch {
-      return s.substring(0, 5);
-    }
-  }
-
+  // Classificar status
   function getStatusClass(valor, ref, tol, hasData) {
-    if (!hasData || valor === null) return 'val-nodata';
+    if (!hasData || isNaN(valor)) return 'val-nodata';
     const diff = Math.abs(valor - ref);
     if (diff <= tol * 0.5) return 'val-ok';
     if (diff <= tol) return 'val-warn';
     return 'val-crit';
   }
 
-  function getReferencias(id) {
-    // Tenta extrair referências do ID ou usa defaults
-    const refs = {
-      'des': { ref: 26.0, tol: 3.9, nome: 'Desengraxante', sub: 'CONCENTRAÇÃO (ML/L)' },
-      'ativacao': { ref: 8.5, tol: 1.28, nome: 'Ativação', sub: 'pH DO BANHO' },
-      'estanhagem': { ref: 32.0, tol: 4.8, nome: 'Estanhagem', sub: 'Sn° (g/L)' },
-      'nano': { ref: 35.0, tol: 5.25, nome: 'Nanocerâmico', sub: 'Concentração' },
-      'dec': { ref: 12.0, tol: 1.8, nome: 'Decapante', sub: 'Concentração' },
-      'sel': { ref: 18.0, tol: 2.7, nome: 'Selante', sub: 'Concentração' },
-      'neu': { ref: 7.0, tol: 1.05, nome: 'Neutralizador', sub: 'pH' }
-    };
+  // Renderizar tabela de medições
+  async function renderTabela(graficoConfig) {
+    let medicoes;
     
-    // Busca correspondência parcial
-    for (const [key, config] of Object.entries(refs)) {
-      if (id.toLowerCase().includes(key)) {
-        return config;
-      }
+    if (dadosCache[graficoConfig.file]) {
+      medicoes = dadosCache[graficoConfig.file];
+    } else {
+      medicoes = await getMedicoesReal(graficoConfig.file);
+      dadosCache[graficoConfig.file] = medicoes;
     }
     
-    // Default
-    return { ref: 0, tol: 1, nome: id.toUpperCase(), sub: '' };
-  }
-
-  // ===========================================================
-  //  RENDERIZAÇÃO
-  // ===========================================================
-  
-  function renderTabela(medicoes, ref, tol) {
-    if (!medicoes || medicoes.length === 0) {
-      return '<div style="text-align:center;padding:20px;color:#999">Sem dados</div>';
-    }
-    
+    const colsPerRow = 12;
     let html = '<table class="analise-table">';
-    const cols = 12;
-    
+
     for (let row = 0; row < 2; row++) {
-      const start = row * cols;
-      const chunk = medicoes.slice(start, start + cols);
+      const start = row * colsPerRow;
+      const end = start + colsPerRow;
+      const chunk = medicoes.slice(start, end);
+
       if (chunk.length === 0) continue;
-      
-      // Datas
+
       html += '<tr>';
       chunk.forEach(m => html += `<th>${m.dataFormatada}</th>`);
       html += '</tr>';
-      
-      // Valores
+
       html += '<tr>';
       chunk.forEach(m => {
-        const cls = getStatusClass(m.valor, ref, tol, m.hasData);
-        const val = m.hasData ? m.valor.toFixed(2).replace('.', ',') : '---';
-        html += `<td class="${cls}">${val}</td>`;
+        const cls = getStatusClass(m.valor, graficoConfig.ref, graficoConfig.tol, m.hasData);
+        const displayValue = m.hasData ? m.valor.toFixed(2) : '---';
+        html += `<td class="${cls}">${displayValue}</td>`;
       });
       html += '</tr>';
     }
-    
+
     html += '</table>';
     return html;
   }
 
-  async function criarCard(grafico) {
-    const { id, downloadUrl, numero } = grafico;
-    const refs = getReferencias(id);
-    
-    // Carrega dados JSON
-    const dados = await carregarJSON(id);
-    const medicoes = extrairMedicoes(dados);
-    
-    // Cria elemento
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.dataset.graficoId = id;
-    
-    const nomeDisplay = refs.nome + (numero > 1 ? ` ${numero}` : '');
-    
-    card.innerHTML = `
-      <div class="card-header">
-        ${nomeDisplay}
-        ${refs.sub ? `<small>${refs.sub}</small>` : ''}
-      </div>
-      <div class="card-body">
-        <div class="graph-container">
-          <div class="graph-placeholder">
-            <div class="spinner"></div>
-            <span>Carregando...</span>
+  // Criar card individual
+  async function criarCard(graficoConfig, processoNome) {
+    const displayName = graficoConfig.nome;
+    const fileName = graficoConfig.file;
+    const tabelaHtml = await renderTabela(graficoConfig);
+
+    return `
+      <div class="card">
+        <div class="card-header">${displayName}</div>
+        <div class="card-body">
+          <div class="graph-container">
+            <div class="graph-placeholder">📊 Gráfico: ${fileName}</div>
+            <img src="graficos/graf-${fileName}-1.png?t=${Date.now()}"
+                 onerror="this.style.display='none'"
+                 onload="this.previousElementSibling.style.display='none'">
           </div>
-          <img src="${downloadUrl}?t=${Date.now()}"
-               alt="${nomeDisplay}"
-               onload="this.previousElementSibling.style.display='none'"
-               onerror="this.style.display='none';this.previousElementSibling.innerHTML='<span>📷 Indisponível</span>'">
-        </div>
-        <div class="measurements-container">
-          <div class="table-title">Últimas ${CONFIG.maxMeasurements} Medições</div>
-          ${renderTabela(medicoes, refs.ref, refs.tol)}
+          <div class="measurements-container">
+            <div class="table-title">Últimas 24 Medições</div>
+            ${tabelaHtml}
+          </div>
         </div>
       </div>
     `;
-    
-    return card;
   }
 
-  function agruparPorProcesso(graficos) {
-    // Agrupa gráficos por tipo de processo
-    const grupos = {};
-    
-    graficos.forEach(g => {
-      const refs = getReferencias(g.id);
-      const processo = refs.nome.split(' ')[0].toLowerCase();
-      
-      if (!grupos[processo]) {
-        grupos[processo] = {
-          nome: refs.nome.split(' ')[0],
-          graficos: []
-        };
-      }
-      grupos[processo].graficos.push(g);
-    });
-    
-    return grupos;
-  }
+  // Inicializar carrossel unificado
+  async function initCarousel() {
+    const track = document.getElementById('track-main');
+    const nav = document.getElementById('nav-main');
 
-  async function renderizarDashboard() {
-    const track = document.getElementById('track');
-    const nav = document.getElementById('nav');
-    
-    track.innerHTML = '';
-    nav.innerHTML = '';
-    
-    // Agrupa por processo
-    const grupos = agruparPorProcesso(state.graficos);
-    
-    let slides = [];
-    
-    // Cria slides para cada grupo
-    for (const [processoKey, grupo] of Object.entries(grupos)) {
-      // Cria cards
-      const cardsPromises = grupo.graficos.map(g => criarCard(g));
-      const cards = await Promise.all(cardsPromises);
-      
-      // Agrupa em slides de N itens
-      for (let i = 0; i < cards.length; i += CONFIG.itemsPerSlide) {
+    let allSlides = [];
+    let slideIndex = 0;
+
+    // Processar cada processo
+    for (const processoKey in processosConfig) {
+      const processo = processosConfig[processoKey];
+      const processoNome = processo.nome;
+      const graficos = processo.graficos;
+
+      const slidesCount = Math.ceil(graficos.length / CONFIG.itemsPerSlide);
+
+      for (let i = 0; i < slidesCount; i++) {
         const slide = document.createElement('div');
         slide.className = 'carousel-slide';
+
+        // ADICIONAR título do processo em TODOS os slides
+        const titleDiv = document.createElement('div');
+        titleDiv.style.gridColumn = '1 / -1';
+        titleDiv.style.marginBottom = '5px';
+        titleDiv.innerHTML = `<div class="secao-titulo">${processoNome}</div>`;
+        slide.appendChild(titleDiv);
+
+        const start = i * CONFIG.itemsPerSlide;
+        const slideGraficos = graficos.slice(start, start + CONFIG.itemsPerSlide);
+
+        for (const graficoConfig of slideGraficos) {
+          const cardHtml = await criarCard(graficoConfig, processoNome);
+          const cardDiv = document.createElement('div');
+          cardDiv.innerHTML = cardHtml;
+          slide.appendChild(cardDiv.firstElementChild);
+        }
+
+        track.appendChild(slide);
+        allSlides.push(slide);
+
+        const dot = document.createElement('div');
+        dot.className = `nav-dot ${slideIndex === 0 ? 'active' : ''}`;
+        dot.onclick = () => goToSlide(slideIndex);
+        nav.appendChild(dot);
+
+        slideIndex++;
+      }
+    }
+
+    let currentSlide = 0;
+    setInterval(() => {
+      currentSlide = (currentSlide + 1) % allSlides.length;
+      goToSlide(currentSlide);
+    }, CONFIG.rotateInterval);
+
+    setInterval(async () => {
+      dadosCache = {};
+      await refreshAllCards();
+    }, CONFIG.refreshInterval);
+  }
+
+  // Função para atualizar todos os cards
+  async function refreshAllCards() {
+    const cards = document.querySelectorAll('.card');
+    for (const card of cards) {
+      const fileName = card.querySelector('.graph-placeholder')?.textContent.match(/Gráfico: (.*)/)?.[1]?.trim();
+      if (fileName) {
+        // Encontrar a configuração do gráfico
+        let graficoConfig = null;
+        for (const processoKey in processosConfig) {
+          const found = processosConfig[processoKey].graficos.find(g => g.file === fileName);
+          if (found) {
+            graficoConfig = found;
+            break;
+          }
+        }
         
-        // Header do processo
-        const header = document.createElement('div');
-        header.className = 'section-header';
-        header.textContent = grupo.nome;
-        slide.appendChild(header);
-        
-        // Cards
-        const slice = cards.slice(i, i + CONFIG.itemsPerSlide);
-        slice.forEach(card => slide.appendChild(card));
-        
-        slides.push(slide);
+        if (graficoConfig) {
+          const tabelaHtml = await renderTabela(graficoConfig);
+          const container = card.querySelector('.measurements-container');
+          if (container) {
+            container.innerHTML = `
+              <div class="table-title">Últimas 24 Medições</div>
+              ${tabelaHtml}
+            `;
+          }
+        }
       }
     }
     
-    // Adiciona slides
-    slides.forEach(s => track.appendChild(s));
-    
-    // Navegação
-    state.totalSlides = slides.length;
-    for (let i = 0; i < state.totalSlides; i++) {
-      const dot = document.createElement('div');
-      dot.className = `nav-dot${i === 0 ? ' active' : ''}`;
-      dot.onclick = () => goToSlide(i);
-      nav.appendChild(dot);
-    }
-    
-    // Atualiza contador
-    document.getElementById('total-graficos').textContent = state.graficos.length;
-    
-    console.log(`✅ Dashboard: ${slides.length} slides, ${state.graficos.length} gráficos`);
+    const agora = new Date();
+    document.getElementById('ultima').innerText = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   }
 
+  // Navegar para slide
   function goToSlide(index) {
-    const track = document.getElementById('track');
+    const track = document.getElementById('track-main');
+    const dots = document.querySelectorAll('#nav-main .nav-dot');
     track.style.transform = `translateX(-${index * 100}%)`;
-    
-    document.querySelectorAll('.nav-dot').forEach((d, i) => {
-      d.classList.toggle('active', i === index);
-    });
-    
-    state.currentSlide = index;
+    dots.forEach((d, i) => d.classList.toggle('active', i === index));
   }
 
-  function iniciarRotacao() {
-    if (state.timers.rotation) clearInterval(state.timers.rotation);
-    
-    if (state.totalSlides > 1) {
-      state.timers.rotation = setInterval(() => {
-        const next = (state.currentSlide + 1) % state.totalSlides;
-        goToSlide(next);
-      }, CONFIG.rotateInterval);
-    }
+  // Atualizar relógio e data
+  function updateClock() {
+    const agora = new Date();
+    document.getElementById('relogio').innerText = agora.toLocaleTimeString('pt-BR');
+    document.getElementById('data').innerText = agora.toLocaleDateString('pt-BR');
+    document.getElementById('ultima').innerText = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   }
 
-  // ===========================================================
-  //  SCAN E ATUALIZAÇÃO
-  // ===========================================================
-  
-  async function scanGraficos() {
-    console.log('🔍 Escaneando pasta graficos...');
-    
-    const arquivos = await listarArquivosPasta(CONFIG.graficosFolder);
-    
-    if (arquivos.length === 0) {
-      console.warn('⚠️ Nenhum gráfico encontrado');
-      return;
-    }
-    
-    // Verifica se há novos gráficos
-    const idsAtuais = state.graficos.map(g => `${g.id}-${g.numero}`).sort().join(',');
-    const idsNovos = arquivos.map(g => `${g.id}-${g.numero}`).sort().join(',');
-    
-    const temMudanca = idsAtuais !== idsNovos;
-    
-    state.graficos = arquivos;
-    
-    if (temMudanca) {
-      console.log(`🆕 Mudança detectada! ${arquivos.length} gráficos encontrados`);
-      await renderizarDashboard();
-      iniciarRotacao();
-      
-      // Efeito "novo"
-      document.querySelectorAll('.card').forEach((c, i) => {
-        setTimeout(() => {
-          c.classList.add('new');
-          setTimeout(() => c.classList.remove('new'), 2000);
-        }, i * 100);
-      });
-    }
-    
-    atualizarTimestamp();
-  }
-
-  async function atualizarDados() {
-    console.log('🔄 Atualizando dados...');
-    state.dadosCache = {}; // Limpa cache
-    
-    // Re-renderiza mantendo mesma estrutura
-    await renderizarDashboard();
-    atualizarTimestamp();
-  }
-
-  function atualizarTimestamp() {
-    const agora = new Date().toLocaleTimeString('pt-BR', { 
-      hour: '2-digit', 
-      minute: '2-digit' 
-    });
-    document.getElementById('ultima-sync').textContent = agora;
-    document.getElementById('ultima').textContent = agora;
-  }
-
-  function iniciarRelogio() {
-    function update() {
-      const now = new Date();
-      document.getElementById('relogio').textContent = now.toLocaleTimeString('pt-BR');
-      document.getElementById('data').textContent = now.toLocaleDateString('pt-BR');
-    }
-    update();
-    setInterval(update, 1000);
-  }
-
-  function iniciarTimers() {
-    // Scan de novos arquivos
-    state.timers.scan = setInterval(scanGraficos, CONFIG.scanInterval);
-    
-    // Atualização de dados
-    state.timers.data = setInterval(atualizarDados, CONFIG.dataRefreshInterval);
-  }
-
-  // ===========================================================
-  //  INICIALIZAÇÃO
-  // ===========================================================
-  
+  // Inicializar
   async function init() {
-    try {
-      console.log('🚀 Iniciando dashboard...');
-      
-      iniciarRelogio();
-      await scanGraficos();
-      iniciarTimers();
-      
-      // Esconde loader
-      setTimeout(() => {
-        document.getElementById('loader').classList.add('hidden');
-      }, 1000);
-      
-    } catch (error) {
-      console.error('❌ Erro fatal:', error);
-      document.getElementById('loader').innerHTML = `
-        <div style="color:#C62828;text-align:center;padding:20px">
-          <h3>⚠️ Erro ao carregar</h3>
-          <p>${error.message}</p>
-          <p style="margin-top:10px;font-size:0.9rem">Recarregue a página (F5)</p>
-        </div>
-      `;
-    }
+    await initCarousel();
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    setTimeout(() => {
+      document.getElementById('loader').classList.add('hidden');
+    }, 2000);
   }
 
-  // Inicia
-  window.addEventListener('DOMContentLoaded', init);
+  window.onload = init;
 </script>
 
 </body>
