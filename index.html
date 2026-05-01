@@ -1,15 +1,3 @@
-Based on your request, I have updated the code to include a **Smart Discovery System**. 
-
-### Key Changes:
-1.  **Sanitization (`sanitizeJson`)**: I added a robust function that automatically cleans the "dirty" JSON files (removing the trailing spaces in `"charts "`, `"labels "`, `"#N/D "`). This fixes the blank screen issue you experienced with files like `graf-abso-nano.json`.
-2.  **Smart Image Detection**: The code now automatically searches for images like `graf-name.png`, `graf-name-1.png`, `graf-name-2.png`, etc. This ensures all your Níquel WATT variations are displayed without hardcoding every single number.
-3.  **Dynamic File List**: 
-    *   The code now includes a **Fallback List** with all the files visible in your screenshots. It works immediately.
-    *   I added a `GITHUB_REPO` configuration. If you fill this in, the dashboard will automatically detect *any new file* you add to the folder without you ever touching the code again.
-
-Here is the complete, updated code:
-
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -31,7 +19,7 @@ Here is the complete, updated code:
       --weg-gray-900: #1A1A1A;
       --status-ok: #2E7D32;
       --status-warn: #F57C00;
-      --status-crit: #1A1A1A;
+      --status-crit: #1A1A1A; /* Cor neutra preta/cinza para crítico */
       --shadow: 0 2px 8px rgba(0,0,0,0.08);
       --radius: 16px;
       --radius-sm: 8px;
@@ -258,7 +246,7 @@ Here is the complete, updated code:
       border: 1px solid var(--weg-gray-200);
     }
 
-    /* Status Colors */
+    /* Status Colors - Neutras */
     .val-ok { background: #E8F5E9 !important; color: var(--status-ok) !important; }
     .val-warn { background: #FFF3E0 !important; color: var(--status-warn) !important; }
     .val-crit { background: #ECEFF1 !important; color: var(--status-crit) !important; }
@@ -377,21 +365,52 @@ Here is the complete, updated code:
   const CONFIG = {
     rotateInterval: 20000,
     refreshInterval: 60000,
-    itemsPerSlide: 2,
-    // Para descoberta automática total, preencha com: 'https://api.github.com/repos/SEU_USUARIO/SEU_REPO/contents/dados'
-    // Se deixar vazio, usará a lista de fallback abaixo.
-    GITHUB_REPO_API: '', 
-    // Lista de fallback (arquivos conhecidos das suas screenshots)
-    FALLBACK_FILES: [
-      'abso-nano', 'ativacao-tanque-5', 'ativacao-tanque-6', 'dec1', 'dec2', 
-      'des', 'des1', 'des2', 'estanhagem-a', 'estanhagem-b', 'nano', 
-      'neu', 'niquel-watt', 'ph-nano', 'sel', 'selante'
-    ]
+    itemsPerSlide: 2
+  };
+
+  // LISTA DE ARQUIVOS BASEADA NAS SUAS SCREENSHOTS
+  // Se um novo gráfico for adicionado, basta incluir o nome (sem .json) na lista correspondente
+  const processosConfig = {
+    'estanhagem-eletrolitica': {
+      nome: 'Estanhagem Eletrolítica',
+      graficos: [
+        { file: 'des', nome: 'Desengraxante Químico', ref: 26.0, tol: 3.9 },
+        { file: 'ativacao-tanque-5', nome: 'Ativação — Tanque 5', ref: 8.5, tol: 1.28 },
+        { file: 'ativacao-tanque-6', nome: 'Ativação — Tanque 6', ref: 8.5, tol: 1.28 },
+        { file: 'niquel-watt', nome: 'Níquel WATT', ref: 45.0, tol: 6.75 },
+        { file: 'niquel-watt-1', nome: 'Níquel WATT (2)', ref: 45.0, tol: 6.75 },
+        { file: 'niquel-watt-2', nome: 'Níquel WATT (3)', ref: 45.0, tol: 6.75 },
+        { file: 'niquel-watt-3', nome: 'Níquel WATT (4)', ref: 45.0, tol: 6.75 },
+        { file: 'niquel-watt-4', nome: 'Níquel WATT (5)', ref: 45.0, tol: 6.75 },
+        { file: 'estanhagem-a', nome: 'Estanhagem A', ref: 32.0, tol: 4.8 },
+        { file: 'estanhagem-a-1', nome: 'Estanhagem A (2)', ref: 32.0, tol: 4.8 },
+        { file: 'estanhagem-a-2', nome: 'Estanhagem A (3)', ref: 32.0, tol: 4.8 },
+        { file: 'estanhagem-b', nome: 'Estanhagem B', ref: 31.5, tol: 4.73 },
+        { file: 'estanhagem-b-1', nome: 'Estanhagem B (2)', ref: 31.5, tol: 4.73 },
+        { file: 'estanhagem-b-2', nome: 'Estanhagem B (3)', ref: 31.5, tol: 4.73 },
+        { file: 'selante', nome: 'Selante Protetivo', ref: 18.0, tol: 2.7 }
+      ]
+    },
+    'nanoceramico': {
+      nome: 'Processo Nanocerâmico',
+      graficos: [
+        { file: 'des1', nome: '1º Desengraxante', ref: 29.0, tol: 4.35 },
+        { file: 'des2', nome: '2º Desengraxante', ref: 28.5, tol: 4.28 },
+        { file: 'dec1', nome: 'Decapante 1', ref: 12.0, tol: 1.8 },
+        { file: 'dec2', nome: 'Decapante 2', ref: 11.5, tol: 1.73 },
+        { file: 'nano', nome: 'Nanocerâmico — Conc.', ref: 35.0, tol: 5.25 },
+        { file: 'abso-nano', nome: 'Nanocerâmico — Abs.', ref: 1.2, tol: 0.18 },
+        { file: 'ph-nano', nome: 'Nanocerâmico — pH', ref: 4.5, tol: 0.68 },
+        { file: 'neu', nome: 'Neutralizador', ref: 7.0, tol: 1.05 },
+        { file: 'sel-1', nome: 'Selante Final', ref: 22.0, tol: 3.3 }
+      ]
+    }
   };
 
   let dadosCache = {};
 
-  // 1. SANITIZE: Limpa espaços em chaves e valores (ex: "charts " -> "charts")
+  // 1. CORREÇÃO CRÍTICA: Limpa espaços em chaves e valores do JSON
+  // Isso resolve o problema de "charts " e "#N/D "
   function sanitizeJson(obj) {
     if (typeof obj !== 'object' || obj === null) return obj;
     const newObj = {};
@@ -406,27 +425,7 @@ Here is the complete, updated code:
     return newObj;
   }
 
-  // 2. DISCOVERY: Tenta API ou usa Fallback
-  async function discoverFiles() {
-    if (CONFIG.GITHUB_REPO_API) {
-      try {
-        const res = await fetch(CONFIG.GITHUB_REPO_API);
-        if (res.ok) {
-          const data = await res.json();
-          // Filtra apenas JSONs e extrai o nome base (remove 'graf-' e '.json')
-          return data
-            .filter(f => f.name.endsWith('.json'))
-            .map(f => f.name.replace('graf-', '').replace('.json', ''));
-        }
-      } catch (e) {
-        console.warn("API GitHub falhou, usando lista de fallback.", e);
-      }
-    }
-    // Retorna a lista padrão se a API falhar ou não estiver configurada
-    return CONFIG.FALLBACK_FILES;
-  }
-
-  // Formatar data
+  // Formatar data para dia/mês
   function formatarData(dataStr) {
     if (!dataStr || dataStr === '#N/D' || dataStr.trim() === '') return '--/--';
     let dataObj = null;
@@ -447,17 +446,23 @@ Here is the complete, updated code:
     return `${d}/${m}`;
   }
 
+  // Carregar JSON com sanitização
   async function carregarDadosJSON(fileName) {
     try {
       const res = await fetch(`dados/graf-${fileName}.json?t=${Date.now()}`);
       if (!res.ok) return null;
       const raw = await res.json();
-      return sanitizeJson(raw); // Aplica a limpeza aqui
-    } catch (e) { return null; }
+      return sanitizeJson(raw); // Aplica a limpeza
+    } catch (e) {
+      console.warn(`Falha ao carregar: graf-${fileName}.json`, e);
+      return null;
+    }
   }
 
+  // Extrair medições e preparar para a tabela
   async function getMedicoesReal(fileName) {
     const dados = await carregarDadosJSON(fileName);
+    // Verificação segura após sanitização
     if (!dados?.charts?.[0]) return [];
 
     const chart = dados.charts[0];
@@ -465,13 +470,14 @@ Here is the complete, updated code:
     const series1 = chart.series1 || [];
     
     const medicoes = [];
-    const start = Math.max(0, labels.length - 24);
+    const start = Math.max(0, labels.length - 24); // Pega apenas as últimas 24
     
     for (let i = start; i < labels.length; i++) {
       const label = labels[i];
       const valStr = series1[i] || '0';
       let valor = 0, hasData = true;
       
+      // Verifica se o dado é válido ou #N/D
       if (valStr === '#N/D' || valStr === '#N/A' || valStr === '') {
         hasData = false; valor = NaN;
       } else {
@@ -479,7 +485,12 @@ Here is the complete, updated code:
         if (isNaN(valor)) hasData = false;
       }
       
-      medicoes.push({ label, dataFormatada: formatarData(label), valor, hasData });
+      medicoes.push({ 
+        label, 
+        dataFormatada: formatarData(label), 
+        valor, 
+        hasData 
+      });
     }
     return medicoes;
   }
@@ -492,15 +503,21 @@ Here is the complete, updated code:
     return 'val-crit';
   }
 
+  // Renderizar a tabela das últimas 24 análises
   async function renderTabela(cfg) {
     if (!dadosCache[cfg.file]) dadosCache[cfg.file] = await getMedicoesReal(cfg.file);
     const medicoes = dadosCache[cfg.file];
-    const cols = 12;
+    const cols = 12; // 12 colunas por linha para caber 24 itens em 2 linhas
     let html = '<table class="analise-table">';
+    
     for (let r = 0; r < 2; r++) {
       const chunk = medicoes.slice(r * cols, r * cols + cols);
       if (!chunk.length) continue;
+      
+      // Linha de Datas
       html += '<tr>' + chunk.map(m => `<th>${m.dataFormatada}</th>`).join('') + '</tr>';
+      
+      // Linha de Valores
       html += '<tr>' + chunk.map(m => {
         const cls = getStatusClass(m.valor, cfg.ref, cfg.tol, m.hasData);
         return `<td class="${cls}">${m.hasData ? m.valor.toFixed(2) : '---'}</td>`;
@@ -509,10 +526,10 @@ Here is the complete, updated code:
     return html + '</table>';
   }
 
-  // 3. IMAGE LOADER: Tenta múltiplos sufixos (-1, -2...) para encontrar a imagem correta
+  // Carregar imagem com múltiplas tentativas (graf-nome.png, graf-nome-1.png, etc)
   function loadGraphImage(imgEl, fileName) {
     let attempts = 0;
-    const maxAttempts = 6; // Tenta nome, nome-1, até nome-5
+    const maxAttempts = 6; 
     
     function tryNext() {
       if (attempts >= maxAttempts) {
@@ -549,52 +566,31 @@ Here is the complete, updated code:
       </div>`;
   }
 
-  // Classificar processos automaticamente pelo nome do arquivo
-  function getProcessoNome(fileName) {
-    const nanoKeywords = ['nano', 'des1', 'des2', 'dec1', 'dec2', 'neu', 'abso', 'ph-nano', 'sel-1'];
-    if (nanoKeywords.some(k => fileName.includes(k))) return 'Processo Nanocerâmico';
-    return 'Estanhagem Eletrolítica';
-  }
-
   async function initCarousel() {
     const track = document.getElementById('track-main');
     const nav = document.getElementById('nav-main');
     
-    // Obter lista de arquivos (dinâmica ou fallback)
-    const fileNames = await discoverFiles();
-    
-    // Organizar por processo
-    const grouped = { 'Estanhagem Eletrolítica': [], 'Processo Nanocerâmico': [] };
-    
-    fileNames.forEach(name => {
-      const procName = getProcessoNome(name);
-      // Configuração básica de referência (pode ser expandida se necessário)
-      grouped[procName].push({ file: name, nome: name.replace(/-/g, ' ').toUpperCase(), ref: 0, tol: 100 });
-    });
-
     let allSlides = [], slideIndex = 0;
 
-    for (const procName in grouped) {
-      const graficos = grouped[procName];
-      if (graficos.length === 0) continue;
-
-      const slidesCount = Math.ceil(graficos.length / CONFIG.itemsPerSlide);
+    for (const pKey in processosConfig) {
+      const proc = processosConfig[pKey];
+      const slidesCount = Math.ceil(proc.graficos.length / CONFIG.itemsPerSlide);
 
       for (let i = 0; i < slidesCount; i++) {
         const slide = document.createElement('div');
         slide.className = 'carousel-slide';
         
-        // Título do processo
-        slide.innerHTML = `<div style="grid-column:1/-1;margin-bottom:5px"><div class="secao-titulo">${procName}</div></div>`;
+        // Título do processo em TODOS os slides
+        slide.innerHTML = `<div style="grid-column:1/-1;margin-bottom:5px"><div class="secao-titulo">${proc.nome}</div></div>`;
         
-        const chunk = graficos.slice(i * CONFIG.itemsPerSlide, i * CONFIG.itemsPerSlide + CONFIG.itemsPerSlide);
+        const chunk = proc.graficos.slice(i * CONFIG.itemsPerSlide, i * CONFIG.itemsPerSlide + CONFIG.itemsPerSlide);
         for (const cfg of chunk) {
-          const cardHtml = await criarCard(cfg, procName);
+          const cardHtml = await criarCard(cfg, proc.nome);
           const temp = document.createElement('div');
           temp.innerHTML = cardHtml;
           const card = temp.firstElementChild;
           
-          // Carregar imagem com busca inteligente
+          // Configurar imagem com busca inteligente
           const img = card.querySelector('img');
           loadGraphImage(img, cfg.file);
           
@@ -626,16 +622,29 @@ Here is the complete, updated code:
   async function refreshAllCards() {
     document.querySelectorAll('.card').forEach(card => {
       const header = card.querySelector('.card-header').innerText;
-      // Tentar encontrar o nome do arquivo correspondente
-      const fileName = header.toLowerCase().replace(/\s/g, '-');
-      
-      // Fallback para nomes que podem não bater exatamente
-      const possibleNames = Object.keys(dadosCache).concat(CONFIG.FALLBACK_FILES);
-      const match = possibleNames.find(n => header.includes(n.toUpperCase().replace(/-/g, ' ')));
-      
-      if (match) {
-        dadosCache[match] = null;
-        renderTabela({ file: match, ref: 0, tol: 100 }).then(html => {
+      // Tentar encontrar o nome do arquivo correspondente baseado no título
+      let fileName = header.toLowerCase().replace(/\s/g, '-').replace('—', '-');
+      // Ajustes específicos para corresponder aos nomes dos arquivos
+      if (fileName.includes('tanque-5')) fileName = 'ativacao-tanque-5';
+      if (fileName.includes('tanque-6')) fileName = 'ativacao-tanque-6';
+      if (fileName.includes('quimico')) fileName = 'des';
+      if (fileName.includes('protetivo')) fileName = 'selante';
+      if (fileName.includes('conc')) fileName = 'nano';
+      if (fileName.includes('abs')) fileName = 'abso-nano';
+      if (fileName.includes('ph')) fileName = 'ph-nano';
+      if (fileName.includes('final')) fileName = 'sel-1';
+      if (fileName.includes('neutralizador')) fileName = 'neu';
+
+      // Encontrar a config correspondente para pegar ref e tol
+      let cfg = null;
+      for (const p in processosConfig) {
+        cfg = processosConfig[p].graficos.find(g => g.file === fileName || fileName.includes(g.file));
+        if (cfg) break;
+      }
+
+      if (cfg) {
+        dadosCache[cfg.file] = null; // Força reload
+        renderTabela(cfg).then(html => {
           card.querySelector('.measurements-container').innerHTML = `<div class="table-title">Últimas 24 Medições</div>${html}`;
         });
       }
@@ -667,4 +676,3 @@ Here is the complete, updated code:
 
 </body>
 </html>
-```
