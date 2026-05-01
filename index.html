@@ -344,9 +344,6 @@
     itemsPerSlide: 2
   };
 
-  // Configuração baseada nos arquivos reais da pasta dados/
-  // jsonFile: nome do arquivo JSON (sem .json)
-  // imageFile: nome do arquivo de imagem (sem graf- e sem -1.png)
   const processosConfig = {
     'estanhagem-eletrolitica': {
       nome: 'Estanhagem Eletrolítica',
@@ -543,86 +540,59 @@
     track.innerHTML = '';
     nav.innerHTML = '';
 
-    let allSlidesContent = [];
+    let allSlides = []; // Array de slides completos
 
+    // Processar cada processo separadamente
     for (const processoKey in processosConfig) {
       const processo = processosConfig[processoKey];
+      const processoNome = processo.nome;
       
-      const titleDiv = document.createElement('div');
-      titleDiv.className = 'secao-titulo';
-      titleDiv.textContent = processo.nome;
-      
-      let sectionCards = [];
+      // Coletar todos os cards válidos deste processo
+      let processCards = [];
       for (const graficoConfig of processo.graficos) {
         const cardElement = await criarCardDOM(graficoConfig);
         if (cardElement) {
-          sectionCards.push(cardElement);
+          processCards.push(cardElement);
         }
       }
 
-      if (sectionCards.length > 0) {
-        allSlidesContent.push({ type: 'header', element: titleDiv });
-        sectionCards.forEach(card => allSlidesContent.push({ type: 'card', element: card }));
+      // Se não há cards neste processo, pula para o próximo
+      if (processCards.length === 0) continue;
+
+      // Dividir os cards em grupos de CONFIG.itemsPerSlide
+      // Cada grupo será um slide com o título do processo no topo
+      for (let i = 0; i < processCards.length; i += CONFIG.itemsPerSlide) {
+        const slide = document.createElement('div');
+        slide.className = 'carousel-slide';
+        
+        // Adicionar o título da seção no topo de CADA slide deste processo
+        const titleDiv = document.createElement('div');
+        titleDiv.className = 'secao-titulo';
+        titleDiv.textContent = processoNome;
+        slide.appendChild(titleDiv);
+        
+        // Adicionar os cards deste slide
+        const slice = processCards.slice(i, i + CONFIG.itemsPerSlide);
+        slice.forEach(card => slide.appendChild(card));
+        
+        allSlides.push(slide);
       }
     }
 
-    if (allSlidesContent.length === 0) {
-      track.innerHTML = '<div style="padding:50px; text-align:center; width:100%;">Nenhum dado disponível ou erro de conexão com os arquivos JSON.</div>';
-      document.getElementById('loader').classList.add('hidden');
-      return;
-    }
+    // Adicionar todos os slides ao track
+    allSlides.forEach(slide => track.appendChild(slide));
 
-    let currentSlide = document.createElement('div');
-    currentSlide.className = 'carousel-slide';
-    let itemsInCurrentSlide = 0;
-    let slideIndex = 0;
-    
-    const closeSlide = () => {
-      if (currentSlide.children.length > 0) {
-        track.appendChild(currentSlide);
-        
-        const dot = document.createElement('div');
-        dot.className = `nav-dot ${slideIndex === 0 ? 'active' : ''}`;
-        dot.onclick = () => goToSlide(slideIndex);
-        nav.appendChild(dot);
-        
-        slideIndex++;
-        
-        currentSlide = document.createElement('div');
-        currentSlide.className = 'carousel-slide';
-        itemsInCurrentSlide = 0;
-      }
-    };
-
-    for (let i = 0; i < allSlidesContent.length; i++) {
-      const item = allSlidesContent[i];
-      
-      if (item.type === 'header') {
-        if (itemsInCurrentSlide > 0) {
-          closeSlide();
-        }
-        currentSlide.appendChild(item.element);
-      } else {
-        currentSlide.appendChild(item.element);
-        itemsInCurrentSlide++;
-        
-        if (itemsInCurrentSlide >= CONFIG.itemsPerSlide) {
-          closeSlide();
-        }
-      }
-    }
-    
-    if (currentSlide.children.length > 0) {
-      track.appendChild(currentSlide);
+    // Criar navegação
+    allSlides.forEach((slide, index) => {
       const dot = document.createElement('div');
-      dot.className = `nav-dot ${slideIndex === 0 ? 'active' : ''}`;
-      dot.onclick = () => goToSlide(slideIndex);
+      dot.className = `nav-dot ${index === 0 ? 'active' : ''}`;
+      dot.onclick = () => goToSlide(index);
       nav.appendChild(dot);
-      slideIndex++;
-    }
+    });
 
+    // Iniciar rotação automática
     let currentSlideIndex = 0;
-    const totalSlides = slideIndex;
+    const totalSlides = allSlides.length;
     
     if (totalSlides > 1) {
       setInterval(() => {
@@ -631,6 +601,7 @@
       }, CONFIG.rotateInterval);
     }
 
+    // Esconder loader
     setTimeout(() => {
       document.getElementById('loader').classList.add('hidden');
     }, 1000);
