@@ -161,6 +161,7 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
       text-align: center; /* Centralizado conforme solicitado */
+      line-height: 1.4;
     }
 
     .card-body {
@@ -430,19 +431,35 @@
     'estanhagem-eletrolitica': {
       nome: 'Estanhagem Eletrolítica',
       graficos: [
-        { file: 'des', nome: 'Desengraxante Químico', ref: 26.0, tol: 3.9 },
-        { file: 'ativacao-tanque-5', nome: 'Ativação — Tanque 5', ref: 8.5, tol: 1.28 },
-        { file: 'ativacao-tanque-6', nome: 'Ativação — Tanque 6', ref: 8.5, tol: 1.28 },
+        // Desengraxante: Nome original + Concentração
+        { file: 'des', nome: 'Desengraxante Químico<br><span style="font-size:0.8em; font-weight:400;">CONCENTRAÇÃO DO BANHO EM ML/L</span>', ref: 26.0, tol: 3.9 },
+        
+        // Ativação Tanque 5: Mantido pH
+        { file: 'ativacao-tanque-5', nome: 'Ativação — Tanque 5<br><span style="font-size:0.8em; font-weight:400;">pH DO BANHO</span>', ref: 8.5, tol: 1.28 },
+        
+        // Ativação Tanque 6: Nome original + Concentração ML/L
+        { file: 'ativacao-tanque-6', nome: 'Ativação — Tanque 6<br><span style="font-size:0.8em; font-weight:400;">CONCENTRAÇÃO DO BANHO EM ML/L</span>', ref: 8.5, tol: 1.28 },
+        
         { file: 'niquel-watt', nome: 'Níquel WATT', ref: 45.0, tol: 6.75 },
         { file: 'niquel-watt-1', nome: 'Níquel WATT (2)', ref: 45.0, tol: 6.75 },
         { file: 'niquel-watt-2', nome: 'Níquel WATT (3)', ref: 45.0, tol: 6.75 },
         { file: 'niquel-watt-3', nome: 'Níquel WATT (4)', ref: 45.0, tol: 6.75 },
         { file: 'niquel-watt-4', nome: 'Níquel WATT (5)', ref: 45.0, tol: 6.75 },
-        { file: 'estanhagem-a', nome: 'Estanhagem A', ref: 32.0, tol: 4.8 },
-        { file: 'estanhagem-a-1', nome: 'Estanhagem A (2)', ref: 32.0, tol: 4.8 },
+        
+        // Estanhagem A - Sn°
+        { file: 'estanhagem-a', nome: 'Estanhagem A<br><span style="font-size:0.8em; font-weight:400;">CONCENTRAÇÃO DE Sn° (g/L)</span>', ref: 32.0, tol: 4.8 },
+        
+        // Estanhagem A - H2SO4
+        { file: 'estanhagem-a-1', nome: 'Estanhagem A (2)<br><span style="font-size:0.8em; font-weight:400;">CONCENTRAÇÃO DE H2SO4 (mL/L)</span>', ref: 90.0, tol: 13.5 },
+        
         { file: 'estanhagem-a-2', nome: 'Estanhagem A (3)', ref: 32.0, tol: 4.8 },
-        { file: 'estanhagem-b', nome: 'Estanhagem B', ref: 31.5, tol: 4.73 },
-        { file: 'estanhagem-b-1', nome: 'Estanhagem B (2)', ref: 31.5, tol: 4.73 },
+        
+        // Estanhagem B - Sn°
+        { file: 'estanhagem-b', nome: 'Estanhagem B<br><span style="font-size:0.8em; font-weight:400;">CONCENTRAÇÃO DE Sn° (g/L)</span>', ref: 31.5, tol: 4.73 },
+        
+        // Estanhagem B - H2SO4
+        { file: 'estanhagem-b-1', nome: 'Estanhagem B (2)<br><span style="font-size:0.8em; font-weight:400;">CONCENTRAÇÃO DE H2SO4 (mL/L)</span>', ref: 90.0, tol: 13.5 },
+        
         { file: 'estanhagem-b-2', nome: 'Estanhagem B (3)', ref: 31.5, tol: 4.73 },
         { file: 'selante', nome: 'Selante Protetivo', ref: 18.0, tol: 2.7 }
       ]
