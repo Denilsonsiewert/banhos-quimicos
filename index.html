@@ -2,8 +2,9 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="300">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="refresh" content="1800">
   <title>Controle de Banhos Químicos - JGS | WEG</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -19,10 +20,12 @@
       --weg-gray-900: #1A1A1A;
       --status-ok: #2E7D32;
       --status-warn: #F57C00;
-      --status-crit: #1A1A1A;
-      --shadow: 0 2px 8px rgba(0,0,0,0.08);
+      --status-crit: #C62828;
+      --shadow: 0 4px 12px rgba(0,0,0,0.1);
+      --shadow-hover: 0 8px 24px rgba(0,0,0,0.15);
       --radius: 16px;
-      --radius-sm: 8px;
+      --radius-sm: 10px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -30,101 +33,134 @@
     body {
       background: var(--weg-gray-50);
       color: var(--weg-gray-900);
-      font-family: 'Inter', sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       line-height: 1.5;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      overflow-x: hidden;
     }
 
+    /* ========== HEADER ========== */
     header {
       background: white;
-      border-bottom: 3px solid var(--weg-blue);
-      padding: 12px 30px;
+      border-bottom: 4px solid var(--weg-blue);
+      padding: 10px 24px;
       display: grid;
-      grid-template-columns: 1fr auto 1fr;
+      grid-template-columns: auto 1fr auto;
       align-items: center;
+      gap: 20px;
       box-shadow: var(--shadow);
       position: sticky;
       top: 0;
       z-index: 100;
-      max-width: 1600px;
-      margin: 0 auto;
-      width: 100%;
     }
 
-    .header-logo { justify-self: start; }
-    .logo-weg { height: 50px; width: auto; object-fit: contain; }
-
+    .logo-container { display: flex; align-items: center; gap: 12px; }
+    .logo-weg { height: 48px; width: auto; object-fit: contain; }
+    
     header h1 {
-      font-size: 2rem;
+      font-size: 1.75rem;
       font-weight: 800;
       color: var(--weg-gray-900);
       text-align: center;
-      justify-self: center;
+      letter-spacing: -0.5px;
     }
-    header h1 span { color: var(--weg-blue); font-weight: 900; }
+    header h1 span { color: var(--weg-blue); }
 
     .header-clock {
-      justify-self: end;
       display: flex;
-      align-items: center;
-      gap: 15px;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 2px;
     }
-
-    #relogio, #data {
-      font-size: 1.6rem;
+    #relogio {
+      font-size: 1.8rem;
       font-weight: 800;
       color: var(--weg-blue-dark);
-      font-family: 'Courier New', monospace;
+      font-family: 'SF Mono', 'Courier New', monospace;
+      letter-spacing: 1px;
+    }
+    #data {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--weg-gray-700);
     }
 
+    /* ========== MAIN CONTENT ========== */
     main {
       flex: 1;
-      padding: 30px 30px;
-      max-width: 1600px;
-      margin: 0 auto;
-      width: 100%;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
 
-    .secao-titulo {
-      font-size: 1.3rem;
-      font-weight: 800;
-      color: var(--weg-blue-dark);
-      text-transform: uppercase;
-      margin-bottom: 20px;
-      padding: 12px 20px;
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px;
       background: var(--weg-blue-light);
       border-radius: var(--radius-sm);
-      text-align: center;
-      width: 100%;
-      letter-spacing: 0.5px;
-      grid-column: 1 / -1;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--weg-blue-dark);
+    }
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--status-ok);
+      display: inline-block;
+      margin-right: 8px;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
     }
 
-    .carousel-container {
+    /* ========== CAROUSEL ========== */
+    .carousel-wrapper {
       position: relative;
-      overflow: hidden;
       border-radius: var(--radius);
-      min-height: 500px; 
+      background: white;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      min-height: 520px;
     }
 
     .carousel-track {
       display: flex;
-      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-      height: 100%;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
     }
 
     .carousel-slide {
       min-width: 100%;
+      padding: 20px;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      grid-auto-rows: min-content;
-      gap: 25px;
-      padding: 15px;
+      gap: 20px;
       align-content: start;
     }
 
+    .section-header {
+      grid-column: 1 / -1;
+      padding: 14px 20px;
+      background: linear-gradient(135deg, var(--weg-blue), var(--weg-blue-dark));
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    /* ========== CARD ========== */
     .card {
       background: white;
       border-radius: var(--radius);
@@ -133,7 +169,21 @@
       flex-direction: column;
       overflow: hidden;
       border: 1px solid var(--weg-gray-200);
+      transition: var(--transition);
       height: 100%;
+    }
+    .card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-2px);
+    }
+    .card.new {
+      animation: highlight 2s ease-out;
+      border: 2px solid var(--weg-blue);
+    }
+    @keyframes highlight {
+      0% { box-shadow: 0 0 0 0 rgba(0, 69, 143, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(0, 69, 143, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(0, 69, 143, 0); }
     }
 
     .card-header {
@@ -142,23 +192,29 @@
       font-size: 1rem;
       color: white;
       background: var(--weg-blue);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
       text-align: center;
       line-height: 1.4;
+    }
+    .card-header small {
+      display: block;
+      font-size: 0.85em;
+      font-weight: 400;
+      opacity: 0.95;
+      margin-top: 2px;
     }
 
     .card-body {
       display: flex;
       flex-direction: column;
-      padding: 18px;
-      gap: 15px;
+      padding: 16px;
+      gap: 14px;
       flex: 1;
     }
 
+    /* ========== GRAPH ========== */
     .graph-container {
       width: 100%;
-      height: 300px;
+      height: 280px;
       background: var(--weg-gray-100);
       border-radius: var(--radius-sm);
       display: flex;
@@ -167,44 +223,48 @@
       overflow: hidden;
       position: relative;
       flex-shrink: 0;
+      border: 1px dashed var(--weg-gray-200);
     }
-
     .graph-container img {
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
-      z-index: 2;
+      transition: opacity 0.3s ease;
     }
-
     .graph-placeholder {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       color: var(--weg-gray-400);
       font-size: 0.9rem;
-      font-weight: 600;
-      z-index: 1;
+      font-weight: 500;
+      gap: 8px;
     }
+    .graph-placeholder .spinner {
+      width: 28px;
+      height: 28px;
+      border: 3px solid var(--weg-gray-200);
+      border-top-color: var(--weg-blue);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* ========== TABLE ========== */
     .measurements-container {
       background: white;
       border-radius: var(--radius-sm);
       border: 1px solid var(--weg-gray-200);
-      padding: 15px;
+      padding: 12px;
       flex-shrink: 0;
     }
-
     .table-title {
       font-weight: 700;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: var(--weg-blue-dark);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       text-align: center;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -213,68 +273,77 @@
     .analise-table {
       width: 100%;
       border-collapse: separate;
-      border-spacing: 4px;
+      border-spacing: 3px;
       table-layout: fixed;
     }
-
     .analise-table th {
       background: var(--weg-blue-light);
       color: var(--weg-blue-dark);
       font-weight: 700;
-      font-size: 0.8rem;
-      padding: 8px 4px;
-      border-radius: 4px;
+      font-size: 0.75rem;
+      padding: 7px 3px;
+      border-radius: 5px;
       text-align: center;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-
     .analise-table td {
       background: var(--weg-gray-100);
       color: var(--weg-gray-900);
       font-weight: 600;
       font-size: 0.85rem;
-      padding: 8px 4px;
+      padding: 7px 3px;
       text-align: center;
-      border-radius: 4px;
+      border-radius: 5px;
       border: 1px solid var(--weg-gray-200);
+      font-family: 'SF Mono', 'Courier New', monospace;
     }
 
-    .val-ok { background: #E8F5E9 !important; color: var(--status-ok) !important; }
-    .val-warn { background: #FFF3E0 !important; color: var(--status-warn) !important; }
-    .val-crit { background: #ECEFF1 !important; color: var(--status-crit) !important; }
-    .val-nodata { background: #F5F5F5 !important; color: #999999 !important; }
+    .val-ok { background: #E8F5E9 !important; color: var(--status-ok) !important; font-weight: 700; }
+    .val-warn { background: #FFF3E0 !important; color: var(--status-warn) !important; font-weight: 700; }
+    .val-crit { background: #FFEBEE !important; color: var(--status-crit) !important; font-weight: 700; }
+    .val-nodata { background: #F5F5F5 !important; color: #BDBDBD !important; font-style: italic; }
 
-    footer {
-      background: white;
-      padding: 15px 30px;
-      text-align: center;
-      font-size: 0.9rem;
-      color: var(--weg-gray-400);
-      border-top: 1px solid var(--weg-gray-200);
-      max-width: 1600px;
-      margin: 0 auto;
-      width: 100%;
-    }
-    footer span { color: var(--weg-blue); font-weight: 700; }
-
+    /* ========== NAVIGATION ========== */
     .carousel-nav {
       display: flex;
       justify-content: center;
       gap: 10px;
-      margin-top: 20px;
+      padding: 12px 0;
+      background: white;
+      border-top: 1px solid var(--weg-gray-200);
     }
     .nav-dot {
-      width: 12px;
-      height: 12px;
+      width: 11px;
+      height: 11px;
       border-radius: 50%;
       background: var(--weg-gray-300);
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: var(--transition);
       border: 2px solid white;
-      box-shadow: var(--shadow);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    .nav-dot.active { background: var(--weg-blue); transform: scale(1.3); }
+    .nav-dot:hover { transform: scale(1.2); }
+    .nav-dot.active {
+      background: var(--weg-blue);
+      transform: scale(1.3);
+      box-shadow: 0 0 0 3px var(--weg-blue-light);
+    }
 
+    /* ========== FOOTER ========== */
+    footer {
+      background: white;
+      padding: 12px 24px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--weg-gray-400);
+      border-top: 1px solid var(--weg-gray-200);
+    }
+    footer span { color: var(--weg-blue); font-weight: 700; }
+    #ultima { color: var(--weg-blue-dark); font-weight: 600; }
+
+    /* ========== LOADER ========== */
     .loader-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -284,39 +353,74 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 16px;
-      transition: opacity 0.5s ease;
+      gap: 20px;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
     }
-    .loader-overlay.hidden { opacity: 0; pointer-events: none; }
-    .spinner {
-      width: 40px; height: 40px;
+    .loader-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .loader-spinner {
+      width: 50px;
+      height: 50px;
       border: 4px solid var(--weg-gray-200);
       border-top-color: var(--weg-blue);
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    .loader-text {
+      font-weight: 600;
+      color: var(--weg-blue-dark);
+      font-size: 1.1rem;
+    }
 
-    @media (max-width: 1200px) {
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 1400px) {
       .carousel-slide { grid-template-columns: 1fr; }
-      header { padding: 10px 20px; grid-template-columns: 1fr; gap: 10px; }
-      .header-logo, .header-clock { justify-self: center; }
-      .logo-weg { height: 40px; }
-      header h1 { font-size: 1.5rem; }
-      #relogio, #data { font-size: 1.3rem; }
-      main { padding: 20px 20px; }
+      .graph-container { height: 240px; }
+    }
+    @media (max-width: 900px) {
+      header {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 12px 16px;
+      }
+      .logo-container, .header-clock { justify-self: center; }
+      .header-clock { align-items: center; }
+      header h1 { font-size: 1.4rem; }
+      #relogio { font-size: 1.5rem; }
+      main { padding: 16px; }
+      .graph-container { height: 200px; }
+      .analise-table td, .analise-table th { font-size: 0.7rem; padding: 5px 2px; }
+    }
+
+    /* ========== UTILS ========== */
+    .hidden { display: none !important; }
+    .text-center { text-align: center; }
+    .mt-1 { margin-top: 8px; }
+    .error-msg {
+      color: var(--status-crit);
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 10px;
+      background: #FFEBEE;
+      border-radius: var(--radius-sm);
+      margin: 10px 0;
     }
   </style>
 </head>
 <body>
 
+<!-- Loader Inicial -->
 <div class="loader-overlay" id="loader">
-  <div class="spinner"></div>
-  <div style="font-weight: 700; color: var(--weg-blue-dark)">Carregando Dashboard...</div>
+  <div class="loader-spinner"></div>
+  <div class="loader-text">Carregando Dashboard...</div>
 </div>
 
+<!-- Header -->
 <header>
-  <div class="header-logo">
+  <div class="logo-container">
     <img src="logo-weg.png" alt="WEG" class="logo-weg" onerror="this.style.display='none'">
   </div>
   <h1>Controle de Banhos Químicos <span>JGS</span></h1>
@@ -326,126 +430,206 @@
   </div>
 </header>
 
+<!-- Main Content -->
 <main>
-  <div class="carousel-container">
-    <div class="carousel-track" id="track-main"></div>
+  <!-- Barra de Status -->
+  <div class="status-bar">
+    <div><span class="status-dot"></span> Sistema Online</div>
+    <div>Atualização: <span id="ultima-sync">--:--</span></div>
   </div>
-  <div class="carousel-nav" id="nav-main"></div>
+
+  <!-- Carousel -->
+  <div class="carousel-wrapper">
+    <div class="carousel-track" id="track"></div>
+  </div>
+  <div class="carousel-nav" id="nav"></div>
 </main>
 
+<!-- Footer -->
 <footer>
-  JGS - Controle de Qualidade & Processos | <span>WEG S.A.</span> | Última Sincronização: <span id="ultima">--:--</span>
+  JGS - Controle de Qualidade & Processos | <span>WEG S.A.</span> | 
+  Última Sincronização: <span id="ultima">--:--</span>
 </footer>
 
+<!-- Script Principal -->
 <script>
+  // ===========================================================
+  //  CONFIGURAÇÕES
+  // ===========================================================
   const CONFIG = {
-    rotateInterval: 20000,
-    refreshInterval: 60000,
-    itemsPerSlide: 2
-  };
-
-  const processosConfig = {
-    'estanhagem-eletrolitica': {
-      nome: 'Estanhagem Eletrolítica',
-      graficos: [
-        { jsonFile: 'graf-des', imageFile: 'des', nome: 'Desengraxante Químico<br><span style="font-size:0.8em; font-weight:400;">CONCENTRAÇÃO DO BANHO EM ML/L</span>', ref: 26.0, tol: 3.9 },
-        { jsonFile: 'graf-ativacao-tanque-5', imageFile: 'ativacao-tanque-5', nome: 'Ativação — Tanque 5<br><span style="font-size:0.8em; font-weight:400;">pH DO BANHO</span>', ref: 8.5, tol: 1.28 },
-        { jsonFile: 'graf-ativacao-tanque-6', imageFile: 'ativacao-tanque-6', nome: 'Ativação — Tanque 6<br><span style="font-size:0.8em; font-weight:400;">CONCENTRAÇÃO DO BANHO EM ML/L</span>', ref: 8.5, tol: 1.28 },
-        { jsonFile: 'graf-estanhagem-a', imageFile: 'estanhagem-a', nome: 'Estanhagem A<br><span style="font-size:0.8em; font-weight:400;">CONCENTRAÇÃO DE Sn° (g/L)</span>', ref: 32.0, tol: 4.8 },
-        { jsonFile: 'graf-estanhagem-b', imageFile: 'estanhagem-b', nome: 'Estanhagem B<br><span style="font-size:0.8em; font-weight:400;">CONCENTRAÇÃO DE Sn° (g/L)</span>', ref: 31.5, tol: 4.73 },
-        { jsonFile: 'graf-sel', imageFile: 'sel', nome: 'Selante Protetivo', ref: 18.0, tol: 2.7 }
-      ]
-    },
-    'nanoceramico': {
-      nome: 'Processo Nanocerâmico',
-      graficos: [
-        { jsonFile: 'graf-des1', imageFile: 'des1', nome: '1º Desengraxante', ref: 29.0, tol: 4.35 },
-        { jsonFile: 'graf-des2', imageFile: 'des2', nome: '2º Desengraxante', ref: 28.5, tol: 4.28 },
-        { jsonFile: 'graf-dec1', imageFile: 'dec1', nome: 'Decapante 1', ref: 12.0, tol: 1.8 },
-        { jsonFile: 'graf-dec2', imageFile: 'dec2', nome: 'Decapante 2', ref: 11.5, tol: 1.73 },
-        { jsonFile: 'graf-nano', imageFile: 'nano', nome: 'Nanocerâmico — Conc.', ref: 35.0, tol: 5.25 },
-        { jsonFile: 'graf-abso-nano', imageFile: 'abso-nano', nome: 'Nanocerâmico — Abs.', ref: 1.2, tol: 0.18 },
-        { jsonFile: 'graf-ph-nano', imageFile: 'ph-nano', nome: 'Nanocerâmico — pH', ref: 4.5, tol: 0.68 },
-        { jsonFile: 'graf-neu', imageFile: 'neu', nome: 'Neutralizador', ref: 7.0, tol: 1.05 },
-        { jsonFile: 'graf-sel', imageFile: 'sel', nome: 'Selante Final', ref: 22.0, tol: 3.3 }
-      ]
+    // Intervalos em milissegundos
+    rotateInterval: 25000,        // Troca de slide no carousel
+    dataRefreshInterval: 90000,   // Atualiza dados dos cards (1.5min)
+    manifestCheckInterval: 180000, // Verifica novos gráficos (3min)
+    
+    // Layout
+    itemsPerSlide: 2,             // Cards por slide (desktop)
+    maxMeasurements: 24,          // Últimas medições a exibir
+    
+    // URLs base (ajuste conforme seu repositório)
+    baseUrl: '',                  // Ex: 'https://raw.githubusercontent.com/Denilsonsiewert/banhos-quimicos/main/'
+    manifestFile: 'index-config.json',
+    
+    // Configuração padrão (fallback se manifesto não existir)
+    defaultConfig: {
+      version: '1.0',
+      lastUpdate: null,
+      processos: {
+        'estanhagem': {
+          nome: 'Estanhagem Eletrolítica',
+          graficos: [
+            { id: 'des', nome: 'Desengraxante Químico', subtitulo: 'CONCENTRAÇÃO DO BANHO EM ML/L', ref: 26.0, tol: 3.9, ativo: true },
+            { id: 'ativacao-5', nome: 'Ativação — Tanque 5', subtitulo: 'pH DO BANHO', ref: 8.5, tol: 1.28, ativo: true },
+            { id: 'ativacao-6', nome: 'Ativação — Tanque 6', subtitulo: 'CONCENTRAÇÃO EM ML/L', ref: 8.5, tol: 1.28, ativo: true },
+            { id: 'estanhagem-a', nome: 'Estanhagem A', subtitulo: 'CONCENTRAÇÃO DE Sn° (g/L)', ref: 32.0, tol: 4.8, ativo: true },
+            { id: 'estanhagem-b', nome: 'Estanhagem B', subtitulo: 'CONCENTRAÇÃO DE Sn° (g/L)', ref: 31.5, tol: 4.73, ativo: true },
+            { id: 'sel', nome: 'Selante Protetivo', subtitulo: 'CONCENTRAÇÃO EM ML/L', ref: 18.0, tol: 2.7, ativo: true }
+          ]
+        },
+        'nanoceramico': {
+          nome: 'Processo Nanocerâmico',
+          graficos: [
+            { id: 'des1', nome: '1º Desengraxante', ref: 29.0, tol: 4.35, ativo: true },
+            { id: 'des2', nome: '2º Desengraxante', ref: 28.5, tol: 4.28, ativo: true },
+            { id: 'dec1', nome: 'Decapante 1', ref: 12.0, tol: 1.8, ativo: true },
+            { id: 'dec2', nome: 'Decapante 2', ref: 11.5, tol: 1.73, ativo: true },
+            { id: 'nano', nome: 'Nanocerâmico — Conc.', ref: 35.0, tol: 5.25, ativo: true },
+            { id: 'abso-nano', nome: 'Nanocerâmico — Abs.', ref: 1.2, tol: 0.18, ativo: true },
+            { id: 'ph-nano', nome: 'Nanocerâmico — pH', ref: 4.5, tol: 0.68, ativo: true },
+            { id: 'neu', nome: 'Neutralizador', ref: 7.0, tol: 1.05, ativo: true }
+          ]
+        }
+      }
     }
   };
 
-  let dadosCache = {};
+  // Estado global
+  const state = {
+    config: null,
+    dadosCache: {},
+    renderedCards: new Set(),
+    currentSlide: 0,
+    totalSlides: 0,
+    rotationTimer: null,
+    refreshTimer: null,
+    manifestTimer: null
+  };
 
-  function formatarData(dataStr) {
-    if (!dataStr || dataStr.trim() === '' || dataStr.trim() === '#N/D') return '--/--';
-    const cleanStr = dataStr.trim();
-    let dataObj = null;
+  // ===========================================================
+  //  FUNÇÕES UTILITÁRIAS
+  // ===========================================================
+  
+  function formatarDataBr(dataStr) {
+    if (!dataStr || typeof dataStr !== 'string') return '--/--';
+    const s = dataStr.trim();
+    if (s === '' || s === '#N/D' || s === 'null') return '--/--';
     
-    if (cleanStr.includes('/')) {
-      const partes = cleanStr.split('/');
-      if (partes.length === 3) {
-        const dia = parseInt(partes[0]);
-        const mes = parseInt(partes[1]) - 1;
-        let ano = parseInt(partes[2]);
-        if (ano < 100) ano += 2000;
-        dataObj = new Date(ano, mes, dia);
+    // Tenta parsear DD/MM/AAAA
+    if (s.includes('/')) {
+      const [d, m, a] = s.split('/');
+      if (d && m && a) {
+        const ano = a.length === 2 ? '20' + a : a;
+        return `${d.padStart(2,'0')}/${m.padStart(2,'0')}`;
       }
     }
     
-    if (!dataObj || isNaN(dataObj.getTime())) {
-      dataObj = new Date(cleanStr);
+    // Tenta parsear como Date
+    const date = new Date(s);
+    if (!isNaN(date)) {
+      return date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
     }
     
-    if (isNaN(dataObj.getTime())) return cleanStr;
-    
-    const dia = dataObj.getDate().toString().padStart(2, '0');
-    const mes = (dataObj.getMonth() + 1).toString().padStart(2, '0');
-    return `${dia}/${mes}`;
+    return s.substring(0, 5); // Fallback
   }
 
-  async function carregarDadosJSON(jsonFileName) {
+  function formatarHoraBr(date = new Date()) {
+    return date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function getStatusClass(valor, ref, tol, hasData) {
+    if (!hasData || valor === null || isNaN(valor)) return 'val-nodata';
+    const diff = Math.abs(valor - ref);
+    if (diff <= tol * 0.5) return 'val-ok';
+    if (diff <= tol) return 'val-warn';
+    return 'val-crit';
+  }
+
+  function parseValor(valorStr) {
+    if (!valorStr) return { valor: null, hasData: false };
+    const s = String(valorStr).trim();
+    if (s === '' || s === '#N/D' || s === '#N/A' || s === 'null') {
+      return { valor: null, hasData: false };
+    }
+    const num = parseFloat(s.replace(',', '.'));
+    return { valor: isNaN(num) ? null : num, hasData: !isNaN(num) };
+  }
+
+  // ===========================================================
+  //  FETCH E CACHE
+  // ===========================================================
+  
+  async function fetchJSON(url, cacheBust = true) {
     try {
-      const response = await fetch(`dados/${jsonFileName}.json?t=${Date.now()}`);
-      if (!response.ok) return null;
-      const data = await response.json();
-      return data;
+      const fullUrl = CONFIG.baseUrl + url + (cacheBust ? `?t=${Date.now()}` : '');
+      const response = await fetch(fullUrl, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return await response.json();
     } catch (error) {
-      console.warn(`Falha ao carregar ${jsonFileName}.json:`, error);
+      console.warn(`❌ Falha ao carregar ${url}:`, error.message);
       return null;
     }
   }
 
-  async function getMedicoesReal(jsonFileName) {
-    const dados = await carregarDadosJSON(jsonFileName);
-    if (!dados) return null;
-
-    const rawCharts = dados["charts"] || dados["charts "] || dados["charts  "];
-    if (!rawCharts || !rawCharts[0]) return null;
-
-    const chart = rawCharts[0];
-    const labels = chart["labels"] || chart["labels "] || [];
-    const series1 = chart["series1"] || chart["series1 "] || [];
-    
-    const medicoes = [];
-    const startIndex = Math.max(0, labels.length - 24);
-    
-    for (let i = startIndex; i < labels.length; i++) {
-      const label = labels[i];
-      let valorStr = series1[i] || '0';
-      valorStr = valorStr.trim();
-      
-      let valor = 0;
-      let hasData = true;
-      
-      if (valorStr === '#N/D' || valorStr === '#N/A' || valorStr === '' || valorStr === null) {
-        hasData = false;
-        valor = NaN;
-      } else {
-        valor = parseFloat(valorStr.replace(',', '.'));
-        if (isNaN(valor)) hasData = false;
+  async function fetchManifest() {
+    try {
+      const manifest = await fetchJSON(CONFIG.manifestFile);
+      if (manifest && manifest.processos) {
+        console.log('✅ Manifesto carregado:', Object.keys(manifest.processos).length, 'processos');
+        return manifest;
       }
-      
+      console.log('⚠️ Manifesto inválido, usando configuração padrão');
+      return null;
+    } catch {
+      console.log('⚠️ Manifesto não encontrado, usando configuração padrão');
+      return null;
+    }
+  }
+
+  async function fetchGraficoData(jsonFileName) {
+    try {
+      const data = await fetchJSON(`dados/${jsonFileName}.json`);
+      return data;
+    } catch {
+      return null;
+    }
+  }
+
+  // ===========================================================
+  //  PROCESSAMENTO DE DADOS
+  // ===========================================================
+  
+  function extrairMedicoes(dadosJson, maxItems = CONFIG.maxMeasurements) {
+    if (!dadosJson) return [];
+    
+    // Suporta variações de chave
+    const charts = dadosJson.charts || dadosJson['charts '] || dadosJson['charts  '];
+    if (!charts || !Array.isArray(charts) || !charts[0]) return [];
+    
+    const chart = charts[0];
+    const labels = chart.labels || chart['labels '] || [];
+    const series1 = chart.series1 || chart['series1 '] || [];
+    
+    if (!labels.length || !series1.length) return [];
+    
+    // Pega as últimas N medições
+    const start = Math.max(0, labels.length - maxItems);
+    const medicoes = [];
+    
+    for (let i = start; i < labels.length; i++) {
+      const { valor, hasData } = parseValor(series1[i]);
       medicoes.push({
-        label,
-        dataFormatada: formatarData(label),
+        label: labels[i] || '',
+        dataFormatada: formatarDataBr(labels[i]),
         valor: valor,
         hasData: hasData
       });
@@ -454,219 +638,366 @@
     return medicoes;
   }
 
-  function getStatusClass(valor, ref, tol, hasData) {
-    if (!hasData || isNaN(valor)) return 'val-nodata';
-    const diff = Math.abs(valor - ref);
-    if (diff <= tol * 0.5) return 'val-ok';
-    if (diff <= tol) return 'val-warn';
-    return 'val-crit';
+  async function getMedicoesAtualizadas(jsonFileName) {
+    // Retorna do cache se tiver menos de 1 minuto
+    const cacheKey = `${jsonFileName}_${Math.floor(Date.now() / 60000)}`;
+    if (state.dadosCache[cacheKey]) {
+      return state.dadosCache[cacheKey];
+    }
+    
+    const dados = await fetchGraficoData(jsonFileName);
+    const medicoes = extrairMedicoes(dados);
+    
+    if (medicoes.length > 0) {
+      state.dadosCache[cacheKey] = medicoes;
+    }
+    
+    return medicoes;
   }
 
-  async function renderTabela(graficoConfig) {
-    let medicoes = dadosCache[graficoConfig.jsonFile];
-    
-    if (!medicoes) {
-      medicoes = await getMedicoesReal(graficoConfig.jsonFile);
-      if (!medicoes) return null;
-      dadosCache[graficoConfig.jsonFile] = medicoes;
+  // ===========================================================
+  //  RENDERIZAÇÃO DE CARDS
+  // ===========================================================
+  
+  function renderTabelaHtml(medicoes, ref, tol) {
+    if (!medicoes || medicoes.length === 0) {
+      return '<div class="error-msg">⚠️ Sem dados disponíveis</div>';
     }
     
     const colsPerRow = 12;
     let html = '<table class="analise-table">';
-
+    
+    // Renderiza até 2 linhas de 12 colunas
     for (let row = 0; row < 2; row++) {
       const start = row * colsPerRow;
-      const end = start + colsPerRow;
-      const chunk = medicoes.slice(start, end);
-
+      const chunk = medicoes.slice(start, start + colsPerRow);
       if (chunk.length === 0) continue;
-
-      html += '<tr>';
-      chunk.forEach(m => html += `<th>${m.dataFormatada}</th>`);
-      html += '</tr>';
-
+      
+      // Cabeçalho com datas
       html += '<tr>';
       chunk.forEach(m => {
-        const cls = getStatusClass(m.valor, graficoConfig.ref, graficoConfig.tol, m.hasData);
-        const displayValue = m.hasData ? m.valor.toFixed(2) : '---';
-        html += `<td class="${cls}">${displayValue}</td>`;
+        html += `<th title="${m.label}">${m.dataFormatada}</th>`;
+      });
+      html += '</tr>';
+      
+      // Valores com status
+      html += '<tr>';
+      chunk.forEach(m => {
+        const cls = getStatusClass(m.valor, ref, tol, m.hasData);
+        const displayValue = m.hasData ? m.valor.toFixed(2).replace('.', ',') : '---';
+        html += `<td class="${cls}" title="${m.hasData ? m.valor : 'Sem dado'}">${displayValue}</td>`;
       });
       html += '</tr>';
     }
+    
     html += '</table>';
     return html;
   }
 
-  async function criarCardDOM(graficoConfig) {
+  async function criarCardElement(graficoConfig, processoNome) {
     try {
-      const tabelaHtml = await renderTabela(graficoConfig);
+      const { id, nome, subtitulo, ref, tol, jsonFile } = graficoConfig;
       
-      if (tabelaHtml === null) {
-        return null;
-      }
-
+      // Carrega dados
+      const medicoes = await getMedicoesAtualizadas(jsonFile || `graf-${id}`);
+      
+      // Cria elemento do card
       const card = document.createElement('div');
       card.className = 'card';
+      card.dataset.graficoId = id;
       
-      const displayName = graficoConfig.nome;
-      const imageFile = graficoConfig.imageFile;
-
+      // Título com subtítulo opcional
+      const headerHtml = subtitulo 
+        ? `${nome}<br><small>${subtitulo}</small>`
+        : nome;
+      
+      // HTML do gráfico com fallback
+      const imageSrc = `${CONFIG.baseUrl}graficos/graf-${id}-1.png`;
+      
       card.innerHTML = `
-        <div class="card-header">${displayName}</div>
+        <div class="card-header">${headerHtml}</div>
         <div class="card-body">
           <div class="graph-container">
-            <div class="graph-placeholder">📊 Carregando Gráfico...</div>
-            <img src="graficos/graf-${imageFile}-1.png?t=${Date.now()}"
-                 onerror="this.style.display='none'"
-                 onload="this.previousElementSibling.style.display='none'">
+            <div class="graph-placeholder">
+              <div class="spinner"></div>
+              <span>Carregando...</span>
+            </div>
+            <img src="${imageSrc}?t=${Date.now()}" 
+                 alt="${nome}"
+                 onload="this.previousElementSibling.style.display='none'; this.style.opacity='1'"
+                 onerror="this.style.display='none'; this.previousElementSibling.innerHTML='<span>📷 Gráfico indisponível</span>'">
           </div>
           <div class="measurements-container">
-            <div class="table-title">Últimas 24 Medições</div>
-            ${tabelaHtml}
+            <div class="table-title">Últimas ${CONFIG.maxMeasurements} Medições</div>
+            ${renderTabelaHtml(medicoes, ref, tol)}
           </div>
         </div>
       `;
+      
       return card;
-    } catch (e) {
-      console.error("Erro ao criar card:", e);
+    } catch (error) {
+      console.error(`❌ Erro ao criar card ${graficoConfig.id}:`, error);
       return null;
     }
   }
 
-  async function initCarousel() {
-    const track = document.getElementById('track-main');
-    const nav = document.getElementById('nav-main');
+  // ===========================================================
+  //  CAROUSEL E NAVEGAÇÃO
+  // ===========================================================
+  
+  function criarSlide(processoKey, processoConfig, graficosSlice) {
+    const slide = document.createElement('div');
+    slide.className = 'carousel-slide';
+    slide.dataset.processo = processoKey;
     
-    track.innerHTML = '';
-    nav.innerHTML = '';
-
-    let allSlides = []; // Array de slides completos
-
-    // Processar cada processo separadamente
-    for (const processoKey in processosConfig) {
-      const processo = processosConfig[processoKey];
-      const processoNome = processo.nome;
-      
-      // Coletar todos os cards válidos deste processo
-      let processCards = [];
-      for (const graficoConfig of processo.graficos) {
-        const cardElement = await criarCardDOM(graficoConfig);
-        if (cardElement) {
-          processCards.push(cardElement);
-        }
-      }
-
-      // Se não há cards neste processo, pula para o próximo
-      if (processCards.length === 0) continue;
-
-      // Dividir os cards em grupos de CONFIG.itemsPerSlide
-      // Cada grupo será um slide com o título do processo no topo
-      for (let i = 0; i < processCards.length; i += CONFIG.itemsPerSlide) {
-        const slide = document.createElement('div');
-        slide.className = 'carousel-slide';
-        
-        // Adicionar o título da seção no topo de CADA slide deste processo
-        const titleDiv = document.createElement('div');
-        titleDiv.className = 'secao-titulo';
-        titleDiv.textContent = processoNome;
-        slide.appendChild(titleDiv);
-        
-        // Adicionar os cards deste slide
-        const slice = processCards.slice(i, i + CONFIG.itemsPerSlide);
-        slice.forEach(card => slide.appendChild(card));
-        
-        allSlides.push(slide);
-      }
-    }
-
-    // Adicionar todos os slides ao track
-    allSlides.forEach(slide => track.appendChild(slide));
-
-    // Criar navegação
-    allSlides.forEach((slide, index) => {
-      const dot = document.createElement('div');
-      dot.className = `nav-dot ${index === 0 ? 'active' : ''}`;
-      dot.onclick = () => goToSlide(index);
-      nav.appendChild(dot);
-    });
-
-    // Iniciar rotação automática
-    let currentSlideIndex = 0;
-    const totalSlides = allSlides.length;
+    // Cabeçalho da seção
+    const header = document.createElement('div');
+    header.className = 'section-header';
+    header.textContent = processoConfig.nome;
+    slide.appendChild(header);
     
-    if (totalSlides > 1) {
-      setInterval(() => {
-        currentSlideIndex = (currentSlideIndex + 1) % totalSlides;
-        goToSlide(currentSlideIndex);
-      }, CONFIG.rotateInterval);
-    }
-
-    // Esconder loader
-    setTimeout(() => {
-      document.getElementById('loader').classList.add('hidden');
-    }, 1000);
+    // Cards
+    graficosSlice.forEach(card => slide.appendChild(card));
+    
+    return slide;
   }
 
-  async function refreshAllCards() {
-    dadosCache = {};
+  function atualizarNavegacao() {
+    const nav = document.getElementById('nav');
+    nav.innerHTML = '';
     
-    const cards = document.querySelectorAll('.card');
-    for (const card of cards) {
-      const img = card.querySelector('img');
-      if(img) {
-          const src = img.getAttribute('src');
-          const match = src.match(/graf-(.*)-1\.png/);
-          if(match && match[1]) {
-              const imageFile = match[1];
-              let config = null;
-              for(const pk in processosConfig) {
-                  const found = processosConfig[pk].graficos.find(g => g.imageFile === imageFile);
-                  if(found) { config = found; break; }
-              }
-              if(config) {
-                  const tabelaHtml = await renderTabela(config);
-                  if(tabelaHtml) {
-                      const container = card.querySelector('.measurements-container');
-                      if(container) {
-                          container.innerHTML = `<div class="table-title">Últimas 24 Medições</div>${tabelaHtml}`;
-                      }
-                  }
-              }
-          }
-      }
+    for (let i = 0; i < state.totalSlides; i++) {
+      const dot = document.createElement('div');
+      dot.className = `nav-dot${i === state.currentSlide ? ' active' : ''}`;
+      dot.addEventListener('click', () => goToSlide(i));
+      nav.appendChild(dot);
     }
-    
-    const agora = new Date();
-    document.getElementById('ultima').innerText = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   }
 
   function goToSlide(index) {
-    const track = document.getElementById('track-main');
-    const dots = document.querySelectorAll('#nav-main .nav-dot');
+    const track = document.getElementById('track');
     track.style.transform = `translateX(-${index * 100}%)`;
-    dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    
+    // Atualiza dots
+    document.querySelectorAll('.nav-dot').forEach((dot, i) => {
+      dot.classList.toggle('active', i === index);
+    });
+    
+    state.currentSlide = index;
   }
 
-  function updateClock() {
-    const agora = new Date();
-    document.getElementById('relogio').innerText = agora.toLocaleTimeString('pt-BR');
-    document.getElementById('data').innerText = agora.toLocaleDateString('pt-BR');
-    document.getElementById('ultima').innerText = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-  }
-
-  async function init() {
-    try {
-      await initCarousel();
-      updateClock();
-      setInterval(updateClock, 1000);
-      setInterval(refreshAllCards, CONFIG.refreshInterval);
-    } catch (error) {
-      console.error("Erro fatal na inicialização:", error);
-      document.getElementById('loader').innerHTML = `<div style="color:red; text-align:center">Erro ao carregar dashboard.<br>Verifique o Console (F12).</div>`;
+  function iniciarRotacao() {
+    if (state.rotationTimer) clearInterval(state.rotationTimer);
+    
+    if (state.totalSlides > 1) {
+      state.rotationTimer = setInterval(() => {
+        const next = (state.currentSlide + 1) % state.totalSlides;
+        goToSlide(next);
+      }, CONFIG.rotateInterval);
     }
   }
 
-  window.onload = init;
+  // ===========================================================
+  //  INICIALIZAÇÃO E ATUALIZAÇÃO DINÂMICA
+  // ===========================================================
+  
+  async function renderizarTodosCards() {
+    const track = document.getElementById('track');
+    track.innerHTML = '';
+    state.renderedCards.clear();
+    
+    let slides = [];
+    
+    // Processa cada processo
+    for (const [processoKey, processo] of Object.entries(state.config.processos)) {
+      const cardsPromises = processo.graficos
+        .filter(g => g.ativo !== false)
+        .map(g => criarCardElement(g, processo.nome));
+      
+      const cards = (await Promise.all(cardsPromises)).filter(Boolean);
+      
+      if (cards.length === 0) continue;
+      
+      // Agrupa cards em slides de N itens
+      for (let i = 0; i < cards.length; i += CONFIG.itemsPerSlide) {
+        const slice = cards.slice(i, i + CONFIG.itemsPerSlide);
+        const slide = criarSlide(processoKey, processo, slice);
+        slides.push(slide);
+        
+        // Marca cards como renderizados
+        slice.forEach(card => {
+          if (card.dataset.graficoId) {
+            state.renderedCards.add(card.dataset.graficoId);
+          }
+        });
+      }
+    }
+    
+    // Adiciona slides ao track
+    slides.forEach(slide => track.appendChild(slide));
+    
+    // Atualiza estado
+    state.totalSlides = slides.length;
+    state.currentSlide = 0;
+    
+    // Atualiza UI
+    atualizarNavegacao();
+    goToSlide(0);
+    iniciarRotacao();
+    
+    console.log(`✅ Dashboard renderizado: ${slides.length} slides, ${state.renderedCards.size} cards`);
+  }
+
+  async function verificarNovosGraficos() {
+    // Recarrega manifesto
+    const novoManifest = await fetchManifest();
+    if (!novoManifest) return;
+    
+    // Compara com config atual
+    const novosProcessos = Object.keys(novoManifest.processos)
+      .filter(key => !state.config.processos[key]);
+    
+    const novosGraficos = [];
+    for (const [key, processo] of Object.entries(novoManifest.processos)) {
+      const existentes = state.config.processos[key]?.graficos.map(g => g.id) || [];
+      const novos = processo.graficos.filter(g => 
+        !existentes.includes(g.id) && g.ativo !== false
+      );
+      novosGraficos.push(...novos);
+    }
+    
+    if (novosGraficos.length > 0) {
+      console.log(`🆕 Detectados ${novosGraficos.length} novos gráficos`);
+      state.config = novoManifest;
+      await renderizarTodosCards();
+      
+      // Efeito visual nos novos cards
+      document.querySelectorAll('.card.new').forEach(card => {
+        setTimeout(() => card.classList.remove('new'), 2000);
+      });
+    }
+  }
+
+  async function atualizarDadosCards() {
+    // Atualiza apenas as tabelas, sem recriar cards
+    const cards = document.querySelectorAll('.card');
+    
+    for (const card of cards) {
+      const graficoId = card.dataset.graficoId;
+      if (!graficoId) continue;
+      
+      // Encontra config do gráfico
+      let graficoConfig = null;
+      for (const processo of Object.values(state.config.processos)) {
+        const found = processo.graficos.find(g => g.id === graficoId);
+        if (found) { graficoConfig = found; break; }
+      }
+      if (!graficoConfig) continue;
+      
+      // Recarrega dados e atualiza tabela
+      const medicoes = await getMedicoesAtualizadas(graficoConfig.jsonFile || `graf-${graficoId}`);
+      const tabelaContainer = card.querySelector('.measurements-container');
+      
+      if (tabelaContainer && medicoes.length > 0) {
+        const novaTabela = renderTabelaHtml(medicoes, graficoConfig.ref, graficoConfig.tol);
+        // Mantém o título, substitui apenas a tabela
+        const titulo = tabelaContainer.querySelector('.table-title')?.outerHTML || '';
+        tabelaContainer.innerHTML = titulo + novaTabela;
+      }
+    }
+    
+    // Atualiza timestamp
+    document.getElementById('ultima-sync').textContent = formatarHoraBr();
+    document.getElementById('ultima').textContent = formatarHoraBr();
+  }
+
+  // ===========================================================
+  //  RELÓGIO E EVENTOS
+  // ===========================================================
+  
+  function iniciarRelogio() {
+    function update() {
+      const now = new Date();
+      document.getElementById('relogio').textContent = now.toLocaleTimeString('pt-BR');
+      document.getElementById('data').textContent = now.toLocaleDateString('pt-BR', {
+        weekday: 'short', day: '2-digit', month: '2-digit'
+      }).replace('.', '').replace(',', '');
+    }
+    update();
+    setInterval(update, 1000);
+  }
+
+  function iniciarTimers() {
+    // Refresh de dados
+    state.refreshTimer = setInterval(atualizarDadosCards, CONFIG.dataRefreshInterval);
+    
+    // Verificação de novos gráficos
+    state.manifestTimer = setInterval(verificarNovosGraficos, CONFIG.manifestCheckInterval);
+  }
+
+  // ===========================================================
+  //  INICIALIZAÇÃO PRINCIPAL
+  // ===========================================================
+  
+  async function init() {
+    try {
+      // 1. Carrega configuração (manifesto ou fallback)
+      const manifest = await fetchManifest();
+      state.config = manifest || CONFIG.defaultConfig;
+      
+      // 2. Renderiza dashboard
+      await renderizarTodosCards();
+      
+      // 3. Inicia relógio e timers
+      iniciarRelogio();
+      iniciarTimers();
+      
+      // 4. Esconde loader
+      setTimeout(() => {
+        document.getElementById('loader').classList.add('hidden');
+      }, 800);
+      
+      console.log('🚀 Dashboard inicializado com sucesso');
+      
+    } catch (error) {
+      console.error('❌ Erro fatal na inicialização:', error);
+      document.getElementById('loader').innerHTML = `
+        <div style="color: var(--status-crit); text-align: center; padding: 20px;">
+          <h3>⚠️ Erro ao carregar dashboard</h3>
+          <p class="mt-1">${error.message}</p>
+          <p class="mt-1" style="font-size: 0.9rem; color: var(--weg-gray-400)">
+            Verifique a conexão e recarregue a página (F5)
+          </p>
+        </div>
+      `;
+    }
+  }
+
+  // Inicia quando DOM estiver pronto
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  // Previne sleep da tela em TVs (opcional)
+  if ('wakeLock' in navigator) {
+    let wakeLock = null;
+    async function requestWakeLock() {
+      try {
+        wakeLock = await navigator.wakeLock.request('screen');
+        console.log('🔒 Wake Lock ativado');
+      } catch (err) {
+        console.warn('⚠️ Wake Lock não suportado:', err.message);
+      }
+    }
+    document.addEventListener('visibilitychange', () => {
+      if (wakeLock !== null && document.visibilityState === 'visible') {
+        requestWakeLock();
+      }
+    });
+    requestWakeLock();
+  }
 </script>
 
 </body>
