@@ -19,7 +19,7 @@
       --weg-gray-900: #1A1A1A;
       --status-ok: #2E7D32;
       --status-warn: #F57C00;
-      --status-crit: #1A1A1A; /* Cor neutra preta/cinza para crítico */
+      --status-crit: #1A1A1A;
       --shadow: 0 2px 8px rgba(0,0,0,0.08);
       --radius: 16px;
       --radius-sm: 8px;
@@ -246,7 +246,7 @@
       border: 1px solid var(--weg-gray-200);
     }
 
-    /* Status Colors - Neutras */
+    /* Status Colors */
     .val-ok { background: #E8F5E9 !important; color: var(--status-ok) !important; }
     .val-warn { background: #FFF3E0 !important; color: var(--status-warn) !important; }
     .val-crit { background: #ECEFF1 !important; color: var(--status-crit) !important; }
@@ -368,33 +368,39 @@
     itemsPerSlide: 2
   };
 
-  // LISTA DE ARQUIVOS BASEADA NAS SUAS SCREENSHOTS
-  // Se um novo gráfico for adicionado, basta incluir o nome (sem .json) na lista correspondente
+  // LISTA CORRIGIDA: Removidos os arquivos "base" (ex: niquel-watt) onde existem versões numeradas
+  // para evitar o problema de "mostrar 1 a mais".
   const processosConfig = {
     'estanhagem-eletrolitica': {
       nome: 'Estanhagem Eletrolítica',
       graficos: [
-        { file: 'des', nome: 'Desengraxante Químico', ref: 26.0, tol: 3.9 },
+        { file: 'des', nome: 'Desengraxante', ref: 26.0, tol: 3.9 },
+        { file: 'des1', nome: 'Desengraxante (2)', ref: 26.0, tol: 3.9 },
+        { file: 'des2', nome: 'Desengraxante (3)', ref: 26.0, tol: 3.9 },
         { file: 'ativacao-tanque-5', nome: 'Ativação — Tanque 5', ref: 8.5, tol: 1.28 },
         { file: 'ativacao-tanque-6', nome: 'Ativação — Tanque 6', ref: 8.5, tol: 1.28 },
-        { file: 'niquel-watt', nome: 'Níquel WATT', ref: 45.0, tol: 6.75 },
-        { file: 'niquel-watt-1', nome: 'Níquel WATT (2)', ref: 45.0, tol: 6.75 },
-        { file: 'niquel-watt-2', nome: 'Níquel WATT (3)', ref: 45.0, tol: 6.75 },
-        { file: 'niquel-watt-3', nome: 'Níquel WATT (4)', ref: 45.0, tol: 6.75 },
-        { file: 'niquel-watt-4', nome: 'Níquel WATT (5)', ref: 45.0, tol: 6.75 },
-        { file: 'estanhagem-a', nome: 'Estanhagem A', ref: 32.0, tol: 4.8 },
-        { file: 'estanhagem-a-1', nome: 'Estanhagem A (2)', ref: 32.0, tol: 4.8 },
-        { file: 'estanhagem-a-2', nome: 'Estanhagem A (3)', ref: 32.0, tol: 4.8 },
-        { file: 'estanhagem-b', nome: 'Estanhagem B', ref: 31.5, tol: 4.73 },
-        { file: 'estanhagem-b-1', nome: 'Estanhagem B (2)', ref: 31.5, tol: 4.73 },
-        { file: 'estanhagem-b-2', nome: 'Estanhagem B (3)', ref: 31.5, tol: 4.73 },
+        
+        // Removido 'niquel-watt' (base) para deixar apenas os 4 tanques numerados
+        { file: 'niquel-watt-1', nome: 'Níquel WATT (1)', ref: 45.0, tol: 6.75 },
+        { file: 'niquel-watt-2', nome: 'Níquel WATT (2)', ref: 45.0, tol: 6.75 },
+        { file: 'niquel-watt-3', nome: 'Níquel WATT (3)', ref: 45.0, tol: 6.75 },
+        { file: 'niquel-watt-4', nome: 'Níquel WATT (4)', ref: 45.0, tol: 6.75 },
+        
+        // Removido 'estanhagem-a' (base) para deixar apenas 1 e 2
+        { file: 'estanhagem-a-1', nome: 'Estanhagem A (1)', ref: 32.0, tol: 4.8 },
+        { file: 'estanhagem-a-2', nome: 'Estanhagem A (2)', ref: 32.0, tol: 4.8 },
+        
+        // Removido 'estanhagem-b' (base) para deixar apenas 1 e 2
+        { file: 'estanhagem-b-1', nome: 'Estanhagem B (1)', ref: 31.5, tol: 4.73 },
+        { file: 'estanhagem-b-2', nome: 'Estanhagem B (2)', ref: 31.5, tol: 4.73 },
+        
         { file: 'selante', nome: 'Selante Protetivo', ref: 18.0, tol: 2.7 }
       ]
     },
     'nanoceramico': {
       nome: 'Processo Nanocerâmico',
       graficos: [
-        { file: 'des1', nome: '1º Desengraxante', ref: 29.0, tol: 4.35 },
+        { file: 'des1', nome: '1º Desengraxante', ref: 29.0, tol: 4.35 }, // Nota: des1 aqui refere-se ao processo nano
         { file: 'des2', nome: '2º Desengraxante', ref: 28.5, tol: 4.28 },
         { file: 'dec1', nome: 'Decapante 1', ref: 12.0, tol: 1.8 },
         { file: 'dec2', nome: 'Decapante 2', ref: 11.5, tol: 1.73 },
@@ -410,7 +416,7 @@
   let dadosCache = {};
 
   // 1. CORREÇÃO CRÍTICA: Limpa espaços em chaves e valores do JSON
-  // Isso resolve o problema de "charts " e "#N/D "
+  // Resolve o problema de "charts " e "#N/D "
   function sanitizeJson(obj) {
     if (typeof obj !== 'object' || obj === null) return obj;
     const newObj = {};
@@ -425,7 +431,7 @@
     return newObj;
   }
 
-  // Formatar data para dia/mês
+  // Formatar data
   function formatarData(dataStr) {
     if (!dataStr || dataStr === '#N/D' || dataStr.trim() === '') return '--/--';
     let dataObj = null;
@@ -453,16 +459,12 @@
       if (!res.ok) return null;
       const raw = await res.json();
       return sanitizeJson(raw); // Aplica a limpeza
-    } catch (e) {
-      console.warn(`Falha ao carregar: graf-${fileName}.json`, e);
-      return null;
-    }
+    } catch (e) { return null; }
   }
 
-  // Extrair medições e preparar para a tabela
+  // Extrair medições
   async function getMedicoesReal(fileName) {
     const dados = await carregarDadosJSON(fileName);
-    // Verificação segura após sanitização
     if (!dados?.charts?.[0]) return [];
 
     const chart = dados.charts[0];
@@ -470,14 +472,13 @@
     const series1 = chart.series1 || [];
     
     const medicoes = [];
-    const start = Math.max(0, labels.length - 24); // Pega apenas as últimas 24
+    const start = Math.max(0, labels.length - 24);
     
     for (let i = start; i < labels.length; i++) {
       const label = labels[i];
       const valStr = series1[i] || '0';
       let valor = 0, hasData = true;
       
-      // Verifica se o dado é válido ou #N/D
       if (valStr === '#N/D' || valStr === '#N/A' || valStr === '') {
         hasData = false; valor = NaN;
       } else {
@@ -485,12 +486,7 @@
         if (isNaN(valor)) hasData = false;
       }
       
-      medicoes.push({ 
-        label, 
-        dataFormatada: formatarData(label), 
-        valor, 
-        hasData 
-      });
+      medicoes.push({ label, dataFormatada: formatarData(label), valor, hasData });
     }
     return medicoes;
   }
@@ -503,21 +499,16 @@
     return 'val-crit';
   }
 
-  // Renderizar a tabela das últimas 24 análises
+  // Renderizar tabela
   async function renderTabela(cfg) {
     if (!dadosCache[cfg.file]) dadosCache[cfg.file] = await getMedicoesReal(cfg.file);
     const medicoes = dadosCache[cfg.file];
-    const cols = 12; // 12 colunas por linha para caber 24 itens em 2 linhas
+    const cols = 12;
     let html = '<table class="analise-table">';
-    
     for (let r = 0; r < 2; r++) {
       const chunk = medicoes.slice(r * cols, r * cols + cols);
       if (!chunk.length) continue;
-      
-      // Linha de Datas
       html += '<tr>' + chunk.map(m => `<th>${m.dataFormatada}</th>`).join('') + '</tr>';
-      
-      // Linha de Valores
       html += '<tr>' + chunk.map(m => {
         const cls = getStatusClass(m.valor, cfg.ref, cfg.tol, m.hasData);
         return `<td class="${cls}">${m.hasData ? m.valor.toFixed(2) : '---'}</td>`;
@@ -526,7 +517,7 @@
     return html + '</table>';
   }
 
-  // Carregar imagem com múltiplas tentativas (graf-nome.png, graf-nome-1.png, etc)
+  // 2. LOADER DE IMAGEM ROBUSTO: Tenta variações para encontrar a imagem correta
   function loadGraphImage(imgEl, fileName) {
     let attempts = 0;
     const maxAttempts = 6; 
@@ -536,8 +527,17 @@
         imgEl.style.display = 'none';
         return;
       }
-      const suffix = attempts === 0 ? '' : `-${attempts}`;
-      imgEl.src = `graficos/graf-${fileName}${suffix}.png?t=${Date.now()}`;
+      
+      let src = '';
+      if (attempts === 0) {
+        src = `graficos/graf-${fileName}.png?t=${Date.now()}`;
+      } else {
+        // Caso especial para 'des1' que no PNG tem hífen: 'graf-des-1.png'
+        if (fileName === 'des1') src = `graficos/graf-des-1.png?t=${Date.now()}`;
+        else src = `graficos/graf-${fileName}-${attempts}.png?t=${Date.now()}`;
+      }
+      
+      imgEl.src = src;
       imgEl.onerror = function() {
         attempts++;
         tryNext();
@@ -580,7 +580,6 @@
         const slide = document.createElement('div');
         slide.className = 'carousel-slide';
         
-        // Título do processo em TODOS os slides
         slide.innerHTML = `<div style="grid-column:1/-1;margin-bottom:5px"><div class="secao-titulo">${proc.nome}</div></div>`;
         
         const chunk = proc.graficos.slice(i * CONFIG.itemsPerSlide, i * CONFIG.itemsPerSlide + CONFIG.itemsPerSlide);
@@ -590,7 +589,6 @@
           temp.innerHTML = cardHtml;
           const card = temp.firstElementChild;
           
-          // Configurar imagem com busca inteligente
           const img = card.querySelector('img');
           loadGraphImage(img, cfg.file);
           
@@ -622,12 +620,13 @@
   async function refreshAllCards() {
     document.querySelectorAll('.card').forEach(card => {
       const header = card.querySelector('.card-header').innerText;
-      // Tentar encontrar o nome do arquivo correspondente baseado no título
       let fileName = header.toLowerCase().replace(/\s/g, '-').replace('—', '-');
-      // Ajustes específicos para corresponder aos nomes dos arquivos
+      
+      // Mapeamento manual para casos onde o nome do título difere do nome do arquivo
       if (fileName.includes('tanque-5')) fileName = 'ativacao-tanque-5';
       if (fileName.includes('tanque-6')) fileName = 'ativacao-tanque-6';
-      if (fileName.includes('quimico')) fileName = 'des';
+      if (fileName.includes('quimico') || fileName.includes('desengraxante-(2)')) fileName = 'des1'; // Ajuste para des1
+      if (fileName.includes('desengraxante')) fileName = 'des';
       if (fileName.includes('protetivo')) fileName = 'selante';
       if (fileName.includes('conc')) fileName = 'nano';
       if (fileName.includes('abs')) fileName = 'abso-nano';
@@ -635,7 +634,6 @@
       if (fileName.includes('final')) fileName = 'sel-1';
       if (fileName.includes('neutralizador')) fileName = 'neu';
 
-      // Encontrar a config correspondente para pegar ref e tol
       let cfg = null;
       for (const p in processosConfig) {
         cfg = processosConfig[p].graficos.find(g => g.file === fileName || fileName.includes(g.file));
@@ -643,7 +641,7 @@
       }
 
       if (cfg) {
-        dadosCache[cfg.file] = null; // Força reload
+        dadosCache[cfg.file] = null;
         renderTabela(cfg).then(html => {
           card.querySelector('.measurements-container').innerHTML = `<div class="table-title">Últimas 24 Medições</div>${html}`;
         });
