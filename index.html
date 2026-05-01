@@ -101,6 +101,7 @@
       text-align: center;
       width: 100%;
       letter-spacing: 0.5px;
+      grid-column: 1 / -1; /* Garante que o título ocupe toda a largura do grid */
     }
 
     /* Carousel */
@@ -121,6 +122,7 @@
       min-width: 100%;
       display: grid;
       grid-template-columns: repeat(2, 1fr); /* 2 Cards por linha */
+      grid-auto-rows: min-content;
       gap: 25px;
       padding: 15px;
       align-content: start;
@@ -326,7 +328,6 @@
 
 <header>
   <div class="header-logo">
-    <!-- Certifique-se que logo-weg.png existe na mesma pasta -->
     <img src="logo-weg.png" alt="WEG" class="logo-weg" onerror="this.style.display='none'">
   </div>
   <h1>Controle de Banhos Químicos <span>JGS</span></h1>
@@ -354,53 +355,51 @@
     itemsPerSlide: 2 // Quantos cards cabem na tela (Grid de 2 colunas)
   };
 
-  // Configuração dos processos
+  // Configuração baseada nos arquivos da imagem e solicitações
+  // A chave 'file' deve corresponder ao nome do arquivo sem o prefixo 'graf-' e sufixo '-1.png'
+  // Ex: graf-estanhagem-a-1.png -> file: 'estanhagem-a-1'
   const processosConfig = {
     'estanhagem-eletrolitica': {
       nome: 'Estanhagem Eletrolítica',
       graficos: [
-        { file: 'des', nome: 'Desengraxante Químico<br><span style="font-size:0.8em; font-weight:400;">CONCENTRAÇÃO DO BANHO EM ML/L</span>', ref: 26.0, tol: 3.9 },
+        // Desengraxantes
+        { file: 'des-1', nome: 'Desengraxante Químico<br><span style="font-size:0.8em; font-weight:400;">CONCENTRAÇÃO DO BANHO EM ML/L</span>', ref: 26.0, tol: 3.9 },
         
-        { file: 'ativacao-tanque-5', nome: 'Ativação — Tanque 5<br><span style="font-size:0.8em; font-weight:400;">pH DO BANHO</span>', ref: 8.5, tol: 1.28 },
+        // Ativação
+        { file: 'ativacao-tanque-5-1', nome: 'Ativação — Tanque 5<br><span style="font-size:0.8em; font-weight:400;">pH DO BANHO</span>', ref: 8.5, tol: 1.28 },
+        { file: 'ativacao-tanque-6-1', nome: 'Ativação — Tanque 6<br><span style="font-size:0.8em; font-weight:400;">CONCENTRAÇÃO DO BANHO EM ML/L</span>', ref: 8.5, tol: 1.28 },
         
-        { file: 'ativacao-tanque-6', nome: 'Ativação — Tanque 6<br><span style="font-size:0.8em; font-weight:400;">CONCENTRAÇÃO DO BANHO EM ML/L</span>', ref: 8.5, tol: 1.28 },
+        // Níquel (Monitoramento geral conforme imagem)
+        { file: 'niquel-watt-1', nome: 'Níquel WATT', ref: 45.0, tol: 6.75 },
+        { file: 'niquel-watt-2', nome: 'Níquel WATT (2)', ref: 45.0, tol: 6.75 },
+        { file: 'niquel-watt-3', nome: 'Níquel WATT (3)', ref: 45.0, tol: 6.75 },
+        { file: 'niquel-watt-4', nome: 'Níquel WATT (4)', ref: 45.0, tol: 6.75 },
+        { file: 'niquel-watt-5', nome: 'Níquel WATT (5)', ref: 45.0, tol: 6.75 },
         
-        { file: 'niquel-watt', nome: 'Níquel WATT', ref: 45.0, tol: 6.75 },
-        { file: 'niquel-watt-1', nome: 'Níquel WATT (2)', ref: 45.0, tol: 6.75 },
-        { file: 'niquel-watt-2', nome: 'Níquel WATT (3)', ref: 45.0, tol: 6.75 },
-        { file: 'niquel-watt-3', nome: 'Níquel WATT (4)', ref: 45.0, tol: 6.75 },
-        { file: 'niquel-watt-4', nome: 'Níquel WATT (5)', ref: 45.0, tol: 6.75 },
+        // Estanhagem A - Sn° e H2SO4
+        { file: 'estanhagem-a-1', nome: 'Estanhagem A<br><span style="font-size:0.8em; font-weight:400;">CONCENTRAÇÃO DE Sn° (g/L)</span>', ref: 32.0, tol: 4.8 },
+        { file: 'estanhagem-a-2', nome: 'Estanhagem A (2)<br><span style="font-size:0.8em; font-weight:400;">CONCENTRAÇÃO DE H2SO4 (mL/L)</span>', ref: 90.0, tol: 13.5 },
         
-        // Estanhagem A - Sn°
-        { file: 'estanhagem-a', nome: 'Estanhagem A<br><span style="font-size:0.8em; font-weight:400;">CONCENTRAÇÃO DE Sn° (g/L)</span>', ref: 32.0, tol: 4.8 },
+        // Estanhagem B - Sn° e H2SO4
+        { file: 'estanhagem-b-1', nome: 'Estanhagem B<br><span style="font-size:0.8em; font-weight:400;">CONCENTRAÇÃO DE Sn° (g/L)</span>', ref: 31.5, tol: 4.73 },
+        { file: 'estanhagem-b-2', nome: 'Estanhagem B (2)<br><span style="font-size:0.8em; font-weight:400;">CONCENTRAÇÃO DE H2SO4 (mL/L)</span>', ref: 90.0, tol: 13.5 },
         
-        // Estanhagem A - H2SO4
-        { file: 'estanhagem-a-1', nome: 'Estanhagem A (2)<br><span style="font-size:0.8em; font-weight:400;">CONCENTRAÇÃO DE H2SO4 (mL/L)</span>', ref: 90.0, tol: 13.5 },
-        
-        { file: 'estanhagem-a-2', nome: 'Estanhagem A (3)', ref: 32.0, tol: 4.8 },
-        
-        // Estanhagem B - Sn°
-        { file: 'estanhagem-b', nome: 'Estanhagem B<br><span style="font-size:0.8em; font-weight:400;">CONCENTRAÇÃO DE Sn° (g/L)</span>', ref: 31.5, tol: 4.73 },
-        
-        // Estanhagem B - H2SO4
-        { file: 'estanhagem-b-1', nome: 'Estanhagem B (2)<br><span style="font-size:0.8em; font-weight:400;">CONCENTRAÇÃO DE H2SO4 (mL/L)</span>', ref: 90.0, tol: 13.5 },
-        
-        { file: 'estanhagem-b-2', nome: 'Estanhagem B (3)', ref: 31.5, tol: 4.73 },
-        { file: 'selante', nome: 'Selante Protetivo', ref: 18.0, tol: 2.7 }
+        // Selante
+        { file: 'sel-1', nome: 'Selante Protetivo', ref: 18.0, tol: 2.7 }
       ]
     },
     'nanoceramico': {
       nome: 'Processo Nanocerâmico',
       graficos: [
-        { file: 'des1', nome: '1º Desengraxante', ref: 29.0, tol: 4.35 },
-        { file: 'des2', nome: '2º Desengraxante', ref: 28.5, tol: 4.28 },
-        { file: 'dec1', nome: 'Decapante 1', ref: 12.0, tol: 1.8 },
-        { file: 'dec2', nome: 'Decapante 2', ref: 11.5, tol: 1.73 },
-        { file: 'nano', nome: 'Nanocerâmico — Conc.', ref: 35.0, tol: 5.25 },
-        { file: 'abso-nano', nome: 'Nanocerâmico — Abs.', ref: 1.2, tol: 0.18 },
-        { file: 'ph-nano', nome: 'Nanocerâmico — pH', ref: 4.5, tol: 0.68 },
-        { file: 'neu', nome: 'Neutralizador', ref: 7.0, tol: 1.05 },
-        { file: 'sel', nome: 'Selante Final', ref: 22.0, tol: 3.3 }
+        { file: 'des1-1', nome: '1º Desengraxante', ref: 29.0, tol: 4.35 },
+        { file: 'des2-1', nome: '2º Desengraxante', ref: 28.5, tol: 4.28 },
+        { file: 'dec1-1', nome: 'Decapante 1', ref: 12.0, tol: 1.8 },
+        { file: 'dec2-1', nome: 'Decapante 2', ref: 11.5, tol: 1.73 },
+        { file: 'nano-1', nome: 'Nanocerâmico — Conc.', ref: 35.0, tol: 5.25 },
+        { file: 'abso-nano-1', nome: 'Nanocerâmico — Abs.', ref: 1.2, tol: 0.18 },
+        { file: 'ph-nano-1', nome: 'Nanocerâmico — pH', ref: 4.5, tol: 0.68 },
+        { file: 'neu-1', nome: 'Neutralizador', ref: 7.0, tol: 1.05 },
+        { file: 'sel-1', nome: 'Selante Final', ref: 22.0, tol: 3.3 }
       ]
     }
   };
@@ -436,20 +435,18 @@
 
   async function carregarDadosJSON(fileName) {
     try {
-      // Adiciona timestamp para evitar cache do navegador
       const response = await fetch(`dados/graf-${fileName}.json?t=${Date.now()}`);
       if (!response.ok) return null;
       const data = await response.json();
       return data;
     } catch (error) {
-      console.warn(`Falha ao carregar JSON: ${fileName}`, error);
       return null;
     }
   }
 
   async function getMedicoesReal(fileName) {
     const dados = await carregarDadosJSON(fileName);
-    if (!dados) return null; // Retorna null se falhar
+    if (!dados) return null;
 
     const rawCharts = dados["charts"] || dados["charts "] || dados["charts  "];
     if (!rawCharts || !rawCharts[0]) return null;
@@ -501,7 +498,7 @@
     
     if (!medicoes) {
       medicoes = await getMedicoesReal(graficoConfig.file);
-      if (!medicoes) return null; // Falha crítica nos dados
+      if (!medicoes) return null;
       dadosCache[graficoConfig.file] = medicoes;
     }
     
@@ -531,7 +528,6 @@
     return html;
   }
 
-  // Cria o DOM do card. Retorna NULL se os dados forem inválidos.
   async function criarCardDOM(graficoConfig) {
     try {
       const tabelaHtml = await renderTabela(graficoConfig);
@@ -576,63 +572,105 @@
     track.innerHTML = '';
     nav.innerHTML = '';
 
-    let allCardsDOM = []; // Array plano de todos os elementos de card válidos
-    let processHeaders = []; // Para saber onde inserir títulos de seção
+    let allSlidesContent = []; // Array de objetos { type: 'header'|'cards', content: ... }
 
-    // 1. Coletar todos os cards válidos
+    // 1. Processar cada seção (Estanhagem, Nanocerâmico)
     for (const processoKey in processosConfig) {
       const processo = processosConfig[processoKey];
       
-      // Adicionamos um marcador de cabeçalho no array lógico
-      // Mas vamos tratar a inserção visual no passo seguinte
+      // Criar elemento de Título da Seção
+      const titleDiv = document.createElement('div');
+      titleDiv.className = 'secao-titulo';
+      titleDiv.textContent = processo.nome;
       
+      // Coletar todos os cards válidos desta seção
+      let sectionCards = [];
       for (const graficoConfig of processo.graficos) {
         const cardElement = await criarCardDOM(graficoConfig);
         if (cardElement) {
-          allCardsDOM.push(cardElement);
+          sectionCards.push(cardElement);
         }
+      }
+
+      // Se houver cards nesta seção, adicionamos o título e os cards à lista global
+      if (sectionCards.length > 0) {
+        allSlidesContent.push({ type: 'header', element: titleDiv });
+        sectionCards.forEach(card => allSlidesContent.push({ type: 'card', element: card }));
       }
     }
 
-    if (allCardsDOM.length === 0) {
+    if (allSlidesContent.length === 0) {
       track.innerHTML = '<div style="padding:50px; text-align:center; width:100%;">Nenhum dado disponível ou erro de conexão com os arquivos JSON.</div>';
       document.getElementById('loader').classList.add('hidden');
       return;
     }
 
     // 2. Montar os Slides (Paginação)
-    // Vamos agrupar os cards em grupos de CONFIG.itemsPerSlide (2)
-    // Nota: Para simplificar e garantir que não fique branco, vamos colocar apenas os cards.
-    // Os títulos das seções podem ser colocados dentro dos cards ou como um item full-width.
-    // Para manter o layout limpo de 2 colunas, vamos intercalar.
+    // Cada slide deve começar com um Header (se houver) e depois preencher com cards até atingir itemsPerSlide
     
-    // Estratégia Simplificada Robusta:
-    // Criar slides contendo exatamente 2 cards cada.
-    // Se sobrar 1 card, ele ocupa o slide sozinho (ou esticado, dependendo do CSS).
+    let currentSlide = document.createElement('div');
+    currentSlide.className = 'carousel-slide';
+    let itemsInCurrentSlide = 0;
+    let slideIndex = 0;
     
-    const totalSlides = Math.ceil(allCardsDOM.length / CONFIG.itemsPerSlide);
+    // Função para fechar o slide atual e criar um novo
+    const closeSlide = () => {
+      if (currentSlide.children.length > 0) {
+        track.appendChild(currentSlide);
+        
+        // Criar navegação
+        const dot = document.createElement('div');
+        dot.className = `nav-dot ${slideIndex === 0 ? 'active' : ''}`;
+        dot.onclick = () => goToSlide(slideIndex);
+        nav.appendChild(dot);
+        
+        slideIndex++;
+        
+        // Criar novo slide vazio
+        currentSlide = document.createElement('div');
+        currentSlide.className = 'carousel-slide';
+        itemsInCurrentSlide = 0;
+      }
+    };
+
+    for (let i = 0; i < allSlidesContent.length; i++) {
+      const item = allSlidesContent[i];
+      
+      if (item.type === 'header') {
+        // Se já temos itens no slide atual, fechamos ele antes de adicionar o novo header
+        if (itemsInCurrentSlide > 0) {
+          closeSlide();
+        }
+        // Adiciona o header ao novo slide
+        currentSlide.appendChild(item.element);
+        // Header não conta como "item de grid de cards", mas ocupa espaço visual.
+        // Para simplificar, vamos considerar que após um header, começamos a contar os cards.
+      } else {
+        // É um card
+        currentSlide.appendChild(item.element);
+        itemsInCurrentSlide++;
+        
+        // Se atingiu o limite de cards por slide, fecha o slide
+        if (itemsInCurrentSlide >= CONFIG.itemsPerSlide) {
+          closeSlide();
+        }
+      }
+    }
     
-    for (let i = 0; i < totalSlides; i++) {
-      const slide = document.createElement('div');
-      slide.className = 'carousel-slide';
-      
-      const start = i * CONFIG.itemsPerSlide;
-      const end = start + CONFIG.itemsPerSlide;
-      const slideCards = allCardsDOM.slice(start, end);
-      
-      slideCards.forEach(card => slide.appendChild(card));
-      
-      track.appendChild(slide);
-      
-      // Criar navegação
+    // Fecha o último slide se restarem itens
+    if (currentSlide.children.length > 0) {
+      track.appendChild(currentSlide);
       const dot = document.createElement('div');
-      dot.className = `nav-dot ${i === 0 ? 'active' : ''}`;
-      dot.onclick = () => goToSlide(i);
+      dot.className = `nav-dot ${slideIndex === 0 ? 'active' : ''}`;
+      dot.onclick = () => goToSlide(slideIndex);
       nav.appendChild(dot);
+      slideIndex++;
     }
 
     // Iniciar Rotação Automática
     let currentSlideIndex = 0;
+    const totalSlides = slideIndex;
+    
     if (totalSlides > 1) {
       setInterval(() => {
         currentSlideIndex = (currentSlideIndex + 1) % totalSlides;
@@ -647,41 +685,31 @@
   }
 
   async function refreshAllCards() {
-    dadosCache = {}; // Limpa cache
+    dadosCache = {};
     
-    // Recarrega apenas as tabelas para não piscar a tela toda
     const cards = document.querySelectorAll('.card');
     for (const card of cards) {
-      // Extrai o nome do arquivo do placeholder ou do título se necessário
-      // Aqui vamos confiar que o gráfico ainda está lá
-      const placeholder = card.querySelector('.graph-placeholder');
-      if(placeholder && placeholder.textContent.includes('Gráfico')) {
-         // Tenta extrair o filename do texto "📊 Gráfico: xyz" ou similar
-         // Mas como simplificamos o placeholder para "Carregando...", vamos precisar de outra forma
-         // Vamos usar o src da imagem
-         const img = card.querySelector('img');
-         if(img) {
-             const src = img.getAttribute('src');
-             const match = src.match(/graf-(.*)-1\.png/);
-             if(match && match[1]) {
-                 const fileName = match[1];
-                 // Encontrar config
-                 let config = null;
-                 for(const pk in processosConfig) {
-                     const found = processosConfig[pk].graficos.find(g => g.file === fileName);
-                     if(found) { config = found; break; }
-                 }
-                 if(config) {
-                     const tabelaHtml = await renderTabela(config);
-                     if(tabelaHtml) {
-                         const container = card.querySelector('.measurements-container');
-                         if(container) {
-                             container.innerHTML = `<div class="table-title">Últimas 24 Medições</div>${tabelaHtml}`;
-                         }
-                     }
-                 }
-             }
-         }
+      const img = card.querySelector('img');
+      if(img) {
+          const src = img.getAttribute('src');
+          const match = src.match(/graf-(.*)-1\.png/);
+          if(match && match[1]) {
+              const fileName = match[1];
+              let config = null;
+              for(const pk in processosConfig) {
+                  const found = processosConfig[pk].graficos.find(g => g.file === fileName);
+                  if(found) { config = found; break; }
+              }
+              if(config) {
+                  const tabelaHtml = await renderTabela(config);
+                  if(tabelaHtml) {
+                      const container = card.querySelector('.measurements-container');
+                      if(container) {
+                          container.innerHTML = `<div class="table-title">Últimas 24 Medições</div>${tabelaHtml}`;
+                      }
+                  }
+              }
+          }
       }
     }
     
