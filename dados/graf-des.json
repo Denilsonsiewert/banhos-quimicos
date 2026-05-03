@@ -1,6 +1,7 @@
 {
 "title": "",
 "yAxisLabel": "",
-"labels": ["Luiz","0,708333333333333","23","5","72","0","0","","","0","","","","0"],
-"series1": [Luiz,0,75,24,5,72,0,0,,,0,,,,0],
+"labels": ["","","","","","","","","","","","","","0"],
+"series1": [Responsável,Hora,Tanque,Volume gasto na titulação (Vt),Concentração do banho (mL/L),Correção com Surtec 168,,,Correção com Surtec 088,,,Vide Obs.,,Surtec 136],
+"series2": [,,,,,Em quilos (kg),Em litros (L),Executada em L,Em quilos (kg),Em mililitros (mL),Executada em mL,,,0]
 }
