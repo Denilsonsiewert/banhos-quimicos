@@ -107,44 +107,19 @@
     }
     .card-body { display: flex; flex-direction: column; padding: 18px; gap: 15px; flex: 1; }
 
-    /* ========== ALTERAÇÃO: Container de gráfico com ajuste inteligente ========== */
     .graph-container {
-      width: 100%;
-      min-height: 320px;
-      aspect-ratio: 16/9;
-      background: var(--weg-gray-100);
-      border-radius: var(--radius-sm);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      position: relative;
-      flex-shrink: 0;
+      width: 100%; height: 300px;
+      background: var(--weg-gray-100); border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; position: relative; flex-shrink: 0;
     }
-    .graph-container img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      z-index: 2;
-      transition: transform 0.3s ease;
-    }
-    .graph-container img.auto-zoom {
-      transform: scale(1.18);
-    }
+    .graph-container img { max-width: 100%; max-height: 100%; object-fit: contain; z-index: 2; }
     .graph-placeholder {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: var(--weg-gray-400);
-      font-size: 0.95rem;
-      font-weight: 600;
-      z-index: 1;
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; color: var(--weg-gray-400);
+      font-size: 0.9rem; font-weight: 600;
     }
-    /* ========== FIM DA ALTERAÇÃO ========== */
 
     .measurements-container {
       background: white; border-radius: var(--radius-sm);
@@ -259,15 +234,29 @@ const REPO_NAME  = 'banhos-quimicos';
 const BRANCH     = 'main';
 
 const CONFIG = {
-  rotateInterval:  20000,
-  refreshInterval: 300000,
+  rotateInterval:  20000,   // ms entre slides
+  refreshInterval: 300000,  // ms para recarregar dados (5 min)
   itemsPerSlide:   2,
 };
 
 // ================================================================
 //  MAPEAMENTO DE PROCESSOS
+//
+//  Chave  = base do arquivo exportado pelo VBA (sem índice e sem extensão)
+//           Exemplos: 'graf-niquel-watt', 'graf-des1', 'graf-ph-nano'
+//
+//  secao  = agrupamento visual no dashboard
+//  nome   = rótulo exibido no card
+//  ref    = valor de referência (null = sem coloração)
+//  tol    = tolerância total (null = sem coloração)
+//
+//  ✅ Arquivos descobertos automaticamente que NÃO estiverem aqui
+//     aparecem em "Outros Processos" sem coloração de status.
+//  ✅ Para adicionar nova aba: basta exportar pelo VBA.
+//     Se quiser ref/tol, adicione a entrada abaixo.
 // ================================================================
 const PROCESS_MAP = {
+  // ── Planilha 1: Estanhagem Eletrolítica ──────────────────────
   'graf-des':               { secao: 'estanhagem', nome: 'Desengraxante',          ref: 26.0, tol: 3.90 },
   'graf-ativacao-tanque-5': { secao: 'estanhagem', nome: 'Ativação — Tanque 5',    ref:  8.5, tol: 1.28 },
   'graf-ativacao-tanque-6': { secao: 'estanhagem', nome: 'Ativação — Tanque 6',    ref:  8.5, tol: 1.28 },
@@ -276,6 +265,7 @@ const PROCESS_MAP = {
   'graf-estanhagem-b':      { secao: 'estanhagem', nome: 'Estanhagem B',           ref: 31.5, tol: 4.73 },
   'graf-sel':               { secao: 'estanhagem', nome: 'Selante Protetivo',      ref: 18.0, tol: 2.70 },
 
+  // ── Planilha 2: Processo Nanocerâmico ────────────────────────
   'graf-des1':              { secao: 'nanoceramico', nome: '1º Desengraxante',     ref: 29.0, tol: 4.35 },
   'graf-des2':              { secao: 'nanoceramico', nome: '2º Desengraxante',     ref: 28.5, tol: 4.28 },
   'graf-dec1':              { secao: 'nanoceramico', nome: 'Decapante 1',          ref: 12.0, tol: 1.80 },
@@ -286,6 +276,7 @@ const PROCESS_MAP = {
   'graf-neu':               { secao: 'nanoceramico', nome: 'Neutralizador',        ref:  7.0, tol: 1.05 },
 };
 
+// Ordem e nomes das seções
 const SECOES_ORDEM = ['estanhagem', 'nanoceramico', 'outros'];
 const SECOES_NOMES = {
   estanhagem:   'Estanhagem Eletrolítica',
@@ -295,10 +286,13 @@ const SECOES_NOMES = {
 
 // ================================================================
 //  AUTO-DESCOBERTA via GitHub Trees API
+//  → Detecta TODOS os JSONs e PNGs do repositório sem precisar
+//    atualizar o HTML quando novas abas forem exportadas.
+//  → Cache em sessionStorage para não consumir rate-limit.
 // ================================================================
 async function descobrirArquivos() {
   const CACHE_KEY = `gh-tree-${REPO_OWNER}-${REPO_NAME}-${BRANCH}`;
-  const CACHE_TTL = 5 * 60 * 1000;
+  const CACHE_TTL = 5 * 60 * 1000; // 5 min
 
   try {
     const cached = sessionStorage.getItem(CACHE_KEY);
@@ -335,15 +329,20 @@ async function descobrirArquivos() {
 
 // ================================================================
 //  PARSE DE NOMES DE ARQUIVO
+//  Padrão novo (VBA unificado): 'graf-niquel-watt-2' → base='graf-niquel-watt', idx=2
+//  Padrão antigo (1 chart/aba): 'graf-des'           → base='graf-des', idx=1
 // ================================================================
 function parseFileName(name) {
   const m = name.match(/^(.+?)-(\d+)$/);
+  // Só considera índice se a parte numérica for <= 20
+  // (evita confundir 'graf-des1' com base='graf-des', idx=1)
   if (m && parseInt(m[2]) <= 20 && !PROCESS_MAP[name]) {
     return { base: m[1], idx: parseInt(m[2]) };
   }
   return { base: name, idx: 1 };
 }
 
+// Monta mapa: base → { indices: Set, pngSet: Set }
 function construirGrupos(arquivos) {
   const grupos = {};
 
@@ -360,6 +359,7 @@ function construirGrupos(arquivos) {
   return grupos;
 }
 
+// Fallback quando a API não está disponível
 function gruposDoConfigManual() {
   const grupos = {};
   for (const base in PROCESS_MAP) {
@@ -404,6 +404,7 @@ async function fetchJSON(base, idx) {
   const key = `${base}-${idx}`;
   if (_jsonCache[key] !== undefined) return _jsonCache[key];
 
+  // Tenta em ordem: padrão novo (base-N.json) → padrão antigo (base.json)
   const tentativas = [
     `dados/${base}-${idx}.json`,
     `dados/${base}.json`,
@@ -427,6 +428,8 @@ async function getMedicoes(base, idx) {
   const dados = await fetchJSON(base, idx);
   if (!dados?.charts?.length) return [];
 
+  // Novo padrão: 1 JSON por gráfico → charts[0]
+  // Antigo:      1 JSON por aba    → charts[idx-1] ou charts[0]
   const chart = dados.charts[0] ?? dados.charts[idx - 1];
   if (!chart) return [];
 
@@ -449,7 +452,7 @@ async function getMedicoes(base, idx) {
 // ================================================================
 function statusClass(valor, ref, tol, hasData) {
   if (!hasData || valor === null)  return 'val-nodata';
-  if (ref === null || tol === null) return '';
+  if (ref === null || tol === null) return '';             // sem limites → neutro
   const d = Math.abs(valor - ref);
   if (d <= tol * 0.5) return 'val-ok';
   if (d <= tol)       return 'val-warn';
@@ -484,43 +487,18 @@ async function renderTabela(base, idx) {
 }
 
 // ================================================================
-//  IMAGENS - FUNÇÃO INTELIGENTE DE AJUSTE AUTOMÁTICO
+//  IMAGENS
 // ================================================================
 function carregarImagem(img, base, idx) {
+  // Tenta padrão novo (base-N.png) depois antigo (base.png)
   const candidatos = [
     `graficos/${base}-${idx}.png`,
     `graficos/${base}.png`,
   ];
-  
   let i = 0;
-  
   function tentar() {
-    if (i >= candidatos.length) { 
-      img.style.display = 'none'; 
-      return; 
-    }
-    
+    if (i >= candidatos.length) { img.style.display = 'none'; return; }
     img.onerror = () => { i++; tentar(); };
-    
-    img.onload = function() {
-      // 🧠 Lógica inteligente de ajuste de tamanho
-      const container = this.parentElement;
-      if (container && this.naturalWidth > 0) {
-        const containerRatio = container.clientWidth / container.clientHeight;
-        const imageRatio = this.naturalWidth / this.naturalHeight;
-        
-        const isNarrow = imageRatio < containerRatio * 0.7;
-        const isShort = this.naturalHeight < container.clientHeight * 0.75;
-        
-        if (isNarrow || isShort) {
-          this.classList.add('auto-zoom');
-        }
-      }
-      if (this.previousElementSibling) {
-        this.previousElementSibling.style.display = 'none';
-      }
-    };
-    
     img.src = `${candidatos[i++]}?t=${Date.now()}`;
   }
   tentar();
@@ -533,6 +511,7 @@ function nomeCard(base, idx, totalNoGrupo) {
   const meta = PROCESS_MAP[base];
   if (meta) return totalNoGrupo > 1 ? `${meta.nome} — ${idx}` : meta.nome;
 
+  // Gera nome legível a partir do filename
   const auto = base
     .replace(/^graf-/, '')
     .replace(/-/g, ' ')
@@ -561,7 +540,9 @@ async function criarCard(base, idx, totalNoGrupo) {
     <div class="card-body">
       <div class="graph-container">
         <div class="graph-placeholder">📊 Carregando gráfico...</div>
-        <img alt="${nome}" onerror="this.style.display='none'">
+        <img alt="${nome}"
+             onload="this.previousElementSibling.style.display='none'"
+             onerror="this.style.display='none'">
       </div>
       <div class="measurements-container">
         <div class="table-title">Últimas 24 Medições</div>
@@ -599,6 +580,7 @@ async function initCarousel(grupos) {
   _totalSlides = 0;
   _currentSlide = 0;
 
+  // Distribui grupos por seção
   const secoes = {};
   for (const base in grupos) {
     const secao = secaoDeBase(base);
@@ -609,6 +591,7 @@ async function initCarousel(grupos) {
     }
   }
 
+  // Mantém ordem: mapeadas → 'outros'
   const ordemFinal = [
     ...SECOES_ORDEM,
     ...Object.keys(secoes).filter(s => !SECOES_ORDEM.includes(s)),
@@ -648,6 +631,7 @@ async function initCarousel(grupos) {
 //  REFRESH PERIÓDICO DE DADOS
 // ================================================================
 async function refreshAll() {
+  // Limpa só o cache de JSON (mantém descoberta de arquivos)
   Object.keys(_jsonCache).forEach(k => delete _jsonCache[k]);
 
   for (const card of document.querySelectorAll('.card')) {
@@ -682,6 +666,7 @@ function updateClock() {
 //  INICIALIZAÇÃO
 // ================================================================
 async function init() {
+  // 1. Descoberta de arquivos (GitHub API → fallback manual)
   let grupos;
   const arquivos = await descobrirArquivos();
 
@@ -693,13 +678,16 @@ async function init() {
     console.log('[Init] Modo manual (config estática)');
   }
 
+  // 2. Monta o carousel
   await initCarousel(grupos);
 
+  // 3. Clock e rotação
   updateClock();
   setInterval(updateClock, 1000);
   setInterval(refreshAll, CONFIG.refreshInterval);
   iniciarRotacao();
 
+  // 4. Remove loader
   setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1500);
 }
 
