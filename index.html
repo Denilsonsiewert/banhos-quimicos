@@ -101,9 +101,10 @@
       border: 1px solid var(--weg-gray-200);
     }
     .card-header {
-      padding: 14px 18px; font-weight: 700; font-size: 1rem;
+      padding: 14px 18px; font-weight: 700; font-size: 0.95rem;
       color: white; background: var(--weg-blue);
-      text-transform: uppercase; letter-spacing: 0.5px; text-align: center;
+      text-transform: uppercase; letter-spacing: 0.3px; text-align: center;
+      line-height: 1.3;
     }
     .card-body { display: flex; flex-direction: column; padding: 18px; gap: 15px; flex: 1; }
 
@@ -234,49 +235,127 @@ const REPO_NAME  = 'banhos-quimicos';
 const BRANCH     = 'main';
 
 const CONFIG = {
-  rotateInterval:  20000,   // ms entre slides
-  refreshInterval: 300000,  // ms para recarregar dados (5 min)
+  rotateInterval:  20000,
+  refreshInterval: 300000,
   itemsPerSlide:   2,
 };
 
 // ================================================================
-//  MAPEAMENTO DE PROCESSOS
-//
-//  Chave  = base do arquivo exportado pelo VBA (sem índice e sem extensão)
-//           Exemplos: 'graf-niquel-watt', 'graf-des1', 'graf-ph-nano'
-//
-//  secao  = agrupamento visual no dashboard
-//  nome   = rótulo exibido no card
-//  ref    = valor de referência (null = sem coloração)
-//  tol    = tolerância total (null = sem coloração)
-//
-//  ✅ Arquivos descobertos automaticamente que NÃO estiverem aqui
-//     aparecem em "Outros Processos" sem coloração de status.
-//  ✅ Para adicionar nova aba: basta exportar pelo VBA.
-//     Se quiser ref/tol, adicione a entrada abaixo.
+//  MAPEAMENTO DE PROCESSOS - NOMES ATUALIZADOS CONFORME SOLICITAÇÃO
 // ================================================================
 const PROCESS_MAP = {
-  // ── Planilha 1: Estanhagem Eletrolítica ──────────────────────
-  'graf-des':               { secao: 'estanhagem', nome: 'Desengraxante',          ref: 26.0, tol: 3.90 },
-  'graf-ativacao-tanque-5': { secao: 'estanhagem', nome: 'Ativação — Tanque 5',    ref:  8.5, tol: 1.28 },
-  'graf-ativacao-tanque-6': { secao: 'estanhagem', nome: 'Ativação — Tanque 6',    ref:  8.5, tol: 1.28 },
-  'graf-niquel-watt':       { secao: 'estanhagem', nome: 'Níquel WATT',            ref: null, tol: null  },
-  'graf-estanhagem-a':      { secao: 'estanhagem', nome: 'Estanhagem A',           ref: 32.0, tol: 4.80 },
-  'graf-estanhagem-b':      { secao: 'estanhagem', nome: 'Estanhagem B',           ref: 31.5, tol: 4.73 },
-  'graf-sel':               { secao: 'estanhagem', nome: 'Selante Protetivo',      ref: 18.0, tol: 2.70 },
+  // ── ESTANHAGEM ELETROLÍTICA ─────────────────────────────────
+  'graf-des': { 
+    secao: 'estanhagem', 
+    nome: 'Ana. Des — CONCENTRAÇÃO DO BANHO (mL/L)', 
+    ref: 26.0, tol: 3.90 
+  },
+  'graf-ativacao-tanque-5': { 
+    secao: 'estanhagem', 
+    nome: 'Ana. Ativação - Tanque 5 — pH DO BANHO', 
+    ref: 8.5, tol: 1.28 
+  },
+  'graf-ativacao-tanque-6': { 
+    secao: 'estanhagem', 
+    nome: 'Ana. Ativação - Tanque 6 — CONCENTRAÇÃO DO BANHO (mL/L)', 
+    ref: 8.5, tol: 1.28 
+  },
+  
+  // Níquel WATT - parâmetros individuais
+  'graf-niquel-watt-1': { 
+    secao: 'estanhagem', 
+    nome: 'Ana. Níquel WATT 1 — CONCENTRAÇÃO DE Ni° (g/L)', 
+    ref: null, tol: null 
+  },
+  'graf-niquel-watt-2': { 
+    secao: 'estanhagem', 
+    nome: 'Ana. Níquel WATT 2 — CONCENTRAÇÃO DE NiCl₂ (mL/L)', 
+    ref: null, tol: null 
+  },
+  'graf-niquel-watt-3': { 
+    secao: 'estanhagem', 
+    nome: 'Ana. Níquel WATT 3 — CONCENTRAÇÃO DE H₃BO₃ (g/L)', 
+    ref: null, tol: null 
+  },
+  'graf-niquel-watt-4': { 
+    secao: 'estanhagem', 
+    nome: 'Ana. Níquel WATT 4 — CONCENTRAÇÃO DE NiSO₄ (mL/L)', 
+    ref: null, tol: null 
+  },
+  
+  // Estanhagem A - parâmetros individuais
+  'graf-estanhagem-a-1': { 
+    secao: 'estanhagem', 
+    nome: 'Ana. Estanhagem A 1 — CONCENTRAÇÃO DE Sn° (g/L)', 
+    ref: 32.0, tol: 4.80 
+  },
+  'graf-estanhagem-a-2': { 
+    secao: 'estanhagem', 
+    nome: 'Ana. Estanhagem A 2 — CONCENTRAÇÃO DE H₂SO₄ (mL/L)', 
+    ref: null, tol: null 
+  },
+  
+  // Estanhagem B - parâmetros individuais
+  'graf-estanhagem-b-1': { 
+    secao: 'estanhagem', 
+    nome: 'Ana. Estanhagem B 1 — CONCENTRAÇÃO DE Sn° (g/L)', 
+    ref: 31.5, tol: 4.73 
+  },
+  'graf-estanhagem-b-2': { 
+    secao: 'estanhagem', 
+    nome: 'Ana. Estanhagem B 2 — CONCENTRAÇÃO DE H₂SO₄ (mL/L)', 
+    ref: null, tol: null 
+  },
+  
+  'graf-sel': { 
+    secao: 'estanhagem', 
+    nome: 'Ana. Sel — CONCENTRAÇÃO DO BANHO (mL/L)', 
+    ref: 18.0, tol: 2.70 
+  },
 
-  // ── Planilha 2: Processo Nanocerâmico ────────────────────────
-  'graf-des1':              { secao: 'nanoceramico', nome: '1º Desengraxante',     ref: 29.0, tol: 4.35 },
-  'graf-des2':              { secao: 'nanoceramico', nome: '2º Desengraxante',     ref: 28.5, tol: 4.28 },
-  'graf-dec1':              { secao: 'nanoceramico', nome: 'Decapante 1',          ref: 12.0, tol: 1.80 },
-  'graf-dec2':              { secao: 'nanoceramico', nome: 'Decapante 2',          ref: 11.5, tol: 1.73 },
-  'graf-nano':              { secao: 'nanoceramico', nome: 'Nanocerâmico — Conc.', ref: 35.0, tol: 5.25 },
-  'graf-abso-nano':         { secao: 'nanoceramico', nome: 'Nanocerâmico — Abs.',  ref:  1.2, tol: 0.18 },
-  'graf-ph-nano':           { secao: 'nanoceramico', nome: 'Nanocerâmico — pH',    ref:  4.5, tol: 0.68 },
-  'graf-neu':               { secao: 'nanoceramico', nome: 'Neutralizador',        ref:  7.0, tol: 1.05 },
+  // ── CONVERSÃO NANOCERÂMICA ──────────────────────────────────
+  'graf-des1': { 
+    secao: 'nanoceramico', 
+    nome: 'Ana.Des1 — CONCENTRAÇÃO DO BANHO (%)', 
+    ref: 29.0, tol: 4.35 
+  },
+  'graf-des2': { 
+    secao: 'nanoceramico', 
+    nome: 'Ana.Des2 — CONCENTRAÇÃO DO BANHO (%)', 
+    ref: 28.5, tol: 4.28 
+  },
+  'graf-dec1': { 
+    secao: 'nanoceramico', 
+    nome: 'Ana.Dec1 — CONCENTRAÇÃO DO BANHO (%)', 
+    ref: 12.0, tol: 1.80 
+  },
+  'graf-dec2': { 
+    secao: 'nanoceramico', 
+    nome: 'Ana.Dec2 — CONCENTRAÇÃO DO BANHO (%)', 
+    ref: 11.5, tol: 1.73 
+  },
+  'graf-nano': { 
+    secao: 'nanoceramico', 
+    nome: 'Ana.Nano — CONCENTRAÇÃO DO BANHO (%)', 
+    ref: 35.0, tol: 5.25 
+  },
+  'graf-abso-nano': { 
+    secao: 'nanoceramico', 
+    nome: 'Ana.Abso.Nano — ABSORTÂNCIA', 
+    ref: 1.2, tol: 0.18 
+  },
+  'graf-ph-nano': { 
+    secao: 'nanoceramico', 
+    nome: 'Ana.pH.Nano — pH DO BANHO', 
+    ref: 4.5, tol: 0.68 
+  },
+  'graf-neu': { 
+    secao: 'nanoceramico', 
+    nome: 'Ana.Neu — CONCENTRAÇÃO DO BANHO (%)', 
+    ref: 7.0, tol: 1.05 
+  },
 };
 
-// Ordem e nomes das seções
 const SECOES_ORDEM = ['estanhagem', 'nanoceramico', 'outros'];
 const SECOES_NOMES = {
   estanhagem:   'Estanhagem Eletrolítica',
@@ -285,15 +364,12 @@ const SECOES_NOMES = {
 };
 
 // ================================================================
-//  AUTO-DESCOBERTA via GitHub Trees API
-//  → Detecta TODOS os JSONs e PNGs do repositório sem precisar
-//    atualizar o HTML quando novas abas forem exportadas.
-//  → Cache em sessionStorage para não consumir rate-limit.
+//  FUNÇÕES DE AUTO-DESCOBERTA, PARSE, LEITURA E RENDERIZAÇÃO
+//  (Mantidas inalteradas - apenas PROCESS_MAP foi atualizado)
 // ================================================================
 async function descobrirArquivos() {
   const CACHE_KEY = `gh-tree-${REPO_OWNER}-${REPO_NAME}-${BRANCH}`;
-  const CACHE_TTL = 5 * 60 * 1000; // 5 min
-
+  const CACHE_TTL = 5 * 60 * 1000;
   try {
     const cached = sessionStorage.getItem(CACHE_KEY);
     if (cached) {
@@ -301,23 +377,19 @@ async function descobrirArquivos() {
       if (Date.now() - ts < CACHE_TTL) return data;
     }
   } catch(e) {}
-
   try {
     const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/git/trees/${BRANCH}?recursive=1`;
     const res = await fetch(url, { headers: { Accept: 'application/vnd.github.v3+json' } });
     if (!res.ok) throw new Error(`GitHub API ${res.status}`);
-
     const tree = (await res.json()).tree || [];
     const data = { jsons: [], pngs: [] };
-
     for (const item of tree) {
       if (item.type !== 'blob') continue;
-      if (item.path.startsWith('dados/')    && item.path.endsWith('.json'))
+      if (item.path.startsWith('dados/') && item.path.endsWith('.json'))
         data.jsons.push(item.path.slice('dados/'.length, -'.json'.length));
       if (item.path.startsWith('graficos/') && item.path.endsWith('.png'))
         data.pngs.push(item.path.slice('graficos/'.length, -'.png'.length));
     }
-
     sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data }));
     console.log(`[Auto-Discovery] ${data.jsons.length} JSONs, ${data.pngs.length} PNGs`);
     return data;
@@ -327,25 +399,16 @@ async function descobrirArquivos() {
   }
 }
 
-// ================================================================
-//  PARSE DE NOMES DE ARQUIVO
-//  Padrão novo (VBA unificado): 'graf-niquel-watt-2' → base='graf-niquel-watt', idx=2
-//  Padrão antigo (1 chart/aba): 'graf-des'           → base='graf-des', idx=1
-// ================================================================
 function parseFileName(name) {
   const m = name.match(/^(.+?)-(\d+)$/);
-  // Só considera índice se a parte numérica for <= 20
-  // (evita confundir 'graf-des1' com base='graf-des', idx=1)
   if (m && parseInt(m[2]) <= 20 && !PROCESS_MAP[name]) {
     return { base: m[1], idx: parseInt(m[2]) };
   }
   return { base: name, idx: 1 };
 }
 
-// Monta mapa: base → { indices: Set, pngSet: Set }
 function construirGrupos(arquivos) {
   const grupos = {};
-
   for (const json of arquivos.jsons) {
     const { base, idx } = parseFileName(json);
     if (!grupos[base]) grupos[base] = { indices: new Set(), pngSet: new Set() };
@@ -355,11 +418,9 @@ function construirGrupos(arquivos) {
     const { base, idx } = parseFileName(png);
     if (grupos[base]) grupos[base].pngSet.add(idx);
   }
-
   return grupos;
 }
 
-// Fallback quando a API não está disponível
 function gruposDoConfigManual() {
   const grupos = {};
   for (const base in PROCESS_MAP) {
@@ -368,18 +429,15 @@ function gruposDoConfigManual() {
   return grupos;
 }
 
-// ================================================================
-//  LEITURA DE DADOS JSON
-// ================================================================
 function sanitize(v) {
-  if (Array.isArray(v))           return v.map(x => typeof x === 'string' ? x.trim() : x);
+  if (Array.isArray(v)) return v.map(x => typeof x === 'string' ? x.trim() : x);
   if (typeof v === 'object' && v) {
     const o = {};
     for (const k in v) {
       const val = v[k];
       o[k.trim()] = typeof val === 'string' ? val.trim()
-                  : Array.isArray(val)       ? val.map(x => typeof x === 'string' ? x.trim() : x)
-                  : typeof val === 'object'  ? sanitize(val)
+                  : Array.isArray(val) ? val.map(x => typeof x === 'string' ? x.trim() : x)
+                  : typeof val === 'object' ? sanitize(val)
                   : val;
     }
     return o;
@@ -403,13 +461,10 @@ const _jsonCache = {};
 async function fetchJSON(base, idx) {
   const key = `${base}-${idx}`;
   if (_jsonCache[key] !== undefined) return _jsonCache[key];
-
-  // Tenta em ordem: padrão novo (base-N.json) → padrão antigo (base.json)
   const tentativas = [
     `dados/${base}-${idx}.json`,
     `dados/${base}.json`,
   ];
-
   for (const url of tentativas) {
     try {
       const r = await fetch(`${url}?t=${Date.now()}`);
@@ -419,7 +474,6 @@ async function fetchJSON(base, idx) {
       return _jsonCache[key];
     } catch(e) {}
   }
-
   _jsonCache[key] = null;
   return null;
 }
@@ -427,16 +481,11 @@ async function fetchJSON(base, idx) {
 async function getMedicoes(base, idx) {
   const dados = await fetchJSON(base, idx);
   if (!dados?.charts?.length) return [];
-
-  // Novo padrão: 1 JSON por gráfico → charts[0]
-  // Antigo:      1 JSON por aba    → charts[idx-1] ou charts[0]
   const chart = dados.charts[0] ?? dados.charts[idx - 1];
   if (!chart) return [];
-
-  const labels  = chart.labels  || [];
+  const labels = chart.labels || [];
   const series1 = chart.series1 || [];
   const series2 = chart.series2 || null;
-
   return labels.map((lbl, i) => {
     const s1 = String(series1[i] ?? '').trim();
     const v1 = parseFloat(s1.replace(',', '.'));
@@ -447,30 +496,21 @@ async function getMedicoes(base, idx) {
   });
 }
 
-// ================================================================
-//  STATUS / COLORAÇÃO
-// ================================================================
 function statusClass(valor, ref, tol, hasData) {
-  if (!hasData || valor === null)  return 'val-nodata';
-  if (ref === null || tol === null) return '';             // sem limites → neutro
+  if (!hasData || valor === null) return 'val-nodata';
+  if (ref === null || tol === null) return '';
   const d = Math.abs(valor - ref);
   if (d <= tol * 0.5) return 'val-ok';
-  if (d <= tol)       return 'val-warn';
+  if (d <= tol) return 'val-warn';
   return 'val-crit';
 }
 
-// ================================================================
-//  RENDERIZAÇÃO DA TABELA
-// ================================================================
 async function renderTabela(base, idx) {
   const meta = PROCESS_MAP[base] ?? {};
-  const ref  = meta.ref ?? null;
-  const tol  = meta.tol ?? null;
-
+  const ref = meta.ref ?? null;
+  const tol = meta.tol ?? null;
   const medicoes = await getMedicoes(base, idx);
-  if (!medicoes.length)
-    return '<p class="sem-dados">Sem dados disponíveis</p>';
-
+  if (!medicoes.length) return '<p class="sem-dados">Sem dados disponíveis</p>';
   const cols = 12;
   let html = '<table class="analise-table">';
   for (let r = 0; r < 2; r++) {
@@ -478,7 +518,7 @@ async function renderTabela(base, idx) {
     if (!chunk.length) continue;
     html += '<tr>' + chunk.map(m => `<th>${m.dataFormatada}</th>`).join('') + '</tr>';
     html += '<tr>' + chunk.map(m => {
-      const cls  = statusClass(m.valor, ref, tol, m.hasData);
+      const cls = statusClass(m.valor, ref, tol, m.hasData);
       const disp = m.hasData ? m.valor.toFixed(2) : '---';
       return `<td${cls ? ` class="${cls}"` : ''}>${disp}</td>`;
     }).join('') + '</tr>';
@@ -486,11 +526,7 @@ async function renderTabela(base, idx) {
   return html + '</table>';
 }
 
-// ================================================================
-//  IMAGENS
-// ================================================================
 function carregarImagem(img, base, idx) {
-  // Tenta padrão novo (base-N.png) depois antigo (base.png)
   const candidatos = [
     `graficos/${base}-${idx}.png`,
     `graficos/${base}.png`,
@@ -504,14 +540,9 @@ function carregarImagem(img, base, idx) {
   tentar();
 }
 
-// ================================================================
-//  NOME AUTOMÁTICO DO CARD
-// ================================================================
 function nomeCard(base, idx, totalNoGrupo) {
   const meta = PROCESS_MAP[base];
   if (meta) return totalNoGrupo > 1 ? `${meta.nome} — ${idx}` : meta.nome;
-
-  // Gera nome legível a partir do filename
   const auto = base
     .replace(/^graf-/, '')
     .replace(/-/g, ' ')
@@ -523,18 +554,13 @@ function secaoDeBase(base) {
   return PROCESS_MAP[base]?.secao ?? 'outros';
 }
 
-// ================================================================
-//  CRIAÇÃO DE CARDS
-// ================================================================
 async function criarCard(base, idx, totalNoGrupo) {
-  const nome   = nomeCard(base, idx, totalNoGrupo);
+  const nome = nomeCard(base, idx, totalNoGrupo);
   const tabela = await renderTabela(base, idx);
-
   const div = document.createElement('div');
-  div.className   = 'card';
+  div.className = 'card';
   div.dataset.base = base;
-  div.dataset.idx  = String(idx);
-
+  div.dataset.idx = String(idx);
   div.innerHTML = `
     <div class="card-header">${nome}</div>
     <div class="card-body">
@@ -549,17 +575,13 @@ async function criarCard(base, idx, totalNoGrupo) {
         ${tabela}
       </div>
     </div>`;
-
   carregarImagem(div.querySelector('img'), base, idx);
   return div;
 }
 
-// ================================================================
-//  CAROUSEL
-// ================================================================
 let _currentSlide = 0;
-let _totalSlides  = 0;
-let _rotateTimer  = null;
+let _totalSlides = 0;
+let _rotateTimer = null;
 
 function irParaSlide(idx) {
   _currentSlide = (idx + _totalSlides) % _totalSlides;
@@ -574,13 +596,11 @@ function iniciarRotacao() {
 
 async function initCarousel(grupos) {
   const track = document.getElementById('track-main');
-  const nav   = document.getElementById('nav-main');
+  const nav = document.getElementById('nav-main');
   track.innerHTML = '';
-  nav.innerHTML   = '';
+  nav.innerHTML = '';
   _totalSlides = 0;
   _currentSlide = 0;
-
-  // Distribui grupos por seção
   const secoes = {};
   for (const base in grupos) {
     const secao = secaoDeBase(base);
@@ -590,86 +610,62 @@ async function initCarousel(grupos) {
       secoes[secao].push({ base, idx, total: indices.length });
     }
   }
-
-  // Mantém ordem: mapeadas → 'outros'
   const ordemFinal = [
     ...SECOES_ORDEM,
     ...Object.keys(secoes).filter(s => !SECOES_ORDEM.includes(s)),
   ];
-
   for (const secaoKey of ordemFinal) {
     const itens = secoes[secaoKey];
     if (!itens?.length) continue;
-
-    const nomeSecao   = SECOES_NOMES[secaoKey] ?? secaoKey;
+    const nomeSecao = SECOES_NOMES[secaoKey] ?? secaoKey;
     const slidesCount = Math.ceil(itens.length / CONFIG.itemsPerSlide);
-
     for (let s = 0; s < slidesCount; s++) {
       const slide = document.createElement('div');
       slide.className = 'carousel-slide';
       slide.innerHTML = `<div style="grid-column:1/-1;margin-bottom:5px">
         <div class="secao-titulo">${nomeSecao}</div></div>`;
-
       const chunk = itens.slice(s * CONFIG.itemsPerSlide, (s + 1) * CONFIG.itemsPerSlide);
       for (const { base, idx, total } of chunk) {
         slide.appendChild(await criarCard(base, idx, total));
       }
-
       track.appendChild(slide);
-
       const dotIdx = _totalSlides;
       const dot = document.createElement('div');
       dot.className = `nav-dot${dotIdx === 0 ? ' active' : ''}`;
-      dot.onclick   = () => { irParaSlide(dotIdx); iniciarRotacao(); };
+      dot.onclick = () => { irParaSlide(dotIdx); iniciarRotacao(); };
       nav.appendChild(dot);
       _totalSlides++;
     }
   }
 }
 
-// ================================================================
-//  REFRESH PERIÓDICO DE DADOS
-// ================================================================
 async function refreshAll() {
-  // Limpa só o cache de JSON (mantém descoberta de arquivos)
   Object.keys(_jsonCache).forEach(k => delete _jsonCache[k]);
-
   for (const card of document.querySelectorAll('.card')) {
     const base = card.dataset.base;
-    const idx  = parseInt(card.dataset.idx, 10);
+    const idx = parseInt(card.dataset.idx, 10);
     if (!base || isNaN(idx)) continue;
-
     const tabela = await renderTabela(base, idx);
     card.querySelector('.measurements-container').innerHTML =
       `<div class="table-title">Últimas 24 Medições</div>${tabela}`;
-
     const img = card.querySelector('img');
     if (img) carregarImagem(img, base, idx);
   }
-
   document.getElementById('ultima').innerText =
     new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 }
 
-// ================================================================
-//  RELÓGIO
-// ================================================================
 function updateClock() {
   const now = new Date();
   document.getElementById('relogio').innerText = now.toLocaleTimeString('pt-BR');
-  document.getElementById('data').innerText    = now.toLocaleDateString('pt-BR');
-  document.getElementById('ultima').innerText  =
+  document.getElementById('data').innerText = now.toLocaleDateString('pt-BR');
+  document.getElementById('ultima').innerText =
     now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 }
 
-// ================================================================
-//  INICIALIZAÇÃO
-// ================================================================
 async function init() {
-  // 1. Descoberta de arquivos (GitHub API → fallback manual)
   let grupos;
   const arquivos = await descobrirArquivos();
-
   if (arquivos && (arquivos.jsons.length || arquivos.pngs.length)) {
     grupos = construirGrupos(arquivos);
     console.log(`[Init] Auto-descoberta OK: ${Object.keys(grupos).length} grupo(s)`);
@@ -677,17 +673,11 @@ async function init() {
     grupos = gruposDoConfigManual();
     console.log('[Init] Modo manual (config estática)');
   }
-
-  // 2. Monta o carousel
   await initCarousel(grupos);
-
-  // 3. Clock e rotação
   updateClock();
   setInterval(updateClock, 1000);
   setInterval(refreshAll, CONFIG.refreshInterval);
   iniciarRotacao();
-
-  // 4. Remove loader
   setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1500);
 }
 
