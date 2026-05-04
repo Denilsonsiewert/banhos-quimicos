@@ -14,19 +14,20 @@
       --weg-gray-50: #FAFAFA;
       --weg-gray-100: #F5F5F5;
       --weg-gray-200: #E8E8E8;
+      --weg-gray-300: #CCCCCC;
       --weg-gray-400: #999999;
       --weg-gray-700: #333333;
       --weg-gray-900: #1A1A1A;
       --status-ok: #2E7D32;
       --status-warn: #F57C00;
-      --status-crit: #1A1A1A; /* Cor neutra para crítico */
+      --status-crit: #1A1A1A;
       --shadow: 0 2px 8px rgba(0,0,0,0.08);
       --radius: 16px;
       --radius-sm: 8px;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    
+
     body {
       background: var(--weg-gray-50);
       color: var(--weg-gray-900);
@@ -37,7 +38,6 @@
       flex-direction: column;
     }
 
-    /* Header */
     header {
       background: white;
       border-bottom: 3px solid var(--weg-blue);
@@ -55,271 +55,134 @@
     }
 
     .header-logo { justify-self: start; }
-
-    .logo-weg {
-      height: 50px;
-      width: auto;
-      object-fit: contain;
-    }
+    .logo-weg { height: 50px; width: auto; object-fit: contain; }
 
     header h1 {
-      font-size: 2rem;
-      font-weight: 800;
-      color: var(--weg-gray-900);
-      text-align: center;
-      justify-self: center;
+      font-size: 2rem; font-weight: 800;
+      color: var(--weg-gray-900); text-align: center; justify-self: center;
     }
-
-    header h1 span {
-      color: var(--weg-blue);
-      font-weight: 900;
-    }
+    header h1 span { color: var(--weg-blue); font-weight: 900; }
 
     .header-clock {
-      justify-self: end;
-      display: flex;
-      align-items: center;
-      gap: 15px;
+      justify-self: end; display: flex;
+      align-items: center; gap: 15px;
     }
-
     #relogio, #data {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: var(--weg-blue-dark);
-      font-family: 'Courier New', monospace;
+      font-size: 1.6rem; font-weight: 800;
+      color: var(--weg-blue-dark); font-family: 'Courier New', monospace;
     }
 
-    /* Layout Principal */
     main {
-      flex: 1;
-      padding: 30px 30px;
-      max-width: 1600px;
-      margin: 0 auto;
-      width: 100%;
+      flex: 1; padding: 30px;
+      max-width: 1600px; margin: 0 auto; width: 100%;
     }
 
     .secao-titulo {
-      font-size: 1.3rem;
-      font-weight: 800;
-      color: var(--weg-blue-dark);
-      text-transform: uppercase;
-      margin-bottom: 20px;
-      padding: 12px 20px;
+      font-size: 1.3rem; font-weight: 800;
+      color: var(--weg-blue-dark); text-transform: uppercase;
+      margin-bottom: 20px; padding: 12px 20px;
       background: var(--weg-blue-light);
-      border-radius: var(--radius-sm);
-      text-align: center;
-      width: 100%;
-      letter-spacing: 0.5px;
+      border-radius: var(--radius-sm); text-align: center;
+      width: 100%; letter-spacing: 0.5px;
     }
 
-    /* Carousel */
-    .carousel-container {
-      position: relative;
-      overflow: hidden;
-      border-radius: var(--radius);
-    }
-
-    .carousel-track {
-      display: flex;
-      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
+    .carousel-container { position: relative; overflow: hidden; border-radius: var(--radius); }
+    .carousel-track { display: flex; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
     .carousel-slide {
-      min-width: 100%;
-      display: grid;
+      min-width: 100%; display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 25px;
-      padding: 15px;
+      gap: 25px; padding: 15px;
     }
 
-    /* Card */
     .card {
-      background: white;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
+      background: white; border-radius: var(--radius);
+      box-shadow: var(--shadow); display: flex;
+      flex-direction: column; overflow: hidden;
       border: 1px solid var(--weg-gray-200);
     }
-
     .card-header {
-      padding: 14px 18px;
-      font-weight: 700;
-      font-size: 1rem;
-      color: white;
-      background: var(--weg-blue);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      text-align: center;
+      padding: 14px 18px; font-weight: 700; font-size: 1rem;
+      color: white; background: var(--weg-blue);
+      text-transform: uppercase; letter-spacing: 0.5px; text-align: center;
     }
+    .card-body { display: flex; flex-direction: column; padding: 18px; gap: 15px; flex: 1; }
 
-    .card-body {
-      display: flex;
-      flex-direction: column;
-      padding: 18px;
-      gap: 15px;
-      flex: 1;
-    }
-
-    /* Gráfico */
     .graph-container {
-      width: 100%;
-      height: 300px;
-      background: var(--weg-gray-100);
-      border-radius: var(--radius-sm);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      position: relative;
-      flex-shrink: 0;
+      width: 100%; height: 300px;
+      background: var(--weg-gray-100); border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; position: relative; flex-shrink: 0;
     }
-
-    .graph-container img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      z-index: 2;
-    }
-
+    .graph-container img { max-width: 100%; max-height: 100%; object-fit: contain; z-index: 2; }
     .graph-placeholder {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: var(--weg-gray-400);
-      font-size: 0.9rem;
-      font-weight: 600;
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; color: var(--weg-gray-400);
+      font-size: 0.9rem; font-weight: 600;
     }
 
-    /* Tabela */
     .measurements-container {
-      background: white;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--weg-gray-200);
-      padding: 15px;
-      flex-shrink: 0;
+      background: white; border-radius: var(--radius-sm);
+      border: 1px solid var(--weg-gray-200); padding: 15px; flex-shrink: 0;
     }
-
     .table-title {
-      font-weight: 700;
-      font-size: 0.9rem;
-      color: var(--weg-blue-dark);
-      margin-bottom: 12px;
-      text-align: center;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      font-weight: 700; font-size: 0.9rem; color: var(--weg-blue-dark);
+      margin-bottom: 12px; text-align: center;
+      text-transform: uppercase; letter-spacing: 0.5px;
     }
-
     .analise-table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 4px;
-      table-layout: fixed;
+      width: 100%; border-collapse: separate;
+      border-spacing: 4px; table-layout: fixed;
     }
-
     .analise-table th {
-      background: var(--weg-blue-light);
-      color: var(--weg-blue-dark);
-      font-weight: 700;
-      font-size: 0.8rem;
-      padding: 8px 4px;
-      border-radius: 4px;
-      text-align: center;
-      white-space: nowrap;
+      background: var(--weg-blue-light); color: var(--weg-blue-dark);
+      font-weight: 700; font-size: 0.8rem; padding: 8px 4px;
+      border-radius: 4px; text-align: center; white-space: nowrap;
     }
-
     .analise-table td {
-      background: var(--weg-gray-100);
-      color: var(--weg-gray-900);
-      font-weight: 600;
-      font-size: 0.85rem;
-      padding: 8px 4px;
-      text-align: center;
-      border-radius: 4px;
-      border: 1px solid var(--weg-gray-200);
+      background: var(--weg-gray-100); color: var(--weg-gray-900);
+      font-weight: 600; font-size: 0.85rem; padding: 8px 4px;
+      text-align: center; border-radius: 4px; border: 1px solid var(--weg-gray-200);
     }
 
-    /* Status Colors */
-    .val-ok { background: #E8F5E9 !important; color: var(--status-ok) !important; }
+    .val-ok   { background: #E8F5E9 !important; color: var(--status-ok) !important; }
     .val-warn { background: #FFF3E0 !important; color: var(--status-warn) !important; }
     .val-crit { background: #ECEFF1 !important; color: var(--status-crit) !important; }
-    .val-nodata { background: #F5F5F5 !important; color: #999999 !important; }
+    .val-nodata { background: #F5F5F5 !important; color: #999 !important; }
 
-    /* Footer */
     footer {
-      background: white;
-      padding: 15px 30px;
-      text-align: center;
-      font-size: 0.9rem;
-      color: var(--weg-gray-400);
+      background: white; padding: 15px 30px; text-align: center;
+      font-size: 0.9rem; color: var(--weg-gray-400);
       border-top: 1px solid var(--weg-gray-200);
-      max-width: 1600px;
-      margin: 0 auto;
-      width: 100%;
+      max-width: 1600px; margin: 0 auto; width: 100%;
     }
-
     footer span { color: var(--weg-blue); font-weight: 700; }
 
-    /* Navegação */
-    .carousel-nav {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
+    .carousel-nav { display: flex; justify-content: center; gap: 10px; margin-top: 20px; }
     .nav-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: var(--weg-gray-300);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: 2px solid white;
-      box-shadow: var(--shadow);
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--weg-gray-300); cursor: pointer;
+      transition: all 0.3s ease; border: 2px solid white; box-shadow: var(--shadow);
     }
+    .nav-dot.active { background: var(--weg-blue); transform: scale(1.3); }
 
-    .nav-dot.active {
-      background: var(--weg-blue);
-      transform: scale(1.3);
-    }
-
-    /* Loader */
     .loader-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: white;
-      z-index: 2000;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      transition: opacity 0.5s ease;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: white; z-index: 2000; display: flex;
+      flex-direction: column; align-items: center; justify-content: center;
+      gap: 16px; transition: opacity 0.5s ease;
     }
-
     .loader-overlay.hidden { opacity: 0; pointer-events: none; }
-
     .spinner {
-      width: 40px;
-      height: 40px;
-      border: 4px solid var(--weg-gray-200);
-      border-top-color: var(--weg-blue);
-      border-radius: 50%;
+      width: 40px; height: 40px; border: 4px solid var(--weg-gray-200);
+      border-top-color: var(--weg-blue); border-radius: 50%;
       animation: spin 1s linear infinite;
     }
-
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    .sem-dados {
+      text-align: center; color: #999; font-size: 0.85rem; padding: 10px;
+    }
 
     @media (max-width: 1200px) {
       .carousel-slide { grid-template-columns: 1fr; }
@@ -328,7 +191,7 @@
       .logo-weg { height: 40px; }
       header h1 { font-size: 1.5rem; }
       #relogio, #data { font-size: 1.3rem; }
-      main { padding: 20px 20px; }
+      main { padding: 20px; }
     }
   </style>
 </head>
@@ -336,7 +199,7 @@
 
 <div class="loader-overlay" id="loader">
   <div class="spinner"></div>
-  <div style="font-weight: 700; color: var(--weg-blue-dark)">Carregando Dashboard...</div>
+  <div style="font-weight:700;color:var(--weg-blue-dark)">Carregando Dashboard...</div>
 </div>
 
 <header>
@@ -358,312 +221,477 @@
 </main>
 
 <footer>
-  JGS - Controle de Qualidade & Processos | <span>WEG S.A.</span> | Última Sincronização: <span id="ultima">--:--</span>
+  JGS - Controle de Qualidade &amp; Processos | <span>WEG S.A.</span> |
+  Última Sincronização: <span id="ultima">--:--</span>
 </footer>
 
 <script>
-  const CONFIG = {
-    rotateInterval: 20000,
-    refreshInterval: 60000,
-    itemsPerSlide: 2
-  };
+// ================================================================
+//  CONFIGURAÇÃO GERAL
+// ================================================================
+const REPO_OWNER = 'Denilsonsiewert';
+const REPO_NAME  = 'banhos-quimicos';
+const BRANCH     = 'main';
 
-  // LISTA DE PROCESSOS SEPARADA ESTRITAMENTE
-  // Inclui a correção do nome do arquivo do Níquel (ana-niquel-watt)
-  const processosConfig = {
-    'estanhagem-eletrolitica': {
-      nome: 'Estanhagem Eletrolítica',
-      graficos: [
-        { file: 'des', nome: 'Desengraxante', ref: 26.0, tol: 3.9 },
-        { file: 'ativacao-tanque-5', nome: 'Ativação — Tanque 5', ref: 8.5, tol: 1.28 },
-        { file: 'ativacao-tanque-6', nome: 'Ativação — Tanque 6', ref: 8.5, tol: 1.28 },
-        
-        // CORREÇÃO: Aponta para ana-niquel-watt.json mas busca imagens graf-niquel-watt-X.png
-        { file: 'niquel-watt', nome: 'Níquel WATT (1)', ref: 45.0, tol: 6.75, jsonFile: 'ana-niquel-watt' },
-        { file: 'niquel-watt-1', nome: 'Níquel WATT (2)', ref: 45.0, tol: 6.75, jsonFile: 'ana-niquel-watt' },
-        { file: 'niquel-watt-2', nome: 'Níquel WATT (3)', ref: 45.0, tol: 6.75, jsonFile: 'ana-niquel-watt' },
-        { file: 'niquel-watt-3', nome: 'Níquel WATT (4)', ref: 45.0, tol: 6.75, jsonFile: 'ana-niquel-watt' },
-        
-        { file: 'estanhagem-a', nome: 'Estanhagem A', ref: 32.0, tol: 4.8 },
-        { file: 'estanhagem-b', nome: 'Estanhagem B', ref: 31.5, tol: 4.73 },
-        { file: 'selante', nome: 'Selante Protetivo', ref: 18.0, tol: 2.7, jsonFile: 'graf-sel' }
-      ]
-    },
-    'nanoceramico': {
-      nome: 'Processo Nanocerâmico',
-      graficos: [
-        { file: 'des1', nome: '1º Desengraxante', ref: 29.0, tol: 4.35 },
-        { file: 'des2', nome: '2º Desengraxante', ref: 28.5, tol: 4.28 },
-        { file: 'dec1', nome: 'Decapante 1', ref: 12.0, tol: 1.8 },
-        { file: 'dec2', nome: 'Decapante 2', ref: 11.5, tol: 1.73 },
-        { file: 'nano', nome: 'Nanocerâmico — Conc.', ref: 35.0, tol: 5.25 },
-        { file: 'abso-nano', nome: 'Nanocerâmico — Abs.', ref: 1.2, tol: 0.18 },
-        { file: 'ph-nano', nome: 'Nanocerâmico — pH', ref: 4.5, tol: 0.68 },
-        { file: 'neu', nome: 'Neutralizador', ref: 7.0, tol: 1.05 },
-        { file: 'sel', nome: 'Selante Final', ref: 22.0, tol: 3.3 }
-      ]
+const CONFIG = {
+  rotateInterval:  20000,   // ms entre slides
+  refreshInterval: 300000,  // ms para recarregar dados (5 min)
+  itemsPerSlide:   2,
+};
+
+// ================================================================
+//  MAPEAMENTO DE PROCESSOS
+//
+//  Chave  = base do arquivo exportado pelo VBA (sem índice e sem extensão)
+//           Exemplos: 'graf-niquel-watt', 'graf-des1', 'graf-ph-nano'
+//
+//  secao  = agrupamento visual no dashboard
+//  nome   = rótulo exibido no card
+//  ref    = valor de referência (null = sem coloração)
+//  tol    = tolerância total (null = sem coloração)
+//
+//  ✅ Arquivos descobertos automaticamente que NÃO estiverem aqui
+//     aparecem em "Outros Processos" sem coloração de status.
+//  ✅ Para adicionar nova aba: basta exportar pelo VBA.
+//     Se quiser ref/tol, adicione a entrada abaixo.
+// ================================================================
+const PROCESS_MAP = {
+  // ── Planilha 1: Estanhagem Eletrolítica ──────────────────────
+  'graf-des':               { secao: 'estanhagem', nome: 'Desengraxante',          ref: 26.0, tol: 3.90 },
+  'graf-ativacao-tanque-5': { secao: 'estanhagem', nome: 'Ativação — Tanque 5',    ref:  8.5, tol: 1.28 },
+  'graf-ativacao-tanque-6': { secao: 'estanhagem', nome: 'Ativação — Tanque 6',    ref:  8.5, tol: 1.28 },
+  'graf-niquel-watt':       { secao: 'estanhagem', nome: 'Níquel WATT',            ref: null, tol: null  },
+  'graf-estanhagem-a':      { secao: 'estanhagem', nome: 'Estanhagem A',           ref: 32.0, tol: 4.80 },
+  'graf-estanhagem-b':      { secao: 'estanhagem', nome: 'Estanhagem B',           ref: 31.5, tol: 4.73 },
+  'graf-sel':               { secao: 'estanhagem', nome: 'Selante Protetivo',      ref: 18.0, tol: 2.70 },
+
+  // ── Planilha 2: Processo Nanocerâmico ────────────────────────
+  'graf-des1':              { secao: 'nanoceramico', nome: '1º Desengraxante',     ref: 29.0, tol: 4.35 },
+  'graf-des2':              { secao: 'nanoceramico', nome: '2º Desengraxante',     ref: 28.5, tol: 4.28 },
+  'graf-dec1':              { secao: 'nanoceramico', nome: 'Decapante 1',          ref: 12.0, tol: 1.80 },
+  'graf-dec2':              { secao: 'nanoceramico', nome: 'Decapante 2',          ref: 11.5, tol: 1.73 },
+  'graf-nano':              { secao: 'nanoceramico', nome: 'Nanocerâmico — Conc.', ref: 35.0, tol: 5.25 },
+  'graf-abso-nano':         { secao: 'nanoceramico', nome: 'Nanocerâmico — Abs.',  ref:  1.2, tol: 0.18 },
+  'graf-ph-nano':           { secao: 'nanoceramico', nome: 'Nanocerâmico — pH',    ref:  4.5, tol: 0.68 },
+  'graf-neu':               { secao: 'nanoceramico', nome: 'Neutralizador',        ref:  7.0, tol: 1.05 },
+};
+
+// Ordem e nomes das seções
+const SECOES_ORDEM = ['estanhagem', 'nanoceramico', 'outros'];
+const SECOES_NOMES = {
+  estanhagem:   'Estanhagem Eletrolítica',
+  nanoceramico: 'Processo Nanocerâmico',
+  outros:       'Outros Processos',
+};
+
+// ================================================================
+//  AUTO-DESCOBERTA via GitHub Trees API
+//  → Detecta TODOS os JSONs e PNGs do repositório sem precisar
+//    atualizar o HTML quando novas abas forem exportadas.
+//  → Cache em sessionStorage para não consumir rate-limit.
+// ================================================================
+async function descobrirArquivos() {
+  const CACHE_KEY = `gh-tree-${REPO_OWNER}-${REPO_NAME}-${BRANCH}`;
+  const CACHE_TTL = 5 * 60 * 1000; // 5 min
+
+  try {
+    const cached = sessionStorage.getItem(CACHE_KEY);
+    if (cached) {
+      const { ts, data } = JSON.parse(cached);
+      if (Date.now() - ts < CACHE_TTL) return data;
     }
-  };
+  } catch(e) {}
 
-  let dadosCache = {};
+  try {
+    const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/git/trees/${BRANCH}?recursive=1`;
+    const res = await fetch(url, { headers: { Accept: 'application/vnd.github.v3+json' } });
+    if (!res.ok) throw new Error(`GitHub API ${res.status}`);
 
-  // 1. CORREÇÃO CRÍTICA: Limpa espaços em chaves e valores do JSON
-  function sanitizeJson(obj) {
-    if (typeof obj !== 'object' || obj === null) return obj;
-    const newObj = {};
-    for (const key in obj) {
-      const cleanKey = key.trim();
-      const val = obj[key];
-      if (typeof val === 'string') newObj[cleanKey] = val.trim();
-      else if (Array.isArray(val)) newObj[cleanKey] = val.map(v => typeof v === 'string' ? v.trim() : v);
-      else if (typeof val === 'object') newObj[cleanKey] = sanitizeJson(val);
-      else newObj[cleanKey] = val;
+    const tree = (await res.json()).tree || [];
+    const data = { jsons: [], pngs: [] };
+
+    for (const item of tree) {
+      if (item.type !== 'blob') continue;
+      if (item.path.startsWith('dados/')    && item.path.endsWith('.json'))
+        data.jsons.push(item.path.slice('dados/'.length, -'.json'.length));
+      if (item.path.startsWith('graficos/') && item.path.endsWith('.png'))
+        data.pngs.push(item.path.slice('graficos/'.length, -'.png'.length));
     }
-    return newObj;
+
+    sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data }));
+    console.log(`[Auto-Discovery] ${data.jsons.length} JSONs, ${data.pngs.length} PNGs`);
+    return data;
+  } catch (e) {
+    console.warn('[Auto-Discovery] GitHub API indisponível — usando config manual.', e.message);
+    return null;
+  }
+}
+
+// ================================================================
+//  PARSE DE NOMES DE ARQUIVO
+//  Padrão novo (VBA unificado): 'graf-niquel-watt-2' → base='graf-niquel-watt', idx=2
+//  Padrão antigo (1 chart/aba): 'graf-des'           → base='graf-des', idx=1
+// ================================================================
+function parseFileName(name) {
+  const m = name.match(/^(.+?)-(\d+)$/);
+  // Só considera índice se a parte numérica for <= 20
+  // (evita confundir 'graf-des1' com base='graf-des', idx=1)
+  if (m && parseInt(m[2]) <= 20 && !PROCESS_MAP[name]) {
+    return { base: m[1], idx: parseInt(m[2]) };
+  }
+  return { base: name, idx: 1 };
+}
+
+// Monta mapa: base → { indices: Set, pngSet: Set }
+function construirGrupos(arquivos) {
+  const grupos = {};
+
+  for (const json of arquivos.jsons) {
+    const { base, idx } = parseFileName(json);
+    if (!grupos[base]) grupos[base] = { indices: new Set(), pngSet: new Set() };
+    grupos[base].indices.add(idx);
+  }
+  for (const png of arquivos.pngs) {
+    const { base, idx } = parseFileName(png);
+    if (grupos[base]) grupos[base].pngSet.add(idx);
   }
 
-  // Formatar data
-  function formatarData(dataStr) {
-    if (!dataStr || dataStr === '#N/D' || dataStr.trim() === '') return '--/--';
-    let dataObj = null;
-    if (dataStr.includes('/')) {
-      const p = dataStr.split('/');
-      if (p.length === 3) {
-        const dia = parseInt(p[0]);
-        const mes = parseInt(p[1]) - 1;
-        let ano = parseInt(p[2]);
-        if (ano < 100) ano += 2000;
-        dataObj = new Date(ano, mes, dia);
-      }
-    }
-    if (!dataObj || isNaN(dataObj.getTime())) dataObj = new Date(dataStr);
-    if (isNaN(dataObj.getTime())) return dataStr;
-    const d = dataObj.getDate().toString().padStart(2, '0');
-    const m = (dataObj.getMonth() + 1).toString().padStart(2, '0');
-    return `${d}/${m}`;
-  }
+  return grupos;
+}
 
-  // Carregar JSON com sanitização e nome de arquivo customizado
-  async function carregarDadosJSON(fileName, customJsonFile) {
+// Fallback quando a API não está disponível
+function gruposDoConfigManual() {
+  const grupos = {};
+  for (const base in PROCESS_MAP) {
+    grupos[base] = { indices: new Set([1]), pngSet: new Set([1]) };
+  }
+  return grupos;
+}
+
+// ================================================================
+//  LEITURA DE DADOS JSON
+// ================================================================
+function sanitize(v) {
+  if (Array.isArray(v))           return v.map(x => typeof x === 'string' ? x.trim() : x);
+  if (typeof v === 'object' && v) {
+    const o = {};
+    for (const k in v) {
+      const val = v[k];
+      o[k.trim()] = typeof val === 'string' ? val.trim()
+                  : Array.isArray(val)       ? val.map(x => typeof x === 'string' ? x.trim() : x)
+                  : typeof val === 'object'  ? sanitize(val)
+                  : val;
+    }
+    return o;
+  }
+  return v;
+}
+
+function formatarData(s) {
+  if (!s || s === '#N/D' || !s.trim()) return '--/--';
+  if (s.includes('/')) {
+    const p = s.split('/');
+    if (p.length >= 2) return `${p[0].padStart(2,'0')}/${p[1].padStart(2,'0')}`;
+  }
+  const d = new Date(s);
+  if (!isNaN(d)) return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
+  return s;
+}
+
+const _jsonCache = {};
+
+async function fetchJSON(base, idx) {
+  const key = `${base}-${idx}`;
+  if (_jsonCache[key] !== undefined) return _jsonCache[key];
+
+  // Tenta em ordem: padrão novo (base-N.json) → padrão antigo (base.json)
+  const tentativas = [
+    `dados/${base}-${idx}.json`,
+    `dados/${base}.json`,
+  ];
+
+  for (const url of tentativas) {
     try {
-      // Usa nome customizado (ex: ana-niquel-watt) ou o padrão (graf-...)
-      const jsonName = customJsonFile || `graf-${fileName}`;
-      const res = await fetch(`dados/${jsonName}.json?t=${Date.now()}`);
-      if (!res.ok) return null;
-      const raw = await res.json();
-      return sanitizeJson(raw); 
-    } catch (e) { return null; }
+      const r = await fetch(`${url}?t=${Date.now()}`);
+      if (!r.ok) continue;
+      const raw = await r.json();
+      _jsonCache[key] = sanitize(raw);
+      return _jsonCache[key];
+    } catch(e) {}
   }
 
-  // Extrair medições
-  async function getMedicoesReal(cfg) {
-    const dados = await carregarDadosJSON(cfg.file, cfg.jsonFile);
-    if (!dados?.charts?.[0]) return [];
+  _jsonCache[key] = null;
+  return null;
+}
 
-    const chart = dados.charts[0];
-    const labels = chart.labels || [];
-    const series1 = chart.series1 || [];
-    
-    const medicoes = [];
-    const start = Math.max(0, labels.length - 24);
-    
-    for (let i = start; i < labels.length; i++) {
-      const label = labels[i];
-      const valStr = series1[i] || '0';
-      let valor = 0, hasData = true;
-      
-      if (valStr === '#N/D' || valStr === '#N/A' || valStr === '') {
-        hasData = false; valor = NaN;
-      } else {
-        valor = parseFloat(valStr.replace(',', '.'));
-        if (isNaN(valor)) hasData = false;
-      }
-      
-      medicoes.push({ label, dataFormatada: formatarData(label), valor, hasData });
+async function getMedicoes(base, idx) {
+  const dados = await fetchJSON(base, idx);
+  if (!dados?.charts?.length) return [];
+
+  // Novo padrão: 1 JSON por gráfico → charts[0]
+  // Antigo:      1 JSON por aba    → charts[idx-1] ou charts[0]
+  const chart = dados.charts[0] ?? dados.charts[idx - 1];
+  if (!chart) return [];
+
+  const labels  = chart.labels  || [];
+  const series1 = chart.series1 || [];
+  const series2 = chart.series2 || null;
+
+  return labels.map((lbl, i) => {
+    const s1 = String(series1[i] ?? '').trim();
+    const v1 = parseFloat(s1.replace(',', '.'));
+    const s2 = series2 ? String(series2[i] ?? '').trim() : '';
+    const v2 = series2 ? parseFloat(s2.replace(',', '.')) : null;
+    const hasData = s1 !== '' && s1 !== '#N/D' && s1 !== 'null' && !isNaN(v1);
+    return { dataFormatada: formatarData(lbl), valor: hasData ? v1 : null, valor2: (!isNaN(v2) && v2 !== null) ? v2 : null, hasData };
+  });
+}
+
+// ================================================================
+//  STATUS / COLORAÇÃO
+// ================================================================
+function statusClass(valor, ref, tol, hasData) {
+  if (!hasData || valor === null)  return 'val-nodata';
+  if (ref === null || tol === null) return '';             // sem limites → neutro
+  const d = Math.abs(valor - ref);
+  if (d <= tol * 0.5) return 'val-ok';
+  if (d <= tol)       return 'val-warn';
+  return 'val-crit';
+}
+
+// ================================================================
+//  RENDERIZAÇÃO DA TABELA
+// ================================================================
+async function renderTabela(base, idx) {
+  const meta = PROCESS_MAP[base] ?? {};
+  const ref  = meta.ref ?? null;
+  const tol  = meta.tol ?? null;
+
+  const medicoes = await getMedicoes(base, idx);
+  if (!medicoes.length)
+    return '<p class="sem-dados">Sem dados disponíveis</p>';
+
+  const cols = 12;
+  let html = '<table class="analise-table">';
+  for (let r = 0; r < 2; r++) {
+    const chunk = medicoes.slice(r * cols, (r + 1) * cols);
+    if (!chunk.length) continue;
+    html += '<tr>' + chunk.map(m => `<th>${m.dataFormatada}</th>`).join('') + '</tr>';
+    html += '<tr>' + chunk.map(m => {
+      const cls  = statusClass(m.valor, ref, tol, m.hasData);
+      const disp = m.hasData ? m.valor.toFixed(2) : '---';
+      return `<td${cls ? ` class="${cls}"` : ''}>${disp}</td>`;
+    }).join('') + '</tr>';
+  }
+  return html + '</table>';
+}
+
+// ================================================================
+//  IMAGENS
+// ================================================================
+function carregarImagem(img, base, idx) {
+  // Tenta padrão novo (base-N.png) depois antigo (base.png)
+  const candidatos = [
+    `graficos/${base}-${idx}.png`,
+    `graficos/${base}.png`,
+  ];
+  let i = 0;
+  function tentar() {
+    if (i >= candidatos.length) { img.style.display = 'none'; return; }
+    img.onerror = () => { i++; tentar(); };
+    img.src = `${candidatos[i++]}?t=${Date.now()}`;
+  }
+  tentar();
+}
+
+// ================================================================
+//  NOME AUTOMÁTICO DO CARD
+// ================================================================
+function nomeCard(base, idx, totalNoGrupo) {
+  const meta = PROCESS_MAP[base];
+  if (meta) return totalNoGrupo > 1 ? `${meta.nome} — ${idx}` : meta.nome;
+
+  // Gera nome legível a partir do filename
+  const auto = base
+    .replace(/^graf-/, '')
+    .replace(/-/g, ' ')
+    .replace(/\b\w/g, c => c.toUpperCase());
+  return totalNoGrupo > 1 ? `${auto} — ${idx}` : auto;
+}
+
+function secaoDeBase(base) {
+  return PROCESS_MAP[base]?.secao ?? 'outros';
+}
+
+// ================================================================
+//  CRIAÇÃO DE CARDS
+// ================================================================
+async function criarCard(base, idx, totalNoGrupo) {
+  const nome   = nomeCard(base, idx, totalNoGrupo);
+  const tabela = await renderTabela(base, idx);
+
+  const div = document.createElement('div');
+  div.className   = 'card';
+  div.dataset.base = base;
+  div.dataset.idx  = String(idx);
+
+  div.innerHTML = `
+    <div class="card-header">${nome}</div>
+    <div class="card-body">
+      <div class="graph-container">
+        <div class="graph-placeholder">📊 Carregando gráfico...</div>
+        <img alt="${nome}"
+             onload="this.previousElementSibling.style.display='none'"
+             onerror="this.style.display='none'">
+      </div>
+      <div class="measurements-container">
+        <div class="table-title">Últimas 24 Medições</div>
+        ${tabela}
+      </div>
+    </div>`;
+
+  carregarImagem(div.querySelector('img'), base, idx);
+  return div;
+}
+
+// ================================================================
+//  CAROUSEL
+// ================================================================
+let _currentSlide = 0;
+let _totalSlides  = 0;
+let _rotateTimer  = null;
+
+function irParaSlide(idx) {
+  _currentSlide = (idx + _totalSlides) % _totalSlides;
+  document.getElementById('track-main').style.transform = `translateX(-${_currentSlide * 100}%)`;
+  document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === _currentSlide));
+}
+
+function iniciarRotacao() {
+  clearInterval(_rotateTimer);
+  _rotateTimer = setInterval(() => irParaSlide(_currentSlide + 1), CONFIG.rotateInterval);
+}
+
+async function initCarousel(grupos) {
+  const track = document.getElementById('track-main');
+  const nav   = document.getElementById('nav-main');
+  track.innerHTML = '';
+  nav.innerHTML   = '';
+  _totalSlides = 0;
+  _currentSlide = 0;
+
+  // Distribui grupos por seção
+  const secoes = {};
+  for (const base in grupos) {
+    const secao = secaoDeBase(base);
+    if (!secoes[secao]) secoes[secao] = [];
+    const indices = [...grupos[base].indices].sort((a, b) => a - b);
+    for (const idx of indices) {
+      secoes[secao].push({ base, idx, total: indices.length });
     }
-    return medicoes;
   }
 
-  function getStatusClass(valor, ref, tol, hasData) {
-    if (!hasData || isNaN(valor)) return 'val-nodata';
-    const diff = Math.abs(valor - ref);
-    if (diff <= tol * 0.5) return 'val-ok';
-    if (diff <= tol) return 'val-warn';
-    return 'val-crit';
-  }
+  // Mantém ordem: mapeadas → 'outros'
+  const ordemFinal = [
+    ...SECOES_ORDEM,
+    ...Object.keys(secoes).filter(s => !SECOES_ORDEM.includes(s)),
+  ];
 
-  // Renderizar tabela
-  async function renderTabela(cfg) {
-    if (!dadosCache[cfg.file]) dadosCache[cfg.file] = await getMedicoesReal(cfg);
-    const medicoes = dadosCache[cfg.file];
-    const cols = 12;
-    let html = '<table class="analise-table">';
-    for (let r = 0; r < 2; r++) {
-      const chunk = medicoes.slice(r * cols, r * cols + cols);
-      if (!chunk.length) continue;
-      html += '<tr>' + chunk.map(m => `<th>${m.dataFormatada}</th>`).join('') + '</tr>';
-      html += '<tr>' + chunk.map(m => {
-        const cls = getStatusClass(m.valor, cfg.ref, cfg.tol, m.hasData);
-        return `<td class="${cls}">${m.hasData ? m.valor.toFixed(2) : '---'}</td>`;
-      }).join('') + '</tr>';
+  for (const secaoKey of ordemFinal) {
+    const itens = secoes[secaoKey];
+    if (!itens?.length) continue;
+
+    const nomeSecao   = SECOES_NOMES[secaoKey] ?? secaoKey;
+    const slidesCount = Math.ceil(itens.length / CONFIG.itemsPerSlide);
+
+    for (let s = 0; s < slidesCount; s++) {
+      const slide = document.createElement('div');
+      slide.className = 'carousel-slide';
+      slide.innerHTML = `<div style="grid-column:1/-1;margin-bottom:5px">
+        <div class="secao-titulo">${nomeSecao}</div></div>`;
+
+      const chunk = itens.slice(s * CONFIG.itemsPerSlide, (s + 1) * CONFIG.itemsPerSlide);
+      for (const { base, idx, total } of chunk) {
+        slide.appendChild(await criarCard(base, idx, total));
+      }
+
+      track.appendChild(slide);
+
+      const dotIdx = _totalSlides;
+      const dot = document.createElement('div');
+      dot.className = `nav-dot${dotIdx === 0 ? ' active' : ''}`;
+      dot.onclick   = () => { irParaSlide(dotIdx); iniciarRotacao(); };
+      nav.appendChild(dot);
+      _totalSlides++;
     }
-    return html + '</table>';
+  }
+}
+
+// ================================================================
+//  REFRESH PERIÓDICO DE DADOS
+// ================================================================
+async function refreshAll() {
+  // Limpa só o cache de JSON (mantém descoberta de arquivos)
+  Object.keys(_jsonCache).forEach(k => delete _jsonCache[k]);
+
+  for (const card of document.querySelectorAll('.card')) {
+    const base = card.dataset.base;
+    const idx  = parseInt(card.dataset.idx, 10);
+    if (!base || isNaN(idx)) continue;
+
+    const tabela = await renderTabela(base, idx);
+    card.querySelector('.measurements-container').innerHTML =
+      `<div class="table-title">Últimas 24 Medições</div>${tabela}`;
+
+    const img = card.querySelector('img');
+    if (img) carregarImagem(img, base, idx);
   }
 
-  // Loader de Imagem Robusto
-  function loadGraphImage(imgEl, fileName) {
-    let attempts = 0;
-    const maxAttempts = 6; 
-    
-    function tryNext() {
-      if (attempts >= maxAttempts) {
-        imgEl.style.display = 'none';
-        return;
-      }
-      
-      let src = '';
-      if (attempts === 0) {
-        src = `graficos/graf-${fileName}.png?t=${Date.now()}`;
-      } else {
-        // Caso especial: des1 no JSON pode ser des-1 no PNG
-        if (fileName === 'des1') src = `graficos/graf-des-1.png?t=${Date.now()}`;
-        else src = `graficos/graf-${fileName}-${attempts}.png?t=${Date.now()}`;
-      }
-      
-      imgEl.src = src;
-      imgEl.onerror = function() {
-        attempts++;
-        tryNext();
-      };
-    }
-    tryNext();
+  document.getElementById('ultima').innerText =
+    new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+}
+
+// ================================================================
+//  RELÓGIO
+// ================================================================
+function updateClock() {
+  const now = new Date();
+  document.getElementById('relogio').innerText = now.toLocaleTimeString('pt-BR');
+  document.getElementById('data').innerText    = now.toLocaleDateString('pt-BR');
+  document.getElementById('ultima').innerText  =
+    now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+}
+
+// ================================================================
+//  INICIALIZAÇÃO
+// ================================================================
+async function init() {
+  // 1. Descoberta de arquivos (GitHub API → fallback manual)
+  let grupos;
+  const arquivos = await descobrirArquivos();
+
+  if (arquivos && (arquivos.jsons.length || arquivos.pngs.length)) {
+    grupos = construirGrupos(arquivos);
+    console.log(`[Init] Auto-descoberta OK: ${Object.keys(grupos).length} grupo(s)`);
+  } else {
+    grupos = gruposDoConfigManual();
+    console.log('[Init] Modo manual (config estática)');
   }
 
-  async function criarCard(cfg, processoNome) {
-    const tabela = await renderTabela(cfg);
-    return `
-      <div class="card" data-processo="${processoNome}">
-        <div class="card-header">${cfg.nome}</div>
-        <div class="card-body">
-          <div class="graph-container">
-            <div class="graph-placeholder">📊 Carregando gráfico...</div>
-            <img src="" 
-                 onload="this.previousElementSibling.style.display='none'"
-                 onerror="this.style.display='none'">
-          </div>
-          <div class="measurements-container">
-            <div class="table-title">Últimas 24 Medições</div>
-            ${tabela}
-          </div>
-        </div>
-      </div>`;
-  }
+  // 2. Monta o carousel
+  await initCarousel(grupos);
 
-  async function initCarousel() {
-    const track = document.getElementById('track-main');
-    const nav = document.getElementById('nav-main');
-    
-    let allSlides = [], slideIndex = 0;
+  // 3. Clock e rotação
+  updateClock();
+  setInterval(updateClock, 1000);
+  setInterval(refreshAll, CONFIG.refreshInterval);
+  iniciarRotacao();
 
-    for (const pKey in processosConfig) {
-      const proc = processosConfig[pKey];
-      const slidesCount = Math.ceil(proc.graficos.length / CONFIG.itemsPerSlide);
+  // 4. Remove loader
+  setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1500);
+}
 
-      for (let i = 0; i < slidesCount; i++) {
-        const slide = document.createElement('div');
-        slide.className = 'carousel-slide';
-        
-        // TÍTULO DO PROCESSO EM TODOS OS SLIDES PARA GARANTIR SEPARAÇÃO
-        slide.innerHTML = `<div style="grid-column:1/-1;margin-bottom:5px"><div class="secao-titulo">${proc.nome}</div></div>`;
-        
-        const chunk = proc.graficos.slice(i * CONFIG.itemsPerSlide, i * CONFIG.itemsPerSlide + CONFIG.itemsPerSlide);
-        for (const cfg of chunk) {
-          const cardHtml = await criarCard(cfg, proc.nome);
-          const temp = document.createElement('div');
-          temp.innerHTML = cardHtml;
-          const card = temp.firstElementChild;
-          
-          const img = card.querySelector('img');
-          loadGraphImage(img, cfg.file);
-          
-          slide.appendChild(card);
-        }
-        track.appendChild(slide);
-        allSlides.push(slide);
-        
-        const dot = document.createElement('div');
-        dot.className = `nav-dot ${slideIndex === 0 ? 'active' : ''}`;
-        dot.onclick = () => goToSlide(slideIndex);
-        nav.appendChild(dot);
-        slideIndex++;
-      }
-    }
-
-    let current = 0;
-    setInterval(() => {
-      current = (current + 1) % allSlides.length;
-      goToSlide(current);
-    }, CONFIG.rotateInterval);
-
-    setInterval(async () => {
-      dadosCache = {};
-      await refreshAllCards();
-    }, CONFIG.refreshInterval);
-  }
-
-  async function refreshAllCards() {
-    document.querySelectorAll('.card').forEach(card => {
-      const header = card.querySelector('.card-header').innerText;
-      let fileName = header.toLowerCase().replace(/\s/g, '-').replace('—', '-');
-      
-      // Mapeamento manual
-      if (fileName.includes('tanque-5')) fileName = 'ativacao-tanque-5';
-      if (fileName.includes('tanque-6')) fileName = 'ativacao-tanque-6';
-      if (fileName.includes('protetivo')) fileName = 'selante';
-      if (fileName.includes('conc')) fileName = 'nano';
-      if (fileName.includes('abs')) fileName = 'abso-nano';
-      if (fileName.includes('ph')) fileName = 'ph-nano';
-      if (fileName.includes('final')) fileName = 'sel';
-      if (fileName.includes('neutralizador')) fileName = 'neu';
-      if (fileName.includes('niquel')) fileName = 'niquel-watt'; // Usa o padrão para refresh
-
-      let cfg = null;
-      for (const p in processosConfig) {
-        cfg = processosConfig[p].graficos.find(g => g.file === fileName || fileName.includes(g.file));
-        if (cfg) break;
-      }
-
-      if (cfg) {
-        dadosCache[cfg.file] = null;
-        renderTabela(cfg).then(html => {
-          card.querySelector('.measurements-container').innerHTML = `<div class="table-title">Últimas 24 Medições</div>${html}`;
-        });
-      }
-    });
-    document.getElementById('ultima').innerText = new Date().toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'});
-  }
-
-  function goToSlide(idx) {
-    document.getElementById('track-main').style.transform = `translateX(-${idx*100}%)`;
-    document.querySelectorAll('.nav-dot').forEach((d,i) => d.classList.toggle('active', i===idx));
-  }
-
-  function updateClock() {
-    const now = new Date();
-    document.getElementById('relogio').innerText = now.toLocaleTimeString('pt-BR');
-    document.getElementById('data').innerText = now.toLocaleDateString('pt-BR');
-    document.getElementById('ultima').innerText = now.toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'});
-  }
-
-  async function init() {
-    await initCarousel();
-    updateClock();
-    setInterval(updateClock, 1000);
-    setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1500);
-  }
-
-  window.onload = init;
+window.onload = init;
 </script>
-
 </body>
 </html>
