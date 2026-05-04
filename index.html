@@ -36,7 +36,16 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      cursor: default;
+      transition: cursor 0.3s ease;
     }
+
+    body.cursor-hidden { cursor: none !important; }
+    body.cursor-hidden * { cursor: none !important; }
+
+    ::-webkit-scrollbar { width: 0 !important; height: 0 !important; display: none !important; }
+    html { scrollbar-width: none !important; -ms-overflow-style: none !important; }
+    body { overflow-x: hidden; overflow-y: scroll; }
 
     header {
       background: white;
@@ -227,9 +236,6 @@
 </footer>
 
 <script>
-// ================================================================
-//  CONFIGURAÇÃO GERAL
-// ================================================================
 const REPO_OWNER = 'Denilsonsiewert';
 const REPO_NAME  = 'banhos-quimicos';
 const BRANCH     = 'main';
@@ -240,10 +246,23 @@ const CONFIG = {
   itemsPerSlide:   2,
 };
 
-// ================================================================
-//  MAPEAMENTO DE PROCESSOS
-//  Chaves podem ser exatas (com índice) ou genéricas (sem índice)
-// ================================================================
+// 🖱️ Controle de cursor auto-hide
+let cursorTimer;
+const CURSOR_HIDE_DELAY = 3000;
+
+function showCursor() {
+  document.body.classList.remove('cursor-hidden');
+  clearTimeout(cursorTimer);
+  cursorTimer = setTimeout(hideCursor, CURSOR_HIDE_DELAY);
+}
+function hideCursor() { document.body.classList.add('cursor-hidden'); }
+function initCursorAutoHide() {
+  ['mousemove', 'mousedown', 'touchstart', 'scroll'].forEach(evt => {
+    document.addEventListener(evt, showCursor, { passive: true });
+  });
+  showCursor();
+}
+
 const PROCESS_MAP = {
   // ── ESTANHAGEM ELETROLÍTICA ─────────────────────────────────
   'graf-des': { 
@@ -261,118 +280,75 @@ const PROCESS_MAP = {
     nome: 'Ativação - Tanque 6 — CONCENTRAÇÃO DO BANHO (mL/L)', 
     ref: 8.5, tol: 1.28 
   },
-  
   'graf-niquel-watt-1': { 
     secao: 'estanhagem', 
-    nome: 'Níquel WATT 1 — CONCENTRAÇÃO DE Ni° (g/L)', 
-    ref: null, tol: null 
+    nome: 'Níquel WATT 1 — CONCENTRAÇÃO DE Ni° (g/L)', ref: null, tol: null 
   },
   'graf-niquel-watt-2': { 
     secao: 'estanhagem', 
-    nome: 'Níquel WATT 2 — CONCENTRAÇÃO DE NiCl₂ (mL/L)', 
-    ref: null, tol: null 
+    nome: 'Níquel WATT 2 — CONCENTRAÇÃO DE NiCl₂ (mL/L)', ref: null, tol: null 
   },
   'graf-niquel-watt-3': { 
     secao: 'estanhagem', 
-    nome: 'Níquel WATT 3 — CONCENTRAÇÃO DE H₃BO₃ (g/L)', 
-    ref: null, tol: null 
+    nome: 'Níquel WATT 3 — CONCENTRAÇÃO DE H₃BO₃ (g/L)', ref: null, tol: null 
   },
   'graf-niquel-watt-4': { 
     secao: 'estanhagem', 
-    nome: 'Níquel WATT 4 — CONCENTRAÇÃO DE NiSO₄ (mL/L)', 
-    ref: null, tol: null 
+    nome: 'Níquel WATT 4 — CONCENTRAÇÃO DE NiSO₄ (mL/L)', ref: null, tol: null 
   },
-  
   'graf-estanhagem-a-1': { 
     secao: 'estanhagem', 
-    nome: 'Estanhagem A 1 — CONCENTRAÇÃO DE Sn° (g/L)', 
-    ref: 32.0, tol: 4.80 
+    nome: 'Estanhagem A 1 — CONCENTRAÇÃO DE Sn° (g/L)', ref: 32.0, tol: 4.80 
   },
   'graf-estanhagem-a-2': { 
     secao: 'estanhagem', 
-    nome: 'Estanhagem A 2 — CONCENTRAÇÃO DE H₂SO₄ (mL/L)', 
-    ref: null, tol: null 
+    nome: 'Estanhagem A 2 — CONCENTRAÇÃO DE H₂SO₄ (mL/L)', ref: null, tol: null 
   },
-  
   'graf-estanhagem-b-1': { 
     secao: 'estanhagem', 
-    nome: 'Estanhagem B 1 — CONCENTRAÇÃO DE Sn° (g/L)', 
-    ref: 31.5, tol: 4.73 
+    nome: 'Estanhagem B 1 — CONCENTRAÇÃO DE Sn° (g/L)', ref: 31.5, tol: 4.73 
   },
   'graf-estanhagem-b-2': { 
     secao: 'estanhagem', 
-    nome: 'Estanhagem B 2 — CONCENTRAÇÃO DE H₂SO₄ (mL/L)', 
-    ref: null, tol: null 
-  },
-  
-  'graf-sel': { 
-    secao: 'estanhagem', 
-    nome: 'Selante Protetivo — CONCENTRAÇÃO DO BANHO (mL/L)', 
-    ref: 18.0, tol: 2.70 
+    nome: 'Estanhagem B 2 — CONCENTRAÇÃO DE H₂SO₄ (mL/L)', ref: null, tol: null 
   },
 
   // ── CONVERSÃO NANOCERÂMICA ──────────────────────────────────
   'graf-des1': { 
     secao: 'nanoceramico', 
-    nome: 'Desengraxante 1 — CONCENTRAÇÃO DO BANHO (%)', 
-    ref: 29.0, tol: 4.35 
+    nome: 'Desengraxante 1 — CONCENTRAÇÃO DO BANHO (%)', ref: 29.0, tol: 4.35 
   },
   'graf-des2': { 
     secao: 'nanoceramico', 
-    nome: 'Desengraxante 2 — CONCENTRAÇÃO DO BANHO (%)', 
-    ref: 28.5, tol: 4.28 
+    nome: 'Desengraxante 2 — CONCENTRAÇÃO DO BANHO (%)', ref: 28.5, tol: 4.28 
   },
   'graf-dec1': { 
     secao: 'nanoceramico', 
-    nome: 'Decapante 1 — CONCENTRAÇÃO DO BANHO (%)', 
-    ref: 12.0, tol: 1.80 
-  },
-  'graf-dec2': { 
-    secao: 'nanoceramico', 
-    nome: 'Decapante 2 — CONCENTRAÇÃO DO BANHO (%)', 
-    ref: 11.5, tol: 1.73 
+    nome: 'Decapante 1 — CONCENTRAÇÃO DO BANHO (%)', ref: 12.0, tol: 1.80 
   },
   'graf-nano': { 
     secao: 'nanoceramico', 
-    nome: 'Nanocerâmico — CONCENTRAÇÃO DO BANHO (%)', 
-    ref: 35.0, tol: 5.25 
-  },
-  'graf-abso-nano': { 
-    secao: 'nanoceramico', 
-    nome: 'Nanocerâmico — ABSORTÂNCIA', 
-    ref: 1.2, tol: 0.18 
+    nome: 'Nanocerâmico — CONCENTRAÇÃO DO BANHO (%)', ref: 35.0, tol: 5.25 
   },
   'graf-ph-nano': { 
     secao: 'nanoceramico', 
-    nome: 'Nanocerâmico — pH DO BANHO', 
-    ref: 4.5, tol: 0.68 
+    nome: 'Nanocerâmico — pH DO BANHO', ref: 4.5, tol: 0.68 
   },
   'graf-neu': { 
     secao: 'nanoceramico', 
-    nome: 'Neutralizador — CONCENTRAÇÃO DO BANHO (%)', 
-    ref: 7.0, tol: 1.05 
+    nome: 'Neutralizador — CONCENTRAÇÃO DO BANHO (%)', ref: 7.0, tol: 1.05 
   },
 };
 
 const SECOES_ORDEM = ['estanhagem', 'nanoceramico', 'outros'];
-const SECOES_NOMES = {
-  estanhagem:   'Estanhagem Eletrolítica',
-  nanoceramico: 'Processo Nanocerâmico',
-  outros:       'Outros Processos',
-};
+const SECOES_NOMES = { estanhagem: 'Estanhagem Eletrolítica', nanoceramico: 'Processo Nanocerâmico', outros: 'Outros Processos' };
 
-// ================================================================
-//  FUNÇÕES CORIGIDAS (PARSING, AGRUPAMENTO E CONFIGURAÇÃO)
-// ================================================================
 async function descobrirArquivos() {
   const CACHE_KEY = `gh-tree-${REPO_OWNER}-${REPO_NAME}-${BRANCH}`;
   const CACHE_TTL = 5 * 60 * 1000;
   try {
     const cached = sessionStorage.getItem(CACHE_KEY);
-    if (cached) {
-      const { ts, data } = JSON.parse(cached);
-      if (Date.now() - ts < CACHE_TTL) return data;
-    }
+    if (cached) { const { ts, data } = JSON.parse(cached); if (Date.now() - ts < CACHE_TTL) return data; }
   } catch(e) {}
   try {
     const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/git/trees/${BRANCH}?recursive=1`;
@@ -382,52 +358,33 @@ async function descobrirArquivos() {
     const data = { jsons: [], pngs: [] };
     for (const item of tree) {
       if (item.type !== 'blob') continue;
-      if (item.path.startsWith('dados/') && item.path.endsWith('.json'))
-        data.jsons.push(item.path.slice('dados/'.length, -'.json'.length));
-      if (item.path.startsWith('graficos/') && item.path.endsWith('.png'))
-        data.pngs.push(item.path.slice('graficos/'.length, -'.png'.length));
+      if (item.path.startsWith('dados/') && item.path.endsWith('.json')) data.jsons.push(item.path.slice('dados/'.length, -'.json'.length));
+      if (item.path.startsWith('graficos/') && item.path.endsWith('.png')) data.pngs.push(item.path.slice('graficos/'.length, -'.png'.length));
     }
     sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data }));
-    console.log(`[Auto-Discovery] ${data.jsons.length} JSONs, ${data.pngs.length} PNGs`);
     return data;
-  } catch (e) {
-    console.warn('[Auto-Discovery] GitHub API indisponível — usando config manual.', e.message);
-    return null;
-  }
+  } catch (e) { console.warn('[Auto-Discovery] GitHub API indisponível — usando config manual.', e.message); return null; }
 }
 
-// ✅ CORREÇÃO: Sempre separa base e índice quando encontrar padrão "-N"
 function parseFileName(name) {
   const m = name.match(/^(.+?)-(\d+)$/);
-  if (m && parseInt(m[2]) <= 20) {
-    return { base: m[1], idx: parseInt(m[2]) };
-  }
+  if (m && parseInt(m[2]) <= 20) return { base: m[1], idx: parseInt(m[2]) };
   return { base: name, idx: 1 };
 }
 
 function construirGrupos(arquivos) {
   const grupos = {};
-  for (const json of arquivos.jsons) {
-    const { base, idx } = parseFileName(json);
-    if (!grupos[base]) grupos[base] = { indices: new Set(), pngSet: new Set() };
-    grupos[base].indices.add(idx);
-  }
-  for (const png of arquivos.pngs) {
-    const { base, idx } = parseFileName(png);
-    if (grupos[base]) grupos[base].pngSet.add(idx);
-  }
+  for (const json of arquivos.jsons) { const { base, idx } = parseFileName(json); if (!grupos[base]) grupos[base] = { indices: new Set(), pngSet: new Set() }; grupos[base].indices.add(idx); }
+  for (const png of arquivos.pngs) { const { base, idx } = parseFileName(png); if (grupos[base]) grupos[base].pngSet.add(idx); }
   return grupos;
 }
 
 function gruposDoConfigManual() {
   const grupos = {};
-  for (const base in PROCESS_MAP) {
-    grupos[base] = { indices: new Set([1]), pngSet: new Set([1]) };
-  }
+  for (const base in PROCESS_MAP) grupos[base] = { indices: new Set([1]), pngSet: new Set([1]) };
   return grupos;
 }
 
-// ✅ CORREÇÃO: Busca config específica (base-idx) ou fallback para base
 function getConfig(base, idx) {
   const keyIdx = `${base}-${idx}`;
   if (PROCESS_MAP[keyIdx]) return PROCESS_MAP[keyIdx];
@@ -439,13 +396,7 @@ function sanitize(v) {
   if (Array.isArray(v)) return v.map(x => typeof x === 'string' ? x.trim() : x);
   if (typeof v === 'object' && v) {
     const o = {};
-    for (const k in v) {
-      const val = v[k];
-      o[k.trim()] = typeof val === 'string' ? val.trim()
-                  : Array.isArray(val) ? val.map(x => typeof x === 'string' ? x.trim() : x)
-                  : typeof val === 'object' ? sanitize(val)
-                  : val;
-    }
+    for (const k in v) { const val = v[k]; o[k.trim()] = typeof val === 'string' ? val.trim() : Array.isArray(val) ? val.map(x => typeof x === 'string' ? x.trim() : x) : typeof val === 'object' ? sanitize(val) : val; }
     return o;
   }
   return v;
@@ -453,35 +404,21 @@ function sanitize(v) {
 
 function formatarData(s) {
   if (!s || s === '#N/D' || !s.trim()) return '--/--';
-  if (s.includes('/')) {
-    const p = s.split('/');
-    if (p.length >= 2) return `${p[0].padStart(2,'0')}/${p[1].padStart(2,'0')}`;
-  }
+  if (s.includes('/')) { const p = s.split('/'); if (p.length >= 2) return `${p[0].padStart(2,'0')}/${p[1].padStart(2,'0')}`; }
   const d = new Date(s);
   if (!isNaN(d)) return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
   return s;
 }
 
 const _jsonCache = {};
-
 async function fetchJSON(base, idx) {
   const key = `${base}-${idx}`;
   if (_jsonCache[key] !== undefined) return _jsonCache[key];
-  const tentativas = [
-    `dados/${base}-${idx}.json`,
-    `dados/${base}.json`,
-  ];
+  const tentativas = [`dados/${base}-${idx}.json`, `dados/${base}.json`];
   for (const url of tentativas) {
-    try {
-      const r = await fetch(`${url}?t=${Date.now()}`);
-      if (!r.ok) continue;
-      const raw = await r.json();
-      _jsonCache[key] = sanitize(raw);
-      return _jsonCache[key];
-    } catch(e) {}
+    try { const r = await fetch(`${url}?t=${Date.now()}`); if (!r.ok) continue; const raw = await r.json(); _jsonCache[key] = sanitize(raw); return _jsonCache[key]; } catch(e) {}
   }
-  _jsonCache[key] = null;
-  return null;
+  _jsonCache[key] = null; return null;
 }
 
 async function getMedicoes(base, idx) {
@@ -523,30 +460,18 @@ async function renderTabela(base, idx) {
     const chunk = medicoes.slice(r * cols, (r + 1) * cols);
     if (!chunk.length) continue;
     html += '<tr>' + chunk.map(m => `<th>${m.dataFormatada}</th>`).join('') + '</tr>';
-    html += '<tr>' + chunk.map(m => {
-      const cls = statusClass(m.valor, ref, tol, m.hasData);
-      const disp = m.hasData ? m.valor.toFixed(2) : '---';
-      return `<td${cls ? ` class="${cls}"` : ''}>${disp}</td>`;
-    }).join('') + '</tr>';
+    html += '<tr>' + chunk.map(m => { const cls = statusClass(m.valor, ref, tol, m.hasData); const disp = m.hasData ? m.valor.toFixed(2) : '---'; return `<td${cls ? ` class="${cls}"` : ''}>${disp}</td>`; }).join('') + '</tr>';
   }
   return html + '</table>';
 }
 
 function carregarImagem(img, base, idx) {
-  const candidatos = [
-    `graficos/${base}-${idx}.png`,
-    `graficos/${base}.png`,
-  ];
+  const candidatos = [`graficos/${base}-${idx}.png`, `graficos/${base}.png`];
   let i = 0;
-  function tentar() {
-    if (i >= candidatos.length) { img.style.display = 'none'; return; }
-    img.onerror = () => { i++; tentar(); };
-    img.src = `${candidatos[i++]}?t=${Date.now()}`;
-  }
+  function tentar() { if (i >= candidatos.length) { img.style.display = 'none'; return; } img.onerror = () => { i++; tentar(); }; img.src = `${candidatos[i++]}?t=${Date.now()}`; }
   tentar();
 }
 
-// ✅ CORREÇÃO: Usa getConfig para pegar o nome correto por índice
 function nomeCard(base, idx, totalNoGrupo) {
   const config = getConfig(base, idx);
   if (config) return config.nome;
@@ -554,10 +479,7 @@ function nomeCard(base, idx, totalNoGrupo) {
   return totalNoGrupo > 1 ? `${auto} ${idx}` : auto;
 }
 
-function secaoDeBase(base) {
-  const config = getConfig(base, 1);
-  return config?.secao ?? 'outros';
-}
+function secaoDeBase(base) { const config = getConfig(base, 1); return config?.secao ?? 'outros'; }
 
 async function criarCard(base, idx, totalNoGrupo) {
   const nome = nomeCard(base, idx, totalNoGrupo);
@@ -566,20 +488,7 @@ async function criarCard(base, idx, totalNoGrupo) {
   div.className = 'card';
   div.dataset.base = base;
   div.dataset.idx = String(idx);
-  div.innerHTML = `
-    <div class="card-header">${nome}</div>
-    <div class="card-body">
-      <div class="graph-container">
-        <div class="graph-placeholder">📊 Carregando gráfico...</div>
-        <img alt="${nome}"
-             onload="this.previousElementSibling.style.display='none'"
-             onerror="this.style.display='none'">
-      </div>
-      <div class="measurements-container">
-        <div class="table-title">Últimas 24 Medições</div>
-        ${tabela}
-      </div>
-    </div>`;
+  div.innerHTML = `<div class="card-header">${nome}</div><div class="card-body"><div class="graph-container"><div class="graph-placeholder">📊 Carregando gráfico...</div><img alt="${nome}" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div><div class="measurements-container"><div class="table-title">Últimas 24 Medições</div>${tabela}</div></div>`;
   carregarImagem(div.querySelector('img'), base, idx);
   return div;
 }
@@ -588,37 +497,22 @@ let _currentSlide = 0;
 let _totalSlides = 0;
 let _rotateTimer = null;
 
-function irParaSlide(idx) {
-  _currentSlide = (idx + _totalSlides) % _totalSlides;
-  document.getElementById('track-main').style.transform = `translateX(-${_currentSlide * 100}%)`;
-  document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === _currentSlide));
-}
-
-function iniciarRotacao() {
-  clearInterval(_rotateTimer);
-  _rotateTimer = setInterval(() => irParaSlide(_currentSlide + 1), CONFIG.rotateInterval);
-}
+function irParaSlide(idx) { _currentSlide = (idx + _totalSlides) % _totalSlides; document.getElementById('track-main').style.transform = `translateX(-${_currentSlide * 100}%)`; document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === _currentSlide)); }
+function iniciarRotacao() { clearInterval(_rotateTimer); _rotateTimer = setInterval(() => irParaSlide(_currentSlide + 1), CONFIG.rotateInterval); }
 
 async function initCarousel(grupos) {
   const track = document.getElementById('track-main');
   const nav = document.getElementById('nav-main');
-  track.innerHTML = '';
-  nav.innerHTML = '';
-  _totalSlides = 0;
-  _currentSlide = 0;
+  track.innerHTML = ''; nav.innerHTML = '';
+  _totalSlides = 0; _currentSlide = 0;
   const secoes = {};
   for (const base in grupos) {
     const secao = secaoDeBase(base);
     if (!secoes[secao]) secoes[secao] = [];
     const indices = [...grupos[base].indices].sort((a, b) => a - b);
-    for (const idx of indices) {
-      secoes[secao].push({ base, idx, total: indices.length });
-    }
+    for (const idx of indices) secoes[secao].push({ base, idx, total: indices.length });
   }
-  const ordemFinal = [
-    ...SECOES_ORDEM,
-    ...Object.keys(secoes).filter(s => !SECOES_ORDEM.includes(s)),
-  ];
+  const ordemFinal = [...SECOES_ORDEM, ...Object.keys(secoes).filter(s => !SECOES_ORDEM.includes(s))];
   for (const secaoKey of ordemFinal) {
     const itens = secoes[secaoKey];
     if (!itens?.length) continue;
@@ -627,12 +521,9 @@ async function initCarousel(grupos) {
     for (let s = 0; s < slidesCount; s++) {
       const slide = document.createElement('div');
       slide.className = 'carousel-slide';
-      slide.innerHTML = `<div style="grid-column:1/-1;margin-bottom:5px">
-        <div class="secao-titulo">${nomeSecao}</div></div>`;
+      slide.innerHTML = `<div style="grid-column:1/-1;margin-bottom:5px"><div class="secao-titulo">${nomeSecao}</div></div>`;
       const chunk = itens.slice(s * CONFIG.itemsPerSlide, (s + 1) * CONFIG.itemsPerSlide);
-      for (const { base, idx, total } of chunk) {
-        slide.appendChild(await criarCard(base, idx, total));
-      }
+      for (const { base, idx, total } of chunk) slide.appendChild(await criarCard(base, idx, total));
       track.appendChild(slide);
       const dotIdx = _totalSlides;
       const dot = document.createElement('div');
@@ -647,43 +538,33 @@ async function initCarousel(grupos) {
 async function refreshAll() {
   Object.keys(_jsonCache).forEach(k => delete _jsonCache[k]);
   for (const card of document.querySelectorAll('.card')) {
-    const base = card.dataset.base;
-    const idx = parseInt(card.dataset.idx, 10);
+    const base = card.dataset.base; const idx = parseInt(card.dataset.idx, 10);
     if (!base || isNaN(idx)) continue;
     const tabela = await renderTabela(base, idx);
-    card.querySelector('.measurements-container').innerHTML =
-      `<div class="table-title">Últimas 24 Medições</div>${tabela}`;
-    const img = card.querySelector('img');
-    if (img) carregarImagem(img, base, idx);
+    card.querySelector('.measurements-container').innerHTML = `<div class="table-title">Últimas 24 Medições</div>${tabela}`;
+    const img = card.querySelector('img'); if (img) carregarImagem(img, base, idx);
   }
-  document.getElementById('ultima').innerText =
-    new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  document.getElementById('ultima').innerText = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 }
 
 function updateClock() {
   const now = new Date();
   document.getElementById('relogio').innerText = now.toLocaleTimeString('pt-BR');
   document.getElementById('data').innerText = now.toLocaleDateString('pt-BR');
-  document.getElementById('ultima').innerText =
-    now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  document.getElementById('ultima').innerText = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 }
 
 async function init() {
+  initCursorAutoHide();
   let grupos;
   const arquivos = await descobrirArquivos();
-  if (arquivos && (arquivos.jsons.length || arquivos.pngs.length)) {
-    grupos = construirGrupos(arquivos);
-    console.log(`[Init] Auto-descoberta OK: ${Object.keys(grupos).length} grupo(s)`);
-  } else {
-    grupos = gruposDoConfigManual();
-    console.log('[Init] Modo manual (config estática)');
-  }
+  if (arquivos && (arquivos.jsons.length || arquivos.pngs.length)) { grupos = construirGrupos(arquivos); } else { grupos = gruposDoConfigManual(); }
   await initCarousel(grupos);
   updateClock();
   setInterval(updateClock, 1000);
   setInterval(refreshAll, CONFIG.refreshInterval);
   iniciarRotacao();
-  setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1500);
+  setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1500); // ✅ Voltado ao original
 }
 
 window.onload = init;
