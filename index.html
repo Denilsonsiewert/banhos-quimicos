@@ -101,7 +101,7 @@
       border: 1px solid var(--weg-gray-200);
     }
     .card-header {
-      padding: 14px 18px; font-weight: 700; font-size: 0.95rem;
+      padding: 14px 18px; font-weight: 700; font-size: 0.9rem;
       color: white; background: var(--weg-blue);
       text-transform: uppercase; letter-spacing: 0.3px; text-align: center;
       line-height: 1.3;
@@ -241,117 +241,115 @@ const CONFIG = {
 };
 
 // ================================================================
-//  MAPEAMENTO DE PROCESSOS - NOMES ATUALIZADOS CONFORME SOLICITAÇÃO
+//  MAPEAMENTO DE PROCESSOS
+//  Chaves podem ser exatas (com índice) ou genéricas (sem índice)
 // ================================================================
 const PROCESS_MAP = {
   // ── ESTANHAGEM ELETROLÍTICA ─────────────────────────────────
   'graf-des': { 
     secao: 'estanhagem', 
-    nome: 'Ana. Des — CONCENTRAÇÃO DO BANHO (mL/L)', 
+    nome: 'Desengraxante — CONCENTRAÇÃO DO BANHO (mL/L)', 
     ref: 26.0, tol: 3.90 
   },
   'graf-ativacao-tanque-5': { 
     secao: 'estanhagem', 
-    nome: 'Ana. Ativação - Tanque 5 — pH DO BANHO', 
+    nome: 'Ativação - Tanque 5 — pH DO BANHO', 
     ref: 8.5, tol: 1.28 
   },
   'graf-ativacao-tanque-6': { 
     secao: 'estanhagem', 
-    nome: 'Ana. Ativação - Tanque 6 — CONCENTRAÇÃO DO BANHO (mL/L)', 
+    nome: 'Ativação - Tanque 6 — CONCENTRAÇÃO DO BANHO (mL/L)', 
     ref: 8.5, tol: 1.28 
   },
   
-  // Níquel WATT - parâmetros individuais
   'graf-niquel-watt-1': { 
     secao: 'estanhagem', 
-    nome: 'Ana. Níquel WATT 1 — CONCENTRAÇÃO DE Ni° (g/L)', 
+    nome: 'Níquel WATT 1 — CONCENTRAÇÃO DE Ni° (g/L)', 
     ref: null, tol: null 
   },
   'graf-niquel-watt-2': { 
     secao: 'estanhagem', 
-    nome: 'Ana. Níquel WATT 2 — CONCENTRAÇÃO DE NiCl₂ (mL/L)', 
+    nome: 'Níquel WATT 2 — CONCENTRAÇÃO DE NiCl₂ (mL/L)', 
     ref: null, tol: null 
   },
   'graf-niquel-watt-3': { 
     secao: 'estanhagem', 
-    nome: 'Ana. Níquel WATT 3 — CONCENTRAÇÃO DE H₃BO₃ (g/L)', 
+    nome: 'Níquel WATT 3 — CONCENTRAÇÃO DE H₃BO₃ (g/L)', 
     ref: null, tol: null 
   },
   'graf-niquel-watt-4': { 
     secao: 'estanhagem', 
-    nome: 'Ana. Níquel WATT 4 — CONCENTRAÇÃO DE NiSO₄ (mL/L)', 
+    nome: 'Níquel WATT 4 — CONCENTRAÇÃO DE NiSO₄ (mL/L)', 
     ref: null, tol: null 
   },
   
-  // Estanhagem A - parâmetros individuais
   'graf-estanhagem-a-1': { 
     secao: 'estanhagem', 
-    nome: 'Ana. Estanhagem A 1 — CONCENTRAÇÃO DE Sn° (g/L)', 
+    nome: 'Estanhagem A 1 — CONCENTRAÇÃO DE Sn° (g/L)', 
     ref: 32.0, tol: 4.80 
   },
   'graf-estanhagem-a-2': { 
     secao: 'estanhagem', 
-    nome: 'Ana. Estanhagem A 2 — CONCENTRAÇÃO DE H₂SO₄ (mL/L)', 
+    nome: 'Estanhagem A 2 — CONCENTRAÇÃO DE H₂SO₄ (mL/L)', 
     ref: null, tol: null 
   },
   
-  // Estanhagem B - parâmetros individuais
   'graf-estanhagem-b-1': { 
     secao: 'estanhagem', 
-    nome: 'Ana. Estanhagem B 1 — CONCENTRAÇÃO DE Sn° (g/L)', 
+    nome: 'Estanhagem B 1 — CONCENTRAÇÃO DE Sn° (g/L)', 
     ref: 31.5, tol: 4.73 
   },
   'graf-estanhagem-b-2': { 
     secao: 'estanhagem', 
-    nome: 'Ana. Estanhagem B 2 — CONCENTRAÇÃO DE H₂SO₄ (mL/L)', 
+    nome: 'Estanhagem B 2 — CONCENTRAÇÃO DE H₂SO₄ (mL/L)', 
     ref: null, tol: null 
   },
   
   'graf-sel': { 
     secao: 'estanhagem', 
-    nome: 'Ana. Sel — CONCENTRAÇÃO DO BANHO (mL/L)', 
+    nome: 'Selante Protetivo — CONCENTRAÇÃO DO BANHO (mL/L)', 
     ref: 18.0, tol: 2.70 
   },
 
   // ── CONVERSÃO NANOCERÂMICA ──────────────────────────────────
   'graf-des1': { 
     secao: 'nanoceramico', 
-    nome: 'Ana.Des1 — CONCENTRAÇÃO DO BANHO (%)', 
+    nome: 'Desengraxante 1 — CONCENTRAÇÃO DO BANHO (%)', 
     ref: 29.0, tol: 4.35 
   },
   'graf-des2': { 
     secao: 'nanoceramico', 
-    nome: 'Ana.Des2 — CONCENTRAÇÃO DO BANHO (%)', 
+    nome: 'Desengraxante 2 — CONCENTRAÇÃO DO BANHO (%)', 
     ref: 28.5, tol: 4.28 
   },
   'graf-dec1': { 
     secao: 'nanoceramico', 
-    nome: 'Ana.Dec1 — CONCENTRAÇÃO DO BANHO (%)', 
+    nome: 'Decapante 1 — CONCENTRAÇÃO DO BANHO (%)', 
     ref: 12.0, tol: 1.80 
   },
   'graf-dec2': { 
     secao: 'nanoceramico', 
-    nome: 'Ana.Dec2 — CONCENTRAÇÃO DO BANHO (%)', 
+    nome: 'Decapante 2 — CONCENTRAÇÃO DO BANHO (%)', 
     ref: 11.5, tol: 1.73 
   },
   'graf-nano': { 
     secao: 'nanoceramico', 
-    nome: 'Ana.Nano — CONCENTRAÇÃO DO BANHO (%)', 
+    nome: 'Nanocerâmico — CONCENTRAÇÃO DO BANHO (%)', 
     ref: 35.0, tol: 5.25 
   },
   'graf-abso-nano': { 
     secao: 'nanoceramico', 
-    nome: 'Ana.Abso.Nano — ABSORTÂNCIA', 
+    nome: 'Nanocerâmico — ABSORTÂNCIA', 
     ref: 1.2, tol: 0.18 
   },
   'graf-ph-nano': { 
     secao: 'nanoceramico', 
-    nome: 'Ana.pH.Nano — pH DO BANHO', 
+    nome: 'Nanocerâmico — pH DO BANHO', 
     ref: 4.5, tol: 0.68 
   },
   'graf-neu': { 
     secao: 'nanoceramico', 
-    nome: 'Ana.Neu — CONCENTRAÇÃO DO BANHO (%)', 
+    nome: 'Neutralizador — CONCENTRAÇÃO DO BANHO (%)', 
     ref: 7.0, tol: 1.05 
   },
 };
@@ -364,8 +362,7 @@ const SECOES_NOMES = {
 };
 
 // ================================================================
-//  FUNÇÕES DE AUTO-DESCOBERTA, PARSE, LEITURA E RENDERIZAÇÃO
-//  (Mantidas inalteradas - apenas PROCESS_MAP foi atualizado)
+//  FUNÇÕES CORIGIDAS (PARSING, AGRUPAMENTO E CONFIGURAÇÃO)
 // ================================================================
 async function descobrirArquivos() {
   const CACHE_KEY = `gh-tree-${REPO_OWNER}-${REPO_NAME}-${BRANCH}`;
@@ -399,9 +396,10 @@ async function descobrirArquivos() {
   }
 }
 
+// ✅ CORREÇÃO: Sempre separa base e índice quando encontrar padrão "-N"
 function parseFileName(name) {
   const m = name.match(/^(.+?)-(\d+)$/);
-  if (m && parseInt(m[2]) <= 20 && !PROCESS_MAP[name]) {
+  if (m && parseInt(m[2]) <= 20) {
     return { base: m[1], idx: parseInt(m[2]) };
   }
   return { base: name, idx: 1 };
@@ -427,6 +425,14 @@ function gruposDoConfigManual() {
     grupos[base] = { indices: new Set([1]), pngSet: new Set([1]) };
   }
   return grupos;
+}
+
+// ✅ CORREÇÃO: Busca config específica (base-idx) ou fallback para base
+function getConfig(base, idx) {
+  const keyIdx = `${base}-${idx}`;
+  if (PROCESS_MAP[keyIdx]) return PROCESS_MAP[keyIdx];
+  if (PROCESS_MAP[base]) return PROCESS_MAP[base];
+  return null;
 }
 
 function sanitize(v) {
@@ -506,9 +512,9 @@ function statusClass(valor, ref, tol, hasData) {
 }
 
 async function renderTabela(base, idx) {
-  const meta = PROCESS_MAP[base] ?? {};
-  const ref = meta.ref ?? null;
-  const tol = meta.tol ?? null;
+  const config = getConfig(base, idx);
+  const ref = config?.ref ?? null;
+  const tol = config?.tol ?? null;
   const medicoes = await getMedicoes(base, idx);
   if (!medicoes.length) return '<p class="sem-dados">Sem dados disponíveis</p>';
   const cols = 12;
@@ -540,18 +546,17 @@ function carregarImagem(img, base, idx) {
   tentar();
 }
 
+// ✅ CORREÇÃO: Usa getConfig para pegar o nome correto por índice
 function nomeCard(base, idx, totalNoGrupo) {
-  const meta = PROCESS_MAP[base];
-  if (meta) return totalNoGrupo > 1 ? `${meta.nome} — ${idx}` : meta.nome;
-  const auto = base
-    .replace(/^graf-/, '')
-    .replace(/-/g, ' ')
-    .replace(/\b\w/g, c => c.toUpperCase());
-  return totalNoGrupo > 1 ? `${auto} — ${idx}` : auto;
+  const config = getConfig(base, idx);
+  if (config) return config.nome;
+  const auto = base.replace(/^graf-/, '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  return totalNoGrupo > 1 ? `${auto} ${idx}` : auto;
 }
 
 function secaoDeBase(base) {
-  return PROCESS_MAP[base]?.secao ?? 'outros';
+  const config = getConfig(base, 1);
+  return config?.secao ?? 'outros';
 }
 
 async function criarCard(base, idx, totalNoGrupo) {
