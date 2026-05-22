@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="300">
+  <!-- REMOVIDO: <meta http-equiv="refresh" content="300"> para evitar reloads bruscos -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Controle de Banhos Químicos - JGS | WEG</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -59,7 +59,7 @@
   </style>
 </head>
 <body>
-<div class="loader-overlay" id="loader"><div class="spinner"></div><div style="font-weight:700;color:var(--weg-blue-dark)">Carregando Dashboard...</div></div>
+<div class="loader-overlay" id="loader"><div class="spinner"></div><div style="font-weight:700;color:var(--weg-blue-dark)">Sincronizando Horário...</div></div>
 <header>
   <div class="header-logo"><img src="logo-weg.png" alt="WEG" class="logo-weg"></div>
   <h1>Controle de Banhos Químicos <span>JGS</span></h1>
@@ -73,9 +73,15 @@
 
 <script>
 const REPO_OWNER = 'Denilsonsiewert'; const REPO_NAME = 'banhos-quimicos'; const BRANCH = 'main';
-const CONFIG = { rotateInterval: 45000, refreshInterval: 300000, itemsPerSlide: 2 };
 
-// 🚫 BLOQUEIO EXPLÍCITO (Mesmo se arquivos existirem no repositório)
+// ⏱️ CONFIGURAÇÕES DE TEMPO AJUSTADAS
+const CONFIG = { 
+  rotateInterval: 45000,      // Rotaciona os gráficos a cada 45 segundos (mantido)
+  refreshInterval: 1800000,   // Atualiza os DADOS a cada 30 minutos (antes era 5 min)
+  itemsPerSlide: 2 
+};
+
+// 🚫 BLOQUEIO EXPLÍCITO
 const BLOCKED_KEYS = ['graf-sel', 'graf-dec2', 'graf-abso-nano'];
 
 // 🖱️ Cursor auto-hide
@@ -84,17 +90,37 @@ function showCursor() { document.body.classList.remove('cursor-hidden'); clearTi
 function hideCursor() { document.body.classList.add('cursor-hidden'); }
 function initCursorAutoHide() { ['mousemove', 'mousedown', 'touchstart', 'scroll'].forEach(evt => { document.addEventListener(evt, showCursor, { passive: true }); }); showCursor(); }
 
-// 🌐 Sincronização de Horário de Brasília (UTC-3)
+// 🌐 Sincronização de Horário de Brasília (UTC-3) - VERSÃO ROBUSTA
 let timeOffset = 0;
+let lastSuccessfulSync = false;
+
 async function syncInternetTime() {
+  const startTime = performance.now();
   try {
-    const controller = new AbortController(); const timeoutId = setTimeout(() => controller.abort(), 5000);
-    const res = await fetch('https://worldtimeapi.org/api/timezone/America/Sao_Paulo', { signal: controller.signal });
-    clearTimeout(timeoutId); if (!res.ok) throw new Error(res.status);
+    const controller = new AbortController(); 
+    const timeoutId = setTimeout(() => controller.abort(), 8000); 
+    
+    const res = await fetch('https://worldtimeapi.org/api/timezone/America/Sao_Paulo', { 
+        signal: controller.signal,
+        cache: 'no-cache' 
+    });
+    clearTimeout(timeoutId); 
+    
+    if (!res.ok) throw new Error(res.status);
+    
+    const endTime = performance.now();
+    const networkLatency = (endTime - startTime) / 2; 
+    
     const data = await res.json();
     const apiTime = new Date(data.datetime).getTime();
-    timeOffset = apiTime - Date.now();
-  } catch (e) { timeOffset = 0; } // Silencioso para não travar
+    const correctedApiTime = apiTime + networkLatency;
+    
+    timeOffset = correctedApiTime - Date.now();
+    lastSuccessfulSync = true;
+    
+  } catch (e) { 
+    console.warn('[Time Sync] Falha na sincronização online.', e.message);
+  }
 }
 
 const PROCESS_MAP = {
@@ -150,7 +176,6 @@ let _currentSlide = 0; let _totalSlides = 0; let _rotateTimer = null;
 function irParaSlide(idx) { _currentSlide = (idx + _totalSlides) % _totalSlides; document.getElementById('track-main').style.transform = `translateX(-${_currentSlide * 100}%)`; document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === _currentSlide)); }
 function iniciarRotacao() { clearInterval(_rotateTimer); _rotateTimer = setInterval(() => irParaSlide(_currentSlide + 1), CONFIG.rotateInterval); }
 async function initCarousel(grupos) { 
-    // ✅ APLICA BLOQUEIO IMPLACÁVEL AQUI
     BLOCKED_KEYS.forEach(key => { if (grupos[key]) delete grupos[key]; });
 
     const track = document.getElementById('track-main'); const nav = document.getElementById('nav-main'); track.innerHTML = ''; nav.innerHTML = ''; _totalSlides = 0; _currentSlide = 0; const secoes = {}; 
@@ -161,14 +186,16 @@ function updateClock() { const now = new Date(Date.now() + timeOffset); document
 async function init() {
   initCursorAutoHide();
   await syncInternetTime();
+  
   let grupos;
   const arquivos = await descobrirArquivos();
   if (arquivos && (arquivos.jsons.length || arquivos.pngs.length)) { grupos = construirGrupos(arquivos); } else { grupos = gruposDoConfigManual(); }
   await initCarousel(grupos);
+  
   updateClock();
   setInterval(updateClock, 1000);
   setInterval(syncInternetTime, 300000);
-  setInterval(refreshAll, CONFIG.refreshInterval);
+  setInterval(refreshAll, CONFIG.refreshInterval); // Agora usa 30 minutos
   iniciarRotacao();
   setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1500);
 }
