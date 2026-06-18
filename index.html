@@ -7,11 +7,23 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --weg-blue: #00458F; --weg-blue-dark: #002A55; --weg-blue-light: #E8F0F8;
-      --weg-gray-50: #FAFAFA; --weg-gray-100: #F5F5F5; --weg-gray-200: #E8E8E8;
-      --weg-gray-300: #CCCCCC; --weg-gray-400: #999999; --weg-gray-700: #333333; --weg-gray-900: #1A1A1A;
-      --status-ok: #2E7D32; --status-warn: #F57C00; --status-crit: #1A1A1A;
-      --shadow: 0 2px 8px rgba(0,0,0,0.08); --radius: 16px; --radius-sm: 8px;
+      /* Cores ajustadas para combinar com o quadro original */
+      --weg-blue: #003366;
+      --weg-blue-dark: #002855;
+      --weg-blue-light: #D6E4F5;
+      --weg-gray-50: #FAFAFA; 
+      --weg-gray-100: #F5F5F5; 
+      --weg-gray-200: #E8E8E8;
+      --weg-gray-300: #CCCCCC; 
+      --weg-gray-400: #999999; 
+      --weg-gray-700: #333333; 
+      --weg-gray-900: #1A1A1A;
+      --status-ok: #2E7D32; 
+      --status-warn: #F57C00; 
+      --status-crit: #1A1A1A;
+      --shadow: 0 2px 8px rgba(0,0,0,0.08); 
+      --radius: 16px; 
+      --radius-sm: 8px;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: var(--weg-gray-50); color: var(--weg-gray-900); font-family: 'Inter', sans-serif; line-height: 1.5; min-height: 100vh; display: flex; flex-direction: column; cursor: default; transition: cursor 0.3s ease; }
@@ -219,7 +231,7 @@ async function criarCardQuadroControle() {
     div.className = 'card';
     div.dataset.quadro = 'true';
     
-    const imgPath = `imagens/quadro-controle-estanhagem.png?t=${Date.now()}`;
+    const imgPath = `imagens/quadro-controle-estanhegm.png?t=${Date.now()}`;
     
     div.innerHTML = `
         <div class="card-header" style="background: var(--weg-blue-dark);">
