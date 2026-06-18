@@ -233,11 +233,11 @@ function carregarImagem(img, base, idx) { const candidatos = [`graficos/${base}-
 function nomeCard(base, idx, totalNoGrupo) { const config = getConfig(base, idx); if (config) return config.nome; const auto = base.replace(/^graf-/, '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()); return totalNoGrupo > 1 ? `${auto} ${idx}` : auto; }
 function secaoDeBase(base) { const config = getConfig(base, 1); return config?.secao ?? 'outros'; }
 
-// 🖼️ Card especial para o Quadro de Controle
-async function criarCardQuadroControle() {
+// 🖼️ Card especial para o Quadro de Controle - ESTANHAGEM
+async function criarCardQuadroControleEstanhagem() {
     const div = document.createElement('div');
     div.className = 'card';
-    div.dataset.quadro = 'true';
+    div.dataset.quadro = 'estanhagem';
     
     const imgPath = `imagens/quadro-controle-estanhagem.png?t=${Date.now()}`;
     
@@ -248,7 +248,32 @@ async function criarCardQuadroControle() {
         <div class="card-body">
             <div class="quadro-container">
                 <img src="${imgPath}" 
-                     alt="Quadro de Controle" 
+                     alt="Quadro de Controle Estanhagem" 
+                     onload="this.classList.add('loaded')"
+                     onerror="this.parentElement.innerHTML='<p style=\'color: var(--weg-gray-400); padding: 20px; text-align: center;\'>⚠️ Imagem não encontrada</p>'">
+            </div>
+        </div>
+    `;
+    
+    return div;
+}
+
+// 🖼️ Card especial para o Quadro de Controle - NANOCERÂMICO
+async function criarCardQuadroControleNano() {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.dataset.quadro = 'nano';
+    
+    const imgPath = `imagens/quadro-controle-nano.png?t=${Date.now()}`;
+    
+    div.innerHTML = `
+        <div class="card-header" style="background: var(--weg-blue-dark);">
+            📋 Quadro de Controle de Troca - Nanocerâmico
+        </div>
+        <div class="card-body">
+            <div class="quadro-container">
+                <img src="${imgPath}" 
+                     alt="Quadro de Controle Nano" 
                      onload="this.classList.add('loaded')"
                      onerror="this.parentElement.innerHTML='<p style=\'color: var(--weg-gray-400); padding: 20px; text-align: center;\'>⚠️ Imagem não encontrada</p>'">
             </div>
@@ -288,12 +313,29 @@ async function initCarousel(grupos) {
         if (!itens?.length) continue; 
         const nomeSecao = SECOES_NOMES[secaoKey] ?? secaoKey; 
         
-        // 🎯 CRIA SLIDE DEDICADO PARA O QUADRO DE CONTROLE (apenas na estanhagem)
+        // 🎯 CRIA SLIDE DEDICADO PARA O QUADRO DE CONTROLE DA ESTANHAGEM
         if (secaoKey === 'estanhagem') {
             const slideQuadro = document.createElement('div');
             slideQuadro.className = 'carousel-slide slide-quadro';
             slideQuadro.innerHTML = `<div style="grid-column:1/-1;margin-bottom:5px"><div class="secao-titulo">${nomeSecao} - Quadro de Controle</div></div>`;
-            const quadroCard = await criarCardQuadroControle();
+            const quadroCard = await criarCardQuadroControleEstanhagem();
+            slideQuadro.appendChild(quadroCard);
+            track.appendChild(slideQuadro);
+            
+            const dotIdx = _totalSlides;
+            const dot = document.createElement('div');
+            dot.className = `nav-dot${dotIdx === 0 ? ' active' : ''}`;
+            dot.onclick = () => { irParaSlide(dotIdx); iniciarRotacao(); };
+            nav.appendChild(dot);
+            _totalSlides++;
+        }
+        
+        // 🎯 CRIA SLIDE DEDICADO PARA O QUADRO DE CONTROLE DO NANOCERÂMICO
+        if (secaoKey === 'nanoceramico') {
+            const slideQuadro = document.createElement('div');
+            slideQuadro.className = 'carousel-slide slide-quadro';
+            slideQuadro.innerHTML = `<div style="grid-column:1/-1;margin-bottom:5px"><div class="secao-titulo">${nomeSecao} - Quadro de Controle</div></div>`;
+            const quadroCard = await criarCardQuadroControleNano();
             slideQuadro.appendChild(quadroCard);
             track.appendChild(slideQuadro);
             
@@ -339,10 +381,16 @@ async function refreshAll() {
         if (img) carregarImagem(img, base, idx); 
     } 
     
-    // Atualiza a imagem do quadro de controle
-    const quadroImg = document.querySelector('.card[data-quadro="true"] img');
-    if (quadroImg) {
-        quadroImg.src = `imagens/quadro-controle-estanhegm.png?t=${Date.now()}`;
+    // Atualiza a imagem do quadro de controle ESTANHAGEM
+    const quadroEstanhagemImg = document.querySelector('.card[data-quadro="estanhagem"] img');
+    if (quadroEstanhagemImg) {
+        quadroEstanhagemImg.src = `imagens/quadro-controle-estanhagem.png?t=${Date.now()}`;
+    }
+    
+    // Atualiza a imagem do quadro de controle NANOCERÂMICO
+    const quadroNanoImg = document.querySelector('.card[data-quadro="nano"] img');
+    if (quadroNanoImg) {
+        quadroNanoImg.src = `imagens/quadro-controle-nano.png?t=${Date.now()}`;
     }
     
     document.getElementById('ultima').innerText = new Date(Date.now() + timeOffset).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); 
