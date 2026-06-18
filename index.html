@@ -2,7 +2,6 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <!-- REMOVIDO: <meta http-equiv="refresh" content="300"> para evitar reloads bruscos -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Controle de Banhos Químicos - JGS | WEG</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -55,7 +54,43 @@
     .spinner { width: 40px; height: 40px; border: 4px solid var(--weg-gray-200); border-top-color: var(--weg-blue); border-radius: 50%; animation: spin 1s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
     .sem-dados { text-align: center; color: #999; font-size: 0.85rem; padding: 10px; }
-    @media (max-width: 1200px) { .carousel-slide { grid-template-columns: 1fr; } header { padding: 10px 20px; grid-template-columns: 1fr; gap: 10px; } .header-logo, .header-clock { justify-self: center; } .logo-weg { height: 40px; } header h1 { font-size: 1.5rem; } #relogio, #data { font-size: 1.3rem; } main { padding: 20px; } }
+    
+    /* Estilos para o Quadro de Controle */
+    .card[data-quadro="true"] {
+        grid-column: 1 / -1;
+    }
+    .card[data-quadro="true"] .card-body {
+        padding: 0;
+        background: var(--weg-gray-100);
+    }
+    .card[data-quadro="true"] .quadro-container {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+        background: var(--weg-gray-100);
+    }
+    .card[data-quadro="true"] img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        transition: opacity 0.3s ease;
+        opacity: 0;
+    }
+    .card[data-quadro="true"] img.loaded {
+        opacity: 1;
+    }
+    
+    @media (max-width: 1200px) { 
+        .carousel-slide { grid-template-columns: 1fr; } 
+        header { padding: 10px 20px; grid-template-columns: 1fr; gap: 10px; } 
+        .header-logo, .header-clock { justify-self: center; } 
+        .logo-weg { height: 40px; } 
+        header h1 { font-size: 1.5rem; } 
+        #relogio, #data { font-size: 1.3rem; } 
+        main { padding: 20px; } 
+    }
   </style>
 </head>
 <body>
@@ -76,8 +111,8 @@ const REPO_OWNER = 'Denilsonsiewert'; const REPO_NAME = 'banhos-quimicos'; const
 
 // ⏱️ CONFIGURAÇÕES DE TEMPO AJUSTADAS
 const CONFIG = { 
-  rotateInterval: 45000,      // Rotaciona os gráficos a cada 45 segundos (mantido)
-  refreshInterval: 1800000,   // Atualiza os DADOS a cada 30 minutos (antes era 5 min)
+  rotateInterval: 45000,
+  refreshInterval: 1800000,
   itemsPerSlide: 2 
 };
 
@@ -171,18 +206,111 @@ async function renderTabela(base, idx) { const config = getConfig(base, idx); co
 function carregarImagem(img, base, idx) { const candidatos = [`graficos/${base}-${idx}.png`, `graficos/${base}.png`]; let i = 0; function tentar() { if (i >= candidatos.length) { img.style.display = 'none'; return; } img.onerror = () => { i++; tentar(); }; img.src = `${candidatos[i++]}?t=${Date.now()}`; } tentar(); }
 function nomeCard(base, idx, totalNoGrupo) { const config = getConfig(base, idx); if (config) return config.nome; const auto = base.replace(/^graf-/, '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()); return totalNoGrupo > 1 ? `${auto} ${idx}` : auto; }
 function secaoDeBase(base) { const config = getConfig(base, 1); return config?.secao ?? 'outros'; }
+
+// 🖼️ Card especial para o Quadro de Controle
+async function criarCardQuadroControle() {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.dataset.quadro = 'true';
+    
+    const imgPath = `imagens/quadro-controle-estanhegm.png?t=${Date.now()}`;
+    
+    div.innerHTML = `
+        <div class="card-header" style="background: var(--weg-blue-dark);">
+            📋 Quadro de Controle de Troca e Filtragem - Estanhagem
+        </div>
+        <div class="card-body">
+            <div class="quadro-container">
+                <img src="${imgPath}" 
+                     alt="Quadro de Controle" 
+                     onload="this.classList.add('loaded')"
+                     onerror="this.parentElement.innerHTML='<p style=\'color: var(--weg-gray-400); padding: 20px; text-align: center;\'>⚠️ Imagem não encontrada</p>'">
+            </div>
+        </div>
+    `;
+    
+    return div;
+}
+
 async function criarCard(base, idx, totalNoGrupo) { const nome = nomeCard(base, idx, totalNoGrupo); const tabela = await renderTabela(base, idx); const div = document.createElement('div'); div.className = 'card'; div.dataset.base = base; div.dataset.idx = String(idx); div.innerHTML = `<div class="card-header">${nome}</div><div class="card-body"><div class="graph-container"><div class="graph-placeholder">📊 Carregando gráfico...</div><img alt="${nome}" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div><div class="measurements-container"><div class="table-title">Últimas 24 Medições</div>${tabela}</div></div>`; carregarImagem(div.querySelector('img'), base, idx); return div; }
 let _currentSlide = 0; let _totalSlides = 0; let _rotateTimer = null;
 function irParaSlide(idx) { _currentSlide = (idx + _totalSlides) % _totalSlides; document.getElementById('track-main').style.transform = `translateX(-${_currentSlide * 100}%)`; document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === _currentSlide)); }
 function iniciarRotacao() { clearInterval(_rotateTimer); _rotateTimer = setInterval(() => irParaSlide(_currentSlide + 1), CONFIG.rotateInterval); }
+
 async function initCarousel(grupos) { 
     BLOCKED_KEYS.forEach(key => { if (grupos[key]) delete grupos[key]; });
 
-    const track = document.getElementById('track-main'); const nav = document.getElementById('nav-main'); track.innerHTML = ''; nav.innerHTML = ''; _totalSlides = 0; _currentSlide = 0; const secoes = {}; 
-    for (const base in grupos) { const secao = secaoDeBase(base); if (!secoes[secao]) secoes[secao] = []; const indices = [...grupos[base].indices].sort((a, b) => a - b); for (const idx of indices) secoes[secao].push({ base, idx, total: indices.length }); } 
-    const ordemFinal = [...SECOES_ORDEM, ...Object.keys(secoes).filter(s => !SECOES_ORDEM.includes(s))]; for (const secaoKey of ordemFinal) { const itens = secoes[secaoKey]; if (!itens?.length) continue; const nomeSecao = SECOES_NOMES[secaoKey] ?? secaoKey; const slidesCount = Math.ceil(itens.length / CONFIG.itemsPerSlide); for (let s = 0; s < slidesCount; s++) { const slide = document.createElement('div'); slide.className = 'carousel-slide'; slide.innerHTML = `<div style="grid-column:1/-1;margin-bottom:5px"><div class="secao-titulo">${nomeSecao}</div></div>`; const chunk = itens.slice(s * CONFIG.itemsPerSlide, (s + 1) * CONFIG.itemsPerSlide); for (const { base, idx, total } of chunk) slide.appendChild(await criarCard(base, idx, total)); track.appendChild(slide); const dotIdx = _totalSlides; const dot = document.createElement('div'); dot.className = `nav-dot${dotIdx === 0 ? ' active' : ''}`; dot.onclick = () => { irParaSlide(dotIdx); iniciarRotacao(); }; nav.appendChild(dot); _totalSlides++; } } }
-async function refreshAll() { Object.keys(_jsonCache).forEach(k => delete _jsonCache[k]); for (const card of document.querySelectorAll('.card')) { const base = card.dataset.base; const idx = parseInt(card.dataset.idx, 10); if (!base || isNaN(idx)) continue; const tabela = await renderTabela(base, idx); card.querySelector('.measurements-container').innerHTML = `<div class="table-title">Últimas 24 Medições</div>${tabela}`; const img = card.querySelector('img'); if (img) carregarImagem(img, base, idx); } document.getElementById('ultima').innerText = new Date(Date.now() + timeOffset).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); }
+    const track = document.getElementById('track-main'); 
+    const nav = document.getElementById('nav-main'); 
+    track.innerHTML = ''; 
+    nav.innerHTML = ''; 
+    _totalSlides = 0; 
+    _currentSlide = 0; 
+    const secoes = {}; 
+    
+    for (const base in grupos) { 
+        const secao = secaoDeBase(base); 
+        if (!secoes[secao]) secoes[secao] = []; 
+        const indices = [...grupos[base].indices].sort((a, b) => a - b); 
+        for (const idx of indices) secoes[secao].push({ base, idx, total: indices.length }); 
+    } 
+    
+    const ordemFinal = [...SECOES_ORDEM, ...Object.keys(secoes).filter(s => !SECOES_ORDEM.includes(s))]; 
+    
+    for (const secaoKey of ordemFinal) { 
+        const itens = secoes[secaoKey]; 
+        if (!itens?.length) continue; 
+        const nomeSecao = SECOES_NOMES[secaoKey] ?? secaoKey; 
+        const slidesCount = Math.ceil(itens.length / CONFIG.itemsPerSlide); 
+        
+        for (let s = 0; s < slidesCount; s++) { 
+            const slide = document.createElement('div'); 
+            slide.className = 'carousel-slide'; 
+            slide.innerHTML = `<div style="grid-column:1/-1;margin-bottom:5px"><div class="secao-titulo">${nomeSecao}</div></div>`; 
+            
+            // 🎯 ADICIONA O QUADRO DE CONTROLE NO PRIMEIRO SLIDE DA ESTANHAGEM
+            if (secaoKey === 'estanhagem' && s === 0) {
+                const quadroCard = await criarCardQuadroControle();
+                slide.appendChild(quadroCard);
+            }
+            
+            const chunk = itens.slice(s * CONFIG.itemsPerSlide, (s + 1) * CONFIG.itemsPerSlide); 
+            for (const { base, idx, total } of chunk) slide.appendChild(await criarCard(base, idx, total)); 
+            
+            track.appendChild(slide); 
+            const dotIdx = _totalSlides; 
+            const dot = document.createElement('div'); 
+            dot.className = `nav-dot${dotIdx === 0 ? ' active' : ''}`; 
+            dot.onclick = () => { irParaSlide(dotIdx); iniciarRotacao(); }; 
+            nav.appendChild(dot); 
+            _totalSlides++; 
+        } 
+    } 
+}
+
+async function refreshAll() { 
+    Object.keys(_jsonCache).forEach(k => delete _jsonCache[k]); 
+    for (const card of document.querySelectorAll('.card')) { 
+        const base = card.dataset.base; 
+        const idx = parseInt(card.dataset.idx, 10); 
+        if (!base || isNaN(idx)) continue; 
+        const tabela = await renderTabela(base, idx); 
+        card.querySelector('.measurements-container').innerHTML = `<div class="table-title">Últimas 24 Medições</div>${tabela}`; 
+        const img = card.querySelector('img'); 
+        if (img) carregarImagem(img, base, idx); 
+    } 
+    
+    // Atualiza a imagem do quadro de controle
+    const quadroImg = document.querySelector('.card[data-quadro="true"] img');
+    if (quadroImg) {
+        quadroImg.src = `imagens/quadro-controle-estanhegm.png?t=${Date.now()}`;
+    }
+    
+    document.getElementById('ultima').innerText = new Date(Date.now() + timeOffset).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); 
+}
+
 function updateClock() { const now = new Date(Date.now() + timeOffset); document.getElementById('relogio').innerText = now.toLocaleTimeString('pt-BR'); document.getElementById('data').innerText = now.toLocaleDateString('pt-BR'); document.getElementById('ultima').innerText = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); }
+
 async function init() {
   initCursorAutoHide();
   await syncInternetTime();
@@ -195,10 +323,11 @@ async function init() {
   updateClock();
   setInterval(updateClock, 1000);
   setInterval(syncInternetTime, 300000);
-  setInterval(refreshAll, CONFIG.refreshInterval); // Agora usa 30 minutos
+  setInterval(refreshAll, CONFIG.refreshInterval);
   iniciarRotacao();
   setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1500);
 }
+
 window.onload = init;
 </script>
 </body>
