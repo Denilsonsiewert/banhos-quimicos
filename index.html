@@ -75,20 +75,26 @@
     .sem-dados { text-align: center; color: #999; font-size: 0.85rem; padding: 10px; }
     
     /* Estilos APENAS para o card do Quadro de Controle - altura automática */
-    .card[data-quadro="true"] {
+    .card[data-quadro="true"],
+    .card[data-quadro="estanhagem"],
+    .card[data-quadro="nano"] {
         width: 100%;
         max-width: 100%;
         height: auto !important;
         min-height: auto !important;
     }
-    .card[data-quadro="true"] .card-body {
+    .card[data-quadro="true"] .card-body,
+    .card[data-quadro="estanhagem"] .card-body,
+    .card[data-quadro="nano"] .card-body {
         padding: 0;
         background: var(--weg-gray-100);
         height: auto !important;
         min-height: auto !important;
         flex: none !important;
     }
-    .card[data-quadro="true"] .quadro-container {
+    .card[data-quadro="true"] .quadro-container,
+    .card[data-quadro="estanhagem"] .quadro-container,
+    .card[data-quadro="nano"] .quadro-container {
         width: 100%;
         display: flex;
         align-items: flex-start;
@@ -97,14 +103,20 @@
         background: var(--weg-gray-100);
         height: auto !important;
     }
-    .card[data-quadro="true"] img {
+    .card[data-quadro="true"] img,
+    .card[data-quadro="estanhagem"] img,
+    .card[data-quadro="nano"] img {
         max-width: 100%;
+        width: 100%;
         height: auto;
         display: block;
         transition: opacity 0.3s ease;
         opacity: 0;
+        object-fit: contain;
     }
-    .card[data-quadro="true"] img.loaded {
+    .card[data-quadro="true"] img.loaded,
+    .card[data-quadro="estanhagem"] img.loaded,
+    .card[data-quadro="nano"] img.loaded {
         opacity: 1;
     }
     
@@ -116,6 +128,13 @@
         header h1 { font-size: 1.5rem; } 
         #relogio, #data { font-size: 1.3rem; } 
         main { padding: 20px; } 
+        
+        /* Ajuste para mobile nos quadros */
+        .card[data-quadro="true"] img,
+        .card[data-quadro="estanhagem"] img,
+        .card[data-quadro="nano"] img {
+            max-height: none;
+        }
     }
   </style>
 </head>
